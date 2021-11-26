@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/Home_screen.dart';
+import 'Log_in.dart';
 
-class Log_in extends StatefulWidget {
-  const Log_in({Key? key}) : super(key: key);
+class Sign_up extends StatefulWidget {
+  const Sign_up({Key? key}) : super(key: key);
 
   @override
-  _Log_inState createState() => _Log_inState();
+  _Sign_upState createState() => _Sign_upState();
 }
 
-class _Log_inState extends State<Log_in> {
+class _Sign_upState extends State<Sign_up> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +35,7 @@ class _Log_inState extends State<Log_in> {
             child: Row(
               children: [
                 Text(
-                  'Log In',
+                  'Sign Up',
                   style: TextStyle(fontSize: 30, color: Colors.black),
                 ),
               ],
@@ -44,7 +45,40 @@ class _Log_inState extends State<Log_in> {
             height: 46,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 33),
+            child: Row(
+              children: [
+                Text(
+                  'Nama',
+                  style: TextStyle(fontSize: 20, color: Colors.black54),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 33, right: 32, top: 15, bottom: 18),
+            child: Container(
+              height: 48,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                    decoration: InputDecoration(
+                  hintText: 'Your Name',
+                  border: InputBorder.none,
+                )),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 33),
             child: Row(
               children: [
                 Text(
@@ -56,7 +90,7 @@ class _Log_inState extends State<Log_in> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(left: 33, right: 32, top: 15, bottom: 18),
+                const EdgeInsets.only(left: 33, right: 32, top: 15, bottom: 15),
             child: Container(
               height: 48,
               width: double.infinity,
@@ -77,7 +111,7 @@ class _Log_inState extends State<Log_in> {
             height: 10,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 33),
             child: Row(
               children: [
                 Text(
@@ -112,7 +146,7 @@ class _Log_inState extends State<Log_in> {
               onTap: () {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) {
-                  return Home();
+                  return Log_in();
                 }));
               },
               child: Container(
@@ -122,7 +156,7 @@ class _Log_inState extends State<Log_in> {
                     color: Colors.red, borderRadius: BorderRadius.circular(8)),
                 child: Center(
                   child: Text(
-                    'Log In',
+                    'Sign Up',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -130,20 +164,30 @@ class _Log_inState extends State<Log_in> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 97),
+                padding: const EdgeInsets.only(
+                  left: 119,
+                ),
                 child: Text(
-                  'Lupa password?',
+                  'Sudah punya akun?',
                   style: TextStyle(color: Colors.black54),
                 ),
               ),
-              Text(
-                ' Reset Password',
-                style: TextStyle(color: Colors.red),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return Log_in();
+                  }));
+                },
+                child: Text(
+                  ' Login',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ],
           )

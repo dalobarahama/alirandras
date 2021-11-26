@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/Profile.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -54,24 +55,40 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      'Hello, Suryanto',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.lightBlue[700],
-                          fontSize: 20),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Profile();
+                        }));
+                      },
+                      child: Text(
+                        'Hello, Suryanto',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.lightBlue[700],
+                            fontSize: 20),
+                      ),
                     ),
-                    Container(
-                      height: 90,
-                      width: 90,
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlue,
-                          borderRadius: BorderRadius.circular(45)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(45),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
-                          fit: BoxFit.cover,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Profile();
+                        }));
+                      },
+                      child: Container(
+                        height: 90,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(45)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(45),
+                          child: Image.network(
+                            'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
