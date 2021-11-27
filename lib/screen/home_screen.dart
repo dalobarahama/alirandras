@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/Form_pendaftaran.dart';
-import 'package:flutter_application_3/Profile.dart';
+import 'package:flutter_application_3/screen/form_pendaftaran.dart';
+import 'package:flutter_application_3/screen/profile.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
