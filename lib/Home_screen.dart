@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/Form_pendaftaran.dart';
 import 'package:flutter_application_3/Profile.dart';
 
 class Home extends StatefulWidget {
@@ -295,47 +296,58 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 120,
             ),
-            Container(
-              height: 200,
-              width: 360,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 90, left: 110),
-                child: Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Isi Formulir Pengajuan',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Klik untuk ajukan formulir pengajuan',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 140, top: 10),
-                        child: Container(
-                          child: Icon(
-                            Icons.arrow_right_alt_outlined,
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Form_pendaftaran();
+                }));
+              },
+              child: Container(
+                height: 200,
+                width: 360,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 90, left: 110),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Isi Formulir Pengajuan',
+                          style: TextStyle(
                             color: Colors.white,
-                            size: 50,
+                            fontSize: 20,
                           ),
                         ),
-                      )
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Klik untuk ajukan formulir pengajuan',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 140, top: 10),
+                          child: Container(
+                            child: Icon(
+                              Icons.arrow_right_alt_outlined,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
           ],
         ),
