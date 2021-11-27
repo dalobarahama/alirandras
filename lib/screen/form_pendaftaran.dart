@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/Home_screen.dart';
+import 'package:flutter_application_3/screen/home_screen.dart';
 
 class Form_pendaftaran extends StatefulWidget {
   const Form_pendaftaran({Key? key}) : super(key: key);
