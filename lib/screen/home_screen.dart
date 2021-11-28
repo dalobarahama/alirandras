@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/form_pendaftaran.dart';
 import 'package:flutter_application_3/screen/profile.dart';
@@ -19,32 +17,39 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 20,
+            ),
             Container(
-              height: 90,
+              height: 50,
               width: double.infinity,
               color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: IconButton(
                         onPressed: null,
                         icon: Icon(
                           Icons.menu,
                           color: Colors.blue[900],
                           size: 30,
                         )),
-                    IconButton(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
                         onPressed: null,
                         icon: Icon(
                           Icons.notifications_active_outlined,
                           color: Colors.blue[900],
                           size: 30,
                         )),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Container(
@@ -52,9 +57,9 @@ class _HomeState extends State<Home> {
               width: double.infinity,
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
+                padding: const EdgeInsets.only(left: 25, right: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
                       onTap: () {
@@ -63,24 +68,33 @@ class _HomeState extends State<Home> {
                           return Profile();
                         }));
                       },
-                      child: Text(
-                        'Hello, Suryanto',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.lightBlue[700],
-                            fontSize: 20),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Hello, ',
+                            style: TextStyle(
+                                color: Colors.lightBlue[700], fontSize: 20),
+                          ),
+                          Text(
+                            'Suryanto',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.lightBlue[700],
+                                fontSize: 20),
+                          ),
+                        ],
                       ),
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
+                        Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return Profile();
                         }));
                       },
                       child: Container(
-                        height: 90,
-                        width: 90,
+                        height: 40,
+                        width: 40,
                         decoration: BoxDecoration(
                             color: Colors.lightBlue,
                             borderRadius: BorderRadius.circular(45)),
@@ -102,21 +116,19 @@ class _HomeState extends State<Home> {
             ),
             Stack(overflow: Overflow.visible, children: [
               Container(
-                height: 300,
+                height: 250,
                 width: double.infinity,
                 color: Colors.lightBlue[200],
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 60,
-                      ),
-                      Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: Row(
                         children: [
-                          Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(8, 0, 20, 20)),
                           Text(
                             'Selamat Datang, di ',
                             style: TextStyle(fontSize: 20, color: Colors.white),
@@ -130,27 +142,27 @@ class _HomeState extends State<Home> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 20,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Aplikasi layanan informasi/rekomendasi',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              )),
+                          Text('drainase ekspress',
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white))
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 47,
-                        ),
-                        child: Text('Aplikasi layanan informasi/rekomendasi',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 192),
-                        child: Text('drainase ekspress',
-                            style:
-                                TextStyle(fontSize: 15, color: Colors.white)),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Positioned(
@@ -302,45 +314,49 @@ class _HomeState extends State<Home> {
                   return Form_pendaftaran();
                 }));
               },
-              child: Container(
-                height: 200,
-                width: 360,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 90, left: 110),
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Isi Formulir Pengajuan',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Klik untuk ajukan formulir pengajuan',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 140, top: 10),
-                          child: Container(
-                            child: Icon(
-                              Icons.arrow_right_alt_outlined,
+              child: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Container(
+                  height: 200,
+                  width: 360,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 90, right: 10),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Isi Formulir Pengajuan',
+                            style: TextStyle(
                               color: Colors.white,
-                              size: 50,
+                              fontSize: 20,
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Klik untuk ajukan formulir pengajuan',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 140, top: 10),
+                            child: Container(
+                              child: Icon(
+                                Icons.arrow_right_alt_outlined,
+                                color: Colors.white,
+                                size: 40,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

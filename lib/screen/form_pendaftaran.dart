@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class Form_pendaftaran extends StatefulWidget {
   const Form_pendaftaran({Key? key}) : super(key: key);
@@ -10,6 +11,29 @@ class Form_pendaftaran extends StatefulWidget {
 
 class _Form_pendaftaranState extends State<Form_pendaftaran> {
   @override
+  String kec = '';
+  String kel = '';
+  String jenisPermohonan = '';
+  List<String> kecamatan = [
+    'Bungus Teluk Kabung',
+    'Koto Tangah',
+    'Kuranji',
+    '	Lubuk Begalung',
+    'Pauh'
+  ];
+  List<String> kelurahan = [
+    'kel1',
+    'kel1',
+    'kel1',
+    'kel1',
+    'kel1',
+    'kel1',
+    'kel1',
+  ];
+  List<String> jenis_permohonan = [
+    'Surat Informasi',
+    'Surat Rekomendasi',
+  ];
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -22,7 +46,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   Container(
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
+                        Navigator.pop(context,
                             MaterialPageRoute(builder: (context) {
                           return Home();
                         }));
@@ -63,50 +87,47 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 35),
-              child: TextField(
-                decoration: InputDecoration(
-                  icon: Text(
-                    'Jenis Permohonan',
-                    style: TextStyle(color: Colors.black87, fontSize: 16),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  hintText: ' Pilih jenis permohonan',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
-                  suffixIcon: Icon(Icons.arrow_drop_down),
-                ),
+              child: DropdownSearch<String>(
+                mode: Mode.MENU,
+                showSelectedItems: true,
+                items: jenis_permohonan,
+                // label: "Pilih Jenis Permohonan",
+                hint: "Pilih Jenis Permohonan",
+                onChanged: (value) {
+                  setState(() {
+                    jenisPermohonan = value!;
+                  });
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 35),
-              child: TextField(
-                decoration: InputDecoration(
-                  icon: Text(
-                    'Kecamatan             ',
-                    style: TextStyle(color: Colors.black87, fontSize: 16),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  hintText: ' Pilih Kecamatan',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
-                  suffixIcon: Icon(Icons.arrow_drop_down),
-                ),
+              child: DropdownSearch<String>(
+                mode: Mode.MENU,
+                showSelectedItems: true,
+                items: kecamatan,
+                // label: "Pilih Kecamatan",
+                hint: "Pilih Kecamatan",
+                onChanged: (value) {
+                  setState(() {
+                    kec = value!;
+                  });
+                },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 35),
-              child: TextField(
-                decoration: InputDecoration(
-                  icon: Text(
-                    'Kelurahan               ',
-                    style: TextStyle(color: Colors.black87, fontSize: 16),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  hintText: ' Pilih Kelurahan',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
-                  suffixIcon: Icon(Icons.arrow_drop_down),
-                ),
+              padding: const EdgeInsets.all(30),
+              child: DropdownSearch<String>(
+                mode: Mode.MENU,
+                showSelectedItems: true,
+                items: kelurahan,
+                //   label: "Pilih Keluarahn",
+                hint: "Pilih Kelurahan",
+                onChanged: (value) {
+                  setState(() {
+                    kel = value!;
+                  });
+                },
               ),
             ),
             Padding(
