@@ -23,12 +23,12 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   ];
   List<String> kelurahan = [
     'kel1',
-    'kel1',
-    'kel1',
-    'kel1',
-    'kel1',
-    'kel1',
-    'kel1',
+    'kel2',
+    'kel3',
+    'kel4',
+    'kel5',
+    'kel6',
+    'kel7',
   ];
   List<String> jenis_permohonan = [
     'Surat Informasi',
@@ -86,48 +86,79 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 35),
-              child: DropdownSearch<String>(
-                mode: Mode.MENU,
-                showSelectedItems: true,
-                items: jenis_permohonan,
-                // label: "Pilih Jenis Permohonan",
-                hint: "Pilih Jenis Permohonan",
-                onChanged: (value) {
-                  setState(() {
-                    jenisPermohonan = value!;
-                  });
-                },
+              padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Jenis Permohonan",
+                      style: TextStyle(color: Colors.black87, fontSize: 16)),
+                  Container(
+                    width: 215,
+                    child: DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      showSelectedItems: true,
+                      items: jenis_permohonan,
+                      // label: "Pilih Jenis Permohonan",
+                      hint: "Pilih Jenis Permohonan",
+
+                      onChanged: (value) {
+                        setState(() {
+                          jenisPermohonan = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 35),
-              child: DropdownSearch<String>(
-                mode: Mode.MENU,
-                showSelectedItems: true,
-                items: kecamatan,
-                // label: "Pilih Kecamatan",
-                hint: "Pilih Kecamatan",
-                onChanged: (value) {
-                  setState(() {
-                    kec = value!;
-                  });
-                },
+              padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Kecamatan",
+                      style: TextStyle(color: Colors.black87, fontSize: 16)),
+                  Container(
+                    width: 215,
+                    child: DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      showSelectedItems: true,
+                      items: kecamatan,
+                      // label: "Pilih Kecamatan",
+                      hint: "Pilih Kecamatan",
+                      onChanged: (value) {
+                        setState(() {
+                          kec = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(30),
-              child: DropdownSearch<String>(
-                mode: Mode.MENU,
-                showSelectedItems: true,
-                items: kelurahan,
-                //   label: "Pilih Keluarahn",
-                hint: "Pilih Kelurahan",
-                onChanged: (value) {
-                  setState(() {
-                    kel = value!;
-                  });
-                },
+              padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Kelurahan",
+                      style: TextStyle(color: Colors.black87, fontSize: 16)),
+                  Container(
+                    width: 215,
+                    child: DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      showSelectedItems: true,
+                      items: kelurahan,
+                      //   label: "Pilih Keluarahn",
+                      hint: "Pilih Kelurahan",
+                      onChanged: (value) {
+                        setState(() {
+                          kel = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -139,7 +170,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     style: TextStyle(color: Colors.black87, fontSize: 16),
                   ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(7)),
                 ),
               ),
             ),
@@ -152,7 +183,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     style: TextStyle(color: Colors.black87, fontSize: 16),
                   ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(7)),
                 ),
               ),
             ),
@@ -165,7 +196,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     style: TextStyle(color: Colors.black87, fontSize: 16),
                   ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(7)),
                 ),
               ),
             ),
@@ -178,7 +209,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     style: TextStyle(color: Colors.black87, fontSize: 16),
                   ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(7)),
                 ),
               ),
             ),
@@ -202,7 +233,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     width: 214,
                     decoration: BoxDecoration(
                         color: Colors.grey,
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(7)),
                     child: Center(
                         child: Text(
                       'Upload File',
@@ -221,6 +252,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return Scaffold(
+                      backgroundColor: Colors.grey,
                       body: Column(
                         children: [
                           Stack(
@@ -229,9 +261,52 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                 padding: const EdgeInsets.only(
                                     left: 40, right: 40, top: 200),
                                 child: Container(
-                                  color: Colors.amber,
-                                  height: 200,
+                                  height: 230,
                                   width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 90),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Submit Berhasil!',
+                                          style: TextStyle(
+                                              fontSize: 22, color: Colors.grey),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 32, right: 27, top: 30),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushReplacement(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return Home();
+                                              }));
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              child: Center(
+                                                child: Text(
+                                                  'Kembali',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 22),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                               Positioned(
@@ -243,6 +318,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                         color: Colors.green,
                                         borderRadius:
                                             BorderRadius.circular(50)),
+                                    child: Icon(
+                                      Icons.done,
+                                      size: 70,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                                 top: 170,
