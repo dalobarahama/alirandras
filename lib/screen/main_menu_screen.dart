@@ -1,9 +1,8 @@
 import 'package:flutter_application_3/main.dart';
 import 'package:flutter_application_3/screen/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/detail_card_statuspengajuan.dart';
-
 import 'package:flutter_application_3/screen/home_screen.dart';
-
+import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -18,7 +17,8 @@ class MainMenuScreen extends StatefulWidget {
 class _MainMenuScreenState extends State<MainMenuScreen> {
   List<Widget> _screenList() {
     return [
-      Home(),
+    Home(),
+
       Cek_status_pengajuan(),
       Profile(),
     ];
