@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
+                        Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return Profile();
                         }));

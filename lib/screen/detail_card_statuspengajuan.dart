@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/screen/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/home_screen.dart';
 
 class Detail_card_statuspengajuan extends StatefulWidget {
@@ -27,7 +28,7 @@ class _Detail_card_statuspengajuanState
                       onTap: () {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
-                          return Home();
+                          return Cek_status_pengajuan();
                         }));
                       },
                       child: Icon(
