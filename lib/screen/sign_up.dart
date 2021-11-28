@@ -75,6 +75,9 @@ class _Sign_upState extends State<Sign_up> {
               padding: const EdgeInsets.only(
                   left: 30, right: 32, top: 15, bottom: 18),
               child: TextFormField(
+                style: TextStyle(
+                  height: 0.8,
+                ),
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
@@ -117,6 +120,9 @@ class _Sign_upState extends State<Sign_up> {
               padding: const EdgeInsets.only(
                   left: 33, right: 32, top: 15, bottom: 15),
               child: TextFormField(
+                style: TextStyle(
+                  height: 0.8,
+                ),
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
@@ -159,6 +165,10 @@ class _Sign_upState extends State<Sign_up> {
               padding: const EdgeInsets.only(
                   left: 33, right: 32, top: 18, bottom: 33),
               child: TextFormField(
+                style: TextStyle(
+                  height: 0.8,
+                ),
+                obscureText: true,
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
@@ -219,7 +229,7 @@ class _Sign_upState extends State<Sign_up> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushReplacement(context,
+                    Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return Log_in();
                     }));
