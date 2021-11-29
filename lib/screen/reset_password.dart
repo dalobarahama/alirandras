@@ -1,67 +1,93 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/main_menu_screen.dart';
-import 'package:flutter_application_3/screen/reset_password.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:flutter_application_3/screen/otp_verifikasi.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Log_in extends StatefulWidget {
-  const Log_in({Key? key}) : super(key: key);
+class Reset_password extends StatefulWidget {
+  const Reset_password({Key? key}) : super(key: key);
 
   @override
-  _Log_inState createState() => _Log_inState();
+  _Reset_passwordState createState() => _Reset_passwordState();
 }
 
-class _Log_inState extends State<Log_in> {
-  TextEditingController _emailController = TextEditingController();
+class _Reset_passwordState extends State<Reset_password> {
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmpasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(color: Colors.white70),
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Container(
-                  height: 150,
-                  child: Image.asset(
-                    'assets/images/logo_1.png',
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
             Padding(
-              padding: const EdgeInsets.only(left: 25),
+              padding: const EdgeInsets.only(top: 40, left: 30),
               child: Row(
                 children: [
-                  Text(
-                    'Log In',
-                    style: GoogleFonts.roboto(
-                        fontSize: 24,
-                        textStyle: TextStyle(
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.bold)),
+                  Container(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Otp_verifikasi();
+                        }));
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.lightBlue[300],
+                        size: 40,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 27, top: 45),
+                  child: Container(
+                    child: Text(
+                      'Reset Password',
+                      style: GoogleFonts.roboto(
+                          fontSize: 33,
+                          fontWeight: FontWeight.w400,
+                          textStyle: TextStyle(
+                            color: Colors.grey[600],
+                          )),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 27, top: 30),
+                  child: Container(
+                    child: Text(
+                      'Reset Password Anda',
+                      style: GoogleFonts.roboto(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          textStyle: TextStyle(
+                            color: Colors.grey,
+                          )),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
-              height: 30,
+              height: 50,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30),
               child: Row(
                 children: [
                   Text(
-                    'Email',
+                    'New Password',
                     style: GoogleFonts.roboto(
                         fontSize: 15,
                         textStyle: TextStyle(
@@ -92,7 +118,7 @@ class _Log_inState extends State<Log_in> {
                     ),
                   ),
                 ),
-                controller: _emailController,
+                controller: _passwordController,
               ),
             ),
             SizedBox(
@@ -103,7 +129,7 @@ class _Log_inState extends State<Log_in> {
               child: Row(
                 children: [
                   Text(
-                    'Password',
+                    'Confirm Password',
                     style: GoogleFonts.roboto(
                         fontSize: 15,
                         textStyle: TextStyle(
@@ -134,15 +160,17 @@ class _Log_inState extends State<Log_in> {
                     ),
                   ),
                 ),
-                controller: _passwordController,
+                controller: _confirmpasswordController,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 33, right: 32, bottom: 30),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(
-                      context, SlideToLeftRoute(page: MainMenuScreen()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return Log_in();
+                  }));
                 },
                 child: Container(
                   height: 50,
@@ -152,7 +180,7 @@ class _Log_inState extends State<Log_in> {
                       borderRadius: BorderRadius.circular(8)),
                   child: Center(
                     child: Text(
-                      'Log In',
+                      'Save',
                       style: GoogleFonts.roboto(
                           fontSize: 18,
                           textStyle: TextStyle(
@@ -163,42 +191,9 @@ class _Log_inState extends State<Log_in> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 97),
-                  child: Text(
-                    'Lupa password?',
-                    style: TextStyle(color: Colors.black54),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Forgot_password();
-                    }));
-                  },
-                  child: Text(
-                    ' Reset Password',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-                width: double.infinity,
-                height: 100,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/footer_login.png'),
-                        fit: BoxFit.cover)))
           ],
         ),
       ),
-    ));
+    );
   }
 }

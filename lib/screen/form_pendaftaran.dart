@@ -177,13 +177,18 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       height: 50,
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
+
                         showSelectedItems: true,
                         items: kecamatan,
+
                         // label: "Pilih Kecamatan",
                         hint: "Pilih Kecamatan",
-                        dropdownSearchBaseStyle: TextStyle(
-                          fontSize: 12,
-                        ),
+
+                        dropdownSearchBaseStyle: GoogleFonts.roboto(
+                            fontSize: 12,
+                            textStyle: TextStyle(
+                              color: Colors.black54,
+                            )),
                         onChanged: (value) {
                           setState(() {
                             kec = value!;
@@ -219,6 +224,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         dropdownSearchBaseStyle: TextStyle(
                           fontSize: 12,
                         ),
+
                         onChanged: (value) {
                           setState(() {
                             kel = value!;
