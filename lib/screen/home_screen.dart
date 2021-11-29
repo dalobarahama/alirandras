@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/form_pendaftaran.dart';
 import 'package:flutter_application_3/screen/profile.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -72,15 +73,20 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             'Hello, ',
-                            style: TextStyle(
-                                color: Colors.lightBlue[700], fontSize: 20),
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                textStyle: TextStyle(
+                                  color: Colors.lightBlue[700],
+                                )),
                           ),
                           Text(
                             'Suryanto',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.lightBlue[700],
-                                fontSize: 20),
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.lightBlue[700],
+                                )),
                           ),
                         ],
                       ),
@@ -131,14 +137,20 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             'Selamat Datang, di ',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
                           ),
                           Text(
                             'ALIRANDRAS ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            style: GoogleFonts.roboto(
                                 fontSize: 20,
-                                color: Colors.white),
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                )),
                           ),
                         ],
                       ),
@@ -151,14 +163,22 @@ class _HomeState extends State<Home> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Aplikasi layanan informasi/rekomendasi',
-                              style: TextStyle(
+                          Text(
+                            'Aplikasi layanan informasi/rekomendasi',
+                            style: GoogleFonts.roboto(
                                 fontSize: 15,
-                                color: Colors.white,
-                              )),
-                          Text('drainase ekspress',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.white))
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          ),
+                          Text(
+                            'drainase ekspress',
+                            style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          )
                         ],
                       ),
                     ),
@@ -330,20 +350,22 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             'Isi Formulir Pengajuan',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           Text(
                             'Klik untuk ajukan formulir pengajuan',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 140, top: 10),
