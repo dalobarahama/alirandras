@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^2.1.0
   persistent_bottom_nav_bar: ^4.0.2
   dropdown_search: ^2.0.1
+  image_picker: ^0.8.4+4
+  file_picker: ^4.2.5
 
 dev_dependencies:
   flutter_test:
