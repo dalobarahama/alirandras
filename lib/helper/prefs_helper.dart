@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_application_3/models/login_data.dart';
 
 class CallStorage {
   Future<bool> checkIfLoggedIn() async {
@@ -15,5 +16,13 @@ class CallStorage {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     localStorage.clear();
     return true;
+  }
+
+  Future<User> getUserData() async {
+    User _data = User();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String? data = localStorage.getString('user_data');
+    _data = userFromJson(data!);
+    return _data;
   }
 }

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
+import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/home_screen.dart';
 import 'package:flutter_application_3/screen/main_menu_screen.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
+import 'package:flutter_application_3/screen/sign_up.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Log_in extends StatefulWidget {
   const Log_in({Key? key}) : super(key: key);
@@ -16,7 +21,43 @@ class Log_in extends StatefulWidget {
 class _Log_inState extends State<Log_in> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
+
   @override
+  login() async {
+    setState(() {
+      isLoading = true;
+    });
+    await CallApi()
+        .login(_emailController.text, _passwordController.text)
+        .then((value) {
+      setState(() {
+        // print('qqqwqwq');
+        //print(value);
+
+        isLoading = false;
+        print(value);
+
+        if (value == 'success') {
+          Navigator.pushReplacement(
+              context, SlideToLeftRoute(page: MainMenuScreen()));
+        } else if (value == 'failed') {
+          CallStorage().logout();
+          Navigator.pushReplacement(
+              context, SlideToRightRoute(page: Sign_up()));
+        } else {
+          Fluttertoast.showToast(msg: value);
+        }
+      });
+    }).catchError((e) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+    //print('wwww');
+    //print(isError);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
@@ -142,8 +183,7 @@ class _Log_inState extends State<Log_in> {
               padding: const EdgeInsets.only(left: 33, right: 32, bottom: 30),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(
-                      context, SlideToLeftRoute(page: MainMenuScreen()));
+                  login();
                 },
                 child: Container(
                   height: 50,
@@ -152,14 +192,16 @@ class _Log_inState extends State<Log_in> {
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(8)),
                   child: Center(
-                    child: Text(
-                      'Log In',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                          )),
-                    ),
+                    child: isLoading
+                        ? CircularProgressIndicator()
+                        : Text(
+                            'Log In',
+                            style: GoogleFonts.roboto(
+                                fontSize: 18,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          ),
                   ),
                 ),
               ),
