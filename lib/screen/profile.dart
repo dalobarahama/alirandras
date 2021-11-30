@@ -1,6 +1,16 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/screen/sign_up.dart';
 import 'package:flutter_application_3/screen/home_screen.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
+import 'package:flutter_application_3/models/login_data.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -10,7 +20,53 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _namaController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  User _userData = User();
+  bool isLoading = true;
   @override
+  void initState() {
+    setState(() {
+      Timer(Duration(seconds: 1), () {
+        CallStorage().getUserData().then((value) {
+          setState(() {
+            _userData = value;
+            isLoading = false;
+            _namaController.text = _userData.name!;
+            _emailController.text = _userData.email!;
+          });
+        });
+      });
+    });
+    super.initState();
+  }
+
+  /* void updateData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await CallApi()
+        .updateProfile(_nameController.text, _emailController.text,
+            _passwordController.text)
+        .then((value) {
+      if (value) {
+        Fluttertoast.showToast(msg: 'Success');
+        CallApi()
+            .login(_emailController.text, _passwordController.text)
+            .then((value) {
+          Navigator.pop(context, 'refresh');
+        });
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Silahkan masukkan email, nama dan password terlebih dahulu.');
+      }
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }*/
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -48,16 +104,26 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: [
                   Container(
-                    width: 130,
-                    height: 130,
+                    width: 100,
+                    height: 100,
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(65)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(65),
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
-                        fit: BoxFit.cover,
+                      child: CachedNetworkImage(
+                        imageUrl: _userData.signature!,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -113,10 +179,12 @@ class _ProfileState extends State<Profile> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.black54),
+                      controller: _namaController,
                       decoration: InputDecoration(
-                    hintText: 'Suryanto',
-                    border: InputBorder.none,
-                  )),
+                          border: InputBorder.none,
+                          fillColor: Colors.grey[300],
+                          filled: true)),
                 ),
               ),
             ),
@@ -146,10 +214,11 @@ class _ProfileState extends State<Profile> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.black54),
+                      controller: _emailController,
                       decoration: InputDecoration(
-                    hintText: 'Suryanto@gmail.com',
-                    border: InputBorder.none,
-                  )),
+                        border: InputBorder.none,
+                      )),
                 ),
               ),
             ),
@@ -179,6 +248,7 @@ class _ProfileState extends State<Profile> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.black54),
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: '********',

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/main.dart';
+import 'package:flutter_application_3/screen/main_menu_screen.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/screen/sign_up.dart';
 
@@ -15,18 +15,16 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void initState() {
-    Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
-      /*CallStorage.checkIfLoggedIn().then((value) {
+    Timer(Duration(seconds: 1), () {
+      //Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
+      CallStorage().checkIfLoggedIn().then((value) {
         if (value) {
           Navigator.pushReplacement(
-              context, SlideToLeftRoute(page: HomeScreen()));
-        }else{
-           Navigator.pushReplacement(
-              context, SlideToLeftRoute(page: HomeScreen()));
+              context, SlideToLeftRoute(page: MainMenuScreen()));
+        } else {
+          Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
         }
       });
-    */
     });
     super.initState();
   }

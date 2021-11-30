@@ -236,7 +236,10 @@ class _Sign_upState extends State<Sign_up> {
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(8)),
                   child: isLoading
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: CircularProgressIndicator(
+                          color: Colors.white70,
+                        ))
                       : Center(
                           child: Text(
                             'Sign Up',
