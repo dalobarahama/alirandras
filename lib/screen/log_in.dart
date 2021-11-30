@@ -117,6 +117,7 @@ class _Log_inState extends State<Log_in> {
               padding: const EdgeInsets.only(
                   left: 33, right: 32, top: 18, bottom: 33),
               child: TextFormField(
+                obscureText: true,
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
