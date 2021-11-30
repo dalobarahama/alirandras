@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:flutter_application_3/screen/main_menu_screen.dart';
 import 'log_in.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
+import 'package:flutter_application_3/models/login_data.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Sign_up extends StatefulWidget {
   const Sign_up({Key? key}) : super(key: key);
@@ -15,8 +23,34 @@ class _Sign_upState extends State<Sign_up> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _namaController = TextEditingController();
-
+  bool isLoading = false;
   @override
+  register() async {
+    setState(() {
+      isLoading = true;
+    });
+    await CallApi()
+        .register(_namaController.text, _emailController.text,
+            _passwordController.text)
+        .then((value) {
+      setState(() {
+        isLoading = false;
+        print(value);
+        if (value == 'success') {
+          Fluttertoast.showToast(msg: 'Berhasil Registrasi');
+          Timer(Duration(seconds: 2), () {
+            Navigator.pushReplacement(
+                context, SlideToLeftRoute(page: Log_in()));
+          });
+        } else if (value == 'failed') {
+          Fluttertoast.showToast(msg: 'Terjadi kesalahan');
+        } else {
+          Fluttertoast.showToast(msg: value);
+        }
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
@@ -193,10 +227,7 @@ class _Sign_upState extends State<Sign_up> {
               padding: const EdgeInsets.only(left: 33, right: 32, bottom: 30),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Log_in();
-                  }));
+                  register();
                 },
                 child: Container(
                   height: 50,
@@ -204,16 +235,18 @@ class _Sign_upState extends State<Sign_up> {
                   decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(8)),
-                  child: Center(
-                    child: Text(
-                      'Sign Up',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                          )),
-                    ),
-                  ),
+                  child: isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Center(
+                          child: Text(
+                            'Sign Up',
+                            style: GoogleFonts.roboto(
+                                fontSize: 18,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ),
                 ),
               ),
             ),
