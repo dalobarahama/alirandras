@@ -70,6 +70,37 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     }
   }
 
+  Widget _customDropDownExample(BuildContext context, item) {
+    return Container(
+      child: ListTile(
+        contentPadding: EdgeInsets.only(bottom: 5),
+        title: Text(
+          item,
+          style: GoogleFonts.roboto(
+              fontSize: 12,
+              textStyle: TextStyle(
+                color: Colors.black54,
+              )),
+        ),
+      ),
+    );
+  }
+
+  Widget _customPopupItemBuilderExample(
+      BuildContext context, item, bool isSelected) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(
+          item,
+          style: TextStyle(fontSize: 12),
+        ),
+        //subtitle: Text(item?.createdAt?.toString() ?? ''),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -146,9 +177,22 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         items: jenis_permohonan,
                         // label: "Pilih Jenis Permohonan",
                         hint: "Pilih Jenis Permohonan",
+                        popupItemBuilder: (context, item, isSelected) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
+                            ),
+                          );
+                        },
+                        // dropdownBuilder: _customDropDownExample,
                         dropdownSearchBaseStyle: TextStyle(
                           fontSize: 12.0,
                         ),
+
                         onChanged: (value) {
                           setState(() {
                             jenisPermohonan = value!;
@@ -184,6 +228,17 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         dropdownSearchBaseStyle: TextStyle(
                           fontSize: 12,
                         ),
+                        popupItemBuilder: (context, item, isSelected) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
+                            ),
+                          );
+                        },
                         onChanged: (value) {
                           setState(() {
                             kec = value!;
@@ -219,6 +274,17 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         dropdownSearchBaseStyle: TextStyle(
                           fontSize: 12,
                         ),
+                        popupItemBuilder: (context, item, isSelected) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
+                            ),
+                          );
+                        },
                         onChanged: (value) {
                           setState(() {
                             kel = value!;
