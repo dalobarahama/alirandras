@@ -221,8 +221,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       height: 50,
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
+
                         showSelectedItems: true,
                         items: kecamatan,
+
                         // label: "Pilih Kecamatan",
                         hint: "Pilih Kecamatan",
                         dropdownSearchBaseStyle: TextStyle(
@@ -239,6 +241,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           );
                         },
+
                         onChanged: (value) {
                           setState(() {
                             kec = value!;
@@ -285,6 +288,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           );
                         },
+
                         onChanged: (value) {
                           setState(() {
                             kel = value!;
