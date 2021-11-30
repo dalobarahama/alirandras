@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -86,34 +87,26 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return Profile();
-                              }));
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Hello, ',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 20,
-                                      textStyle: TextStyle(
-                                        color: Colors.lightBlue[700],
-                                      )),
-                                ),
-                                Text(
-                                  _userData.name!,
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 20,
-                                      textStyle: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.lightBlue[700],
-                                      )),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                'Hello, ',
+                                style: GoogleFonts.roboto(
+                                    fontSize: 20,
+                                    textStyle: TextStyle(
+                                      color: Colors.lightBlue[700],
+                                    )),
+                              ),
+                              Text(
+                                _userData.name!,
+                                style: GoogleFonts.roboto(
+                                    fontSize: 20,
+                                    textStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.lightBlue[700],
+                                    )),
+                              ),
+                            ],
                           ),
                           InkWell(
                             onTap: () {
@@ -130,9 +123,21 @@ class _HomeState extends State<Home> {
                                   borderRadius: BorderRadius.circular(45)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(45),
-                                child: Image.network(
-                                  'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
-                                  fit: BoxFit.cover,
+                                child: CachedNetworkImage(
+                                  imageUrl: _userData.signature!,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
                                 ),
                               ),
                             ),

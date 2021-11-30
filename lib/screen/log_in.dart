@@ -193,7 +193,9 @@ class _Log_inState extends State<Log_in> {
                       borderRadius: BorderRadius.circular(8)),
                   child: Center(
                     child: isLoading
-                        ? CircularProgressIndicator()
+                        ? CircularProgressIndicator(
+                            color: Colors.white70,
+                          )
                         : Text(
                             'Log In',
                             style: GoogleFonts.roboto(
