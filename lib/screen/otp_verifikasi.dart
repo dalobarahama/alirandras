@@ -3,6 +3,7 @@ import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Otp_verifikasi extends StatefulWidget {
   const Otp_verifikasi({Key? key}) : super(key: key);
@@ -193,12 +194,12 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
         child: TextField(
           autofocus: true,
           onChanged: (value) {
-            // if (value.length = 1 && last = false){
-            //  FocusScope.of(context).nextFocus();
-            // }
-            //  if (value.length = 1 && first = false){
-            // FocusScope.of(context).previousFocus();
-            // }
+            if (value.length == 1 && last == false) {
+              FocusScope.of(context).nextFocus();
+            }
+            if (value.length == 1 && first == false) {
+              FocusScope.of(context).previousFocus();
+            }
           },
           showCursor: false,
           textAlign: TextAlign.center,

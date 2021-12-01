@@ -15,6 +15,6 @@ void main() {
   runApp(MaterialApp(
     title: 'Air Deras',
     debugShowCheckedModeBanner: false,
-    home: SplashScreen(),
+    home: Cek_status_pengajuan(),
   ));
 }
