@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/cek_status_pengajuan.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
 
 class Detail_card_statuspengajuan extends StatefulWidget {
   const Detail_card_statuspengajuan({Key? key}) : super(key: key);

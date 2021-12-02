@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
-import 'package:flutter_application_3/screen/main_menu_screen.dart';
+import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:flutter_application_3/screen/otp_verifikasi.dart';
 import 'package:google_fonts/google_fonts.dart';
 

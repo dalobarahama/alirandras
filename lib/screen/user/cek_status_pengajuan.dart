@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/detail_card_statuspengajuan.dart';
+import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Cek_status_pengajuan extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter_application_3/main.dart';
-import 'package:flutter_application_3/screen/cek_status_pengajuan.dart';
-import 'package:flutter_application_3/screen/detail_card_statuspengajuan.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
+import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/profile.dart';
