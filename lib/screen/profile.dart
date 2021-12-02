@@ -262,6 +262,33 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.only(left: 33, bottom: 15),
+              child: Row(
+                children: [
+                  Text(
+                    'Tanda Tangan',
+                    style: TextStyle(fontSize: 20, color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 50),
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8)),
+                child: Center(
+                  child: Text(
+                    'Upload File',
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(left: 33, right: 32, bottom: 15),
               child: InkWell(
                 onTap: () {
