@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Otp_verifikasi extends StatefulWidget {
   const Otp_verifikasi({Key? key}) : super(key: key);
@@ -13,6 +17,9 @@ class Otp_verifikasi extends StatefulWidget {
 
 class _Otp_verifikasiState extends State<Otp_verifikasi> {
   TextEditingController _otpController = TextEditingController();
+  String currentText = "";
+  StreamController<ErrorAnimationType> errorController = StreamController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +114,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                   Text(
                     'Masukkan kode OTP',
                     style: GoogleFonts.roboto(
-                        fontSize: 15,
+                        fontSize: 17,
                         textStyle: TextStyle(
                           color: Colors.grey[500],
                         )),
@@ -118,13 +125,45 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
             Padding(
               padding: const EdgeInsets.only(top: 20, right: 50, left: 40),
               child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    _textfieldOTP(first: true, last: false),
-                    _textfieldOTP(first: true, last: false),
-                    _textfieldOTP(first: true, last: false),
-                    _textfieldOTP(first: true, last: true),
+                    PinCodeTextField(
+                      appContext: context,
+                      keyboardType: TextInputType.number,
+                      length: 4,
+                      obscureText: false,
+                      animationType: AnimationType.fade,
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.box,
+                        borderRadius: BorderRadius.circular(5),
+                        fieldHeight: 60,
+                        fieldWidth: 60,
+                        activeFillColor: Colors.lightBlue,
+                        activeColor: Colors.lightBlue,
+                        disabledColor: Colors.lightBlue,
+                        inactiveColor: Colors.lightBlue,
+                        selectedColor: Colors.lightBlue,
+                      ),
+                      animationDuration: Duration(milliseconds: 300),
+                      enableActiveFill: false,
+                      errorAnimationController: errorController,
+                      controller: _otpController,
+                      onCompleted: (v) {
+                        print("Completed");
+                      },
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+                          currentText = value;
+                        });
+                      },
+                      beforeTextPaste: (text) {
+                        print("Allowing to paste $text");
+                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                        return true;
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -164,9 +203,9 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                   padding: const EdgeInsets.only(left: 27, top: 20),
                   child: Container(
                     child: Text(
-                      'Resend email ',
+                      'Resend kode ',
                       style: GoogleFonts.roboto(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.w400,
                           textStyle: TextStyle(
                             color: Colors.red,
@@ -177,49 +216,6 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  _textfieldOTP({
-    bool? first,
-    last,
-  }) {
-    return Container(
-      height: 80,
-      child: AspectRatio(
-        aspectRatio: 0.7,
-        child: TextField(
-          autofocus: true,
-          onChanged: (value) {
-            // if (value.length = 1 && last = false){
-            //  FocusScope.of(context).nextFocus();
-            // }
-            //  if (value.length = 1 && first = false){
-            // FocusScope.of(context).previousFocus();
-            // }
-          },
-          showCursor: false,
-          textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              textStyle: TextStyle(
-                color: Colors.black,
-              )),
-          keyboardType: TextInputType.number,
-          maxLength: 1,
-          decoration: InputDecoration(
-              counter: Offstage(),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: Colors.lightBlue),
-                borderRadius: BorderRadius.circular(10),
-              )),
         ),
       ),
     );
