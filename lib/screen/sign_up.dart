@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
-import 'package:flutter_application_3/screen/main_menu_screen.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
+import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'log_in.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';

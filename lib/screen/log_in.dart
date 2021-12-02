@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
-import 'package:flutter_application_3/screen/main_menu_screen.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
+import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
+import 'package:flutter_application_3/screen/admin/main_menu_screen_admin.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
 import 'package:flutter_application_3/screen/sign_up.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
@@ -22,6 +24,7 @@ class _Log_inState extends State<Log_in> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
+  User _userData = User();
 
   @override
   login() async {
@@ -39,8 +42,23 @@ class _Log_inState extends State<Log_in> {
         print(value);
 
         if (value == 'success') {
-          Navigator.pushReplacement(
-              context, SlideToLeftRoute(page: MainMenuScreen()));
+          Timer(Duration(seconds: 1), () {
+            CallStorage().getUserData().then((value) {
+              setState(() {
+                _userData = value;
+                isLoading = false;
+              });
+            });
+          });
+          if (_userData.app == 'mobile user') {
+            //go to user home screen
+            Navigator.pushReplacement(
+                context, SlideToLeftRoute(page: MainMenuScreen()));
+          } else {
+            //go to admin home screen
+            Navigator.pushReplacement(
+                context, SlideToLeftRoute(page: MainMenuScreenAdmin()));
+          }
         } else if (value == 'failed') {
           CallStorage().logout();
           Navigator.pushReplacement(

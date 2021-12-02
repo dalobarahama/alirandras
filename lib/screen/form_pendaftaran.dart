@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
-import 'package:flutter_application_3/screen/main_menu_screen.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
+import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';

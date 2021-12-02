@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/sign_up.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -258,6 +258,33 @@ class _ProfileState extends State<Profile> {
                         ),
                         border: InputBorder.none,
                       )),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 33, bottom: 15),
+              child: Row(
+                children: [
+                  Text(
+                    'Tanda Tangan',
+                    style: TextStyle(fontSize: 20, color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 50),
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8)),
+                child: Center(
+                  child: Text(
+                    'Upload File',
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
                 ),
               ),
             ),

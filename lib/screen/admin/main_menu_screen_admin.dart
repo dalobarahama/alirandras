@@ -1,26 +1,24 @@
-import 'package:flutter_application_3/main.dart';
-import 'package:flutter_application_3/screen/cek_status_pengajuan.dart';
-import 'package:flutter_application_3/screen/detail_card_statuspengajuan.dart';
-import 'package:flutter_application_3/screen/home_screen.dart';
-import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:flutter_application_3/screen/admin/home_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/upload_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
+import 'package:flutter_application_3/screen/Profile.dart';
 
-class MainMenuScreen extends StatefulWidget {
-  const MainMenuScreen({Key? key}) : super(key: key);
+class MainMenuScreenAdmin extends StatefulWidget {
+  const MainMenuScreenAdmin({Key? key}) : super(key: key);
 
   @override
-  _MainMenuScreenState createState() => _MainMenuScreenState();
+  _MainMenuScreenAdminState createState() => _MainMenuScreenAdminState();
 }
 
-class _MainMenuScreenState extends State<MainMenuScreen> {
+class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
   List<Widget> _screenList() {
     return [
-    Home(),
-
-      Cek_status_pengajuan(),
+      HomeScreenAdmin(),
+      UploadScreenAdmin(),
       Profile(),
+      StatusPengajuanScreenAdmin(),
     ];
   }
 
@@ -30,7 +28,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           icon: Icon(Icons.document_scanner, size: 25),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          title: 'Home'),
+          title: 'Surat Pengajuan'),
       PersistentBottomNavBarItem(
           icon: Icon(
             Icons.paste,
@@ -38,7 +36,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          title: 'Cek Status Pengajuan'),
+          title: 'Manajemen Pengguna'),
       PersistentBottomNavBarItem(
           icon: Icon(
             Icons.person,
@@ -46,7 +44,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          title: 'Profile'),
+          title: 'Profil'),
+      PersistentBottomNavBarItem(
+          icon: Icon(
+            Icons.person,
+            size: 25,
+          ),
+          activeColorPrimary: Colors.blueAccent,
+          inactiveColorPrimary: Colors.grey,
+          title: 'Setting Surat Pengajuan'),
     ];
   }
 
