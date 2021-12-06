@@ -17,6 +17,6 @@ void main() {
   runApp(MaterialApp(
     title: 'Air Deras',
     debugShowCheckedModeBanner: false,
-    home: ListFormulirScreenAdmin(),
+    home: Form_pendaftaran(),
   ));
 }
