@@ -14,7 +14,7 @@ class _UploadScreenAdminState extends State<UploadScreenAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-      padding: const EdgeInsets.fromLTRB(10, 25, 10, 10),
+      padding: const EdgeInsets.fromLTRB(15, 25, 15, 10),
       child: SingleChildScrollView(
         child: Container(
           color: Colors.white70,
@@ -53,7 +53,7 @@ class _UploadScreenAdminState extends State<UploadScreenAdmin> {
                         fit: BoxFit.cover)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                 child: Container(
                   width: double.infinity,
                   height: 40,
@@ -127,7 +127,7 @@ class _UploadScreenAdminState extends State<UploadScreenAdmin> {
                     }),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                 child: Container(
                   width: double.infinity,
                   height: 50,

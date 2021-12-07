@@ -40,7 +40,7 @@ class _AlasanTolakScreenState extends State<AlasanTolakScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
             child: Container(
               width: double.infinity,
               height: 50,
@@ -64,7 +64,7 @@ class _AlasanTolakScreenState extends State<AlasanTolakScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 20, 10, 30),
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 30),
             child: Container(
               width: double.infinity,
               height: 50,
