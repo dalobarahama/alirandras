@@ -20,7 +20,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40, left: 30),
+              padding: const EdgeInsets.only(top: 50, left: 35),
               child: Row(
                 children: [
                   Container(
@@ -34,7 +34,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
                       child: Icon(
                         Icons.arrow_back,
                         color: Colors.lightBlue[300],
-                        size: 40,
+                        size: 30,
                       ),
                     ),
                   ),

@@ -109,7 +109,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 30, left: 20),
+                padding: const EdgeInsets.only(top: 50, left: 35),
                 child: Row(
                   children: [
                     Container(
@@ -133,7 +133,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 27, top: 10),
+                    padding: const EdgeInsets.only(left: 27, top: 20),
                     child: Container(
                       child: Text(
                         'Isi Formulir Pendaftaran',
@@ -615,7 +615,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
             ],
           ),

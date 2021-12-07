@@ -20,7 +20,7 @@ class _Detail_card_statuspengajuanState
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 49, left: 35),
+              padding: const EdgeInsets.only(top: 50, left: 35),
               child: Row(
                 children: [
                   Container(

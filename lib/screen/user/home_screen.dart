@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 15),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 15),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                     width: double.infinity,
                     color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 25, right: 10),
+                      padding: const EdgeInsets.only(left: 25, right: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -384,7 +384,7 @@ class _HomeState extends State<Home> {
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 90, right: 10),
+                          padding: const EdgeInsets.only(top: 90, right: 15),
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -398,7 +398,7 @@ class _HomeState extends State<Home> {
                                       )),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 20,
                                 ),
                                 Text(
                                   'Klik untuk ajukan formulir pengajuan',
@@ -410,7 +410,7 @@ class _HomeState extends State<Home> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 140, top: 10),
+                                      const EdgeInsets.only(left: 140, top: 20),
                                   child: Container(
                                     child: Icon(
                                       Icons.arrow_right_alt_outlined,

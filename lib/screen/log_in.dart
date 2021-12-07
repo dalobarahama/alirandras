@@ -132,7 +132,7 @@ class _Log_inState extends State<Log_in> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 15, bottom: 18),
+                  left: 33, right: 33, top: 20, bottom: 20),
               child: TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
@@ -155,7 +155,7 @@ class _Log_inState extends State<Log_in> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30),
@@ -174,7 +174,7 @@ class _Log_inState extends State<Log_in> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 18, bottom: 33),
+                  left: 33, right: 33, top: 20, bottom: 30),
               child: TextFormField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -198,7 +198,7 @@ class _Log_inState extends State<Log_in> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 30),
+              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 30),
               child: InkWell(
                 onTap: () {
                   login();
