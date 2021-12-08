@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/otp_verifikasi.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Forgot_password extends StatefulWidget {
   const Forgot_password({Key? key}) : super(key: key);
@@ -13,6 +19,39 @@ class Forgot_password extends StatefulWidget {
 
 class _Forgot_passwordState extends State<Forgot_password> {
   TextEditingController _emailController = TextEditingController();
+  bool isLoading = false;
+  forgot_email() async {
+    setState(() {
+      isLoading = true;
+    });
+    await CallApi().cek_email(_emailController.text).then((value) {
+      setState(() {
+        isLoading = false;
+        print(value);
+        if (value == 'success') {
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.push(context,
+              SlideToRightRoute(page: Otp_verifikasi(_emailController.text)));
+        } else if (value == 'failed') {
+          setState(() {
+            isLoading = false;
+            Fluttertoast.showToast(
+                msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+          });
+        } else {
+          Fluttertoast.showToast(msg: value);
+        }
+      });
+    }).catchError((e) {
+      setState(() {
+        isLoading = false;
+        Fluttertoast.showToast(msg: e);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,13 +59,13 @@ class _Forgot_passwordState extends State<Forgot_password> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40, left: 30),
+              padding: const EdgeInsets.only(top: 20, left: 15),
               child: Row(
                 children: [
                   Container(
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
+                        Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return Log_in();
                         }));
@@ -119,6 +158,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
               padding: const EdgeInsets.only(
                   left: 33, right: 32, top: 15, bottom: 18),
               child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Masukkan email anda',
                   hintStyle: GoogleFonts.roboto(
@@ -152,24 +192,35 @@ class _Forgot_passwordState extends State<Forgot_password> {
                 onTap: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
-                    return Otp_verifikasi();
+                    return Otp_verifikasi(_emailController.text);
                   }));
                 },
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Center(
-                    child: Text(
-                      'Submit',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                          )),
-                    ),
+                child: InkWell(
+                  onTap: () {
+                    forgot_email();
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: isLoading == true
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                              'Submit',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 18,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -178,15 +229,20 @@ class _Forgot_passwordState extends State<Forgot_password> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 27, top: 20),
-                  child: Container(
-                    child: Text(
-                      'Resend email ',
-                      style: GoogleFonts.roboto(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.red,
-                          )),
+                  child: InkWell(
+                    onTap: () {
+                      forgot_email();
+                    },
+                    child: Container(
+                      child: Text(
+                        'Resend email ',
+                        style: GoogleFonts.roboto(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            textStyle: TextStyle(
+                              color: Colors.red,
+                            )),
+                      ),
                     ),
                   ),
                 ),

@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/models/get_kecamatan.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,16 +29,13 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   String kel = '';
   String jenisPermohonan = '';
   bool isSubmit = false;
+  bool isLoading = true;
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
+  List<GetKecamatan> _dataKecamatan = <GetKecamatan>[];
   List<File> uploadFiles = <File>[];
-  List<String> kecamatan = [
-    'Bungus Teluk Kabung',
-    'Koto Tangah',
-    'Kuranji',
-    '	Lubuk Begalung',
-    'Pauh'
-  ];
+  List<bool> isFinish = [false, false, false];
+  List<String> kecamatan = [];
   List<String> kelurahan = [
     'kel1',
     'kel2',
@@ -49,6 +49,36 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     'Surat Informasi',
     'Surat Rekomendasi',
   ];
+
+  initState() {
+    getKecamatan();
+    if (isFinish[0] == true) {
+      isLoading = false;
+    }
+    super.initState();
+  }
+
+  getKecamatan() async {
+    await CallApi().getKecamatan().then((value) {
+      setState(() {
+        isFinish[0] = true;
+        _dataKecamatan = value;
+        int b = _dataKecamatan.length;
+        print(b);
+        // print(_dataKecamatan.length);
+        // print(_dataKecamatan[0].name);
+        if (_dataKecamatan == null) {
+          Fluttertoast.showToast(
+              msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+        } else {
+          for (int i = 0; i < b; i++) {
+            kecamatan[i] = _dataKecamatan[i].name!;
+          }
+          print(kecamatan[0]);
+        }
+      });
+    });
+  }
 
   _imgFromGallery() async {
     XFile? image =
@@ -70,37 +100,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     }
   }
 
-  Widget _customDropDownExample(BuildContext context, item) {
-    return Container(
-      child: ListTile(
-        contentPadding: EdgeInsets.only(bottom: 5),
-        title: Text(
-          item,
-          style: GoogleFonts.roboto(
-              fontSize: 12,
-              textStyle: TextStyle(
-                color: Colors.black54,
-              )),
-        ),
-      ),
-    );
-  }
-
-  Widget _customPopupItemBuilderExample(
-      BuildContext context, item, bool isSelected) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      child: ListTile(
-        selected: isSelected,
-        title: Text(
-          item,
-          style: TextStyle(fontSize: 12),
-        ),
-        //subtitle: Text(item?.createdAt?.toString() ?? ''),
-      ),
-    );
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -108,7 +107,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 30, left: 20),
+                padding: const EdgeInsets.only(top: 20, left: 15),
                 child: Row(
                   children: [
                     Container(
@@ -173,10 +172,22 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       height: 50,
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
-                        showSelectedItems: true,
+                        showSelectedItems: false,
                         items: jenis_permohonan,
-                        // label: "Pilih Jenis Permohonan",
-                        hint: "Pilih Jenis Permohonan",
+                        //  hint: "Pilih Jenis Permohonan",
+                        dropdownBuilder: (context, selectedItem) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 10),
+                            child: Text(
+                              selectedItem == null
+                                  ? 'Pilih Jenis Permohonan'
+                                  : selectedItem,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
+                            ),
+                          );
+                        },
                         popupItemBuilder: (context, item, isSelected) {
                           return Container(
                             padding: EdgeInsets.symmetric(
@@ -188,10 +199,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           );
                         },
+
                         // dropdownBuilder: _customDropDownExample,
-                        dropdownSearchBaseStyle: TextStyle(
-                          fontSize: 12.0,
-                        ),
+                        dropdownSearchBaseStyle:
+                            TextStyle(fontSize: 12.0, color: Colors.black54),
 
                         onChanged: (value) {
                           setState(() {
@@ -221,15 +232,32 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       height: 50,
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
-
                         showSelectedItems: true,
                         items: kecamatan,
-
-                        // label: "Pilih Kecamatan",
-                        hint: "Pilih Kecamatan",
-                        dropdownSearchBaseStyle: TextStyle(
-                          fontSize: 12,
+                        //hint: "Pilih Kecamatan",
+                        dropdownBuilder: (context, selectedItem) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 10),
+                            child: Text(
+                              selectedItem == null
+                                  ? 'Pilih Kecamatan'
+                                  : selectedItem,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
+                            ),
+                          );
+                        },
+                        dropdownButtonBuilder: (_) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 24,
+                            color: Colors.black,
+                          ),
                         ),
+                        dropdownSearchBaseStyle:
+                            TextStyle(fontSize: 12, color: Colors.black54),
                         popupItemBuilder: (context, item, isSelected) {
                           return Container(
                             padding: EdgeInsets.symmetric(
@@ -241,7 +269,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           );
                         },
-
                         onChanged: (value) {
                           setState(() {
                             kec = value!;
@@ -271,9 +298,24 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
                         showSelectedItems: true,
+
+                        dropdownBuilder: (context, selectedItem) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 10),
+                            child: Text(
+                              selectedItem == null
+                                  ? 'Pilih Kelurahan'
+                                  : selectedItem,
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black54),
+                            ),
+                          );
+                        },
                         items: kelurahan,
                         //   label: "Pilih Keluarahn",
-                        hint: "Pilih Kelurahan",
+                        // hint: "Pilih Kelurahan",
+
                         dropdownSearchBaseStyle: TextStyle(
                           fontSize: 12,
                         ),

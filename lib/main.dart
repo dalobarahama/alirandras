@@ -6,17 +6,17 @@ import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.da
 import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/otp_verifikasi.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
-import 'package:flutter_application_3/screen/form_pendaftaran.dart';
+import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_3/screen/test_listview.dart';
 import 'package:flutter_application_3/screen/splash_screen.dart';
 import 'package:flutter_application_3/screen/admin/main_menu_screen_admin.dart';
-import 'package:flutter_application_3/screen/admin/list_formulir_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/setting_surat_pengajuan_screen_admin.dart';
 
 void main() {
   runApp(MaterialApp(
     title: 'Air Deras',
     debugShowCheckedModeBanner: false,
-    home: ListFormulirScreenAdmin(),
+    home: Form_pendaftaran(),
   ));
 }

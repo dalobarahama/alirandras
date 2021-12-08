@@ -26,7 +26,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   List<PersistentBottomNavBarItem> _itemList() {
     return [
       PersistentBottomNavBarItem(
-          icon: Icon(Icons.document_scanner, size: 25),
+          icon: Icon(Icons.home_outlined, size: 25),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),
