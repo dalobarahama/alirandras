@@ -107,7 +107,7 @@ class _Sign_upState extends State<Sign_up> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 30, right: 32, top: 15, bottom: 18),
+                  left: 30, right: 33, top: 20, bottom: 20),
               child: TextFormField(
                 style: TextStyle(
                   height: 0.8,
@@ -133,7 +133,7 @@ class _Sign_upState extends State<Sign_up> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30),
@@ -152,7 +152,7 @@ class _Sign_upState extends State<Sign_up> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 15, bottom: 15),
+                  left: 33, right: 33, top: 20, bottom: 20),
               child: TextFormField(
                 style: TextStyle(
                   height: 0.8,
@@ -178,7 +178,7 @@ class _Sign_upState extends State<Sign_up> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 33),
@@ -197,7 +197,7 @@ class _Sign_upState extends State<Sign_up> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 18, bottom: 33),
+                  left: 33, right: 33, top: 20, bottom: 30),
               child: TextFormField(
                 style: TextStyle(
                   height: 0.8,
@@ -224,7 +224,7 @@ class _Sign_upState extends State<Sign_up> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 30),
+              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 30),
               child: InkWell(
                 onTap: () {
                   register();
@@ -254,7 +254,7 @@ class _Sign_upState extends State<Sign_up> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

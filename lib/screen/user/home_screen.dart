@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 15),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 15),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                     width: double.infinity,
                     color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 25, right: 10),
+                      padding: const EdgeInsets.only(left: 25, right: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

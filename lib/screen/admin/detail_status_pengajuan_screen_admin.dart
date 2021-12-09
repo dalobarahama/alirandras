@@ -32,7 +32,7 @@ class _StatusPengajuanScreenAdminState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 10, 10),
+                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
                   child: Container(
                     child: Text(
                       'Detail',

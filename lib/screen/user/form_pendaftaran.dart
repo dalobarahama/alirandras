@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class Form_pendaftaran extends StatefulWidget {
   const Form_pendaftaran({Key? key}) : super(key: key);
@@ -179,7 +180,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 27, top: 10),
+                    padding: const EdgeInsets.only(left: 27, top: 20),
                     child: Container(
                       child: Text(
                         'Isi Formulir Pendaftaran',
@@ -429,28 +430,87 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             color: Colors.black54,
                           )),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        child: InkWell(
+                          onTap: () {
+                            _imgFromGallery();
+                          },
+                          child: DottedBorder(
+                            color: Colors.grey,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Center(
+                                  child: Text(
+                                '+',
+                                style: GoogleFonts.roboto(
+                                    fontSize: 30,
+                                    textStyle: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     Container(
-                      width: 215,
-                      height: 50,
+                      width: 60,
+                      height: 60,
                       child: InkWell(
                         onTap: () {
                           _imgFromGallery();
                         },
-                        child: Container(
-                          height: 60,
-                          width: 214,
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(7)),
-                          child: Center(
-                              child: Text(
-                            'Upload File',
-                            style: GoogleFonts.roboto(
-                                fontSize: 16,
-                                textStyle: TextStyle(
-                                  color: Colors.white70,
-                                )),
-                          )),
+                        child: DottedBorder(
+                          color: Colors.grey,
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Center(
+                                child: Text(
+                              '+',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 30,
+                                  textStyle: TextStyle(
+                                    color: Colors.grey,
+                                  )),
+                            )),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      child: InkWell(
+                        onTap: () {
+                          _imgFromGallery();
+                        },
+                        child: DottedBorder(
+                          color: Colors.grey,
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Center(
+                                child: Text(
+                              '+',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 30,
+                                  textStyle: TextStyle(
+                                    color: Colors.grey,
+                                  )),
+                            )),
+                          ),
                         ),
                       ),
                     ),
@@ -574,7 +634,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
             ],
           ),

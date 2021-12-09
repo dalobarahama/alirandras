@@ -28,7 +28,7 @@ class _PopUpDoneScreenState extends State<PopUpDoneScreen> {
                         fit: BoxFit.cover)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
                 child: Container(
                   child: Text(
                     'Surat Terkirim!',
@@ -41,7 +41,7 @@ class _PopUpDoneScreenState extends State<PopUpDoneScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 80, 10, 10),
+                padding: const EdgeInsets.fromLTRB(15, 80, 15, 10),
                 child: Container(
                   width: double.infinity,
                   height: 50,
