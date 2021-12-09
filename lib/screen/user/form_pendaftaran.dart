@@ -156,11 +156,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           Column(
             children: [
               Padding(
-<<<<<<< HEAD:lib/screen/user/form_pendaftaran.dart
                 padding: const EdgeInsets.only(top: 20, left: 15),
-=======
-                padding: const EdgeInsets.only(top: 50, left: 35),
->>>>>>> 6a3c369967ef7ef797a7426a4b5b3ab120264eaa:lib/screen/form_pendaftaran.dart
                 child: Row(
                   children: [
                     Container(
