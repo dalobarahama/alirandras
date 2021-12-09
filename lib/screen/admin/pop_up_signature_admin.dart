@@ -17,7 +17,7 @@ class _PopUpSignatureState extends State<PopUpSignature> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 25, 10, 20),
+              padding: const EdgeInsets.fromLTRB(15, 25, 15, 20),
               child: Container(
                 width: double.infinity,
                 height: 250,
@@ -41,7 +41,7 @@ class _PopUpSignatureState extends State<PopUpSignature> {
               height: 200,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
               child: Container(
                 width: double.infinity,
                 height: 50,
@@ -77,7 +77,7 @@ class _PopUpSignatureState extends State<PopUpSignature> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 10, 30),
+              padding: const EdgeInsets.fromLTRB(15, 20, 15, 30),
               child: Container(
                 width: double.infinity,
                 height: 50,

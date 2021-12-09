@@ -128,7 +128,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 143, top: 15),
+                    padding: const EdgeInsets.only(left: 143, top: 20),
                     child: Center(
                       child: Container(
                         child: Row(
@@ -169,7 +169,7 @@ class _ProfileState extends State<Profile> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 15, bottom: 18),
+                  left: 33, right: 33, top: 20, bottom: 20),
               child: Container(
                 height: 48,
                 width: double.infinity,
@@ -204,7 +204,7 @@ class _ProfileState extends State<Profile> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 15, bottom: 15),
+                  left: 33, right: 33, top: 20, bottom: 10),
               child: Container(
                 height: 48,
                 width: double.infinity,
@@ -238,7 +238,7 @@ class _ProfileState extends State<Profile> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 18, bottom: 33),
+                  left: 33, right: 33, top: 20, bottom: 33),
               child: Container(
                 height: 48,
                 width: double.infinity,
@@ -262,7 +262,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, bottom: 15),
+              padding: const EdgeInsets.only(left: 33, bottom: 20),
               child: Row(
                 children: [
                   Text(
@@ -273,7 +273,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 50),
+              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 50),
               child: Container(
                 height: 50,
                 width: double.infinity,
@@ -289,7 +289,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 15),
+              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 20),
               child: InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,
@@ -313,7 +313,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, right: 32, bottom: 30),
+              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 30),
               child: InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,

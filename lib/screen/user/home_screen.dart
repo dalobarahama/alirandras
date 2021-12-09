@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 15),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 15),
                           child: IconButton(
                               onPressed: null,
                               icon: Icon(
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                     width: double.infinity,
                     color: Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 25, right: 10),
+                      padding: const EdgeInsets.only(left: 25, right: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -391,10 +391,15 @@ class _HomeState extends State<Home> {
                             ),
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
+<<<<<<< HEAD
                           padding: const EdgeInsets.all(10),
+=======
+                          padding: const EdgeInsets.only(top: 90, right: 15),
+>>>>>>> 6a3c369967ef7ef797a7426a4b5b3ab120264eaa
                           child: Container(
                             child: Row(
                               children: [
+<<<<<<< HEAD
                                 Container(
                                   height: 200,
                                   width: 100,
@@ -409,6 +414,35 @@ class _HomeState extends State<Home> {
                                   children: [
                                     SizedBox(
                                       height: 80,
+=======
+                                Text(
+                                  'Isi Formulir Pengajuan',
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 20,
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                      )),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Klik untuk ajukan formulir pengajuan',
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 12,
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                      )),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 140, top: 20),
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.arrow_right_alt_outlined,
+                                      color: Colors.white,
+                                      size: 40,
+>>>>>>> 6a3c369967ef7ef797a7426a4b5b3ab120264eaa
                                     ),
                                     Text(
                                       'Isi Formulir Pengajuan',

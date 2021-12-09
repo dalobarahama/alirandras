@@ -37,7 +37,7 @@ class _ListFormulirScreenAdminState extends State<ListFormulirScreenAdmin> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Icon(
                               Icons.menu,
                               color: Colors.white70,
@@ -56,7 +56,7 @@ class _ListFormulirScreenAdminState extends State<ListFormulirScreenAdmin> {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Text(
                               'Halo,  ',
                               style: GoogleFonts.roboto(
@@ -90,7 +90,7 @@ class _ListFormulirScreenAdminState extends State<ListFormulirScreenAdmin> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 15),
                         child: Text(
                           'List Formulir',
                           style: GoogleFonts.roboto(

@@ -73,7 +73,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
                       child: Icon(
                         Icons.arrow_back,
                         color: Colors.lightBlue[300],
-                        size: 40,
+                        size: 30,
                       ),
                     ),
                   ),

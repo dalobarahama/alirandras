@@ -36,7 +36,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Icon(
                               Icons.menu,
                               color: Colors.white70,
@@ -89,7 +89,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 15),
                         child: Text(
                           'Surat Pengajuan',
                           style: GoogleFonts.roboto(
@@ -101,7 +101,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 15),
                         child: Container(
                           height: 30,
                           width: 100,

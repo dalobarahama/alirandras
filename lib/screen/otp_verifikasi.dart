@@ -233,7 +233,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, bottom: 30, top: 40),
+                  left: 33, right: 33, bottom: 30, top: 40),
               child: InkWell(
                 onTap: () {
                   verifikasi_otp();
