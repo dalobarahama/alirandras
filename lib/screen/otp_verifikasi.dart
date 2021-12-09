@@ -2,23 +2,85 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Otp_verifikasi extends StatefulWidget {
-  const Otp_verifikasi({Key? key}) : super(key: key);
+  String email = '';
+  Otp_verifikasi(this.email);
 
   @override
-  _Otp_verifikasiState createState() => _Otp_verifikasiState();
+  _Otp_verifikasiState createState() => _Otp_verifikasiState(this.email);
 }
 
 class _Otp_verifikasiState extends State<Otp_verifikasi> {
+  String email = '';
+  _Otp_verifikasiState(this.email);
   TextEditingController _otpController = TextEditingController();
   String currentText = "";
   StreamController<ErrorAnimationType> errorController = StreamController();
+  bool isLoading = false;
+  verifikasi_otp() async {
+    setState(() {
+      isLoading = true;
+    });
+    await CallApi().verifikasi_otp(_otpController.text).then((value) {
+      setState(() {
+        isLoading = false;
+        print(value);
+        if (value == 'success') {
+          Navigator.push(context,
+              SlideToRightRoute(page: Reset_password(_otpController.text)));
+        } else if (value == 'failed') {
+          Fluttertoast.showToast(
+              msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+        } else {
+          Fluttertoast.showToast(msg: value);
+        }
+      });
+    }).catchError((e) {
+      setState(() {
+        isLoading = false;
+        Fluttertoast.showToast(msg: e);
+      });
+    });
+  }
+
+  resend_otp() async {
+    setState(() {
+      isLoading = true;
+    });
+    await CallApi().cek_email(email).then((value) {
+      setState(() {
+        isLoading = false;
+        print(value);
+        if (value == 'success') {
+          setState(() {
+            isLoading = false;
+          });
+        } else if (value == 'failed') {
+          setState(() {
+            isLoading = false;
+            Fluttertoast.showToast(
+                msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+          });
+        } else {
+          Fluttertoast.showToast(msg: value);
+        }
+      });
+    }).catchError((e) {
+      setState(() {
+        isLoading = false;
+        Fluttertoast.showToast(msg: e);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +89,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40, left: 30),
+              padding: const EdgeInsets.only(top: 20, left: 15),
               child: Row(
                 children: [
                   Container(
@@ -134,18 +196,19 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                       obscureText: false,
                       animationType: AnimationType.fade,
                       pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(5),
-                        fieldHeight: 60,
-                        fieldWidth: 60,
-                        activeFillColor: Colors.lightBlue,
-                        activeColor: Colors.lightBlue,
-                        disabledColor: Colors.lightBlue,
-                        inactiveColor: Colors.lightBlue,
-                        selectedColor: Colors.lightBlue,
-                      ),
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(5),
+                          fieldHeight: 60,
+                          fieldWidth: 60,
+                          activeFillColor: Colors.grey[200],
+                          activeColor: Colors.grey[200],
+                          disabledColor: Colors.grey[200],
+                          inactiveColor: Colors.grey[200],
+                          selectedColor: Colors.grey[200],
+                          inactiveFillColor: Colors.grey[200],
+                          selectedFillColor: Colors.grey[200]),
                       animationDuration: Duration(milliseconds: 300),
-                      enableActiveFill: false,
+                      enableActiveFill: true,
                       errorAnimationController: errorController,
                       controller: _otpController,
                       onCompleted: (v) {
@@ -173,10 +236,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                   left: 33, right: 33, bottom: 30, top: 40),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Reset_password();
-                  }));
+                  verifikasi_otp();
                 },
                 child: Container(
                   height: 50,
@@ -185,14 +245,18 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(8)),
                   child: Center(
-                    child: Text(
-                      'Verifikasi',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          textStyle: TextStyle(
+                    child: isLoading == true
+                        ? CircularProgressIndicator(
                             color: Colors.white,
-                          )),
-                    ),
+                          )
+                        : Text(
+                            'Verifikasi',
+                            style: GoogleFonts.roboto(
+                                fontSize: 18,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          ),
                   ),
                 ),
               ),
@@ -201,15 +265,20 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 27, top: 20),
-                  child: Container(
-                    child: Text(
-                      'Resend kode ',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.red,
-                          )),
+                  child: InkWell(
+                    onTap: () {
+                      resend_otp();
+                    },
+                    child: Container(
+                      child: Text(
+                        'Resend kode ',
+                        style: GoogleFonts.roboto(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            textStyle: TextStyle(
+                              color: Colors.red,
+                            )),
+                      ),
                     ),
                   ),
                 ),

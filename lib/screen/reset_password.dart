@@ -1,20 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:flutter_application_3/screen/otp_verifikasi.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Reset_password extends StatefulWidget {
-  const Reset_password({Key? key}) : super(key: key);
+  String code = '';
+  Reset_password(this.code);
 
   @override
-  _Reset_passwordState createState() => _Reset_passwordState();
+  _Reset_passwordState createState() => _Reset_passwordState(this.code);
 }
 
 class _Reset_passwordState extends State<Reset_password> {
+  String code = '';
+  _Reset_passwordState(this.code);
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmpasswordController = TextEditingController();
+  bool isLoading = false;
+  reset_password() async {
+    setState(() {
+      isLoading = true;
+    });
+    if (_passwordController.text == _confirmpasswordController.text) {
+      await CallApi()
+          .reset_password(code, _passwordController.text)
+          .then((value) {
+        setState(() {
+          isLoading = false;
+          print(value);
+          if (value == 'success') {
+            Fluttertoast.showToast(
+                msg: 'Berhasil Reset Password', timeInSecForIosWeb: 2);
+            Navigator.push(context, SlideToRightRoute(page: Log_in()));
+          } else if (value == 'failed') {
+            setState(() {
+              isLoading = false;
+              Fluttertoast.showToast(
+                  msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+            });
+          } else {
+            Fluttertoast.showToast(msg: value, timeInSecForIosWeb: 2);
+          }
+        });
+      }).catchError((e) {
+        setState(() {
+          isLoading = false;
+          Fluttertoast.showToast(msg: e, timeInSecForIosWeb: 2);
+        });
+      });
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Password tidak sama, coba lagi', timeInSecForIosWeb: 2);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +72,7 @@ class _Reset_passwordState extends State<Reset_password> {
                   Container(
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Otp_verifikasi();
-                        }));
+                        Navigator.pop(context);
                       },
                       child: Icon(
                         Icons.arrow_back,
@@ -167,10 +208,7 @@ class _Reset_passwordState extends State<Reset_password> {
               padding: const EdgeInsets.only(left: 33, right: 33, bottom: 20),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Log_in();
-                  }));
+                  reset_password();
                 },
                 child: Container(
                   height: 50,

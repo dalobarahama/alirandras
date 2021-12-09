@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/form_pendaftaran.dart';
+import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
@@ -153,7 +153,10 @@ class _HomeState extends State<Home> {
                     Container(
                       height: 250,
                       width: double.infinity,
-                      color: Colors.lightBlue[200],
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/bg_home.png'),
+                              fit: BoxFit.fill)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -361,8 +364,8 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       bottom: -110,
-                      left: 20,
-                      right: 20,
+                      left: 10,
+                      right: 10,
                     ),
                   ]),
                   SizedBox(
@@ -376,48 +379,68 @@ class _HomeState extends State<Home> {
                       }));
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(25.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Container(
                         height: 200,
                         width: 360,
                         decoration: BoxDecoration(
-                            color: Colors.blue,
+                            gradient: LinearGradient(
+                              colors: [Colors.lightBlue.shade100, Colors.blue],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 90, right: 15),
+                          padding: const EdgeInsets.all(10),
                           child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            child: Row(
                               children: [
-                                Text(
-                                  'Isi Formulir Pengajuan',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 20,
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  'Klik untuk ajukan formulir pengajuan',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 12,
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 140, top: 20),
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.arrow_right_alt_outlined,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ),
+                                Container(
+                                  height: 200,
+                                  width: 100,
+                                  child: Image(
+                                    image: AssetImage(
+                                        'assets/images/upload_dokumen.png'),
+                                    fit: BoxFit.fill,
                                   ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 80,
+                                    ),
+                                    Text(
+                                      'Isi Formulir Pengajuan',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Klik untuk ajukan formulir pengajuan',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 10,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 140, top: 10),
+                                      child: Container(
+                                        child: Icon(
+                                          Icons.arrow_right_alt_outlined,
+                                          color: Colors.white,
+                                          size: 40,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
