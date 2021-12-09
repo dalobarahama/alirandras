@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_application_3/models/get_kelurahan.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/register_data.dart';
 import 'package:flutter_application_3/models/get_kecamatan.dart';
+import 'package:flutter_application_3/models/submit_formulir.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 
@@ -17,6 +20,9 @@ class CallApi {
   final String VERIFIKASI_OTP = '/api/reset-password/verifikasi-kode-otp';
   final String RESET_PASSWORD = '/api/reset-password';
   final String GET_KECAMATAN = '/api/location/villages?id=363';
+  final String GET_KELURAHAN = '/api/location/villages?id=';
+  final String SUBMIT_FORMULIR = '/api/formulir';
+  final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
 
   Future<String> login(String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + LOGIN_URL);
@@ -186,6 +192,113 @@ class CallApi {
       print(e);
       _dataKecamatan.clear();
       return _dataKecamatan;
+    }
+  }
+
+  Future<List<GetKelurahan>> getKelurahan(String id) async {
+    List<GetKelurahan> _dataKelurahan = <GetKelurahan>[];
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    Uri fullUrl = Uri.parse(SERVER_URL + GET_KELURAHAN + id);
+    print(fullUrl);
+    try {
+      var get = http.get(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json'
+      });
+
+      var res = await get;
+
+      if (res.statusCode == 200) {
+        _dataKelurahan = getKelurahanFromJson(res.body);
+
+        //print(_data[1].image);
+
+        return _dataKelurahan;
+      } else if (res.statusCode == 401) {
+        //tanya return kalau fail apa?
+        //token salah belum di handle
+        GetKelurahan temporary = GetKelurahan();
+        temporary.name = '401';
+        _dataKelurahan.add(temporary);
+        return _dataKelurahan;
+      } else {
+        _dataKelurahan.clear();
+        return _dataKelurahan;
+      }
+    } catch (e) {
+      print(e);
+      _dataKelurahan.clear();
+      return _dataKelurahan;
+    }
+  }
+
+  Future<SubmitFormulir> submit_formulir(
+      String type,
+      String district,
+      String? subdistrict,
+      String building_area,
+      String land_area,
+      String building_location,
+      String complete_address,
+      String lat,
+      String lng) async {
+    SubmitFormulir _dataFormulir = SubmitFormulir();
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FORMULIR);
+
+    try {
+      var post = http.post(fullUrl, body: {
+        'type': type,
+        'district': district,
+        'subdistrict': subdistrict,
+        'building_area': building_area,
+        'land_area': land_area,
+        'building_location': building_location,
+        'complete_address': complete_address,
+        'lat': lat,
+        'lng': lng
+      });
+      var res = await post;
+      var a = int.parse(jsonDecode(res.body)['status_code']);
+      print(a);
+      if (a == 200) {
+        _dataFormulir = submitFormulirFromJson(res.body);
+        return _dataFormulir;
+      } else if (a >= 400 && a <= 500) {
+        _dataFormulir = submitFormulirFromJson(res.body);
+        var msg = jsonDecode(res.body)['message'];
+        return _dataFormulir;
+      } else {
+        _dataFormulir.clear();
+        return _dataFormulir;
+      }
+    } catch (e) {
+      _dataFormulir.clear();
+      return _dataFormulir;
+    }
+  }
+
+  Future<String> submit_gambar(var id, XFile? image) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_GAMBAR);
+
+    try {
+      var post =
+          http.post(fullUrl, body: {'registration_form_id': id, 'file': image});
+      var res = await post;
+      var a = int.parse(jsonDecode(res.body)['status_code']);
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+        var msg = jsonDecode(res.body)['message'];
+        return msg;
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      // print(e);
+      return e.toString();
     }
   }
 }
