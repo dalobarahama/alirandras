@@ -72,17 +72,10 @@ class _ProfileState extends State<Profile> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 150,
+            Image.asset(
+              'assets/images/header_home.png',
               width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [Colors.lightBlue, Colors.white])),
-            ),
-            SizedBox(
-              height: 16,
+              fit: BoxFit.cover,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 33, top: 5),
@@ -100,61 +93,59 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(65)),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(65),
-                      child: CachedNetworkImage(
-                        imageUrl: _userData.signature!,
-                        imageBuilder: (context, imageProvider) => Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(65)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(65),
+                    child: CachedNetworkImage(
+                      imageUrl: _userData.signature ?? '-',
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.error,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 143, top: 20),
-                    child: Center(
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Text(
-                              'Ganti',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 16),
-                            ),
-                            Text(
-                              '  |  ',
-                              style: TextStyle(
-                                  color: Colors.grey[300], fontSize: 23),
-                            ),
-                            Text(
-                              'Hapus',
-                              style: TextStyle(
-                                  color: Colors.grey[600], fontSize: 16),
-                            ),
-                          ],
-                        ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Ganti',
+                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
                       ),
-                    ),
-                  )
-                ],
-              ),
+                      Text(
+                        '  |  ',
+                        style: TextStyle(color: Colors.grey[300], fontSize: 23),
+                      ),
+                      Text(
+                        'Hapus',
+                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(left: 33),
@@ -261,33 +252,43 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33, bottom: 20),
-              child: Row(
-                children: [
-                  Text(
-                    'Tanda Tangan',
-                    style: TextStyle(fontSize: 20, color: Colors.black54),
+            _userData.app == 'admin'
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 33, bottom: 20),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Tanda Tangan',
+                              style: TextStyle(
+                                  fontSize: 20, color: Colors.black54),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 33, right: 33, bottom: 50),
+                        child: Container(
+                          height: 50,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Center(
+                            child: Text(
+                              'Upload File',
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 50),
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(8)),
-                child: Center(
-                  child: Text(
-                    'Upload File',
-                    style: TextStyle(color: Colors.black54, fontSize: 20),
-                  ),
-                ),
-              ),
-            ),
+                : Container(),
             Padding(
               padding: const EdgeInsets.only(left: 33, right: 33, bottom: 20),
               child: InkWell(
@@ -316,10 +317,7 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.only(left: 33, right: 33, bottom: 30),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Log_in();
-                  }));
+                  CallStorage().logout();
                 },
                 child: Container(
                   height: 50,
@@ -336,6 +334,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
+            SizedBox(height: 30,)
           ],
         ),
       ),

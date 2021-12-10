@@ -156,16 +156,13 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 20, left: 15),
+                padding: const EdgeInsets.only(top: 50, left: 15),
                 child: Row(
                   children: [
                     Container(
                       child: InkWell(
                         onTap: () {
-                          Navigator.pop(context,
-                              MaterialPageRoute(builder: (context) {
-                            return Home();
-                          }));
+                          Navigator.pop(context);
                         },
                         child: Icon(
                           Icons.arrow_back,

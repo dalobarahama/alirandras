@@ -36,7 +36,9 @@ class _Reset_passwordState extends State<Reset_password> {
           if (value == 'success') {
             Fluttertoast.showToast(
                 msg: 'Berhasil Reset Password', timeInSecForIosWeb: 2);
-            Navigator.push(context, SlideToRightRoute(page: Log_in()));
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
           } else if (value == 'failed') {
             setState(() {
               isLoading = false;
@@ -66,7 +68,7 @@ class _Reset_passwordState extends State<Reset_password> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40, left: 30),
+              padding: const EdgeInsets.only(top: 50, left: 30),
               child: Row(
                 children: [
                   Container(
@@ -140,24 +142,12 @@ class _Reset_passwordState extends State<Reset_password> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 33, top: 20, bottom: 20),
+                  left: 33, right: 33, top: 10, bottom: 20),
               child: TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 2.0,
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
                 controller: _passwordController,
               ),
@@ -182,24 +172,12 @@ class _Reset_passwordState extends State<Reset_password> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 20, bottom: 30),
+                  left: 33, right: 32, top: 10, bottom: 30),
               child: TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 2.0,
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
                 controller: _confirmpasswordController,
               ),

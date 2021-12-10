@@ -59,22 +59,17 @@ class _Forgot_passwordState extends State<Forgot_password> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 15),
+              padding: const EdgeInsets.only(top: 50, left: 15),
               child: Row(
                 children: [
-                  Container(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Log_in();
-                        }));
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.lightBlue[300],
-                        size: 30,
-                      ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.lightBlue[300],
+                      size: 30,
                     ),
                   ),
                 ],
@@ -168,26 +163,14 @@ class _Forgot_passwordState extends State<Forgot_password> {
                       )),
                   fillColor: Colors.grey[300],
                   filled: true,
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0),
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 2.0,
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
                 controller: _emailController,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, bottom: 30, top: 40),
+                  left: 33, right: 32, bottom: 30, top: 20),
               child: InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,
@@ -207,8 +190,12 @@ class _Forgot_passwordState extends State<Forgot_password> {
                         borderRadius: BorderRadius.circular(8)),
                     child: isLoading == true
                         ? Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
                             ),
                           )
                         : Center(
@@ -224,29 +211,6 @@ class _Forgot_passwordState extends State<Forgot_password> {
                   ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 20),
-                  child: InkWell(
-                    onTap: () {
-                      forgot_email();
-                    },
-                    child: Container(
-                      child: Text(
-                        'Resend email ',
-                        style: GoogleFonts.roboto(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
-                            textStyle: TextStyle(
-                              color: Colors.red,
-                            )),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ],
         ),

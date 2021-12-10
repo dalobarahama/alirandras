@@ -89,16 +89,13 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 15),
+              padding: const EdgeInsets.only(top: 50, left: 15),
               child: Row(
                 children: [
                   Container(
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Forgot_password();
-                        }));
+                        Navigator.pop(context);
                       },
                       child: Icon(
                         Icons.arrow_back,
@@ -134,27 +131,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                   padding: const EdgeInsets.only(left: 27, top: 30),
                   child: Container(
                     child: Text(
-                      'Masukkan kode OTP yang telah dikirim ke',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 27,
-                  ),
-                  child: Container(
-                    child: Text(
-                      'email anda ',
+                      'Masukkan kode OTP yang telah dikirim ke\nemail anda',
                       style: GoogleFonts.roboto(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
@@ -192,14 +169,14 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                     PinCodeTextField(
                       appContext: context,
                       keyboardType: TextInputType.number,
-                      length: 4,
+                      length: 6,
                       obscureText: false,
                       animationType: AnimationType.fade,
                       pinTheme: PinTheme(
                           shape: PinCodeFieldShape.box,
                           borderRadius: BorderRadius.circular(5),
-                          fieldHeight: 60,
-                          fieldWidth: 60,
+                          fieldHeight: 50,
+                          fieldWidth: 45,
                           activeFillColor: Colors.grey[200],
                           activeColor: Colors.grey[200],
                           disabledColor: Colors.grey[200],
@@ -212,7 +189,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                       errorAnimationController: errorController,
                       controller: _otpController,
                       onCompleted: (v) {
-                        print("Completed");
+                        verifikasi_otp();
                       },
                       onChanged: (value) {
                         print(value);
@@ -233,7 +210,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 33, bottom: 30, top: 40),
+                  left: 33, right: 33, bottom: 30, top: 20),
               child: InkWell(
                 onTap: () {
                   verifikasi_otp();

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -46,7 +48,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: 50,
                   ),
                   Container(
                     height: 50,
@@ -110,10 +112,10 @@ class _HomeState extends State<Home> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return Profile();
-                              }));
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) {
+                              //   return Profile();
+                              // }));
                             },
                             child: Container(
                               height: 40,
@@ -124,7 +126,7 @@ class _HomeState extends State<Home> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(45),
                                 child: CachedNetworkImage(
-                                  imageUrl: _userData.signature!,
+                                  imageUrl: _userData.signature ?? '-',
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     decoration: BoxDecoration(
@@ -149,7 +151,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 10,
                   ),
-                  Stack(overflow: Overflow.visible, children: [
+                  Stack(clipBehavior: Clip.none, children: [
                     Container(
                       height: 250,
                       width: double.infinity,
@@ -222,19 +224,24 @@ class _HomeState extends State<Home> {
                         height: 170,
                         width: 360,
                         decoration: BoxDecoration(
-                            color: Colors.lightBlue[50],
+                            gradient: LinearGradient(colors: [
+                              Color(0xFFCFE7FF),
+                              Colors.white,
+                              Color(0xFFCFE7FF)
+                            ]),
                             borderRadius: BorderRadius.circular(20)),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 30, right: 210),
-                              child: Container(
-                                child: Text(
-                                  'Alur Proses',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.lightBlue),
-                                ),
+                            Container(
+                              padding: EdgeInsets.only(left: 35),
+                              child: Text(
+                                'Alur Proses',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.lightBlue),
                               ),
                             ),
                             SizedBox(
@@ -373,16 +380,14 @@ class _HomeState extends State<Home> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Form_pendaftaran();
-                      }));
+                      pushNewScreen(context,
+                          screen: Form_pendaftaran(), withNavBar: false);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
                         height: 200,
-                        width: 360,
+                        width: double.infinity,
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [Colors.lightBlue.shade100, Colors.blue],
@@ -393,50 +398,54 @@ class _HomeState extends State<Home> {
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Container(
+                            padding: EdgeInsets.all(15),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   height: 200,
-                                  width: 100,
                                   child: Image(
                                     image: AssetImage(
                                         'assets/images/upload_dokumen.png'),
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.fitWidth,
                                   ),
                                 ),
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    SizedBox(
-                                      height: 80,
-                                    ),
-                                    Text(
-                                      'Isi Formulir Pengajuan',
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 16,
-                                          textStyle: TextStyle(
-                                            color: Colors.white,
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      'Klik untuk ajukan formulir pengajuan',
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 10,
-                                          textStyle: TextStyle(
-                                            color: Colors.white,
-                                          )),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Isi Formulir Pengajuan',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 16,
+                                              textStyle: TextStyle(
+                                                color: Colors.white,
+                                              )),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          'Klik untuk ajukan formulir pengajuan',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              textStyle: TextStyle(
+                                                color: Colors.white,
+                                              )),
+                                        ),
+                                      ],
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 140, top: 10),
+                                      padding: const EdgeInsets.only(top: 30),
                                       child: Container(
                                         child: Icon(
-                                          Icons.arrow_right_alt_outlined,
+                                          Icons.arrow_forward,
                                           color: Colors.white,
-                                          size: 40,
+                                          size: 25,
                                         ),
                                       ),
                                     ),

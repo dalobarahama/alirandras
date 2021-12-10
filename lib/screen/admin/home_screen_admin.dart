@@ -31,7 +31,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 30),
+                      SizedBox(height: 50),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -80,11 +80,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 100,
                 ),
                 Container(
                   width: double.infinity,
-                  height: 100,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -103,8 +102,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       Padding(
                         padding: const EdgeInsets.only(right: 15),
                         child: Container(
-                          height: 30,
-                          width: 100,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                           decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5)),
@@ -113,11 +112,14 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                             children: [
                               Text(
                                 'Pilih Tahun',
-                                style: TextStyle(color: Colors.grey[400]),
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                              SizedBox(
+                                width: 5,
                               ),
                               Icon(
                                 Icons.calendar_today,
-                                color: Colors.grey[400],
+                                color: Colors.grey[600],
                                 size: 15,
                               )
                             ],
@@ -127,279 +129,287 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     ],
                   ),
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      width: double.infinity,
-                      height: 300,
-                      child: ListView.builder(
-                        itemCount: 10,
-                        padding: EdgeInsets.symmetric(vertical: 50),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            margin: EdgeInsets.all(10),
-                            color: Colors.grey[100],
-                            shadowColor: Colors.black,
-                            child: Container(
-                              height: 200,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 185,
-                                    height: 200,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 15, 15, 0),
-                                          child: Text(
-                                            'ID: 99999999',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 10,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
+                SizedBox(height: 10,),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    child: ListView.builder(
+                      itemCount: 10,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(bottom:100),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          margin: EdgeInsets.all(10),
+                          color: Colors.grey[100],
+                          shadowColor: Colors.black,
+                          child: Container(
+                            height: 200,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 185,
+                                  height: 200,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 15, 15, 0),
+                                        child: Text(
+                                          'ID: 99999999',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 10,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey[500],
+                                              )),
                                         ),
-                                        Divider(
-                                          indent: 15,
+                                      ),
+                                      Divider(
+                                        indent: 15,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 0, 15, 0),
+                                        child: Text(
+                                          'Nama Pemohon',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey[500],
+                                              )),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 0, 15, 0),
-                                          child: Text(
-                                            'Nama Pemohon',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 12,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 10, 15, 0),
+                                        child: Text(
+                                          'Doni Suraya',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              textStyle: TextStyle(
+                                                color: Colors.black54,
+                                              )),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 10, 15, 0),
-                                          child: Text(
-                                            'Doni Suraya',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                textStyle: TextStyle(
-                                                  color: Colors.black54,
-                                                )),
-                                          ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 30, 15, 0),
+                                        child: Text(
+                                          'Lampiran',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey[500],
+                                              )),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 30, 15, 0),
-                                          child: Text(
-                                            'Lampiran',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 12,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 5, 15, 0),
-                                          child: Container(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.image,
-                                                  size: 20,
-                                                  color: Colors.orangeAccent,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5),
-                                                  child: Text(
-                                                    'Gambar bangunan.png',
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 12,
-                                                        textStyle: TextStyle(
-                                                          color:
-                                                              Colors.grey[500],
-                                                        )),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 10, 15, 0),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 5, 15, 0),
+                                        child: Container(
                                           child: Row(
                                             children: [
-                                              Container(
+                                              Icon(
+                                                Icons.image,
+                                                size: 20,
+                                                color: Colors.orangeAccent,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.only(
+                                                        left: 5),
+                                                child: Text(
+                                                  'Gambar bangunan.png',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 12,
+                                                      textStyle: TextStyle(
+                                                        color: Colors
+                                                            .grey[500],
+                                                      )),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 10, 15, 0),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons
+                                                        .remove_red_eye_outlined,
+                                                    color:
+                                                        Colors.greenAccent,
+                                                    size: 15,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets
+                                                            .only(left: 5),
+                                                    child: Text(
+                                                      'Detail',
+                                                      style: GoogleFonts
+                                                          .roboto(
+                                                              fontSize: 12,
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                color: Colors
+                                                                    .greenAccent,
+                                                              )),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.only(
+                                                      left: 20),
+                                              child: Container(
                                                 child: Row(
                                                   children: [
                                                     Icon(
-                                                      Icons
-                                                          .remove_red_eye_outlined,
-                                                      color: Colors.greenAccent,
+                                                      Icons.delete,
+                                                      color:
+                                                          Colors.redAccent,
                                                       size: 15,
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsets.only(
+                                                          const EdgeInsets
+                                                                  .only(
                                                               left: 5),
                                                       child: Text(
-                                                        'Detail',
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                                fontSize: 12,
+                                                        'Hapus',
+                                                        style: GoogleFonts
+                                                            .roboto(
+                                                                fontSize:
+                                                                    12,
                                                                 textStyle:
                                                                     TextStyle(
                                                                   color: Colors
-                                                                      .greenAccent,
+                                                                      .redAccent,
                                                                 )),
                                                       ),
                                                     )
                                                   ],
                                                 ),
                                               ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 155,
+                                  height: 200,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 15, 15, 0),
+                                        child: Text(
+                                          '20 September 2021, 09.41',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 10,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey[500],
+                                              )),
+                                        ),
+                                      ),
+                                      Divider(
+                                        endIndent: 15,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 0, 15, 0),
+                                        child: Text(
+                                          'Status',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey[500],
+                                              )),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 10, 15, 0),
+                                        child: Text(
+                                          'Disetujui',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              textStyle: TextStyle(
+                                                color: Colors.green,
+                                              )),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 70, 15, 0),
+                                        child: Container(
+                                          height: 30,
+                                          width: 140,
+                                          decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(7)),
+                                          child: Row(
+                                            children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 20),
-                                                child: Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.delete,
-                                                        color: Colors.redAccent,
-                                                        size: 15,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 5),
-                                                        child: Text(
-                                                          'Hapus',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 12,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .redAccent,
-                                                                  )),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
+                                                padding:
+                                                    const EdgeInsets.only(
+                                                        left: 5),
+                                                child: Icon(
+                                                  Icons
+                                                      .double_arrow_outlined,
+                                                  color: Colors.white70,
+                                                  size: 15,
                                                 ),
-                                              )
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.only(
+                                                        left: 3),
+                                                child: Text(
+                                                  'Balas dengan surat',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 11,
+                                                      textStyle: TextStyle(
+                                                        color:
+                                                            Colors.white70,
+                                                      )),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  Container(
-                                    width: 155,
-                                    height: 200,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 15, 15, 0),
-                                          child: Text(
-                                            '20 September 2021, 09.41',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 10,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
-                                        ),
-                                        Divider(
-                                          endIndent: 15,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 0, 15, 0),
-                                          child: Text(
-                                            'Status',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 12,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 10, 15, 0),
-                                          child: Text(
-                                            'Disetujui',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                textStyle: TextStyle(
-                                                  color: Colors.green,
-                                                )),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 70, 15, 0),
-                                          child: Container(
-                                            height: 30,
-                                            width: 140,
-                                            decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                borderRadius:
-                                                    BorderRadius.circular(7)),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5),
-                                                  child: Icon(
-                                                    Icons.double_arrow_outlined,
-                                                    color: Colors.white70,
-                                                    size: 15,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 3),
-                                                  child: Text(
-                                                    'Balas dengan surat',
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 11,
-                                                        textStyle: TextStyle(
-                                                          color: Colors.white70,
-                                                        )),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
-                    )),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -407,7 +417,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 100,
+                  height: 120,
                 ),
                 Container(
                   child: Row(

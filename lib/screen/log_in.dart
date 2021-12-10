@@ -46,19 +46,19 @@ class _Log_inState extends State<Log_in> {
             CallStorage().getUserData().then((value) {
               setState(() {
                 _userData = value;
+                if (_userData.app == 'mobile user') {
+                  //go to user home screen
+                  Navigator.pushReplacement(
+                      context, SlideToLeftRoute(page: MainMenuScreen()));
+                } else {
+                  //go to admin home screen
+                  Navigator.pushReplacement(
+                      context, SlideToLeftRoute(page: MainMenuScreenAdmin()));
+                }
                 isLoading = false;
               });
             });
           });
-          if (_userData.app == 'mobile user') {
-            //go to user home screen
-            Navigator.pushReplacement(
-                context, SlideToLeftRoute(page: MainMenuScreen()));
-          } else {
-            //go to admin home screen
-            Navigator.pushReplacement(
-                context, SlideToLeftRoute(page: MainMenuScreenAdmin()));
-          }
         } else if (value == 'failed') {
           CallStorage().logout();
           Navigator.pushReplacement(
