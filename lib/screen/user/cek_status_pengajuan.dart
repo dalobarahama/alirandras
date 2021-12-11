@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Cek_status_pengajuan extends StatefulWidget {
@@ -10,6 +13,27 @@ class Cek_status_pengajuan extends StatefulWidget {
 }
 
 class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
+  bool isLoading = true;
+  List<RegistrationForm1>? _listPengajuan = <RegistrationForm1>[];
+  initstate() {
+    CallApi().getListPengajuan().then((value) {
+      setState(() {
+        isLoading = false;
+        _listPengajuan = value;
+        if (_listPengajuan == null) {
+          Fluttertoast.showToast(
+              msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+          Navigator.pop(context);
+        } else if (_listPengajuan![0].status == 401) {
+          Fluttertoast.showToast(
+              msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+          Navigator.pop(context);
+        }
+      });
+    });
+    super.initState();
+  }
+
   List namapengguna = [
     'Andre',
     'Faiq',
@@ -92,7 +116,9 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                   ),
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 25),
                 child: Expanded(
@@ -132,7 +158,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                         padding:
                                             const EdgeInsets.only(right: 50),
                                         child: Text(
-                                          idpengguna[index],
+                                          _listPengajuan![index].id.toString(),
                                           style: GoogleFonts.roboto(
                                               fontSize: 14,
                                               textStyle: TextStyle(
@@ -141,7 +167,9 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                         ),
                                       ),
                                       Text(
-                                        '20 November 2021, 14.20',
+                                        _listPengajuan![index]
+                                            .createdAt
+                                            .toString(),
                                         style: GoogleFonts.roboto(
                                             fontSize: 14,
                                             textStyle: TextStyle(
@@ -192,7 +220,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          namapengguna[index],
+                                          _listPengajuan![index].user!.name!,
                                           style: GoogleFonts.roboto(
                                               fontSize: 14,
                                               textStyle: TextStyle(
@@ -200,7 +228,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                               )),
                                         ),
                                         Text(
-                                          'Diproses',
+                                          _listPengajuan![index].status!,
                                           style: GoogleFonts.roboto(
                                               fontSize: 14,
                                               textStyle: TextStyle(
