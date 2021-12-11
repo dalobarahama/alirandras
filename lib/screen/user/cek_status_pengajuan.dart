@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
+import 'package:flutter_application_3/screen/user/edit_form_pendaftaran.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Cek_status_pengajuan extends StatefulWidget {
   const Cek_status_pengajuan({Key? key}) : super(key: key);
@@ -14,8 +17,11 @@ class Cek_status_pengajuan extends StatefulWidget {
 
 class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   bool isLoading = true;
+
   List<RegistrationForm1>? _listPengajuan = <RegistrationForm1>[];
-  initstate() {
+
+  @override
+  void initState() {
     print('aaaa');
     CallApi().getListPengajuan().then((value) {
       setState(() {
@@ -36,7 +42,10 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
     super.initState();
   }
 
-  @override
+  void _launchURL(String? url) async {
+    if (!await launch(url!)) throw 'Could not launch $url';
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -98,13 +107,13 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 25),
-                child: Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(),
-                    child: isLoading == true
-                        ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(),
+                  child: isLoading == true
+                      ? Center(child: CircularProgressIndicator())
+                      : Expanded(
+                          child: ListView.builder(
                             itemCount: _listPengajuan!.length,
                             shrinkWrap: true,
                             padding: EdgeInsets.all(0),
@@ -116,7 +125,6 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                 color: Colors.grey[200],
                                 shadowColor: Colors.black,
                                 child: Container(
-                                  height: 200,
                                   child: Padding(
                                     padding: const EdgeInsets.all(17.0),
                                     child: Column(
@@ -242,14 +250,60 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                               left: 8, right: 10, top: 8),
                                           child: Row(
                                             children: [
-                                              Text(
+                                              Expanded(
+                                                child: ListView.builder(
+                                                    itemCount: _listPengajuan![
+                                                            index]
+                                                        .registrationFormAttachments!
+                                                        .length,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    padding: EdgeInsets.all(0),
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index1) {
+                                                      return Container(
+                                                        child: InkWell(
+                                                            onTap: () {
+                                                              String _link = 'http://alirandras.inotive.id' +
+                                                                  _listPengajuan![
+                                                                          index]
+                                                                      .registrationFormAttachments![
+                                                                          index1]
+                                                                      .file
+                                                                      .toString();
+                                                              _launchURL(_link);
+                                                            },
+                                                            child: Text(
+                                                              'Lampiran $index1',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .underline),
+                                                            )),
+                                                      );
+                                                    }),
+                                              )
+                                              /*Text(
                                                 'Gambar bangunan.png',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 14,
                                                     textStyle: TextStyle(
                                                       color: Colors.grey[700],
                                                     )),
-                                              ),
+                                              ),*/
+                                              ,
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
                                               SizedBox(
                                                 width: 16,
                                               ),
@@ -261,13 +315,52 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                               SizedBox(
                                                 width: 4,
                                               ),
-                                              Text(
-                                                'Detail',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 12,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.green,
-                                                    )),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      SlideToLeftRoute(
+                                                          page: Detail_card_statuspengajuan(
+                                                              _listPengajuan![
+                                                                  index])));
+                                                },
+                                                child: Text(
+                                                  'Detail',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 12,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.green,
+                                                      )),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.red,
+                                                size: 12,
+                                              ),
+                                              SizedBox(
+                                                width: 4,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      SlideToLeftRoute(
+                                                          page: EditForm(
+                                                              _listPengajuan![
+                                                                  index])));
+                                                },
+                                                child: Text(
+                                                  'Edit',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 12,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.red,
+                                                      )),
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
@@ -290,7 +383,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -298,7 +391,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                               );
                             },
                           ),
-                  ),
+                        ),
                 ),
               ),
               SizedBox(

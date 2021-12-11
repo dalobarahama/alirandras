@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/admin/home_screen_admin.dart';
+import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
@@ -20,6 +21,6 @@ void main() {
     debugShowCheckedModeBanner: false,
 
     //home: SplashScreen(),
-    home: Cek_status_pengajuan(),
+    home: SplashScreen(),
   ));
 }
