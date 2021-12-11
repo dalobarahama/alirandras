@@ -9,6 +9,8 @@ import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,6 +38,16 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   bool isSubmit = false;
   bool isLoading = true;
   bool isLoading1 = false;
+  bool loc = false;
+  Position currentLocation = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime(0),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0);
   double lat = 0;
   double lang = 0;
   final ImagePicker _picker = ImagePicker();
@@ -60,11 +72,43 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   initState() {
     _selectedKecamatan = null;
     _selectedKelurahan = null;
+    getUserLocation();
     getKecamatan();
     if (isFinish[0] == true) {
       isLoading = false;
     }
     super.initState();
+  }
+
+  getUserLocation() async {
+    print('abc');
+    currentLocation = await locateUser();
+    setState(() {
+      loc = true;
+      point = LatLng(currentLocation.latitude, currentLocation.longitude);
+    });
+    print('center $point');
+  }
+
+  Future<Position> locateUser() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await GeolocatorPlatform.instance.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location PErmisiion are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permission permanenet denied');
+    }
+    return Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
   }
 
   getKecamatan() async {
@@ -152,6 +196,16 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     });
   }
 
+  void _getPlace(double lat, double long) async {
+    List<Placemark> place = await placemarkFromCoordinates(lat, long);
+    print('11aa11aa');
+    print(place.first.name);
+
+    setState(() {
+      _alamatLengkapController.text = place.first.street.toString();
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -201,38 +255,41 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   height: 230,
                   width: double.infinity,
                   color: Colors.grey,
-                  child: FlutterMap(
-                    options: MapOptions(
-                        center: point,
-                        zoom: 18.0,
-                        onTap: (p, y) {
-                          setState(() {
-                            point = y;
-                            print(point);
-                            lat = y.latitude;
-                            lang = y.longitude;
-                          });
-                        }),
-                    layers: [
-                      TileLayerOptions(
-                        urlTemplate:
-                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        subdomains: ['a', 'b', 'c'],
-                      ),
-                      MarkerLayerOptions(markers: [
-                        Marker(
-                            width: 100,
-                            height: 100,
-                            point: point,
-                            builder: (ctx) => Container(
-                                  child: Image(
-                                    image:
-                                        AssetImage('assets/images/Vector.png'),
-                                  ),
-                                ))
-                      ])
-                    ],
-                  ),
+                  child: loc == false
+                      ? Center(child: CircularProgressIndicator())
+                      : FlutterMap(
+                          options: MapOptions(
+                              center: point,
+                              zoom: 18.0,
+                              onTap: (p, y) {
+                                setState(() {
+                                  point = y;
+                                  print(point);
+                                  lat = y.latitude;
+                                  lang = y.longitude;
+                                  _getPlace(lat, lang);
+                                });
+                              }),
+                          layers: [
+                            TileLayerOptions(
+                              urlTemplate:
+                                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                              subdomains: ['a', 'b', 'c'],
+                            ),
+                            MarkerLayerOptions(markers: [
+                              Marker(
+                                  width: 100,
+                                  height: 100,
+                                  point: point,
+                                  builder: (ctx) => Container(
+                                        child: Image(
+                                          image: AssetImage(
+                                              'assets/images/Vector.png'),
+                                        ),
+                                      ))
+                            ])
+                          ],
+                        ),
                 ),
               ),
               Padding(
