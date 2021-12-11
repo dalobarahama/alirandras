@@ -18,7 +18,12 @@ void main() {
   runApp(MaterialApp(
     title: 'Air Deras',
     debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
     //home: SplashScreen(),
     home: Cek_status_pengajuan(),
+=======
+    home: SplashScreen(),
+    // home: Form_pendaftaran(),
+>>>>>>> 7829f3c492058951b5b132413e616a828adf7bb1
   ));
 }

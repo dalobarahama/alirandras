@@ -27,19 +27,19 @@ class _ProfileState extends State<Profile> {
   bool isLoading = true;
   @override
   void initState() {
-    setState(() {
-      Timer(Duration(seconds: 1), () {
-        CallStorage().getUserData().then((value) {
-          setState(() {
-            _userData = value;
-            isLoading = false;
-            _namaController.text = _userData.name!;
-            _emailController.text = _userData.email!;
-          });
-        });
+    initData();
+    super.initState();
+  }
+
+  initData() async {
+    await CallStorage().getUserData().then((value) {
+      setState(() {
+        _userData = value;
+        isLoading = false;
+        _namaController.text = _userData.name!;
+        _emailController.text = _userData.email!;
       });
     });
-    super.initState();
   }
 
   /* void updateData() async {
@@ -72,10 +72,31 @@ class _ProfileState extends State<Profile> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/header_home.png',
-              width: double.infinity,
-              fit: BoxFit.cover,
+            Stack(
+              children: [
+                Image.asset(
+                  'assets/images/header_home.png',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                _userData.app == 'admin'
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          top: 50.0,
+                          left: 25,
+                        ),
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 30,
+                            )),
+                      )
+                    : Container()
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(left: 33, top: 5),
@@ -293,10 +314,10 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.only(left: 33, right: 33, bottom: 20),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Profile();
-                  }));
+                  // Navigator.pushReplacement(context,
+                  //     MaterialPageRoute(builder: (context) {
+                  //   return Profile();
+                  // }));
                 },
                 child: Container(
                   height: 50,
@@ -334,7 +355,9 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            SizedBox(height: 30,)
+            SizedBox(
+              height: 30,
+            )
           ],
         ),
       ),
