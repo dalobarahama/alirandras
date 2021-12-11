@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/screen/admin/list_formulir_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/list_penohon_screen.dart';
+import 'package:flutter_application_3/screen/admin/manajemen_pengguna_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/setting_surat_pengajuan_screen_admin.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_application_3/screen/admin/home_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/upload_screen_admin.dart';
@@ -16,9 +20,9 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
   List<Widget> _screenList() {
     return [
       HomeScreenAdmin(),
-      UploadScreenAdmin(),
-      Profile(),
-      StatusPengajuanScreenAdmin(),
+      ListPemohonScreen(),
+      ManajemenPenggunaScreenAdmin(),
+      SettingSuratPengajuanScreenAdmin(),
     ];
   }
 
@@ -31,28 +35,31 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
           title: 'Surat Pengajuan'),
       PersistentBottomNavBarItem(
           icon: Icon(
+            Icons.file_present_outlined,
+            size: 25,
+          ),
+          activeColorPrimary: Colors.blueAccent,
+          inactiveColorPrimary: Colors.grey,
+          title: 'Pemohon'),
+      PersistentBottomNavBarItem(
+          icon: Icon(
             Icons.paste,
             size: 25,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          title: 'Manajemen Pengguna'),
+          title: 'Pengguna'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.person,
+            Icons.settings_outlined,
             size: 25,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          title: 'Profil'),
-      PersistentBottomNavBarItem(
-          icon: Icon(
-            Icons.person,
-            size: 25,
+          textStyle: TextStyle(
+            fontSize: 8,
           ),
-          activeColorPrimary: Colors.blueAccent,
-          inactiveColorPrimary: Colors.grey,
-          title: 'Setting Surat Pengajuan'),
+          title: 'Setting'),
     ];
   }
 

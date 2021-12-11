@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/admin_api_helper.dart';
+import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -13,157 +15,207 @@ class ManajemenPenggunaScreenAdmin extends StatefulWidget {
 class _ManajemenPenggunaScreenAdminState
     extends State<ManajemenPenggunaScreenAdmin> {
   TextEditingController _searchListController = TextEditingController();
+  ManajemenPenggunaModel _data = ManajemenPenggunaModel();
+  List<Pengguna>? _searchList;
+  bool isLoading = true;
+
+  initData() async {
+    await CallAdminApi().getListPengguna().then((value) {
+      setState(() {
+        _data = value;
+        _searchList = value.users;
+        isLoading = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    initData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.red,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Manajemen Pengguna',
-                  style: GoogleFonts.roboto(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      textStyle: TextStyle(
-                        color: Colors.grey,
-                      )),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(7)),
-                  child: TextFormField(
-                    controller: _searchListController,
-                    decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.search),
-                        border: InputBorder.none),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 500,
-                  child: ListView.builder(
-                    itemCount: 10,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        margin: EdgeInsets.all(10),
-                        color: Colors.grey[100],
-                        shadowColor: Colors.black,
-                        child: Container(
-                          height: 100,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(65)),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(65),
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          'https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              'Manajemen Pengguna',
+              style: GoogleFonts.roboto(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[700],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(7)),
+              child: TextFormField(
+                controller: _searchListController,
+                decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.search), border: InputBorder.none),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            isLoading
+                ? Container(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      child: ListView.builder(
+                        itemCount: _searchList!.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(0),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: EdgeInsets.all(10),
+                            color: Colors.grey[100],
+                            shadowColor: Colors.black,
+                            child: Container(
+                              padding: EdgeInsets.all(15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            width: 50,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                                color: Colors.blue,
+                                                borderRadius:
+                                                    BorderRadius.circular(65)),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(65),
+                                              child: CachedNetworkImage(
+                                                imageUrl: _searchList?[index]
+                                                        .avatar ??
+                                                    '-',
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                placeholder: (context, url) =>
+                                                    CircularProgressIndicator(),
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Icon(Icons.error,
+                                                        color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                _searchList?[index].name ?? '-',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    textStyle: TextStyle(
+                                                      color: Colors.grey,
+                                                    )),
+                                              ),
+                                              Text(
+                                                _searchList![index].app ==
+                                                        'admin'
+                                                    ? 'Admin'
+                                                    : 'User',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    textStyle: TextStyle(
+                                                      color: _searchList![index]
+                                                                  .app ==
+                                                              'admin'
+                                                          ? Colors.blue
+                                                          : Colors.orange,
+                                                    )),
+                                              ),
+                                              Text(
+                                                _searchList?[index].email ??
+                                                    '-',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 12,
+                                                    textStyle: TextStyle(
+                                                      color: Colors.grey,
+                                                    )),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                          child: Icon(
+                                            Icons.edit_outlined,
+                                            color: Colors.grey,
                                           ),
                                         ),
                                       ),
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                          child: Icon(
+                                            Icons.delete_outline,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Suryanto',
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        textStyle: TextStyle(
-                                          color: Colors.grey,
-                                        )),
-                                  ),
-                                  Text(
-                                    'Admin',
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        textStyle: TextStyle(
-                                          color: Colors.blue,
-                                        )),
-                                  ),
-                                  Text(
-                                    'Suryanto.admin@mail.com',
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 12,
-                                        textStyle: TextStyle(
-                                          color: Colors.grey,
-                                        )),
-                                  )
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  child: Icon(Icons.assessment),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
+          ],
         ),
       ),
     );
