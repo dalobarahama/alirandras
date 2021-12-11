@@ -310,7 +310,9 @@ class CallApi {
   Future<List<RegistrationForm1>?> getListPengajuan() async {
     ListPengajuan _listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var token = localStorage.getString('token');
+    //var token = localStorage.getString('token');
+    var token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzgzNDE1NTUsIm5iZiI6MTYzODM0MTU1NSwianRpIjoiNTJhanpGRkpEaFZwUWxGRSIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zhNVm5GGsKpD98ccq8fPTGKdxc6K_WxyLoAh6BQnhy8';
     Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
 
     try {
@@ -323,6 +325,7 @@ class CallApi {
       //print(res.body);
       //print(res.statusCode);
       // print(res.body);
+      print(res.body);
       if (res.statusCode == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
         return _listPengajuan.registrationForms;

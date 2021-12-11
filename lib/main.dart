@@ -19,6 +19,6 @@ void main() {
     title: 'Air Deras',
     debugShowCheckedModeBanner: false,
     //home: SplashScreen(),
-    home: Form_pendaftaran(),
+    home: Cek_status_pengajuan(),
   ));
 }
