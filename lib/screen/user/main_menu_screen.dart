@@ -1,10 +1,14 @@
+import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/main.dart';
+import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/profile.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class MainMenuScreen extends StatefulWidget {
@@ -15,11 +19,17 @@ class MainMenuScreen extends StatefulWidget {
 }
 
 class _MainMenuScreenState extends State<MainMenuScreen> {
+  void logout() async {
+    await CallStorage().logout();
+    Navigator.pushReplacement(context, SlideToRightRoute(page: Log_in()));
+    Fluttertoast.showToast(msg: 'Your login session is expired.');
+  }
+
   List<Widget> _screenList() {
     return [
       Home(),
       Cek_status_pengajuan(),
-      Profile(),
+      Profile(logout),
     ];
   }
 

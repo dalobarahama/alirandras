@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/screen/admin/list_formulir_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/list_penohon_screen.dart';
 import 'package:flutter_application_3/screen/admin/manajemen_pengguna_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/setting_surat_pengajuan_screen_admin.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_application_3/screen/admin/home_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/upload_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
 import 'package:flutter_application_3/screen/Profile.dart';
+
+import '../log_in.dart';
 
 class MainMenuScreenAdmin extends StatefulWidget {
   const MainMenuScreenAdmin({Key? key}) : super(key: key);
@@ -17,9 +22,15 @@ class MainMenuScreenAdmin extends StatefulWidget {
 }
 
 class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
+  void logout() async {
+    await CallStorage().logout();
+    Navigator.pushReplacement(context, SlideToRightRoute(page: Log_in()));
+    Fluttertoast.showToast(msg: 'Your login session is expired.');
+  }
+
   List<Widget> _screenList() {
     return [
-      HomeScreenAdmin(),
+      HomeScreenAdmin(logout),
       ListPemohonScreen(),
       ManajemenPenggunaScreenAdmin(),
       SettingSuratPengajuanScreenAdmin(),

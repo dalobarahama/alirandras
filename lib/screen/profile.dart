@@ -13,13 +13,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  Function logout;
+  Profile(this.logout);
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfileState createState() => _ProfileState(this.logout);
 }
 
 class _ProfileState extends State<Profile> {
+  Function logout;
+  _ProfileState(this.logout);
   TextEditingController _emailController = TextEditingController();
   TextEditingController _namaController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -340,16 +343,21 @@ class _ProfileState extends State<Profile> {
                 onTap: () {
                   CallStorage().logout();
                 },
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.red),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Center(
-                    child: Text(
-                      'Log Out',
-                      style: TextStyle(color: Colors.red, fontSize: 20),
+                child: InkWell(
+                  onTap: () {
+                    logout();
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.red),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Center(
+                      child: Text(
+                        'Log Out',
+                        style: TextStyle(color: Colors.red, fontSize: 20),
+                      ),
                     ),
                   ),
                 ),

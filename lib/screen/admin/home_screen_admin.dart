@@ -4,18 +4,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
+import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/profile.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
-  const HomeScreenAdmin({Key? key}) : super(key: key);
-
+  Function logout;
+  HomeScreenAdmin(this.logout);
   @override
-  _HomeScreenAdminState createState() => _HomeScreenAdminState();
+  _HomeScreenAdminState createState() => _HomeScreenAdminState(this.logout);
 }
 
 class _HomeScreenAdminState extends State<HomeScreenAdmin> {
+  Function logout;
+  _HomeScreenAdminState(this.logout);
   User _userData = User();
   bool isLoading = true;
   @override
@@ -62,7 +67,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   InkWell(
                     onTap: () {
                       pushNewScreen(context,
-                          screen: Profile(), withNavBar: false);
+                          screen: Profile(logout), withNavBar: false);
                     },
                     child: Container(
                       width: 50,
