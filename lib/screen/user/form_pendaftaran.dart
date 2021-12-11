@@ -14,6 +14,8 @@ import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class Form_pendaftaran extends StatefulWidget {
   const Form_pendaftaran({Key? key}) : super(key: key);
@@ -28,13 +30,14 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
   TextEditingController _alamatLengkapController = TextEditingController();
+  LatLng point = LatLng(-1.240112, 116.873320);
   String jenisPermohonan = '';
   String district = 'BALIKPAPAN KOTA';
   bool isSubmit = false;
   bool isLoading = true;
   bool isLoading1 = false;
-  String lat = '';
-  String lang = '';
+  double lat = 0;
+  double lang = 0;
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
   List<GetKecamatan> _listKecamatan = <GetKecamatan>[];
@@ -198,6 +201,38 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   height: 230,
                   width: double.infinity,
                   color: Colors.grey,
+                  child: FlutterMap(
+                    options: MapOptions(
+                        center: point,
+                        zoom: 18.0,
+                        onTap: (p, y) {
+                          setState(() {
+                            point = y;
+                            print(point);
+                            lat = y.latitude;
+                            lang = y.longitude;
+                          });
+                        }),
+                    layers: [
+                      TileLayerOptions(
+                        urlTemplate:
+                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        subdomains: ['a', 'b', 'c'],
+                      ),
+                      MarkerLayerOptions(markers: [
+                        Marker(
+                            width: 100,
+                            height: 100,
+                            point: point,
+                            builder: (ctx) => Container(
+                                  child: Image(
+                                    image:
+                                        AssetImage('assets/images/Vector.png'),
+                                  ),
+                                ))
+                      ])
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -656,7 +691,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           //Future.microtask(() => context.requestFocus(FocusNode()));
         }),
         value: _selectedKecamatan,
-        hint: Text('Pilih Provinsi ( Sesuai KTP )'),
+        hint: Text('Pilih Kecamatan'),
         items: _listKecamatan.map((GetKecamatan value) {
           return new DropdownMenuItem<GetKecamatan>(
             value: value,

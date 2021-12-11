@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/screen/admin/home_screen_admin.dart';
 import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
@@ -17,6 +18,7 @@ void main() {
   runApp(MaterialApp(
     title: 'Air Deras',
     debugShowCheckedModeBanner: false,
-    home: SplashScreen(),
+    //home: SplashScreen(),
+    home: Form_pendaftaran(),
   ));
 }

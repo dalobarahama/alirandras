@@ -45,6 +45,17 @@ dependencies:
   fluttertoast: ^8.0.8
   cached_network_image: ^3.2.0
   dotted_border: ^2.0.0
+  flutter_map: ^0.14.0
+  tuple: ^2.0.0
+  latlong: ^0.6.1
+  positioned_tap_detector_2: ^1.0.0
+  transparent_image: ^2.0.0
+  async: ^2.1.0
+  flutter_image: ^3.0.0
+  vector_math: ^2.0.0
+  proj4dart: ^2.0.0
+  meta: ^1.1.0
+  collection: ^1.14.0
 
 
 dev_dependencies:

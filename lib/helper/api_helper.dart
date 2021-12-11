@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter_application_3/models/get_kelurahan.dart';
+import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_application_3/models/login_data.dart';
@@ -23,6 +25,7 @@ class CallApi {
   final String GET_KELURAHAN = '/api/location/villages?id=';
   final String SUBMIT_FORMULIR = '/api/formulir';
   final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
+  final String GET_LIST_PENGAJUAN = '/api/formulir';
 
   Future<String> login(String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + LOGIN_URL);
@@ -241,8 +244,8 @@ class CallApi {
       String land_area,
       String building_location,
       String complete_address,
-      String lat,
-      String lng) async {
+      double lat,
+      double lng) async {
     SubmitFormulir _dataFormulir = SubmitFormulir();
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FORMULIR);
 
@@ -258,7 +261,9 @@ class CallApi {
         'lat': lat,
         'lng': lng
       });
+      print(post);
       var res = await post;
+      print(res);
       var a = int.parse(jsonDecode(res.body)['status_code']);
       print(a);
       if (a == 200) {
@@ -299,6 +304,41 @@ class CallApi {
     } catch (e) {
       // print(e);
       return e.toString();
+    }
+  }
+
+  Future<List<RegistrationForm1>?> getListPengajuan() async {
+    ListPengajuan _listPengajuan = ListPengajuan();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
+
+    try {
+      var get = http.get(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json'
+      });
+
+      var res = await get;
+      //print(res.body);
+      //print(res.statusCode);
+      // print(res.body);
+      if (res.statusCode == 200) {
+        _listPengajuan = listPengajuanFromJson(res.body);
+        return _listPengajuan.registrationForms;
+      } else if (res.statusCode == 401) {
+        List<RegistrationForm1> temporary = <RegistrationForm1>[];
+        temporary[0].status = '401';
+        _listPengajuan.registrationForms![0].add(temporary);
+        return _listPengajuan.registrationForms;
+      } else {
+        _listPengajuan.registrationForms!.clear();
+        return _listPengajuan.registrationForms;
+      }
+    } catch (e) {
+      print(e);
+      _listPengajuan.registrationForms!.clear();
+      return _listPengajuan.registrationForms;
     }
   }
 }
