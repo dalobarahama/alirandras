@@ -27,17 +27,16 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
       setState(() {
         isLoading = false;
         _listPengajuan = value;
-        print(_listPengajuan![0].id);
 
-        if (_listPengajuan == null) {
-          Fluttertoast.showToast(
-              msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
-          Navigator.pop(context);
-        } else if (_listPengajuan![0].status == 401) {
-          Fluttertoast.showToast(
-              msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
-          Navigator.pop(context);
-        }
+        // if (_listPengajuan == null) {
+        //   Fluttertoast.showToast(
+        //       msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+        //   Navigator.pop(context);
+        // } else if (_listPengajuan![0].status == 401) {
+        //   Fluttertoast.showToast(
+        //       msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+        //   Navigator.pop(context);
+        // }
       });
     });
     super.initState();

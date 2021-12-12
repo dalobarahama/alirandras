@@ -158,24 +158,49 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   }
 
   void submit_formulir() async {
+    if (jenisPermohonan.length < 2) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan pilih jenis permohonan terlebih dahulu.');
+      return;
+    }
+    if (_selectedKecamatan == null) {
+      Fluttertoast.showToast(msg: 'Silahkan pilih kecamatan terlebih dahulu.');
+      return;
+    }
+    // if (_selectedKelurahan == null) {
+    //   Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
+    //   return;
+    // }
+    if (_luasBangunanController.text.length < 1) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan luas bangunan terlebih dahulu.');
+      return;
+    }
+    if (_luasLahanController.text.length < 2) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan luas lahan terlebih dahulu.');
+      return;
+    }
+    if (_lokasiBangunanController.text.length < 2) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
+      return;
+    }
+    if (_alamatLengkapController.text.length < 2 || lat == 0 || lang == 0) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan pilih lokasi di peta terlebih dahulu.');
+      return;
+    }
+
     setState(() {
       isLoading1 = true;
     });
-    print(jenisPermohonan);
-    print(_selectedKecamatan!.name);
-    print(_selectedKelurahan!.name);
-    print(_luasBangunanController.text);
-    print(_luasLahanController.text);
-    print(_lokasiBangunanController.text);
-    print(_alamatLengkapController.text);
-    print(lat);
-    print(lang);
 
     await CallApi()
         .submit_formulir(
       jenisPermohonan,
       _selectedKecamatan!.name,
-      _selectedKelurahan!.name,
+      'DAMAI',
       _luasBangunanController.text,
       _luasLahanController.text,
       _lokasiBangunanController.text,
@@ -186,7 +211,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     )
         .then((value) {
       setState(() {
-        _dataFormulir = value;
+        _dataFormulir = value; 
         print(_dataFormulir.statusCode);
         if (_dataFormulir != null) {
           if (_dataFormulir.statusCode == 200) {
