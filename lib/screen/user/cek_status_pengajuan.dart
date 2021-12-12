@@ -112,286 +112,307 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                   decoration: BoxDecoration(),
                   child: isLoading == true
                       ? Center(child: CircularProgressIndicator())
-                      : Expanded(
-                          child: ListView.builder(
-                            itemCount: _listPengajuan!.length,
-                            shrinkWrap: true,
-                            physics: PageScrollPhysics(),
-                            padding: EdgeInsets.all(0),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                margin: EdgeInsets.all(10),
-                                color: Colors.grey[200],
-                                shadowColor: Colors.black,
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(17.0),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                      : Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: ListView.builder(
+                                itemCount: _listPengajuan!.length,
+                                shrinkWrap: true,
+                                physics: PageScrollPhysics(),
+                                padding: EdgeInsets.all(0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    margin: EdgeInsets.all(10),
+                                    color: Colors.grey[200],
+                                    shadowColor: Colors.black,
+                                    child: Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(17.0),
+                                        child: Column(
                                           children: [
-                                            Text(
-                                              'ID :',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 14,
-                                                  textStyle: TextStyle(
-                                                    color: Colors.grey[500],
-                                                  )),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'ID :',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 14,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.grey[500],
+                                                      )),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 50),
+                                                  child: Text(
+                                                    _listPengajuan![index]
+                                                        .id
+                                                        .toString(),
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[500],
+                                                        )),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  _listPengajuan![index]
+                                                      .createdAt
+                                                      .toString(),
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 14,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.grey[500],
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Container(
+                                              height: 1,
+                                              width: double.infinity,
+                                              color: Colors.grey,
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  right: 50),
-                                              child: Text(
-                                                _listPengajuan![index]
-                                                    .id
-                                                    .toString(),
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[500],
-                                                    )),
+                                                  left: 8, right: 10, top: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Nama Pengguna',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[500],
+                                                        )),
+                                                  ),
+                                                  Text(
+                                                    'Status',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[500],
+                                                        )),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Text(
-                                              _listPengajuan![index]
-                                                  .createdAt
-                                                  .toString(),
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 14,
-                                                  textStyle: TextStyle(
-                                                    color: Colors.grey[500],
-                                                  )),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, right: 10, top: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    _listPengajuan![index]
+                                                        .user!
+                                                        .name!,
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[700],
+                                                        )),
+                                                  ),
+                                                  Text(
+                                                    _listPengajuan![index]
+                                                        .status!,
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[700],
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, right: 10, top: 40),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Lampiran',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[500],
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8, right: 10, top: 8),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: ListView.builder(
+                                                        itemCount: _listPengajuan![
+                                                                index]
+                                                            .registrationFormAttachments!
+                                                            .length,
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            ClampingScrollPhysics(),
+                                                        padding:
+                                                            EdgeInsets.all(0),
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index1) {
+                                                          return Container(
+                                                            child: InkWell(
+                                                                onTap: () {
+                                                                  String _link = 'http://alirandras.inotive.id' +
+                                                                      _listPengajuan![
+                                                                              index]
+                                                                          .registrationFormAttachments![
+                                                                              index1]
+                                                                          .file
+                                                                          .toString();
+                                                                  _launchURL(
+                                                                      _link);
+                                                                },
+                                                                child: Text(
+                                                                  'Lampiran $index1',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .blue,
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .underline),
+                                                                )),
+                                                          );
+                                                        }),
+                                                  )
+                                                  /*Text(
+                                      'Gambar bangunan.png',
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 14,
+                                          textStyle: TextStyle(
+                                            color: Colors.grey[700],
+                                          )),
+                                    ),*/
+                                                  ,
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 16,
+                                                  ),
+                                                  Icon(
+                                                    Icons.visibility,
+                                                    color: Colors.green,
+                                                    size: 12,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          SlideToLeftRoute(
+                                                              page: Detail_card_statuspengajuan(
+                                                                  _listPengajuan![
+                                                                      index])));
+                                                    },
+                                                    child: Text(
+                                                      'Detail',
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 12,
+                                                          textStyle: TextStyle(
+                                                            color: Colors.green,
+                                                          )),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Icon(
+                                                    Icons.edit,
+                                                    color: Colors.red,
+                                                    size: 12,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          SlideToLeftRoute(
+                                                              page: EditForm(
+                                                                  _listPengajuan![
+                                                                      index])));
+                                                    },
+                                                    child: Text(
+                                                      'Edit',
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 12,
+                                                          textStyle: TextStyle(
+                                                            color: Colors.red,
+                                                          )),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                    size: 12,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    'Hapus',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 12,
+                                                        textStyle: TextStyle(
+                                                          color: Colors.red,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          width: double.infinity,
-                                          color: Colors.grey,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 10, top: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Nama Pengguna',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[500],
-                                                    )),
-                                              ),
-                                              Text(
-                                                'Status',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[500],
-                                                    )),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 10, top: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                _listPengajuan![index]
-                                                    .user!
-                                                    .name!,
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[700],
-                                                    )),
-                                              ),
-                                              Text(
-                                                _listPengajuan![index].status!,
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[700],
-                                                    )),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 10, top: 40),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                'Lampiran',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[500],
-                                                    )),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 10, top: 8),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: ListView.builder(
-                                                    itemCount: _listPengajuan![
-                                                            index]
-                                                        .registrationFormAttachments!
-                                                        .length,
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        ClampingScrollPhysics(),
-                                                    padding: EdgeInsets.all(0),
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index1) {
-                                                      return Container(
-                                                        child: InkWell(
-                                                            onTap: () {
-                                                              String _link = 'http://alirandras.inotive.id' +
-                                                                  _listPengajuan![
-                                                                          index]
-                                                                      .registrationFormAttachments![
-                                                                          index1]
-                                                                      .file
-                                                                      .toString();
-                                                              _launchURL(_link);
-                                                            },
-                                                            child: Text(
-                                                              'Lampiran $index1',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .blue,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .underline),
-                                                            )),
-                                                      );
-                                                    }),
-                                              )
-                                              /*Text(
-                                                'Gambar bangunan.png',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[700],
-                                                    )),
-                                              ),*/
-                                              ,
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              SizedBox(
-                                                width: 16,
-                                              ),
-                                              Icon(
-                                                Icons.visibility,
-                                                color: Colors.green,
-                                                size: 12,
-                                              ),
-                                              SizedBox(
-                                                width: 4,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      SlideToLeftRoute(
-                                                          page: Detail_card_statuspengajuan(
-                                                              _listPengajuan![
-                                                                  index])));
-                                                },
-                                                child: Text(
-                                                  'Detail',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 12,
-                                                      textStyle: TextStyle(
-                                                        color: Colors.green,
-                                                      )),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Icon(
-                                                Icons.edit,
-                                                color: Colors.red,
-                                                size: 12,
-                                              ),
-                                              SizedBox(
-                                                width: 4,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      SlideToLeftRoute(
-                                                          page: EditForm(
-                                                              _listPengajuan![
-                                                                  index])));
-                                                },
-                                                child: Text(
-                                                  'Edit',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 12,
-                                                      textStyle: TextStyle(
-                                                        color: Colors.red,
-                                                      )),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                                size: 12,
-                                              ),
-                                              SizedBox(
-                                                width: 4,
-                                              ),
-                                              Text(
-                                                'Hapus',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 12,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.red,
-                                                    )),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                 ),
               ),

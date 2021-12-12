@@ -211,7 +211,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     )
         .then((value) {
       setState(() {
-        _dataFormulir = value; 
+        _dataFormulir = value;
         print(_dataFormulir.statusCode);
         if (_dataFormulir != null) {
           if (_dataFormulir.statusCode == 200) {
@@ -277,7 +277,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         height: 50,
                         child: Center(
                           child: Text(
-                            'Submit berhasil!',
+                            'Submit Berhasil!',
                             style: TextStyle(color: Colors.black54),
                           ),
                         ),
@@ -313,12 +313,13 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(65),
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.green,
-                      ),
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Icon(Icons.check, size: 30, color: Colors.white),
                     ),
                   ],
                 ),
