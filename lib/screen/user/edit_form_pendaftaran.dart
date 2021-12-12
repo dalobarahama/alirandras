@@ -99,6 +99,17 @@ class _EditFormState extends State<EditForm> {
       setState(() {
         isFinish[0] = true;
         _listKecamatan = value;
+        print(_listKecamatan[0].name);
+        for (var i = 0; i < _listKecamatan.length; i++) {
+          print(_listKecamatan[i].name);
+          print(_dataForm.district);
+          if (_listKecamatan[i].name == _dataForm.district) {
+            setState(() {
+              _selectedKecamatan = _listKecamatan[i];
+              getKelurahan(_selectedKecamatan!.id);
+            });
+          }
+        }
       });
     });
   }
@@ -110,7 +121,13 @@ class _EditFormState extends State<EditForm> {
       setState(() {
         isFinish[1] = true;
         _listKelurahan = value;
-        print(_listKelurahan[2].name);
+        for (var y = 0; y < _listKelurahan.length; y++) {
+          if (_listKelurahan[y].name == _dataForm.subdistrict) {
+            setState(() {
+              _selectedKelurahan = _listKelurahan[y];
+            });
+          }
+        }
       });
     });
   }

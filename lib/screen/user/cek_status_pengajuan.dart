@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
+import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/edit_form_pendaftaran.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
@@ -22,12 +23,12 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
 
   @override
   void initState() {
-    print('aaaa');
     CallApi().getListPengajuan().then((value) {
       setState(() {
         isLoading = false;
         _listPengajuan = value;
         print(_listPengajuan![0].id);
+
         if (_listPengajuan == null) {
           Fluttertoast.showToast(
               msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
@@ -116,6 +117,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                           child: ListView.builder(
                             itemCount: _listPengajuan!.length,
                             shrinkWrap: true,
+                            physics: PageScrollPhysics(),
                             padding: EdgeInsets.all(0),
                             itemBuilder: (BuildContext context, int index) {
                               return Card(

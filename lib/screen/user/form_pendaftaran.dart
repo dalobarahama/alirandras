@@ -152,36 +152,74 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     }
   }
 
-  submit_formulir() async {
+  void submit_formulir() async {
     setState(() {
       isLoading1 = true;
     });
+    print(jenisPermohonan);
+    print(_selectedKecamatan!.name);
+    print(_selectedKelurahan!.name);
+    print(_luasBangunanController.text);
+    print(_luasLahanController.text);
+    print(_lokasiBangunanController.text);
+    print(_alamatLengkapController.text);
+    print(lat);
+    print(lang);
+
     await CallApi()
         .submit_formulir(
             jenisPermohonan,
-            district,
             _selectedKecamatan!.name,
+            _selectedKelurahan!.name,
             _luasBangunanController.text,
             _luasLahanController.text,
             _lokasiBangunanController.text,
             _alamatLengkapController.text,
-            lat,
-            lang)
+            lat.toString(),
+            lang.toString())
         .then((value) {
       setState(() {
         _dataFormulir = value;
+        print(_dataFormulir.statusCode);
         if (_dataFormulir != null) {
           if (_dataFormulir.statusCode == 200) {
-            isFinish[2] = true;
-            submit_gambar(_dataFormulir.registrationForm!.id);
+            setState(() {
+              isFinish[2] = true;
+              // isLoading1 = false;
+              print('ini2' + isFinish[2].toString());
+              print(_imageFile);
+              print('image file');
+            });
+
+            if (_imageFile != null) {
+              submit_gambar(
+                _dataFormulir.registrationForm!.id,
+              );
+            } else {
+              setState(() {
+                isFinish[3] = true;
+                isLoading1 = false;
+                print('ini3' + isFinish[3].toString());
+              });
+            }
           } else if (_dataFormulir.statusCode! >= 400 &&
               _dataFormulir.statusCode! <= 500) {
-            Fluttertoast.showToast(msg: 'Gagal upload data');
+            setState(() {
+              isLoading1 = false;
+              Fluttertoast.showToast(msg: 'Gagal upload data');
+            });
           } else {
-            Fluttertoast.showToast(msg: _dataFormulir.message!);
+            setState(() {
+              isLoading1 = false;
+              Fluttertoast.showToast(msg: _dataFormulir.message!);
+            });
           }
+          isFinish[3] == true ? _popUpDialog(context) : Container();
         } else {
-          Fluttertoast.showToast(msg: 'Terjadi Kesalahan');
+          setState(() {
+            isLoading1 = false;
+            Fluttertoast.showToast(msg: 'Terjadi Kesalahan');
+          });
         }
       });
     });
@@ -191,7 +229,12 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     CallApi().submit_gambar(id, _imageFile).then((value) {
       setState(() {
         isLoading1 = false;
-        isFinish[3] = true;
+        if (value == 'success') {
+          isLoading1 = false;
+          isFinish[3] = true;
+        } else {
+          Fluttertoast.showToast(msg: 'error');
+        }
       });
     });
   }
@@ -204,6 +247,83 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     setState(() {
       _alamatLengkapController.text = place.first.street.toString();
     });
+  }
+
+  void _popUpDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 16,
+            child: Stack(
+              children: [
+                Container(
+                  height: 200,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white70,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 70),
+                      Container(
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            'Submit berhasil!',
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              SlideToRightRoute(
+                                  page:
+                                      MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.green,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Kembali',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(65),
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
+                        fit: BoxFit.cover,
+                        height: 70,
+                        width: 70,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Widget build(BuildContext context) {
@@ -536,14 +656,16 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(7)),
                               child: Center(
-                                  child: Text(
-                                '+',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 30,
-                                    textStyle: TextStyle(
-                                      color: Colors.grey,
-                                    )),
-                              )),
+                                  child: _imageFile != null
+                                      ? Image.file(File(_imageFile!.path))
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
                             ),
                           ),
                         ),
@@ -613,92 +735,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: InkWell(
                   onTap: () {
-                    setState(() {
-                      _imageFile != null
-                          ? submit_formulir()
-                          : isFinish[3] = true;
-                      isFinish[3] == true
-                          ? showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  elevation: 16,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 200,
-                                        width: 300,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white70,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            SizedBox(height: 70),
-                                            Container(
-                                              height: 50,
-                                              child: Center(
-                                                child: Text(
-                                                  'Submit berhasil!',
-                                                  style: TextStyle(
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    SlideToRightRoute(
-                                                        page:
-                                                            MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                width: 200,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: Colors.green,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Kembali',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(65),
-                                            child: Image.network(
-                                              'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
-                                              fit: BoxFit.cover,
-                                              height: 70,
-                                              width: 70,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              })
-                          : Container();
-                    });
+                    submit_formulir();
                   },
                   child: Container(
                     height: 70,

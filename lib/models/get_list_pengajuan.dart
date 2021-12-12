@@ -95,14 +95,17 @@ class RegistrationForm1 {
         lat: json["lat"].toDouble(),
         lng: json["lng"].toDouble(),
         status: json["status"],
-        reasonRejection: json["reason_rejection"],
+        reasonRejection:
+            json["reason_rejection"] == null ? null : json["reason_rejection"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         user: User.fromJson(json["user"]),
         registrationFormAttachments: List<RegistrationFormAttachment>.from(
             json["registration_form_attachments"]
                 .map((x) => RegistrationFormAttachment.fromJson(x))),
-        mailRequest: MailRequest.fromJson(json["mail_request"]),
+        mailRequest: json["mail_request"] == null
+            ? null
+            : MailRequest.fromJson(json["mail_request"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -118,13 +121,13 @@ class RegistrationForm1 {
         "lat": lat,
         "lng": lng,
         "status": status,
-        "reason_rejection": reasonRejection,
+        "reason_rejection": reasonRejection == null ? null : reasonRejection,
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),
         "user": user!.toJson(),
         "registration_form_attachments": List<dynamic>.from(
             registrationFormAttachments!.map((x) => x.toJson())),
-        "mail_request": mailRequest!.toJson(),
+        "mail_request": mailRequest == null ? null : mailRequest!.toJson(),
       };
 
   void add(List<RegistrationForm1> temporary) {}
