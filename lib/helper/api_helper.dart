@@ -200,7 +200,7 @@ class CallApi {
 
   Future<List<GetKelurahan>> getKelurahan(String id) async {
     List<GetKelurahan> _dataKelurahan = <GetKelurahan>[];
-    id = '5130';
+    //id = '5130';
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     Uri fullUrl = Uri.parse(SERVER_URL + GET_KELURAHAN + id);
@@ -241,17 +241,18 @@ class CallApi {
       String type,
       String? district,
       String? subdistrict,
-      String building_area,
-      String land_area,
-      String building_location,
-      String complete_address,
+      String buildingArea,
+      String landArea,
+      String buildingLocation,
+      String completeAddress,
       String lat,
-      String lng) async {
+      String lng,
+      List<XFile> _imageFileList) async {
     SubmitFormulir _dataFormulir = SubmitFormulir();
-    //SharedPreferences localStorage = await SharedPreferences.getInstance();
-    //var token = localStorage.getString('token');
-    var token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    //var token =
+    //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FORMULIR);
     print(fullUrl);
     try {
@@ -262,10 +263,10 @@ class CallApi {
         'type': type,
         'district': district,
         'subdistrict': subdistrict,
-        'building_area': building_area,
-        'land_area': land_area,
-        'building_location': building_location,
-        'complete_address': complete_address,
+        'building_area': buildingArea,
+        'land_area': landArea,
+        'building_location': buildingLocation,
+        'complete_address': completeAddress,
         'lat': lat,
         'lng': lng
       });
@@ -278,6 +279,12 @@ class CallApi {
       if (a == 200) {
         print('masul200');
         _dataFormulir = submitFormulirFromJson(res.body);
+        if (_imageFileList.length > 0) {
+          for (var i = 0; i < _imageFileList.length; i++) {
+            await CallApi().submit_gambar(
+                _dataFormulir.registrationForm!.id, _imageFileList[i]);
+          }
+        }
         return _dataFormulir;
       } else if (a >= 400 && a <= 500) {
         print('masul400');
@@ -296,15 +303,15 @@ class CallApi {
     }
   }
 
-  Future<String> submit_gambar(var id, XFile? image) async {
+  Future<bool> submit_gambar(var id, XFile? image) async {
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_GAMBAR);
     print('ini submit gambar');
     print(fullUrl);
     try {
-      //SharedPreferences localStorage = await SharedPreferences.getInstance();
-      //var token = localStorage.getString('token');
-      String token =
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      // String token =
+      //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       File? image1 = File(image!.path);
       http.MultipartFile _file = http.MultipartFile(
           'file', image.readAsBytes().asStream(), image1.lengthSync(),
@@ -330,13 +337,13 @@ class CallApi {
       int a = jsonDecode(data.body)['status_code'];
       print(a);
       if (a == 200) {
-        return 'success';
+        return true;
       } else {
-        return ' failed';
+        return false;
       }
     } catch (e) {
       print(e);
-      return e.toString();
+      return false;
     }
   }
 
@@ -344,9 +351,9 @@ class CallApi {
     bool isNull = false;
     ListPengajuan _listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    //var token = localStorage.getString('token');
-    var token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
+    var token = localStorage.getString('token');
+    //var token =
+    //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
     Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
     print(fullUrl);
     try {

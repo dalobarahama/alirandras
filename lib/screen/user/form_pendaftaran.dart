@@ -39,6 +39,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   bool isLoading = true;
   bool isLoading1 = false;
   bool loc = false;
+  bool isSubmitImage = false;
   Position currentLocation = Position(
       longitude: 0,
       latitude: 0,
@@ -51,13 +52,18 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   double lat = 0;
   double lang = 0;
   final ImagePicker _picker = ImagePicker();
-  XFile? _imageFile;
+
   List<GetKecamatan> _listKecamatan = <GetKecamatan>[];
   GetKecamatan? _selectedKecamatan = GetKecamatan();
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
   GetKelurahan? _selectedKelurahan = GetKelurahan();
   SubmitFormulir _dataFormulir = SubmitFormulir();
   List<File> uploadFiles = <File>[];
+  List<XFile>? _imageFileList = <XFile>[];
+  set _imageFile(XFile? value) {
+    _imageFileList = value == null ? null : [value];
+  }
+
   List<bool> isFinish = [
     false,
     false,
@@ -133,10 +139,9 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   }
 
   _imgFromGallery() async {
-    XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    final PickedFileList = await _picker.pickMultiImage();
     setState(() {
-      _imageFile = image;
+      _imageFileList = PickedFileList;
     });
   }
 
@@ -168,15 +173,17 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
 
     await CallApi()
         .submit_formulir(
-            jenisPermohonan,
-            _selectedKecamatan!.name,
-            _selectedKelurahan!.name,
-            _luasBangunanController.text,
-            _luasLahanController.text,
-            _lokasiBangunanController.text,
-            _alamatLengkapController.text,
-            lat.toString(),
-            lang.toString())
+      jenisPermohonan,
+      _selectedKecamatan!.name,
+      _selectedKelurahan!.name,
+      _luasBangunanController.text,
+      _luasLahanController.text,
+      _lokasiBangunanController.text,
+      _alamatLengkapController.text,
+      lat.toString(),
+      lang.toString(),
+      _imageFileList!,
+    )
         .then((value) {
       setState(() {
         _dataFormulir = value;
@@ -184,24 +191,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
         if (_dataFormulir != null) {
           if (_dataFormulir.statusCode == 200) {
             setState(() {
-              isFinish[2] = true;
+              isFinish[3] = true;
               // isLoading1 = false;
               print('ini2' + isFinish[2].toString());
-              print(_imageFile);
-              print('image file');
             });
-
-            if (_imageFile != null) {
-              submit_gambar(
-                _dataFormulir.registrationForm!.id,
-              );
-            } else {
-              setState(() {
-                isFinish[3] = true;
-                isLoading1 = false;
-                print('ini3' + isFinish[3].toString());
-              });
-            }
           } else if (_dataFormulir.statusCode! >= 400 &&
               _dataFormulir.statusCode! <= 500) {
             setState(() {
@@ -220,20 +213,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
             isLoading1 = false;
             Fluttertoast.showToast(msg: 'Terjadi Kesalahan');
           });
-        }
-      });
-    });
-  }
-
-  submit_gambar(int? id) async {
-    CallApi().submit_gambar(id, _imageFile).then((value) {
-      setState(() {
-        isLoading1 = false;
-        if (value == 'success') {
-          isLoading1 = false;
-          isFinish[3] = true;
-        } else {
-          Fluttertoast.showToast(msg: 'error');
         }
       });
     });
@@ -311,11 +290,9 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(65),
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
-                        fit: BoxFit.cover,
-                        height: 70,
-                        width: 70,
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.green,
                       ),
                     ),
                   ],
@@ -626,28 +603,65 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Gambar Bangunan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        child: InkWell(
-                          onTap: () {
-                            _imgFromGallery();
-                          },
+              InkWell(
+                onTap: () {
+                  _imgFromGallery();
+                },
+                child: Container(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 35, left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Gambar Bangunan',
+                          style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              textStyle: TextStyle(
+                                color: Colors.black54,
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            child: DottedBorder(
+                              color: Colors.grey,
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7)),
+                                child: Center(
+                                    child: _imageFileList!.length != 0
+                                        ? _imageFileList![0] != null
+                                            ? Image.file(
+                                                File(_imageFileList![0].path))
+                                            : Text(
+                                                '+',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 30,
+                                                    textStyle: TextStyle(
+                                                      color: Colors.grey,
+                                                    )),
+                                              )
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 60,
+                          height: 60,
                           child: DottedBorder(
                             color: Colors.grey,
                             child: Container(
@@ -656,8 +670,19 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(7)),
                               child: Center(
-                                  child: _imageFile != null
-                                      ? Image.file(File(_imageFile!.path))
+                                  child: _imageFileList!.length != 0 &&
+                                          _imageFileList!.length > 1
+                                      ? _imageFileList![1] != null
+                                          ? Image.file(
+                                              File(_imageFileList![1].path))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
                                       : Text(
                                           '+',
                                           style: GoogleFonts.roboto(
@@ -669,63 +694,44 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    Container(
-                      width: 60,
-                      height: 60,
-                      child: InkWell(
-                        onTap: () {
-                          _imgFromGallery();
-                        },
-                        child: DottedBorder(
-                          color: Colors.grey,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7)),
-                            child: Center(
-                                child: Text(
-                              '+',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 30,
-                                  textStyle: TextStyle(
-                                    color: Colors.grey,
-                                  )),
-                            )),
+                        Container(
+                          width: 60,
+                          height: 60,
+                          child: DottedBorder(
+                            color: Colors.grey,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Center(
+                                  child: _imageFileList!.length != 0 &&
+                                          _imageFileList!.length > 2
+                                      ? _imageFileList![2] != null
+                                          ? Image.file(
+                                              File(_imageFileList![2].path))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    Container(
-                      width: 60,
-                      height: 60,
-                      child: InkWell(
-                        onTap: () {
-                          _imgFromGallery();
-                        },
-                        child: DottedBorder(
-                          color: Colors.grey,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7)),
-                            child: Center(
-                                child: Text(
-                              '+',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 30,
-                                  textStyle: TextStyle(
-                                    color: Colors.grey,
-                                  )),
-                            )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -735,8 +741,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: InkWell(
                   onTap: () {
-                    //jangan lupa ganti fungsi submit_formulir
-                    submit_gambar(5);
+                    submit_formulir();
                   },
                   child: Container(
                     height: 70,
