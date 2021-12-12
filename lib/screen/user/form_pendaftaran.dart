@@ -735,7 +735,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: InkWell(
                   onTap: () {
-                    submit_formulir();
+                    //jangan lupa ganti fungsi submit_formulir
+                    submit_gambar(5);
                   },
                   child: Container(
                     height: 70,
