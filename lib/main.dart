@@ -21,6 +21,6 @@ void main() {
     debugShowCheckedModeBanner: false,
 
     //home: SplashScreen(),
-    home: SplashScreen(),
+    home: Form_pendaftaran(),
   ));
 }

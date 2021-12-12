@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -183,36 +184,52 @@ class _Detail_card_statuspengajuanState
                           borderRadius: BorderRadius.circular(10)),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 15, left: 20),
-                        child: ListView.builder(
-                          itemCount: _dataStatusPengajuan
-                              .mailRequest!.mailPermissions!.length,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0),
-                          itemBuilder: (BuildContext context, int index1) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                  child: Row(
-                                children: [
-                                  _dataStatusPengajuan
-                                              .mailRequest!
-                                              .mailPermissions![index1]
-                                              .status ==
-                                          'diproses'
-                                      ? Icon(Icons.person, color: Colors.green)
-                                      : Icon(Icons.person, color: Colors.grey),
-                                  Text(
-                                    'Surat telah diverifikasi oleh ' +
-                                        _dataStatusPengajuan.mailRequest!
-                                            .mailPermissions![index1].user!.name
-                                            .toString(),
-                                    style: TextStyle(color: Colors.black54),
-                                  )
-                                ],
-                              )),
-                            );
-                          },
-                        ),
+                        child: _dataStatusPengajuan.mailRequest == null
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                    child: Text(
+                                  'Data Belum diverifikasi',
+                                  style: TextStyle(color: Colors.black54),
+                                )),
+                              )
+                            : ListView.builder(
+                                itemCount: _dataStatusPengajuan
+                                    .mailRequest!.mailPermissions!.length,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(0),
+                                itemBuilder:
+                                    (BuildContext context, int index1) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        child: Row(
+                                      children: [
+                                        _dataStatusPengajuan
+                                                    .mailRequest!
+                                                    .mailPermissions![index1]
+                                                    .status ==
+                                                'diproses'
+                                            ? Icon(Icons.person,
+                                                color: Colors.green)
+                                            : Icon(Icons.person,
+                                                color: Colors.grey),
+                                        Text(
+                                          'Surat telah diverifikasi oleh ' +
+                                              _dataStatusPengajuan
+                                                  .mailRequest!
+                                                  .mailPermissions![index1]
+                                                  .user!
+                                                  .name
+                                                  .toString(),
+                                          style:
+                                              TextStyle(color: Colors.black54),
+                                        )
+                                      ],
+                                    )),
+                                  );
+                                },
+                              ),
                       ),
                     ),
                     SizedBox(

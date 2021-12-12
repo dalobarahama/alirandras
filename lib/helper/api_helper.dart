@@ -200,10 +200,11 @@ class CallApi {
 
   Future<List<GetKelurahan>> getKelurahan(String id) async {
     List<GetKelurahan> _dataKelurahan = <GetKelurahan>[];
+    id = '5130';
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     Uri fullUrl = Uri.parse(SERVER_URL + GET_KELURAHAN + id);
-    print(fullUrl);
+
     try {
       var get = http.get(fullUrl, headers: {
         'Authorization': 'Bearer $token',
@@ -238,19 +239,26 @@ class CallApi {
 
   Future<SubmitFormulir> submit_formulir(
       String type,
-      String district,
+      String? district,
       String? subdistrict,
       String building_area,
       String land_area,
       String building_location,
       String complete_address,
-      double lat,
-      double lng) async {
+      String lat,
+      String lng) async {
     SubmitFormulir _dataFormulir = SubmitFormulir();
+    //SharedPreferences localStorage = await SharedPreferences.getInstance();
+    //var token = localStorage.getString('token');
+    var token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FORMULIR);
-
+    print(fullUrl);
     try {
-      var post = http.post(fullUrl, body: {
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      }, body: {
         'type': type,
         'district': district,
         'subdistrict': subdistrict,
@@ -263,58 +271,84 @@ class CallApi {
       });
       print(post);
       var res = await post;
-      print(res);
-      var a = int.parse(jsonDecode(res.body)['status_code']);
+      print(res.body);
+      //print(res.statusCode);
+      int a = jsonDecode(res.body)['status_code'];
       print(a);
       if (a == 200) {
+        print('masul200');
         _dataFormulir = submitFormulirFromJson(res.body);
         return _dataFormulir;
       } else if (a >= 400 && a <= 500) {
+        print('masul400');
         _dataFormulir = submitFormulirFromJson(res.body);
         var msg = jsonDecode(res.body)['message'];
         return _dataFormulir;
       } else {
+        print('masulexep');
         _dataFormulir.clear();
         return _dataFormulir;
       }
     } catch (e) {
+      print(e);
       _dataFormulir.clear();
       return _dataFormulir;
     }
   }
 
   Future<String> submit_gambar(var id, XFile? image) async {
-    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_GAMBAR);
+    //SharedPreferences localStorage = await SharedPreferences.getInstance();
+    //var token = localStorage.getString('token');
+    var token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
 
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_GAMBAR);
+    print('ini submit gambar');
+    print(fullUrl);
     try {
-      var post =
-          http.post(fullUrl, body: {'registration_form_id': id, 'file': image});
-      var res = await post;
-      var a = int.parse(jsonDecode(res.body)['status_code']);
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      if (id != 0) {
+        request.fields['registration_form_id'] = id.toString();
+      }
+
+      if (image!.path != null) {
+        File? image1 = File(image.path);
+        http.MultipartFile _file = http.MultipartFile(
+            'img', image.readAsBytes().asStream(), image1.lengthSync(),
+            filename: 'Gambar_bangunan_$id _${image.path.split(".").last}');
+        request.files.add(_file);
+      }
+      print(request.fields);
+      var response = await request.send();
+      var data = await http.Response.fromStream(response);
+      print(data.body);
+      int a = jsonDecode(data.body)['status_code'];
       print(a);
       if (a == 200) {
         return 'success';
-      } else if (a >= 400 && a <= 500) {
-        // print('zzzzzz');
-        var msg = jsonDecode(res.body)['message'];
-        return msg;
       } else {
-        return 'failed';
+        return ' failed';
       }
     } catch (e) {
-      // print(e);
+      print(e);
       return e.toString();
     }
   }
 
   Future<List<RegistrationForm1>?> getListPengajuan() async {
+    bool isNull = false;
     ListPengajuan _listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     //var token = localStorage.getString('token');
     var token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzgzNDE1NTUsIm5iZiI6MTYzODM0MTU1NSwianRpIjoiNTJhanpGRkpEaFZwUWxGRSIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zhNVm5GGsKpD98ccq8fPTGKdxc6K_WxyLoAh6BQnhy8';
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
     Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
-
+    print(fullUrl);
     try {
       var get = http.get(fullUrl, headers: {
         'Authorization': 'Bearer $token',
@@ -328,6 +362,7 @@ class CallApi {
       print(res.body);
       if (res.statusCode == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
+
         return _listPengajuan.registrationForms;
       } else if (res.statusCode == 401) {
         List<RegistrationForm1> temporary = <RegistrationForm1>[];
