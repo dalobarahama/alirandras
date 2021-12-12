@@ -297,34 +297,34 @@ class CallApi {
   }
 
   Future<String> submit_gambar(var id, XFile? image) async {
-    //SharedPreferences localStorage = await SharedPreferences.getInstance();
-    //var token = localStorage.getString('token');
-    var token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
-
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_GAMBAR);
     print('ini submit gambar');
     print(fullUrl);
     try {
+      //SharedPreferences localStorage = await SharedPreferences.getInstance();
+      //var token = localStorage.getString('token');
+      String token =
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+      File? image1 = File(image!.path);
+      http.MultipartFile _file = http.MultipartFile(
+          'file', image.readAsBytes().asStream(), image1.lengthSync(),
+          filename: 'Gambar_bangunan_$id _${image.path.split(".").last}');
+
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': 'Bearer $token'
       };
       var request = http.MultipartRequest("POST", fullUrl)
         ..headers.addAll(headers);
-      if (id != 0) {
-        request.fields['registration_form_id'] = id.toString();
-      }
+      request.fields['registration_form_id'] = id.toString();
+      request.files.add(_file);
 
-      if (image!.path != null) {
-        File? image1 = File(image.path);
-        http.MultipartFile _file = http.MultipartFile(
-            'img', image.readAsBytes().asStream(), image1.lengthSync(),
-            filename: 'Gambar_bangunan_$id _${image.path.split(".").last}');
-        request.files.add(_file);
-      }
+      print('asdasd');
       print(request.fields);
-      var response = await request.send();
+      print(request.files);
+      // var response = await request.send();
+      //var data = await http.Response.fromStream(response);
+      http.StreamedResponse response = await request.send();
       var data = await http.Response.fromStream(response);
       print(data.body);
       int a = jsonDecode(data.body)['status_code'];
