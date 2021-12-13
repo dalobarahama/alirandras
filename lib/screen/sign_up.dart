@@ -251,22 +251,20 @@ class _Sign_upState extends State<Sign_up> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 130,
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                      width: double.infinity,
+                      height: 130,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image:
+                                  AssetImage('assets/images/footer_login.png'),
+                              fit: BoxFit.cover))),
                 )
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-                width: double.infinity,
-                height: 130,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/footer_login.png'),
-                        fit: BoxFit.cover))),
-          )
         ],
       ),
     ));

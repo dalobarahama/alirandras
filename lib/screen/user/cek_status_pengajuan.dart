@@ -17,9 +17,11 @@ class Cek_status_pengajuan extends StatefulWidget {
 }
 
 class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
+  TextEditingController _cekStatusFilterController = TextEditingController();
   bool isLoading = true;
 
   List<RegistrationForm1>? _listPengajuan = <RegistrationForm1>[];
+  List<RegistrationForm1>? _listPengajuanFiltered = <RegistrationForm1>[];
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
       setState(() {
         isLoading = false;
         _listPengajuan = value;
+        _listPengajuanFiltered = value;
 
         // if (_listPengajuan == null) {
         //   Fluttertoast.showToast(
@@ -40,6 +43,22 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
       });
     });
     super.initState();
+  }
+
+  List<RegistrationForm1>? _filteredCekStatus(
+      List<RegistrationForm1>? _listPengajuan,
+      String _cekStatusFilteredController) {
+    setState(() {
+      print('asd');
+      _listPengajuanFiltered = _listPengajuan!
+          .where((u) => (u.id
+              .toString()
+              .toLowerCase()
+              .contains(_cekStatusFilteredController.toLowerCase())))
+          .toList();
+    });
+
+    return _listPengajuanFiltered;
   }
 
   void _launchURL(String? url) async {
@@ -74,6 +93,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
               Padding(
                 padding: const EdgeInsets.only(right: 35, top: 20),
                 child: TextField(
+                  controller: _cekStatusFilterController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -81,10 +101,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
                     suffixIcon: InkWell(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Cek_status_pengajuan();
-                        }));
+                        _filteredCekStatus(
+                            _listPengajuan, _cekStatusFilterController.text);
                       },
                       child: Container(
                         width: 120,
@@ -117,7 +135,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                             Expanded(
                               flex: 1,
                               child: ListView.builder(
-                                itemCount: _listPengajuan!.length,
+                                itemCount: _listPengajuanFiltered!.length,
                                 shrinkWrap: true,
                                 physics: PageScrollPhysics(),
                                 padding: EdgeInsets.all(0),
@@ -152,7 +170,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                       const EdgeInsets.only(
                                                           right: 50),
                                                   child: Text(
-                                                    _listPengajuan![index]
+                                                    _listPengajuanFiltered![
+                                                            index]
                                                         .id
                                                         .toString(),
                                                     style: GoogleFonts.roboto(
@@ -164,7 +183,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  _listPengajuan![index]
+                                                  _listPengajuanFiltered![index]
                                                       .createdAt
                                                       .toString(),
                                                   style: GoogleFonts.roboto(
@@ -221,7 +240,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    _listPengajuan![index]
+                                                    _listPengajuanFiltered![
+                                                            index]
                                                         .user!
                                                         .name!,
                                                     style: GoogleFonts.roboto(
@@ -232,7 +252,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                         )),
                                                   ),
                                                   Text(
-                                                    _listPengajuan![index]
+                                                    _listPengajuanFiltered![
+                                                            index]
                                                         .status!,
                                                     style: GoogleFonts.roboto(
                                                         fontSize: 14,
@@ -269,10 +290,11 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                   Expanded(
                                                     flex: 1,
                                                     child: ListView.builder(
-                                                        itemCount: _listPengajuan![
-                                                                index]
-                                                            .registrationFormAttachments!
-                                                            .length,
+                                                        itemCount:
+                                                            _listPengajuanFiltered![
+                                                                    index]
+                                                                .registrationFormAttachments!
+                                                                .length,
                                                         shrinkWrap: true,
                                                         physics:
                                                             ClampingScrollPhysics(),
@@ -286,7 +308,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                             child: InkWell(
                                                                 onTap: () {
                                                                   String _link = 'http://alirandras.inotive.id' +
-                                                                      _listPengajuan![
+                                                                      _listPengajuanFiltered![
                                                                               index]
                                                                           .registrationFormAttachments![
                                                                               index1]
@@ -341,7 +363,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                           context,
                                                           SlideToLeftRoute(
                                                               page: Detail_card_statuspengajuan(
-                                                                  _listPengajuan![
+                                                                  _listPengajuanFiltered![
                                                                       index])));
                                                     },
                                                     child: Text(
@@ -370,7 +392,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                           context,
                                                           SlideToLeftRoute(
                                                               page: EditForm(
-                                                                  _listPengajuan![
+                                                                  _listPengajuanFiltered![
                                                                       index])));
                                                     },
                                                     child: Text(

@@ -51,10 +51,7 @@ class _Detail_card_statuspengajuanState
                   Container(
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Cek_status_pengajuan();
-                        }));
+                        Navigator.pop(context);
                       },
                       child: Icon(
                         Icons.arrow_back,
@@ -297,7 +294,7 @@ class _Detail_card_statuspengajuanState
                       child: Row(
                         children: [
                           Text(
-                            'Alamat Lengkap',
+                            'Lokasi Bangunan',
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
                         ],
@@ -306,7 +303,7 @@ class _Detail_card_statuspengajuanState
                     Row(
                       children: [
                         Text(
-                          _dataStatusPengajuan.completeAddress.toString(),
+                          _dataStatusPengajuan.buildingLocation.toString(),
                           style: TextStyle(color: Colors.black54, fontSize: 16),
                         ),
                       ],

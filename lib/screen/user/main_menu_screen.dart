@@ -19,6 +19,12 @@ class MainMenuScreen extends StatefulWidget {
 }
 
 class _MainMenuScreenState extends State<MainMenuScreen> {
+  PersistentTabController _controller = PersistentTabController();
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
   void logout() async {
     await CallStorage().logout();
     Navigator.pushReplacement(context, SlideToRightRoute(page: Log_in()));
@@ -59,26 +65,59 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     ];
   }
 
+  Future<bool> showExitPopup() async {
+    return _controller.index == 0
+        ? await showDialog(
+              //show confirm dialogue
+              //the return value will be from "Yes" or "No" options
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('logout App'),
+                content: Text('Do you want to logout an App?'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    //return false when click on "NO"
+                    child: Text('No'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => logout(),
+                    //return true when click on "Yes"
+                    child: Text('Yes'),
+                  ),
+                ],
+              ),
+            ) ??
+            false
+        : _controller.index =
+            0; //if showDialouge had returned null, then return false
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PersistentTabView(
-        context,
-        screens: _screenList(),
-        items: _itemList(),
-        screenTransitionAnimation: ScreenTransitionAnimation(
-            animateTabTransition: true, duration: Duration(milliseconds: 300)),
-        backgroundColor: Colors.white,
-        navBarStyle: NavBarStyle.style6,
-        stateManagement: true,
-        decoration: NavBarDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(7)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: Offset(0, -1),
-                  blurRadius: 6)
-            ]),
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+        body: PersistentTabView(
+          context,
+          screens: _screenList(),
+          items: _itemList(),
+          controller: _controller,
+          screenTransitionAnimation: ScreenTransitionAnimation(
+              animateTabTransition: true,
+              duration: Duration(milliseconds: 300)),
+          backgroundColor: Colors.white,
+          navBarStyle: NavBarStyle.style6,
+          stateManagement: true,
+          decoration: NavBarDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(7)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, -1),
+                    blurRadius: 6)
+              ]),
+        ),
       ),
     );
   }
