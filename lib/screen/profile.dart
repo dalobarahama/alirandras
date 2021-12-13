@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/sign_up.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -28,6 +30,8 @@ class _ProfileState extends State<Profile> {
   TextEditingController _passwordController = TextEditingController();
   User _userData = User();
   bool isLoading = true;
+  final ImagePicker _picker = ImagePicker();
+  XFile? _imageFile;
   @override
   void initState() {
     initData();
@@ -45,6 +49,51 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  _imgFromGallery() async {
+    XFile? image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      _imageFile = image;
+    });
+  }
+
+  void deleteAvatar() {
+    setState(() {
+      _userData.avatar = '';
+      _imageFile = null;
+    });
+  }
+
+  void updateProfile() {
+    if (_namaController.text.length < 1) {
+      Fluttertoast.showToast(msg: 'Nama tidak boleh kosong');
+      return;
+    }
+    if (_emailController.text.length < 1) {
+      Fluttertoast.showToast(msg: 'Email tidak boleh kosong');
+      return;
+    }
+    if (_passwordController.text.length < 2) {
+      Fluttertoast.showToast(msg: 'password kurang dari 8 karakter');
+      return;
+    }
+    CallApi()
+        .updateProfile(_namaController.text, _emailController.text,
+            _passwordController.text, _imageFile!)
+        .then((value) {
+      if (value == 'success') {
+        Fluttertoast.showToast(
+            msg: 'Success Update Profile', timeInSecForIosWeb: 2);
+        initState();
+        ;
+      } else if (value == 'failed') {
+        Fluttertoast.showToast(
+            msg: 'Gagal Update Profile', timeInSecForIosWeb: 2);
+      } else {
+        Fluttertoast.showToast(msg: value, timeInSecForIosWeb: 2);
+      }
+    });
+  }
   /* void updateData() async {
     setState(() {
       isLoading = true;
@@ -128,23 +177,28 @@ class _ProfileState extends State<Profile> {
                       borderRadius: BorderRadius.circular(65)),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(65),
-                    child: CachedNetworkImage(
-                      imageUrl: _userData.signature ?? '-',
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
+                    child: _imageFile != null
+                        ? Image.file(
+                            File(_imageFile!.path),
                             fit: BoxFit.cover,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: _userData.avatar ?? '-',
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ),
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(
-                        Icons.error,
-                        color: Colors.white,
-                      ),
-                    ),
                   ),
                 ),
                 SizedBox(
@@ -154,17 +208,29 @@ class _ProfileState extends State<Profile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Ganti',
-                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      InkWell(
+                        onTap: () {
+                          _imgFromGallery();
+                        },
+                        child: Text(
+                          'Ganti',
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 16),
+                        ),
                       ),
                       Text(
                         '  |  ',
                         style: TextStyle(color: Colors.grey[300], fontSize: 23),
                       ),
-                      Text(
-                        'Hapus',
-                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      InkWell(
+                        onTap: () {
+                          deleteAvatar();
+                        },
+                        child: Text(
+                          'Hapus',
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 16),
+                        ),
                       ),
                     ],
                   ),
@@ -263,6 +329,7 @@ class _ProfileState extends State<Profile> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                      controller: _passwordController,
                       style: TextStyle(color: Colors.black54),
                       obscureText: true,
                       decoration: InputDecoration(
@@ -322,16 +389,21 @@ class _ProfileState extends State<Profile> {
                   //   return Profile();
                   // }));
                 },
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Center(
-                    child: Text(
-                      'Update',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                child: InkWell(
+                  onTap: () {
+                    updateProfile();
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Center(
+                      child: Text(
+                        'Update',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
                   ),
                 ),

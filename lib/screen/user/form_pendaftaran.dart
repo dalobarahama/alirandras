@@ -196,6 +196,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
+    if (_imageFileList!.length < 1) {
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
+      return;
+    }
 
     setState(() {
       isLoading1 = true;

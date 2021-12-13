@@ -65,6 +65,22 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
     if (!await launch(url!)) throw 'Could not launch $url';
   }
 
+  void deletePengajuan(int? id) async {
+    await CallApi().deletePengajuan(id).then((value) {
+      print('ceksts');
+      print(value.toString());
+      if (value == 'success') {
+        Fluttertoast.showToast(
+            msg: 'Berhasil Hapus Data', timeInSecForIosWeb: 2);
+        setState(() {
+          initState();
+        });
+      } else {
+        Fluttertoast.showToast(msg: 'Gagal Hapus Data', timeInSecForIosWeb: 2);
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -415,13 +431,21 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                   SizedBox(
                                                     width: 4,
                                                   ),
-                                                  Text(
-                                                    'Hapus',
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 12,
-                                                        textStyle: TextStyle(
-                                                          color: Colors.red,
-                                                        )),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      deletePengajuan(
+                                                          _listPengajuanFiltered![
+                                                                  index]
+                                                              .id);
+                                                    },
+                                                    child: Text(
+                                                      'Hapus',
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 12,
+                                                          textStyle: TextStyle(
+                                                            color: Colors.red,
+                                                          )),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

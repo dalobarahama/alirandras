@@ -26,7 +26,10 @@ class CallApi {
   final String SUBMIT_FORMULIR = '/api/formulir';
   final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
   final String GET_LIST_PENGAJUAN = '/api/formulir';
-
+  final String UPDATE_FORMULIR = '/api/edit-formulir/';
+  final String DELETE_FORMULIR = '/api/hapus-formulir/';
+  final String DELETE_DOKUMEN = '/api/hapus-file-formulir/';
+  final String UPDATE_PROFILE = '/api/auth/edit-profile';
   Future<String> login(String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + LOGIN_URL);
     LoginData _loginData = LoginData();
@@ -353,7 +356,7 @@ class CallApi {
     //var token =
     //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
     Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
-    print(fullUrl);
+    // print(fullUrl);
     try {
       var get = http.get(fullUrl, headers: {
         'Authorization': 'Bearer $token',
@@ -364,7 +367,7 @@ class CallApi {
       //print(res.body);
       //print(res.statusCode);
       // print(res.body);
-      print(res.body);
+      //print(res.body);
       if (res.statusCode == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
 
@@ -382,6 +385,188 @@ class CallApi {
       print(e);
       _listPengajuan.registrationForms!.clear();
       return _listPengajuan.registrationForms;
+    }
+  }
+
+  Future<SubmitFormulir> update_formulir(
+      String type,
+      String? district,
+      String? subdistrict,
+      String buildingArea,
+      String landArea,
+      String buildingLocation,
+      String lat,
+      String lng,
+      List<XFile> _imageFileList,
+      int? id) async {
+    SubmitFormulir _dataFormulir = SubmitFormulir();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    //var token =
+    //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+    Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_FORMULIR + id.toString());
+    print(fullUrl);
+    try {
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      }, body: {
+        'type': type,
+        'district': district,
+        'subdistrict': subdistrict,
+        'building_area': buildingArea,
+        'land_area': landArea,
+        'building_location': buildingLocation,
+        'lat': lat,
+        'lng': lng
+      });
+      print(post);
+      var res = await post;
+      print(res.body);
+      //print(res.statusCode);
+      int a = jsonDecode(res.body)['status_code'];
+      print(a);
+      if (a == 200) {
+        print('masul200');
+        _dataFormulir = submitFormulirFromJson(res.body);
+        if (_imageFileList.length > 0) {
+          for (var i = 0; i < _imageFileList.length; i++) {
+            await CallApi().submit_gambar(
+                _dataFormulir.registrationForm!.id, _imageFileList[i]);
+          }
+        }
+        return _dataFormulir;
+      } else if (a >= 400 && a <= 500) {
+        print('masul400');
+        // _dataFormulir.clear();
+        _dataFormulir = submitFormulirFromJson(res.body);
+        var msg = jsonDecode(res.body)['message'];
+        print(msg);
+        return _dataFormulir;
+      } else {
+        print('masulexep');
+        _dataFormulir.clear();
+        return _dataFormulir;
+      }
+    } catch (e) {
+      print(e);
+      _dataFormulir.clear();
+      return _dataFormulir;
+    }
+  }
+
+  Future<String> deletePengajuan(int? id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_FORMULIR + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print('del penga');
+      print(a);
+      if (a == 200) {
+        CallApi().deleteDokumen(id);
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return 'failed';
+    }
+  }
+
+  Future<bool> deleteDokumen(int? id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_DOKUMEN + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      print(res.body);
+      print('del dok');
+
+      var a = int.parse(jsonDecode(res.body)['status_code']);
+      print(res.body);
+      print(a);
+      if (a == 200) {
+        return true;
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+        return false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<String> updateProfile(
+      String name, String email, String password, XFile avatar) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_PROFILE);
+
+    print(fullUrl);
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      print(avatar.name);
+      // String token =
+      //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+      File? image1 = File(avatar.path);
+      http.MultipartFile _file = http.MultipartFile(
+          'avatar', avatar.readAsBytes().asStream(), image1.lengthSync(),
+          filename: 'avatar_$name _${avatar.path.split(".").last}');
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['name'] = name;
+      request.fields['email'] = email;
+      request.fields['password'] = password;
+
+      request.files.add(_file);
+
+      print('asdasd');
+      print(request.fields);
+      print(request.files);
+      print(request);
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+      print(data.body);
+      int a = int.parse(jsonDecode(data.body)['status_code']);
+      print(a);
+      if (a == 200) {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        sharedPreferences.setString(
+            'user_data', userToJson(jsonDecode(data.body)['user']));
+        return 'success';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
     }
   }
 }
