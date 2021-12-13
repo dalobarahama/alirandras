@@ -26,7 +26,9 @@ class SubmitFormulir {
         status: json["status"],
         statusCode: json["status_code"],
         message: json["message"],
-        registrationForm: RegistrationForm.fromJson(json["registration_form"]),
+        registrationForm: json["registration_form"] == null
+            ? null
+            : RegistrationForm.fromJson(json["registration_form"]),
       );
 
   Map<String, dynamic> toJson() => {

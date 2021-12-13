@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
-import 'package:flutter_application_3/models/login_data.dart';
-import 'package:flutter_application_3/screen/log_in.dart';
+import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,15 +23,32 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   _HomeScreenAdminState(this.logout);
   User _userData = User();
   bool isLoading = true;
+  List<RegistrationForm1>? _listPengajuan = <RegistrationForm1>[];
   @override
   void initState() {
     setState(() {
       Timer(Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
           setState(() {
-            _userData = value;
+            _userData = value as User;
             isLoading = false;
           });
+        });
+      });
+      CallApi().getListPengajuan().then((value) {
+        setState(() {
+          isLoading = false;
+          _listPengajuan = value;
+
+          // if (_listPengajuan == null) {
+          //   Fluttertoast.showToast(
+          //       msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+          //   Navigator.pop(context);
+          // } else if (_listPengajuan![0].status == 401) {
+          //   Fluttertoast.showToast(
+          //       msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
+          //   Navigator.pop(context);
+          // }
         });
       });
     });
@@ -60,7 +77,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text('Hello,\nAdministrator!',
+                    child: Text('Hallo, ' + _userData.name.toString() + '!',
                         style: GoogleFonts.roboto(
                             color: Colors.white, fontSize: 20)),
                   ),
@@ -78,7 +95,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(65),
                         child: CachedNetworkImage(
-                          imageUrl: _userData.signature ?? '-',
+                          imageUrl: _userData.avatar ?? '-',
                           imageBuilder: (context, imageProvider) => Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -158,7 +175,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     ),
                     Center(
                         child: Text(
-                      '999',
+                      _listPengajuan!.length.toString(),
                       style: GoogleFonts.roboto(
                           fontSize: 50,
                           fontWeight: FontWeight.bold,

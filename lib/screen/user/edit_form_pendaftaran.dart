@@ -10,6 +10,8 @@ import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
 import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -31,7 +33,7 @@ class _EditFormState extends State<EditForm> {
   TextEditingController _luasBangunanController = TextEditingController();
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
-  TextEditingController _alamatLengkapController = TextEditingController();
+
   LatLng point = LatLng(-1.240112, 116.873320);
   String jenisPermohonan = '';
   String district = 'BALIKPAPAN KOTA';
@@ -51,13 +53,17 @@ class _EditFormState extends State<EditForm> {
   double lat = 0;
   double lang = 0;
   final ImagePicker _picker = ImagePicker();
-  XFile? _imageFile;
   List<GetKecamatan> _listKecamatan = <GetKecamatan>[];
   GetKecamatan? _selectedKecamatan = GetKecamatan();
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
   GetKelurahan? _selectedKelurahan = GetKelurahan();
   SubmitFormulir _dataFormulir = SubmitFormulir();
   List<File> uploadFiles = <File>[];
+  List<XFile>? _imageFileList = <XFile>[];
+  set _imageFile(XFile? value) {
+    _imageFileList = value == null ? null : [value];
+  }
+
   List<bool> isFinish = [
     false,
     false,
@@ -78,7 +84,7 @@ class _EditFormState extends State<EditForm> {
       _luasBangunanController.text = _dataForm.buildingArea!;
       _luasLahanController.text = _dataForm.landArea!;
       _lokasiBangunanController.text = _dataForm.buildingLocation!;
-      _alamatLengkapController.text = _dataForm.completeAddress!;
+      jenisPermohonan = _dataForm.type!;
       point = LatLng(_dataForm.lat!, _dataForm.lng!);
       print(point);
       loc = true;
@@ -86,12 +92,21 @@ class _EditFormState extends State<EditForm> {
     super.initState();
   }
 
-  _imgFromGallery() async {
-    XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
-    setState(() {
-      _imageFile = image;
-    });
+  _imgFromGallery(int index) async {
+    print(_imageFileList!.length);
+    if (_imageFileList!.length < 3) {
+      XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, imageQuality: 50);
+      setState(() {
+        _imageFileList!.add(image!);
+      });
+    } else {
+      XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, imageQuality: 50);
+      setState(() {
+        _imageFileList![index] = image!;
+      });
+    }
   }
 
   getKecamatan() async {
@@ -130,6 +145,176 @@ class _EditFormState extends State<EditForm> {
         }
       });
     });
+  }
+
+  void _getPlace(double lat, double long) async {
+    List<Placemark> place = await placemarkFromCoordinates(lat, long);
+    print('11aa11aa');
+    print(place.first.name);
+
+    setState(() {
+      _lokasiBangunanController.text = place.first.street.toString();
+    });
+  }
+
+  void update_formulir() async {
+    if (jenisPermohonan.length < 2) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan pilih jenis permohonan terlebih dahulu.');
+      return;
+    }
+    if (_selectedKecamatan == null) {
+      Fluttertoast.showToast(msg: 'Silahkan pilih kecamatan terlebih dahulu.');
+      return;
+    }
+    // if (_selectedKelurahan == null) {
+    //   Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
+    //   return;
+    // }
+    if (_luasBangunanController.text.length < 1) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan luas bangunan terlebih dahulu.');
+      return;
+    }
+    if (_luasLahanController.text.length < 2) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan luas lahan terlebih dahulu.');
+      return;
+    }
+    if (_lokasiBangunanController.text.length < 2) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
+      return;
+    }
+    /*if (_imageFileList!.length < 1) {
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
+      return;
+    }*/
+
+    setState(() {
+      isLoading1 = true;
+    });
+
+    await CallApi()
+        .update_formulir(
+            jenisPermohonan,
+            _selectedKecamatan!.name,
+            'DAMAI',
+            _luasBangunanController.text,
+            _luasLahanController.text,
+            _lokasiBangunanController.text,
+            lat.toString(),
+            lang.toString(),
+            _imageFileList!,
+            _dataForm.id)
+        .then((value) {
+      setState(() {
+        _dataFormulir = value;
+        print(_dataFormulir.statusCode);
+        if (_dataFormulir != null) {
+          if (_dataFormulir.statusCode == 200) {
+            setState(() {
+              isFinish[3] = true;
+              // isLoading1 = false;
+              print('ini2' + isFinish[2].toString());
+            });
+          } else if (_dataFormulir.statusCode! >= 400 &&
+              _dataFormulir.statusCode! <= 500) {
+            setState(() {
+              isLoading1 = false;
+              Fluttertoast.showToast(msg: _dataFormulir.message!);
+            });
+          } else {
+            setState(() {
+              isLoading1 = false;
+              Fluttertoast.showToast(msg: _dataFormulir.message!);
+            });
+          }
+          isFinish[3] == true ? _popUpDialog(context) : Container();
+        } else {
+          setState(() {
+            isLoading1 = false;
+            Fluttertoast.showToast(msg: 'Terjadi Kesalahan');
+          });
+        }
+      });
+    });
+  }
+
+  void _popUpDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 16,
+            child: Stack(
+              children: [
+                Container(
+                  height: 200,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white70,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 70),
+                      Container(
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            'Update Berhasil!',
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              SlideToRightRoute(
+                                  page:
+                                      MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.green,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Kembali',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Icon(Icons.check, size: 30, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -194,7 +379,7 @@ class _EditFormState extends State<EditForm> {
                                   print(point);
                                   lat = y.latitude;
                                   lang = y.longitude;
-                                  // _getPlace(lat, lang);
+                                  _getPlace(lat, lang);
                                 });
                               }),
                           layers: [
@@ -238,7 +423,7 @@ class _EditFormState extends State<EditForm> {
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
                         showSelectedItems: true,
-                        selectedItem: _dataForm.type,
+                        selectedItem: jenisPermohonan,
                         items: jenis_permohonan,
                         //  hint: "Pilih Jenis Permohonan",
                         dropdownBuilder: (context, selectedItem) {
@@ -412,34 +597,6 @@ class _EditFormState extends State<EditForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Alamat Lengkap',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
-                        controller: _alamatLengkapController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
                       'Gambar Bangunan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
@@ -454,7 +611,7 @@ class _EditFormState extends State<EditForm> {
                         height: 60,
                         child: InkWell(
                           onTap: () {
-                            _imgFromGallery();
+                            _imgFromGallery(0);
                           },
                           child: DottedBorder(
                             color: Colors.grey,
@@ -464,14 +621,26 @@ class _EditFormState extends State<EditForm> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(7)),
                               child: Center(
-                                  child: Text(
-                                '+',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 30,
-                                    textStyle: TextStyle(
-                                      color: Colors.grey,
-                                    )),
-                              )),
+                                  child: _imageFileList!.length != 0
+                                      ? _imageFileList![0] != null
+                                          ? Image.file(
+                                              File(_imageFileList![0].path))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
                             ),
                           ),
                         ),
@@ -482,7 +651,7 @@ class _EditFormState extends State<EditForm> {
                       height: 60,
                       child: InkWell(
                         onTap: () {
-                          _imgFromGallery();
+                          _imgFromGallery(1);
                         },
                         child: DottedBorder(
                           color: Colors.grey,
@@ -492,14 +661,27 @@ class _EditFormState extends State<EditForm> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7)),
                             child: Center(
-                                child: Text(
-                              '+',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 30,
-                                  textStyle: TextStyle(
-                                    color: Colors.grey,
-                                  )),
-                            )),
+                                child: _imageFileList!.length != 0 &&
+                                        _imageFileList!.length > 1
+                                    ? _imageFileList![1] != null
+                                        ? Image.file(
+                                            File(_imageFileList![1].path))
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )
+                                    : Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
                           ),
                         ),
                       ),
@@ -509,7 +691,7 @@ class _EditFormState extends State<EditForm> {
                       height: 60,
                       child: InkWell(
                         onTap: () {
-                          _imgFromGallery();
+                          _imgFromGallery(2);
                         },
                         child: DottedBorder(
                           color: Colors.grey,
@@ -519,14 +701,27 @@ class _EditFormState extends State<EditForm> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7)),
                             child: Center(
-                                child: Text(
-                              '+',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 30,
-                                  textStyle: TextStyle(
-                                    color: Colors.grey,
-                                  )),
-                            )),
+                                child: _imageFileList!.length != 0 &&
+                                        _imageFileList!.length > 2
+                                    ? _imageFileList![2] != null
+                                        ? Image.file(
+                                            File(_imageFileList![2].path))
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )
+                                    : Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
                           ),
                         ),
                       ),
@@ -540,94 +735,11 @@ class _EditFormState extends State<EditForm> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: InkWell(
-                  /*onTap: () {
+                  onTap: () {
                     setState(() {
-                      _imageFile != null
-                          ? submit_formulir()
-                          : isFinish[3] = true;
-                      isFinish[3] == true
-                          ? showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  elevation: 16,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 200,
-                                        width: 300,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white70,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            SizedBox(height: 70),
-                                            Container(
-                                              height: 50,
-                                              child: Center(
-                                                child: Text(
-                                                  'Submit berhasil!',
-                                                  style: TextStyle(
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    SlideToRightRoute(
-                                                        page:
-                                                            MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                width: 200,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: Colors.green,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Kembali',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(65),
-                                            child: Image.network(
-                                              'https://images.unsplash.com/photo-1634901623176-14daf9946560?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=693&q=80',
-                                              fit: BoxFit.cover,
-                                              height: 70,
-                                              width: 70,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              })
-                          : Container();
+                      update_formulir();
                     });
-                  },*/
+                  },
                   child: Container(
                     height: 70,
                     width: double.infinity,
@@ -640,7 +752,7 @@ class _EditFormState extends State<EditForm> {
                                 color: Colors.white,
                               )
                             : Text(
-                                'Submit',
+                                'Update',
                                 style: GoogleFonts.roboto(
                                     fontSize: 16,
                                     textStyle: TextStyle(

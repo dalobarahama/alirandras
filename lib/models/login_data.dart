@@ -52,6 +52,7 @@ class User {
     this.email,
     this.emailVerifiedAt,
     this.signature,
+    this.avatar,
     this.resetToken,
     this.createdAt,
     this.updatedAt,
@@ -63,6 +64,7 @@ class User {
   String? email;
   dynamic? emailVerifiedAt;
   String? signature;
+  String? avatar;
   dynamic? resetToken;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -74,6 +76,7 @@ class User {
         email: json["email"],
         emailVerifiedAt: json["email_verified_at"],
         signature: json["signature"],
+        avatar: json["avatar"],
         resetToken: json["reset_token"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -86,6 +89,7 @@ class User {
         "email": email,
         "email_verified_at": emailVerifiedAt,
         "signature": signature,
+        "avatar": avatar,
         "reset_token": resetToken,
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),
