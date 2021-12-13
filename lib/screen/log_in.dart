@@ -235,21 +235,45 @@ class _Log_inState extends State<Log_in> {
                     ],
                   ),
                   SizedBox(
-                    height: 120,
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 97),
+                        child: Text(
+                          'Belum punya akun?',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Sign_up();
+                          }));
+                        },
+                        child: Text(
+                          ' Daftar',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        width: double.infinity,
+                        height: 120,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/footer_login.png'),
+                                fit: BoxFit.cover))),
                   )
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  width: double.infinity,
-                  height: 120,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/footer_login.png'),
-                          fit: BoxFit.cover))),
-            )
           ],
         ),
       ),

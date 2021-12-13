@@ -31,7 +31,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   TextEditingController _luasBangunanController = TextEditingController();
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
-  TextEditingController _alamatLengkapController = TextEditingController();
+
   LatLng point = LatLng(-1.240112, 116.873320);
   String jenisPermohonan = '';
   String district = 'BALIKPAPAN KOTA';
@@ -138,11 +138,21 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     });
   }
 
-  _imgFromGallery() async {
-    final PickedFileList = await _picker.pickMultiImage();
-    setState(() {
-      _imageFileList = PickedFileList;
-    });
+  _imgFromGallery(int index) async {
+    print(_imageFileList!.length);
+    if (_imageFileList!.length < 3) {
+      XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, imageQuality: 50);
+      setState(() {
+        _imageFileList!.add(image!);
+      });
+    } else {
+      XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, imageQuality: 50);
+      setState(() {
+        _imageFileList![index] = image!;
+      });
+    }
   }
 
   pickFile() async {
@@ -186,11 +196,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
-    if (_alamatLengkapController.text.length < 2 || lat == 0 || lang == 0) {
-      Fluttertoast.showToast(
-          msg: 'Silahkan pilih lokasi di peta terlebih dahulu.');
-      return;
-    }
 
     setState(() {
       isLoading1 = true;
@@ -204,7 +209,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       _luasBangunanController.text,
       _luasLahanController.text,
       _lokasiBangunanController.text,
-      _alamatLengkapController.text,
       lat.toString(),
       lang.toString(),
       _imageFileList!,
@@ -249,7 +253,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     print(place.first.name);
 
     setState(() {
-      _alamatLengkapController.text = place.first.street.toString();
+      _lokasiBangunanController.text = place.first.street.toString();
     });
   }
 
@@ -601,55 +605,26 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Alamat Lengkap',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
-                        controller: _alamatLengkapController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Gambar Bangunan',
+                        style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            textStyle: TextStyle(
+                              color: Colors.black54,
+                            )),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  _imgFromGallery();
-                },
-                child: Container(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 35, left: 15, right: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Gambar Bangunan',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.black54,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: InkWell(
+                          onTap: () {
+                            _imgFromGallery(0);
+                          },
                           child: Container(
                             width: 60,
                             height: 60,
@@ -685,7 +660,12 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           ),
                         ),
-                        Container(
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _imgFromGallery(1);
+                        },
+                        child: Container(
                           width: 60,
                           height: 60,
                           child: DottedBorder(
@@ -720,7 +700,12 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           ),
                         ),
-                        Container(
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _imgFromGallery(2);
+                        },
+                        child: Container(
                           width: 60,
                           height: 60,
                           child: DottedBorder(
@@ -755,8 +740,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

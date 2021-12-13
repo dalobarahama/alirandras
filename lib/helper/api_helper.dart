@@ -244,7 +244,6 @@ class CallApi {
       String buildingArea,
       String landArea,
       String buildingLocation,
-      String completeAddress,
       String lat,
       String lng,
       List<XFile> _imageFileList) async {
@@ -266,7 +265,6 @@ class CallApi {
         'building_area': buildingArea,
         'land_area': landArea,
         'building_location': buildingLocation,
-        'complete_address': completeAddress,
         'lat': lat,
         'lng': lng
       });

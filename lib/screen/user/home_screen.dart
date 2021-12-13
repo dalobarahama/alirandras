@@ -61,10 +61,8 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(left: 15),
                           child: IconButton(
                               onPressed: null,
-                              icon: Icon(
-                                Icons.menu,
-                                color: Colors.blue[900],
-                                size: 30,
+                              icon: Image(
+                                image: AssetImage('assets/images/logo.png'),
                               )),
                         ),
                         Padding(
