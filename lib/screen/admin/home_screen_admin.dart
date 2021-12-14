@@ -30,7 +30,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
       Timer(Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
           setState(() {
+            print(value.name);
             _userData = value as User;
+            print(_userData.name);
             isLoading = false;
           });
         });
@@ -175,7 +177,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     ),
                     Center(
                         child: Text(
-                      _listPengajuan!.length.toString(),
+                      '999',
                       style: GoogleFonts.roboto(
                           fontSize: 50,
                           fontWeight: FontWeight.bold,

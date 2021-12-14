@@ -24,7 +24,7 @@ class _Log_inState extends State<Log_in> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
-  User _userData = User();
+  User1 _userData = User1();
 
   @override
   login() async {
@@ -141,6 +141,7 @@ class _Log_inState extends State<Log_in> {
                     padding: const EdgeInsets.only(
                         left: 33, right: 33, top: 20, bottom: 20),
                     child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         fillColor: Colors.grey[300],
                         filled: true,

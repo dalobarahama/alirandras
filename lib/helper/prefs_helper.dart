@@ -18,8 +18,8 @@ class CallStorage {
     return true;
   }
 
-  Future<User> getUserData() async {
-    User _data = User();
+  Future<User1> getUserData() async {
+    User1 _data = User1();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     String? data = localStorage.getString('user_data');
     _data = userFromJson(data!);
