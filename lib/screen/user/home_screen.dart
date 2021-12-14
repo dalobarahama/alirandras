@@ -346,6 +346,8 @@ class _HomeState extends State<Home> {
                                     SvgPicture.asset(
                                       'assets/icons/user_follow.svg',
                                       color: Colors.lightBlue,
+                                      height: 50,
+                                      width: 50,
                                     ),
                                     SizedBox(
                                       height: 15,
