@@ -8,6 +8,7 @@ import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -42,13 +43,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   List<PersistentBottomNavBarItem> _itemList() {
     return [
       PersistentBottomNavBarItem(
-          icon: Icon(Icons.home_outlined, size: 25),
+          icon: SvgPicture.asset('assets/icons/home.svg'),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.paste,
+            Icons.paste_outlined,
             size: 25,
           ),
           activeColorPrimary: Colors.blueAccent,

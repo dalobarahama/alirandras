@@ -28,10 +28,11 @@ class _ProfileState extends State<Profile> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _namaController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  User _userData = User();
+  User1 _userData = User1();
   bool isLoading = true;
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
+  XFile? _signatureFile;
   @override
   void initState() {
     initData();
@@ -57,6 +58,14 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  _signatureFromGallery() async {
+    XFile? image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      _signatureFile = image;
+    });
+  }
+
   void deleteAvatar() {
     setState(() {
       _userData.avatar = '';
@@ -73,13 +82,13 @@ class _ProfileState extends State<Profile> {
       Fluttertoast.showToast(msg: 'Email tidak boleh kosong');
       return;
     }
-    if (_passwordController.text.length < 2) {
+    if (_passwordController.text.length < 8) {
       Fluttertoast.showToast(msg: 'password kurang dari 8 karakter');
       return;
     }
     CallApi()
         .updateProfile(_namaController.text, _emailController.text,
-            _passwordController.text, _imageFile!)
+            _passwordController.text, _imageFile!, _signatureFile!)
         .then((value) {
       if (value == 'success') {
         Fluttertoast.showToast(
@@ -295,6 +304,7 @@ class _ProfileState extends State<Profile> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       style: TextStyle(color: Colors.black54),
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -333,11 +343,6 @@ class _ProfileState extends State<Profile> {
                       style: TextStyle(color: Colors.black54),
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: '********',
-                        suffixIcon: Icon(
-                          Icons.visibility,
-                          color: Colors.black54,
-                        ),
                         border: InputBorder.none,
                       )),
                 ),
@@ -362,17 +367,22 @@ class _ProfileState extends State<Profile> {
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 33, right: 33, bottom: 50),
-                        child: Container(
-                          height: 50,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Center(
-                            child: Text(
-                              'Upload File',
-                              style: TextStyle(
-                                  color: Colors.black54, fontSize: 20),
+                        child: InkWell(
+                          onTap: () {
+                            _signatureFromGallery();
+                          },
+                          child: Container(
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Center(
+                              child: Text(
+                                'Upload File',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 20),
+                              ),
                             ),
                           ),
                         ),

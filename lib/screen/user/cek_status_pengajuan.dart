@@ -8,6 +8,7 @@ import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class Cek_status_pengajuan extends StatefulWidget {
   const Cek_status_pengajuan({Key? key}) : super(key: key);
@@ -107,11 +108,14 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 35, top: 20),
+                padding: const EdgeInsets.only(right: 35, top: 20, left: 10),
                 child: TextField(
                   controller: _cekStatusFilterController,
                   decoration: InputDecoration(
+                    fillColor: Colors.grey[300],
+                    filled: true,
                     border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10)),
                     hintText: ' Masukkan ID Pengajuan',
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
@@ -174,34 +178,24 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  'ID :',
+                                                  'ID :' +
+                                                      _listPengajuanFiltered![
+                                                              index]
+                                                          .id
+                                                          .toString(),
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 14,
                                                       textStyle: TextStyle(
                                                         color: Colors.grey[500],
                                                       )),
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 50),
-                                                  child: Text(
-                                                    _listPengajuanFiltered![
-                                                            index]
-                                                        .id
-                                                        .toString(),
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 14,
-                                                        textStyle: TextStyle(
-                                                          color:
-                                                              Colors.grey[500],
-                                                        )),
-                                                  ),
-                                                ),
                                                 Text(
-                                                  _listPengajuanFiltered![index]
-                                                      .createdAt
-                                                      .toString(),
+                                                  DateFormat(
+                                                          'dd MMMM yy, HH:mm')
+                                                      .format(
+                                                          _listPengajuanFiltered![
+                                                                  index]
+                                                              .createdAt!),
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 14,
                                                       textStyle: TextStyle(
@@ -267,24 +261,79 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                               Colors.grey[700],
                                                         )),
                                                   ),
-                                                  Text(
-                                                    _listPengajuanFiltered![
-                                                            index]
-                                                        .status!,
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 14,
-                                                        textStyle: TextStyle(
-                                                          color:
-                                                              Colors.grey[700],
-                                                        )),
-                                                  ),
+                                                  _listPengajuanFiltered![index]
+                                                              .status!
+                                                              .toLowerCase !=
+                                                          'disetujui'
+                                                      ? Text(
+                                                          _listPengajuanFiltered![
+                                                                  index]
+                                                              .status!
+                                                              .toUpperCase(),
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontSize: 14,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        700],
+                                                                  )),
+                                                        )
+                                                      : Text(
+                                                          _listPengajuanFiltered![
+                                                                  index]
+                                                              .status!
+                                                              .toUpperCase(),
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontSize: 14,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .green,
+                                                                  )),
+                                                        ),
                                                 ],
                                               ),
                                             ),
+                                            _listPengajuanFiltered![index]
+                                                        .status!
+                                                        .toLowerCase ==
+                                                    'ditolak'
+                                                ? Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8,
+                                                            right: 10,
+                                                            top: 20),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          'Alasan Ditolak',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontSize: 14,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        500],
+                                                                  )),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container(),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8, right: 10, top: 40),
                                               child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
                                                     'Lampiran',
@@ -295,6 +344,25 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                               Colors.grey[500],
                                                         )),
                                                   ),
+                                                  _listPengajuanFiltered![index]
+                                                              .status!
+                                                              .toLowerCase ==
+                                                          'ditolak'
+                                                      ? Text(
+                                                          _listPengajuanFiltered![
+                                                                  index]
+                                                              .reasonRejection!,
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontSize: 14,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        700],
+                                                                  )),
+                                                        )
+                                                      : Container(),
                                                 ],
                                               ),
                                             ),
@@ -334,7 +402,10 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                       _link);
                                                                 },
                                                                 child: Text(
-                                                                  'Lampiran $index1',
+                                                                  'Lampiran ' +
+                                                                      (index1 +
+                                                                              1)
+                                                                          .toString(),
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .blue,
@@ -394,32 +465,47 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                   SizedBox(
                                                     width: 8,
                                                   ),
-                                                  Icon(
-                                                    Icons.edit,
-                                                    color: Colors.red,
-                                                    size: 12,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          SlideToLeftRoute(
-                                                              page: EditForm(
-                                                                  _listPengajuanFiltered![
-                                                                      index])));
-                                                    },
-                                                    child: Text(
-                                                      'Edit',
-                                                      style: GoogleFonts.roboto(
-                                                          fontSize: 12,
-                                                          textStyle: TextStyle(
-                                                            color: Colors.red,
-                                                          )),
-                                                    ),
-                                                  ),
+                                                  _listPengajuanFiltered![index]
+                                                              .status!
+                                                              .toLowerCase() ==
+                                                          'ditolak'
+                                                      ? Container(
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.edit,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: 12,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      SlideToLeftRoute(
+                                                                          page:
+                                                                              EditForm(_listPengajuanFiltered![index])));
+                                                                },
+                                                                child: Text(
+                                                                  'Edit',
+                                                                  style: GoogleFonts
+                                                                      .roboto(
+                                                                          fontSize:
+                                                                              12,
+                                                                          textStyle:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.red,
+                                                                          )),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : Container(),
                                                   SizedBox(
                                                     width: 8,
                                                   ),

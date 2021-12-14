@@ -517,8 +517,8 @@ class CallApi {
     }
   }
 
-  Future<String> updateProfile(
-      String name, String email, String password, XFile avatar) async {
+  Future<String> updateProfile(String name, String email, String password,
+      XFile avatar, XFile signature) async {
     Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_PROFILE);
 
     print(fullUrl);
@@ -529,9 +529,7 @@ class CallApi {
       // String token =
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       File? image1 = File(avatar.path);
-      http.MultipartFile _file = http.MultipartFile(
-          'avatar', avatar.readAsBytes().asStream(), image1.lengthSync(),
-          filename: 'avatar_$name _${avatar.path.split(".").last}');
+      File? image2 = File(signature.path);
 
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
@@ -542,8 +540,18 @@ class CallApi {
       request.fields['name'] = name;
       request.fields['email'] = email;
       request.fields['password'] = password;
-
-      request.files.add(_file);
+      if (avatar != null) {
+        http.MultipartFile _file1 = http.MultipartFile(
+            'avatar', avatar.readAsBytes().asStream(), image1.lengthSync(),
+            filename: 'avatar_$name _${avatar.path.split(".").last}');
+        request.files.add(_file1);
+      }
+      if (signature != null) {
+        http.MultipartFile _file2 = http.MultipartFile('signature',
+            signature.readAsBytes().asStream(), image2.lengthSync(),
+            filename: 'signature_$name _${signature.path.split(".").last}');
+        request.files.add(_file2);
+      }
 
       print('asdasd');
       print(request.fields);

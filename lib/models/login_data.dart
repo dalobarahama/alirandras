@@ -20,14 +20,14 @@ class LoginData {
   String? status;
   int? status_code;
   String? message;
-  User? user;
+  User1? user;
   String? token;
 
   factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
         status: json["status"],
         status_code: json["status_code"],
         message: json["message"],
-        user: User.fromJson(json["user"]),
+        user: User1.fromJson(json["user"]),
         token: json["token"],
       );
 
@@ -40,12 +40,12 @@ class LoginData {
       };
 }
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
+User1 userFromJson(String str) => User1.fromJson(json.decode(str));
 
-String userToJson(User data) => json.encode(data.toJson());
+String userToJson(User1 data) => json.encode(data.toJson());
 
-class User {
-  User({
+class User1 {
+  User1({
     this.id,
     this.name,
     this.app,
@@ -69,7 +69,7 @@ class User {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User1.fromJson(Map<String, dynamic> json) => User1(
         id: json["id"],
         name: json["name"],
         app: json["app"],

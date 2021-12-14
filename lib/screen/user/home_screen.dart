@@ -9,6 +9,7 @@ import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isLoading = true;
-  User _userData = User();
+  User1 _userData = User1();
   @override
   void initState() {
     setState(() {
@@ -124,7 +125,7 @@ class _HomeState extends State<Home> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(45),
                                 child: CachedNetworkImage(
-                                  imageUrl: _userData.signature ?? '-',
+                                  imageUrl: _userData.avatar ?? '-',
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     decoration: BoxDecoration(
@@ -250,8 +251,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Column(
                                   children: [
-                                    Icon(
-                                      Icons.send_sharp,
+                                    SvgPicture.asset(
+                                      'assets/icons/navigation_line.svg',
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -273,8 +274,8 @@ class _HomeState extends State<Home> {
                                 ),
                                 Column(
                                   children: [
-                                    Icon(
-                                      Icons.list,
+                                    SvgPicture.asset(
+                                      'assets/icons/draft_line.svg',
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -296,8 +297,8 @@ class _HomeState extends State<Home> {
                                 ),
                                 Column(
                                   children: [
-                                    Icon(
-                                      Icons.lock_clock,
+                                    SvgPicture.asset(
+                                      'assets/icons/clock.svg',
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -319,8 +320,8 @@ class _HomeState extends State<Home> {
                                 ),
                                 Column(
                                   children: [
-                                    Icon(
-                                      Icons.done,
+                                    SvgPicture.asset(
+                                      'assets/icons/circle.svg',
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -342,8 +343,8 @@ class _HomeState extends State<Home> {
                                 ),
                                 Column(
                                   children: [
-                                    Icon(
-                                      Icons.nature_people_rounded,
+                                    SvgPicture.asset(
+                                      'assets/icons/user_follow.svg',
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
