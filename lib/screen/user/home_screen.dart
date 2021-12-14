@@ -253,6 +253,8 @@ class _HomeState extends State<Home> {
                                   children: [
                                     SvgPicture.asset(
                                       'assets/icons/navigation_line.svg',
+                                      height: 30,
+                                      width: 30,
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -276,6 +278,8 @@ class _HomeState extends State<Home> {
                                   children: [
                                     SvgPicture.asset(
                                       'assets/icons/draft_line.svg',
+                                      height: 30,
+                                      width: 30,
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -299,6 +303,8 @@ class _HomeState extends State<Home> {
                                   children: [
                                     SvgPicture.asset(
                                       'assets/icons/clock.svg',
+                                      height: 30,
+                                      width: 30,
                                       color: Colors.lightBlue,
                                     ),
                                     SizedBox(
@@ -323,6 +329,8 @@ class _HomeState extends State<Home> {
                                     SvgPicture.asset(
                                       'assets/icons/circle.svg',
                                       color: Colors.lightBlue,
+                                      height: 30,
+                                      width: 30,
                                     ),
                                     SizedBox(
                                       height: 15,
@@ -346,6 +354,8 @@ class _HomeState extends State<Home> {
                                     SvgPicture.asset(
                                       'assets/icons/user_follow.svg',
                                       color: Colors.lightBlue,
+                                      height: 30,
+                                      width: 30,
                                     ),
                                     SizedBox(
                                       height: 15,

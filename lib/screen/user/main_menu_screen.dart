@@ -46,15 +46,18 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           icon: SvgPicture.asset(
             'assets/icons/home.svg',
             color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
+            height: 20,
+            width: 20,
           ),
-          iconSize: 40,
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),
       PersistentBottomNavBarItem(
           icon: SvgPicture.asset(
-            'assets/icons/navigation_line.svg',
+            'assets/icons/file-text.svg',
             color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
+            height: 20,
+            width: 20,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
@@ -63,6 +66,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           icon: SvgPicture.asset(
             'assets/icons/user.svg',
             color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
+            height: 20,
+            width: 20,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
@@ -107,10 +112,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           context,
           screens: _screenList(),
           items: _itemList(),
-          onItemSelected: (a){
-setState(() {
-  
-});
+          onItemSelected: (a) {
+            setState(() {});
           },
           controller: _controller,
           screenTransitionAnimation: ScreenTransitionAnimation(

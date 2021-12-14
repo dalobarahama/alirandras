@@ -215,13 +215,12 @@ class _Log_inState extends State<Log_in> {
                     height: 20,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 97),
-                        child: Text(
-                          'Lupa password?',
-                          style: TextStyle(color: Colors.black54),
-                        ),
+                      Text(
+                        'Lupa password?',
+                        style: TextStyle(color: Colors.black54),
                       ),
                       InkWell(
                         onTap: () {
@@ -241,13 +240,12 @@ class _Log_inState extends State<Log_in> {
                     height: 20,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 97),
-                        child: Text(
-                          'Belum punya akun?',
-                          style: TextStyle(color: Colors.black54),
-                        ),
+                      Text(
+                        'Belum punya akun?',
+                        style: TextStyle(color: Colors.black54),
                       ),
                       InkWell(
                         onTap: () {
