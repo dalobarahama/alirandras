@@ -112,10 +112,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           context,
           screens: _screenList(),
           items: _itemList(),
-          controller: _controller,
           onItemSelected: (a) {
             setState(() {});
           },
+          controller: _controller,
           screenTransitionAnimation: ScreenTransitionAnimation(
               animateTabTransition: true,
               duration: Duration(milliseconds: 300)),
