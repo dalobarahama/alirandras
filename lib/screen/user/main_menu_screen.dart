@@ -43,22 +43,31 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   List<PersistentBottomNavBarItem> _itemList() {
     return [
       PersistentBottomNavBarItem(
-          icon: SvgPicture.asset('assets/icons/home.svg'),
+          icon: SvgPicture.asset(
+            'assets/icons/home.svg',
+            color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
+            height: 20,
+            width: 20,
+          ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),
       PersistentBottomNavBarItem(
-          icon: Icon(
-            Icons.paste_outlined,
-            size: 25,
+          icon: SvgPicture.asset(
+            'assets/icons/file-text.svg',
+            color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
+            height: 20,
+            width: 20,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Cek Status Pengajuan'),
       PersistentBottomNavBarItem(
-          icon: Icon(
-            Icons.person,
-            size: 25,
+          icon: SvgPicture.asset(
+            'assets/icons/user.svg',
+            color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
+            height: 20,
+            width: 20,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
@@ -104,6 +113,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           screens: _screenList(),
           items: _itemList(),
           controller: _controller,
+          onItemSelected: (a) {
+            setState(() {});
+          },
           screenTransitionAnimation: ScreenTransitionAnimation(
               animateTabTransition: true,
               duration: Duration(milliseconds: 300)),
