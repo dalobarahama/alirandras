@@ -255,7 +255,9 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   void _getPlace(double lat, double long) async {
     List<Placemark> place = await placemarkFromCoordinates(lat, long);
     print('11aa11aa');
-    print(place.first.name);
+    //print(place.first.name);
+    print(place.first.locality);
+    print(place.first.subLocality);
 
     setState(() {
       _lokasiBangunanController.text = place.first.street.toString();
