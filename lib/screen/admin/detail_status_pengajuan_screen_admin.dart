@@ -1,17 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/models/admin_home_model.dart';
+import 'package:flutter_application_3/models/submit_formulir.dart';
+import 'package:flutter_map/flutter_map.dart';
 
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StatusPengajuanScreenAdmin extends StatefulWidget {
-  const StatusPengajuanScreenAdmin({Key? key}) : super(key: key);
+  //const StatusPengajuanScreenAdmin({Key? key}) : super(key: key);
+  RegistrationForm2 _dataPengajuan = RegistrationForm2();
+  StatusPengajuanScreenAdmin(this._dataPengajuan);
 
   @override
   _StatusPengajuanScreenAdminState createState() =>
-      _StatusPengajuanScreenAdminState();
+      _StatusPengajuanScreenAdminState(this._dataPengajuan);
 }
 
 class _StatusPengajuanScreenAdminState
     extends State<StatusPengajuanScreenAdmin> {
+  RegistrationForm2 _dataPengajuan = RegistrationForm2();
+  _StatusPengajuanScreenAdminState(this._dataPengajuan);
+  bool isMap = false;
+  @override
+  void initState() {
+    double? lat = _dataPengajuan.lat;
+    double? lng = _dataPengajuan.lng;
+    point = LatLng(lat!, lng!);
+    isMap = true;
+    print(point);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  LatLng point = LatLng(-1.240112, 116.873320);
+  void _launchURL(String? url) async {
+    if (!await launch(url!)) throw 'Could not launch $url';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,16 +50,24 @@ class _StatusPengajuanScreenAdminState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
-                  child: Container(
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.red,
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    top: 50,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 10),
+                  padding: const EdgeInsets.only(left: 20, top: 15),
                   child: Container(
                     child: Text(
                       'Detail',
@@ -57,7 +92,8 @@ class _StatusPengajuanScreenAdminState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '22 September 2021, 10.11',
+                            DateFormat('dd MMMM yy, HH:mm')
+                                .format(_dataPengajuan.createdAt!),
                             style: GoogleFonts.roboto(
                                 fontSize: 12,
                                 textStyle: TextStyle(
@@ -79,7 +115,7 @@ class _StatusPengajuanScreenAdminState
                             height: 5,
                           ),
                           Text(
-                            'Yuli Purnama',
+                            _dataPengajuan.user!.name!,
                             style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 textStyle: TextStyle(
@@ -101,12 +137,15 @@ class _StatusPengajuanScreenAdminState
                             height: 5,
                           ),
                           Text(
-                            'Diproses',
+                            _dataPengajuan.status!.toUpperCase(),
                             style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 textStyle: TextStyle(
-                                  color: Colors.grey[600],
-                                )),
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Container(
                             width: double.infinity,
@@ -114,89 +153,63 @@ class _StatusPengajuanScreenAdminState
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(5)),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.person,
-                                            size: 20,
-                                            color: Colors.green,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 5),
+                                padding: const EdgeInsets.all(8.0),
+                                child: _dataPengajuan.mailRequest == null
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
                                             child: Text(
-                                              'Surat sudah diverivikasi oleh Sekretaris',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 12,
-                                                  textStyle: TextStyle(
-                                                    color: Colors.grey[500],
-                                                  )),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.person,
-                                            size: 20,
-                                            color: Colors.green,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 5),
-                                            child: Text(
-                                              'Surat sudah diverivikasi oleh Kabid SDA',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 12,
-                                                  textStyle: TextStyle(
-                                                    color: Colors.grey[500],
-                                                  )),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.person,
-                                            size: 20,
-                                            color: Colors.grey[500],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 5),
-                                            child: Text(
-                                              'Surat sudah diverivikasi oleh Kabid Renwa SDA',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 12,
-                                                  textStyle: TextStyle(
-                                                    color: Colors.grey[500],
-                                                  )),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                          'Data Belum diverifikasi',
+                                          style:
+                                              TextStyle(color: Colors.black54),
+                                        )),
+                                      )
+                                    : ListView.builder(
+                                        itemCount: _dataPengajuan.mailRequest!
+                                            .mailPermissions!.length,
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.all(0),
+                                        itemBuilder:
+                                            (BuildContext context, int index1) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                                child: Row(
+                                              children: [
+                                                _dataPengajuan
+                                                            .mailRequest!
+                                                            .mailPermissions![
+                                                                index1]
+                                                            .status ==
+                                                        'diproses'
+                                                    ? Icon(Icons.person,
+                                                        color: Colors.green)
+                                                    : Icon(Icons.person,
+                                                        color: Colors.grey),
+                                                Text(
+                                                  'Surat telah ' +
+                                                      _dataPengajuan
+                                                          .mailRequest!
+                                                          .mailPermissions![
+                                                              index1]
+                                                          .status
+                                                          .toString() +
+                                                      ' oleh ' +
+                                                      _dataPengajuan
+                                                          .mailRequest!
+                                                          .mailPermissions![
+                                                              index1]
+                                                          .user!
+                                                          .name
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.black54),
+                                                )
+                                              ],
+                                            )),
+                                          );
+                                        },
+                                      )),
                           ),
                           SizedBox(
                             height: 15,
@@ -213,7 +226,7 @@ class _StatusPengajuanScreenAdminState
                             height: 5,
                           ),
                           Text(
-                            'Surat Informasi',
+                            _dataPengajuan.type.toString(),
                             style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 textStyle: TextStyle(
@@ -238,7 +251,7 @@ class _StatusPengajuanScreenAdminState
                             height: 5,
                           ),
                           Text(
-                            '4X2 Meter',
+                            _dataPengajuan.buildingArea.toString(),
                             style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 textStyle: TextStyle(
@@ -263,7 +276,7 @@ class _StatusPengajuanScreenAdminState
                             height: 5,
                           ),
                           Text(
-                            '4X2 Meter',
+                            _dataPengajuan.landArea.toString(),
                             style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 textStyle: TextStyle(
@@ -289,15 +302,43 @@ class _StatusPengajuanScreenAdminState
                           ),
                           Row(
                             children: [
-                              Icon(Icons.image, color: Colors.orange),
-                              Text(
-                                'Gambar Bangunan.png',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 15,
-                                    textStyle: TextStyle(
-                                      color: Colors.grey[700],
-                                    )),
-                              ),
+                              _dataPengajuan.registrationFormAttachments!
+                                          .length ==
+                                      0
+                                  ? Text('-')
+                                  : Expanded(
+                                      child: ListView.builder(
+                                          itemCount: _dataPengajuan
+                                              .registrationFormAttachments!
+                                              .length,
+                                          shrinkWrap: true,
+                                          physics: ClampingScrollPhysics(),
+                                          padding: EdgeInsets.all(0),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container(
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    String _link =
+                                                        'http://alirandras.inotive.id' +
+                                                            _dataPengajuan
+                                                                .registrationFormAttachments![
+                                                                    index]
+                                                                .file
+                                                                .toString();
+                                                    _launchURL(_link);
+                                                  },
+                                                  child: Text(
+                                                    'Lampiran $index',
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline),
+                                                  )),
+                                            );
+                                          }),
+                                    )
                             ],
                           ),
                           SizedBox(
@@ -318,7 +359,7 @@ class _StatusPengajuanScreenAdminState
                             height: 5,
                           ),
                           Text(
-                            'Jl. MT Haryono',
+                            _dataPengajuan.buildingLocation.toString(),
                             style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 textStyle: TextStyle(
@@ -344,8 +385,37 @@ class _StatusPengajuanScreenAdminState
                           ),
                           Container(
                             width: double.infinity,
-                            height: 200,
-                            decoration: BoxDecoration(color: Colors.grey),
+                            height: 230,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(8)),
+                            child: isMap == false
+                                ? Center(child: CircularProgressIndicator())
+                                : FlutterMap(
+                                    options: MapOptions(
+                                      center: point,
+                                      zoom: 18.0,
+                                    ),
+                                    layers: [
+                                      TileLayerOptions(
+                                        urlTemplate:
+                                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                        subdomains: ['a', 'b', 'c'],
+                                      ),
+                                      MarkerLayerOptions(markers: [
+                                        Marker(
+                                            width: 100,
+                                            height: 100,
+                                            point: point,
+                                            builder: (ctx) => Container(
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        'assets/images/Vector.png'),
+                                                  ),
+                                                ))
+                                      ])
+                                    ],
+                                  ),
                           ),
                           SizedBox(
                             height: 15,

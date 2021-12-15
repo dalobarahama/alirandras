@@ -21,7 +21,7 @@ class CallApi {
   final String CEK_EMAIL = '/api/reset-password/cek-email';
   final String VERIFIKASI_OTP = '/api/reset-password/verifikasi-kode-otp';
   final String RESET_PASSWORD = '/api/reset-password';
-  final String GET_KECAMATAN = '/api/location/villages?id=363';
+  final String GET_KECAMATAN = '/api/location/districts?id=363';
   final String GET_KELURAHAN = '/api/location/villages?id=';
   final String SUBMIT_FORMULIR = '/api/formulir';
   final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
@@ -356,7 +356,7 @@ class CallApi {
     //var token =
     //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
     Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
-    // print(fullUrl);
+    print(fullUrl);
     try {
       var get = http.get(fullUrl, headers: {
         'Authorization': 'Bearer $token',
@@ -365,12 +365,12 @@ class CallApi {
 
       var res = await get;
       //print(res.body);
-      //print(res.statusCode);
+      print(res.statusCode);
       // print(res.body);
       //print(res.body);
       if (res.statusCode == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
-
+        print(_listPengajuan.registrationForms![0].id);
         return _listPengajuan.registrationForms;
       } else if (res.statusCode == 401) {
         List<RegistrationForm1> temporary = <RegistrationForm1>[];

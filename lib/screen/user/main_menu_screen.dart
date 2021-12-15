@@ -43,12 +43,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   List<PersistentBottomNavBarItem> _itemList() {
     return [
       PersistentBottomNavBarItem(
-          icon: SvgPicture.asset(
-            'assets/icons/home.svg',
-            color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
-            height: 20,
-            width: 20,
-          ),
+          icon: _controller.index == 0
+              ? Image.asset('assets/images/home_biru.png')
+              : Image.asset('assets/images/home_biru.png'),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),

@@ -33,7 +33,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   TextEditingController _lokasiBangunanController = TextEditingController();
 
   LatLng point = LatLng(-1.240112, 116.873320);
-  String jenisPermohonan = '';
+
   String district = 'BALIKPAPAN KOTA';
   bool isSubmit = false;
   bool isLoading = true;
@@ -74,6 +74,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     'Surat Informasi',
     'Surat Rekomendasi',
   ];
+  String? _selectedPermohonan;
 
   initState() {
     _selectedKecamatan = null;
@@ -168,7 +169,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   }
 
   void submit_formulir() async {
-    if (jenisPermohonan.length < 2) {
+    if (_selectedPermohonan!.length < 2) {
       Fluttertoast.showToast(
           msg: 'Silahkan pilih jenis permohonan terlebih dahulu.');
       return;
@@ -207,9 +208,9 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
 
     await CallApi()
         .submit_formulir(
-      jenisPermohonan,
+      _selectedPermohonan!,
       _selectedKecamatan!.name,
-      'DAMAI',
+      _selectedKelurahan!.name,
       _luasBangunanController.text,
       _luasLahanController.text,
       _lokasiBangunanController.text,
@@ -240,7 +241,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               Fluttertoast.showToast(msg: _dataFormulir.message!);
             });
           }
-          isFinish[3] == true ? _popUpDialog(context) : Container();
+          isFinish[3] == true ? showDialog() : Container();
         } else {
           setState(() {
             isLoading1 = false;
@@ -261,80 +262,100 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     });
   }
 
-  void _popUpDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            elevation: 16,
-            child: Stack(
-              children: [
-                Container(
-                  height: 200,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white70,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 70),
-                      Container(
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            'Submit Berhasil!',
-                            style: TextStyle(color: Colors.black54),
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              SlideToRightRoute(
-                                  page:
-                                      MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.green,
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Kembali',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+  void showDialog() {
+    showGeneralDialog(
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: Duration(milliseconds: 700),
+      context: context,
+      pageBuilder: (_, __, ___) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Container(
+                width: double.infinity,
+                height: 300,
+                child: Stack(
                   children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Icon(Icons.check, size: 30, color: Colors.white),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 200,
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 70,
+                              ),
+                              Text(
+                                'Submit Berhasil!',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 14),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 40, right: 40),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(7)),
+                                    child: Center(
+                                        child: Text(
+                                      'Kembali',
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          //margin: EdgeInsets.only(bottom: 150, left: 12, right: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(50)),
+                          child:
+                              Icon(Icons.check, size: 50, color: Colors.white),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          );
-        });
+          ],
+        );
+      },
+    );
   }
 
   Widget build(BuildContext context) {
@@ -439,46 +460,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     Container(
                       width: 215,
                       height: 50,
-                      child: DropdownSearch<String>(
-                        mode: Mode.MENU,
-                        showSelectedItems: false,
-                        items: jenis_permohonan,
-                        //  hint: "Pilih Jenis Permohonan",
-                        dropdownBuilder: (context, selectedItem) {
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 10),
-                            child: Text(
-                              selectedItem == null
-                                  ? 'Pilih Jenis Permohonan'
-                                  : selectedItem,
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          );
-                        },
-                        popupItemBuilder: (context, item, isSelected) {
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Text(
-                              item,
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          );
-                        },
-
-                        // dropdownBuilder: _customDropDownExample,
-                        dropdownSearchBaseStyle:
-                            TextStyle(fontSize: 12.0, color: Colors.black54),
-
-                        onChanged: (value) {
-                          setState(() {
-                            jenisPermohonan = value!;
-                          });
-                        },
-                      ),
+                      child: _buildTypeDropdown(),
                     ),
                   ],
                 ),
@@ -845,6 +827,40 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 return new DropdownMenuItem<GetKelurahan>(
                   value: value,
                   child: new Text(value.name!),
+                );
+              }).toList(),
+              borderRadius: BorderRadius.circular(7),
+              isExpanded: true,
+              underline: SizedBox.shrink(),
+            ),
+    );
+  }
+
+  Widget _buildTypeDropdown() {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black38),
+          borderRadius: BorderRadius.circular(5)),
+      padding: EdgeInsets.only(left: 12, right: 24),
+      child: jenis_permohonan == null
+          ? Container(
+              height: 45,
+              width: double.infinity,
+              padding: EdgeInsets.only(top: 8),
+              child: Text('Pilih Jenis Permohonan',
+                  style: TextStyle(fontSize: 12, color: Colors.black54)),
+            )
+          : DropdownButton<String>(
+              style: TextStyle(fontSize: 12, color: Colors.black54),
+              value: _selectedPermohonan,
+              hint: Text('Pilih Jenis Permohonan'),
+              onChanged: (newValue) => setState(() {
+                _selectedPermohonan = newValue;
+              }),
+              items: jenis_permohonan.map((String value1) {
+                return new DropdownMenuItem<String>(
+                  value: value1,
+                  child: new Text(value1),
                 );
               }).toList(),
               borderRadius: BorderRadius.circular(7),
