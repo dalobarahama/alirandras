@@ -226,7 +226,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           if (_dataFormulir.statusCode == 200) {
             setState(() {
               isFinish[3] = true;
-              // isLoading1 = false;
+              isLoading1 = false;
               print('ini2' + isFinish[2].toString());
             });
           } else if (_dataFormulir.statusCode! >= 400 &&
@@ -241,7 +241,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               Fluttertoast.showToast(msg: _dataFormulir.message!);
             });
           }
-          isFinish[3] == true ? showDialog() : Container();
+          //  isFinish[3] == true ? showDialog() : Container();
         } else {
           setState(() {
             isLoading1 = false;
@@ -262,7 +262,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     });
   }
 
-  void showDialog() {
+  /* void showDialog() {
     showGeneralDialog(
       barrierLabel: "Barrier",
       barrierDismissible: true,
@@ -357,12 +357,12 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       },
     );
   }
-
+*/
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(children: [
-          Column(
+      body: Stack(children: [
+        SingleChildScrollView(
+          child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 50, left: 15),
@@ -767,8 +767,103 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               ),
             ],
           ),
-        ]),
-      ),
+        ),
+        isFinish[3] == true
+            ? Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 300,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 40, right: 40),
+                                child: Container(
+                                  height: 200,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(7)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                      Text(
+                                        'Submit Berhasil!',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 14,
+                                            textStyle: TextStyle(
+                                              color: Colors.black54,
+                                            )),
+                                      ),
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 40, left: 40),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                              width: double.infinity,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.circular(7)),
+                                              child: Center(
+                                                child: Text(
+                                                  'Kembali',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 12,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.white,
+                                                      )),
+                                                ),
+                                              )),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Icon(Icons.check,
+                                  size: 50, color: Colors.white),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            : Container()
+      ]),
     );
   }
 

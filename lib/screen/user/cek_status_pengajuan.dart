@@ -28,10 +28,10 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   void initState() {
     CallApi().getListPengajuan().then((value) {
       setState(() {
+        print('asu');
         isLoading = false;
         _listPengajuan = value;
         _listPengajuanFiltered = value;
-        print(_listPengajuanFiltered![0].id);
 
         // if (_listPengajuan == null) {
         //   Fluttertoast.showToast(
