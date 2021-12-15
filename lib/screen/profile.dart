@@ -281,6 +281,41 @@ class _ProfileState extends State<Profile> {
             SizedBox(
               height: 10,
             ),
+            _userData.app == 'admin'
+                ? Container(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 33),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Jabatan',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black54),
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 33),
+                          child: Row(
+                            children: [
+                              Text(
+                                _userData.name!,
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black54),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 33),
               child: Row(
