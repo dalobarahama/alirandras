@@ -261,105 +261,20 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
 
     setState(() {
       _lokasiBangunanController.text = place.first.street.toString();
+      for (var i = 0; i < _listKecamatan.length; i++) {
+        if (place.first.locality!
+            .toLowerCase()
+            .contains(_listKecamatan[i].name!.toLowerCase())) {
+          setState(() {
+            _selectedKecamatan = _listKecamatan[i];
+            getKelurahan(_selectedKecamatan!.id);
+          });
+        }
+        ;
+      }
     });
   }
-
-  /* void showDialog() {
-    showGeneralDialog(
-      barrierLabel: "Barrier",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 700),
-      context: context,
-      pageBuilder: (_, __, ___) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30),
-              child: Container(
-                width: double.infinity,
-                height: 300,
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 200,
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 70,
-                              ),
-                              Text(
-                                'Submit Berhasil!',
-                                style: TextStyle(
-                                    color: Colors.black54, fontSize: 14),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 40, right: 40),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.circular(7)),
-                                    child: Center(
-                                        child: Text(
-                                      'Kembali',
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.white),
-                                    )),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          //margin: EdgeInsets.only(bottom: 150, left: 12, right: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(50)),
-                          child:
-                              Icon(Icons.check, size: 50, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-*/
+  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
