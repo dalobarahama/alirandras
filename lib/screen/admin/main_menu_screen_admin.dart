@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/screen/admin/list_formulir_screen_admin.dart';
-import 'package:flutter_application_3/screen/admin/list_penohon_screen.dart';
+import 'package:flutter_application_3/screen/admin/list_pemohon_screen.dart';
 import 'package:flutter_application_3/screen/admin/manajemen_pengguna_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/setting_surat_pengajuan_screen_admin.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';

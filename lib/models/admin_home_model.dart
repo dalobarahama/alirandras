@@ -22,7 +22,7 @@ class AdminHomeModel {
   String? status;
   int? statusCode;
   String? message;
-  List<RegistrationForm>? registrationForms;
+  List<RegistrationForm2>? registrationForms;
   int? suratMasuk;
   int? suratDiproses;
 
@@ -32,17 +32,16 @@ class AdminHomeModel {
         message: json["message"] == null ? null : json["message"],
         registrationForms: json["registration_forms"] == null
             ? null
-            : List<RegistrationForm>.from(json["registration_forms"]
-                .map((x) => RegistrationForm.fromJson(x))),
+            : List<RegistrationForm2>.from(json["registration_forms"]
+                .map((x) => RegistrationForm2.fromJson(x))),
         suratMasuk: json["surat_masuk"] == null ? null : json["surat_masuk"],
         suratDiproses:
             json["surat_diproses"] == null ? null : json["surat_diproses"],
       );
-
 }
 
-class RegistrationForm {
-  RegistrationForm({
+class RegistrationForm2 {
+  RegistrationForm2({
     this.id,
     this.userId,
     this.type,
@@ -82,8 +81,8 @@ class RegistrationForm {
   List<RegistrationFormAttachment>? registrationFormAttachments;
   MailRequest? mailRequest;
 
-  factory RegistrationForm.fromJson(Map<String, dynamic> json) =>
-      RegistrationForm(
+  factory RegistrationForm2.fromJson(Map<String, dynamic> json) =>
+      RegistrationForm2(
         id: json["id"] == null ? null : json["id"],
         userId: json["user_id"] == null ? null : json["user_id"],
         type: json["type"] == null ? null : json["type"],
@@ -99,8 +98,7 @@ class RegistrationForm {
             json["complete_address"] == null ? null : json["complete_address"],
         lat: json["lat"] == null ? null : json["lat"].toDouble(),
         lng: json["lng"] == null ? null : json["lng"].toDouble(),
-        status:
-            json["status"] == null ? null : json["status"],
+        status: json["status"] == null ? null : json["status"],
         reasonRejection:
             json["reason_rejection"] == null ? null : json["reason_rejection"],
         createdAt: json["created_at"] == null
@@ -155,8 +153,7 @@ class MailRequest {
         userId: json["user_id"],
         letterNumber: json["letter_number"],
         body: json["body"],
-        status:
-            json["status"] == null ? null : json["status"],
+        status: json["status"] == null ? null : json["status"],
         reasonRejection: json["reason_rejection"],
         createdAt: json["created_at"] == null
             ? null
@@ -210,7 +207,6 @@ class MailPermission {
             : DateTime.parse(json["updated_at"]),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
       );
-
 }
 
 class RegistrationFormAttachment {

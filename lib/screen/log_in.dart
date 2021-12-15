@@ -96,7 +96,7 @@ class _Log_inState extends State<Log_in> {
                       child: Container(
                         height: 150,
                         child: Image.asset(
-                          'assets/images/logo_1.png',
+                          'assets/images/logo.png',
                         ),
                       ),
                     ),
@@ -265,7 +265,7 @@ class _Log_inState extends State<Log_in> {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                         width: double.infinity,
-                        height: 120,
+                        height: 70,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(

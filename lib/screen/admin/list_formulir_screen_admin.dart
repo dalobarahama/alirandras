@@ -45,7 +45,7 @@ class _ListFormulirScreenAdminState extends State<ListFormulirScreenAdmin> {
                           ),
                           ClipOval(
                             child: Image.asset(
-                              'assets/images/logo_1.png',
+                              'assets/images/logo.png',
                               height: 40,
                               width: 40,
                               fit: BoxFit.cover,

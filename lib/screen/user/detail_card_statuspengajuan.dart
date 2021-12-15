@@ -3,9 +3,11 @@ import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:intl/intl.dart';
 
 class Detail_card_statuspengajuan extends StatefulWidget {
   RegistrationForm1 _dataStatusPengajuan = RegistrationForm1();
@@ -34,6 +36,7 @@ class _Detail_card_statuspengajuanState
   }
 
   LatLng point = LatLng(-1.240112, 116.873320);
+
   void _launchURL(String? url) async {
     if (!await launch(url!)) throw 'Could not launch $url';
   }
@@ -106,8 +109,13 @@ class _Detail_card_statuspengajuanState
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            _dataStatusPengajuan.createdAt.toString(),
-                            style: TextStyle(color: Colors.grey),
+                            DateFormat('dd MMMM yy, HH:mm')
+                                .format(_dataStatusPengajuan.createdAt!),
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                textStyle: TextStyle(
+                                  color: Colors.grey[500],
+                                )),
                           ),
                         ],
                       ),

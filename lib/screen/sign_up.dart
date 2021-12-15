@@ -75,7 +75,7 @@ class _Sign_upState extends State<Sign_up> {
                     child: Container(
                       height: 150,
                       child: Image.asset(
-                        'assets/images/logo_1.png',
+                        'assets/images/logo.png',
                       ),
                     ),
                   ),
@@ -257,7 +257,7 @@ class _Sign_upState extends State<Sign_up> {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                       width: double.infinity,
-                      height: 130,
+                      height: 70,
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image:
