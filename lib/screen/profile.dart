@@ -297,14 +297,17 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 33),
                           child: Row(
                             children: [
                               Text(
-                                _userData.name!,
+                                _userData.position!,
                                 style: TextStyle(
-                                    fontSize: 20, color: Colors.black54),
+                                    fontSize: 16, color: Colors.black54),
                               )
                             ],
                           ),

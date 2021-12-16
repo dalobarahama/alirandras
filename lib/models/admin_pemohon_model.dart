@@ -189,7 +189,9 @@ class User {
     this.emailVerifiedAt,
     this.signature,
     this.avatar,
+    this.position,
     this.resetToken,
+    this.fcmToken,
     this.createdAt,
     this.updatedAt,
   });
@@ -201,7 +203,9 @@ class User {
   DateTime? emailVerifiedAt;
   String? signature;
   String? avatar;
-  dynamic? resetToken;
+  String? position;
+  dynamic resetToken;
+  dynamic fcmToken;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -215,7 +219,9 @@ class User {
             : DateTime.parse(json["email_verified_at"]),
         signature: json["signature"] == null ? null : json["signature"],
         avatar: json["avatar"] == null ? null : json["avatar"],
+        position: json["position"] == null ? null : json["position"],
         resetToken: json["reset_token"],
+        fcmToken: json["fcm_token"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),

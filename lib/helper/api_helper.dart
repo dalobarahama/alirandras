@@ -39,7 +39,7 @@ class CallApi {
       var res = await post;
       var a = jsonDecode(res.body)['status_code'];
       print(a);
-      (_loginData.status_code);
+      (_loginData.statusCode);
 
       if (a == 200) {
         _loginData = loginDataFromJson(res.body);

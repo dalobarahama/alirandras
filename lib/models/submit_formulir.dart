@@ -50,7 +50,6 @@ class RegistrationForm {
     this.buildingArea,
     this.landArea,
     this.buildingLocation,
-    this.completeAddress,
     this.lat,
     this.lng,
     this.status,
@@ -66,7 +65,6 @@ class RegistrationForm {
   String? buildingArea;
   String? landArea;
   String? buildingLocation;
-  String? completeAddress;
   String? lat;
   String? lng;
   String? status;
@@ -83,7 +81,6 @@ class RegistrationForm {
         buildingArea: json["building_area"],
         landArea: json["land_area"],
         buildingLocation: json["building_location"],
-        completeAddress: json["complete_address"],
         lat: json["lat"],
         lng: json["lng"],
         status: json["status"],
@@ -100,7 +97,6 @@ class RegistrationForm {
         "building_area": buildingArea,
         "land_area": landArea,
         "building_location": buildingLocation,
-        "complete_address": completeAddress,
         "lat": lat,
         "lng": lng,
         "status": status,
