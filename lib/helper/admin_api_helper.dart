@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_application_3/models/admin_home_model.dart';
 import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 import 'package:flutter_application_3/models/list_pengajuan_admin_model.dart';
+import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
 import 'package:flutter_application_3/models/setting_pengajuan.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CallAdminApi {
@@ -12,6 +17,8 @@ class CallAdminApi {
   final String GET_LIST_PENGGUNA = '/api/list-pengguna';
   final String GET_ADMIN_HOME_DATA = '/api/formulir';
   final String GET_ADMIN_LIST_PEMOHON_DATA = '/api/surat-permohonan';
+  final String EDIT_MANAJEMEN_PENGGUNA = '/api/edit-pengguna/';
+  final String DELETE_PENGGUNA = '/api/hapus-pengguna/';
 
   Future<SettingPengajuanModel> getSettingPengajuan() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -127,6 +134,97 @@ class CallAdminApi {
     } catch (e) {
       print(e);
       throw 'error';
+    }
+  }
+
+  Future<String> editManajemenPengguna(String name, String email,
+      String password, XFile avatar, XFile signature, String id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + EDIT_MANAJEMEN_PENGGUNA);
+
+    print(fullUrl);
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      print(avatar.name);
+      // String token =
+      //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+      File? image1 = File(avatar.path);
+      File? image2 = File(signature.path);
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['name'] = name;
+      request.fields['email'] = email;
+      request.fields['password'] = password;
+      if (avatar != null) {
+        http.MultipartFile _file1 = http.MultipartFile(
+            'avatar', avatar.readAsBytes().asStream(), image1.lengthSync(),
+            filename: 'avatar_$name _${avatar.path.split(".").last}');
+        request.files.add(_file1);
+      }
+      if (signature != null) {
+        http.MultipartFile _file2 = http.MultipartFile('signature',
+            signature.readAsBytes().asStream(), image2.lengthSync(),
+            filename: 'signature_$name _${signature.path.split(".").last}');
+        request.files.add(_file2);
+      }
+
+      print('asdasd');
+      print(request.fields);
+      print(request.files);
+      print(request);
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+      print(data.body);
+      int a = int.parse(jsonDecode(data.body)['status_code']);
+      print(a);
+      if (a == 200) {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
+        sharedPreferences.setString(
+            'user_data', userToJson(jsonDecode(data.body)['user']));
+        return 'success';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String> deleteManajemenPengguna(String id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_PENGGUNA + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print('del penga');
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
     }
   }
 }
