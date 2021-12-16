@@ -30,6 +30,7 @@ class CallApi {
   final String DELETE_FORMULIR = '/api/hapus-formulir/';
   final String DELETE_DOKUMEN = '/api/hapus-file-formulir/';
   final String UPDATE_PROFILE = '/api/auth/edit-profile';
+
   Future<String> login(String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + LOGIN_URL);
     LoginData _loginData = LoginData();

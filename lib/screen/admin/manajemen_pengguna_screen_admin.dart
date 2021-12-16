@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
+import 'package:flutter_application_3/screen/admin/edit_manajemen_pengguna_screen_admin.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ManajemenPenggunaScreenAdmin extends StatefulWidget {
   const ManajemenPenggunaScreenAdmin({Key? key}) : super(key: key);
@@ -26,6 +30,24 @@ class _ManajemenPenggunaScreenAdminState
         _searchList = value.users;
         isLoading = false;
       });
+    });
+  }
+
+  void deletePengguna(int id) async {
+    await CallAdminApi().deleteManajemenPengguna(id.toString()).then((value) {
+      String _dataDelete = value;
+      if (_dataDelete == 'success') {
+        Fluttertoast.showToast(
+            msg: 'User berhasil dihapus', timeInSecForIosWeb: 2);
+        setState(() {
+          initData();
+        });
+      } else if (_dataDelete == 'failed') {
+        Fluttertoast.showToast(
+            msg: 'User gagal dihapus', timeInSecForIosWeb: 2);
+      } else {
+        Fluttertoast.showToast(msg: _dataDelete, timeInSecForIosWeb: 2);
+      }
     });
   }
 
@@ -187,21 +209,35 @@ class _ManajemenPenggunaScreenAdminState
                                   ),
                                   Row(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Container(
-                                          child: Icon(
-                                            Icons.edit_outlined,
-                                            color: Colors.grey,
+                                      InkWell(
+                                        onTap: () {
+                                          pushNewScreen(context,
+                                              screen:
+                                                  EditManajemenPenggunaScreen(
+                                                      _searchList![index]));
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Container(
+                                            child: Icon(
+                                              Icons.edit_outlined,
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Container(
-                                          child: Icon(
-                                            Icons.delete_outline,
-                                            color: Colors.red,
+                                      InkWell(
+                                        onTap: () {
+                                          deletePengguna(
+                                              _searchList![index].id!);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Container(
+                                            child: Icon(
+                                              Icons.delete_outline,
+                                              color: Colors.red,
+                                            ),
                                           ),
                                         ),
                                       ),
