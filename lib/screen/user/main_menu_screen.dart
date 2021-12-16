@@ -117,7 +117,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               animateTabTransition: true,
               duration: Duration(milliseconds: 300)),
           backgroundColor: Colors.white,
-          navBarStyle: NavBarStyle.style6,
+          navBarStyle: NavBarStyle.style1,
           stateManagement: true,
           decoration: NavBarDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(7)),

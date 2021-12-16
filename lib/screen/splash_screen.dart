@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/main.dart';
 import 'package:flutter_application_3/screen/admin/main_menu_screen_admin.dart';
@@ -16,8 +18,44 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  
+  firebaseSetup() async {
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    print('User granted permission: ${settings.authorizationStatus}');
+    await FirebaseMessaging.instance.subscribeToTopic('notification');
+
+    messaging.getToken().then((value) {
+      print('token: $value');
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
   void initState() {
     Timer(Duration(seconds: 1), () {
+    firebaseSetup();
       //Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
       CallStorage().checkIfLoggedIn().then((value) {
         if (value) {

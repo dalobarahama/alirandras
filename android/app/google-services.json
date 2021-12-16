@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "649250153060",
+    "project_id": "alirandras",
+    "storage_bucket": "alirandras.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649250153060:android:c7efe543e8e24c5fc73571",
+        "android_client_info": {
+          "package_name": "mv.alirandras.apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649250153060-5jle8a5n301b6o9smi1j1bkjaog0ghv2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mv.alirandras.apps",
+            "certificate_hash": "171da890760ea91bf99a6dd65112cf2b6fa69346"
+          }
+        },
+        {
+          "client_id": "649250153060-lovltl8o9dud51hpt05kihr8npl4ju6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLaB8w_srPhw4UFaUZxHWvfUkeVMxZjQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649250153060-lovltl8o9dud51hpt05kihr8npl4ju6r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649250153060-b69242k65bdtoq80jbn38e2lto6dhs33.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alirandras.apps"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
