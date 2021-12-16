@@ -11,37 +11,36 @@ String loginDataToJson(LoginData data) => json.encode(data.toJson());
 class LoginData {
   LoginData({
     this.status,
-    this.status_code,
+    this.statusCode,
     this.message,
     this.user,
     this.token,
   });
 
   String? status;
-  int? status_code;
+  dynamic statusCode;
   String? message;
   User1? user;
   String? token;
 
   factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
-        status: json["status"],
-        status_code: json["status_code"],
-        message: json["message"],
-        user: User1.fromJson(json["user"]),
-        token: json["token"],
+        status: json["status"] == null ? null : json["status"],
+        statusCode: json["status_code"] == null ? null : json["status_code"],
+        message: json["message"] == null ? null : json["message"],
+        user: json["user"] == null ? null : User1.fromJson(json["user"]),
+        token: json["token"] == null ? null : json["token"],
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "status_code": status_code,
-        "message": message,
-        "user": user!.toJson(),
-        "token": token,
+        "status": status == null ? null : status,
+        "status_code": statusCode == null ? null : statusCode,
+        "message": message == null ? null : message,
+        "user": user == null ? null : user!.toJson(),
+        "token": token == null ? null : token,
       };
 }
 
 User1 userFromJson(String str) => User1.fromJson(json.decode(str));
-
 String userToJson(User1 data) => json.encode(data.toJson());
 
 class User1 {
@@ -53,7 +52,9 @@ class User1 {
     this.emailVerifiedAt,
     this.signature,
     this.avatar,
+    this.position,
     this.resetToken,
+    this.fcmToken,
     this.createdAt,
     this.updatedAt,
   });
@@ -62,36 +63,49 @@ class User1 {
   String? name;
   String? app;
   String? email;
-  dynamic? emailVerifiedAt;
+  DateTime? emailVerifiedAt;
   String? signature;
   String? avatar;
-  dynamic? resetToken;
+  dynamic position;
+  dynamic resetToken;
+  String? fcmToken;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   factory User1.fromJson(Map<String, dynamic> json) => User1(
-        id: json["id"],
-        name: json["name"],
-        app: json["app"],
-        email: json["email"],
-        emailVerifiedAt: json["email_verified_at"],
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        app: json["app"] == null ? null : json["app"],
+        email: json["email"] == null ? null : json["email"],
+        emailVerifiedAt: json["email_verified_at"] == null
+            ? null
+            : DateTime.parse(json["email_verified_at"]),
         signature: json["signature"],
-        avatar: json["avatar"],
+        avatar: json["avatar"] == null ? null : json["avatar"],
+        position: json["position"],
         resetToken: json["reset_token"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        fcmToken: json["fcm_token"] == null ? null : json["fcm_token"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "app": app,
-        "email": email,
-        "email_verified_at": emailVerifiedAt,
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
+        "app": app == null ? null : app,
+        "email": email == null ? null : email,
+        "email_verified_at":
+            emailVerifiedAt == null ? null : emailVerifiedAt!.toIso8601String(),
         "signature": signature,
-        "avatar": avatar,
+        "avatar": avatar == null ? null : avatar,
+        "position": position,
         "reset_token": resetToken,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
+        "fcm_token": fcmToken == null ? null : fcmToken,
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
       };
 }

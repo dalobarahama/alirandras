@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/aliran_dras_icon_icons.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/screen/admin/list_formulir_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/list_pemohon_screen.dart';
@@ -46,36 +47,40 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
   List<PersistentBottomNavBarItem> _itemList() {
     return [
       PersistentBottomNavBarItem(
-          icon: Icon(Icons.document_scanner, size: 25),
+          icon: Icon(
+            AliranDrasIcon.list_alt,
+            color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
+            size: 18,
+          ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Surat Pengajuan'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.file_present_outlined,
-            size: 25,
+            AliranDrasIcon.file_alt,
+            color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
+            size: 18,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Pemohon'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.paste,
-            size: 25,
+            AliranDrasIcon.user_cog,
+            color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
+            size: 18,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Pengguna'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            Icons.settings_outlined,
-            size: 25,
+            AliranDrasIcon.cog,
+            color: _controller.index == 3 ? Colors.blueAccent : Colors.grey,
+            size: 18,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          textStyle: TextStyle(
-            fontSize: 8,
-          ),
           title: 'Setting'),
     ];
   }
@@ -110,25 +115,32 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PersistentTabView(
-        context,
-        screens: _screenList(),
-        items: _itemList(),
-        controller: _controller,
-        screenTransitionAnimation: ScreenTransitionAnimation(
-            animateTabTransition: true, duration: Duration(milliseconds: 300)),
-        backgroundColor: Colors.white,
-        navBarStyle: NavBarStyle.style6,
-        stateManagement: true,
-        decoration: NavBarDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(7)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: Offset(0, -1),
-                  blurRadius: 6)
-            ]),
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+        body: PersistentTabView(
+          context,
+          screens: _screenList(),
+          items: _itemList(),
+          controller: _controller,
+          onItemSelected: (a) {
+            setState(() {});
+          },
+          screenTransitionAnimation: ScreenTransitionAnimation(
+              animateTabTransition: true,
+              duration: Duration(milliseconds: 300)),
+          backgroundColor: Colors.white,
+          navBarStyle: NavBarStyle.style6,
+          stateManagement: true,
+          decoration: NavBarDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(7)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: Offset(0, -1),
+                    blurRadius: 6)
+              ]),
+        ),
       ),
     );
   }

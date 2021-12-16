@@ -61,7 +61,8 @@ class SettingPengajuanData {
   DateTime? updatedAt;
   User? user;
 
-  factory SettingPengajuanData.fromJson(Map<String, dynamic> json) => SettingPengajuanData(
+  factory SettingPengajuanData.fromJson(Map<String, dynamic> json) =>
+      SettingPengajuanData(
         id: json["id"] == null ? null : json["id"],
         userId: json["user_id"] == null ? null : json["user_id"],
         level: json["level"] == null ? null : json["level"],
@@ -93,6 +94,7 @@ class User {
     this.emailVerifiedAt,
     this.signature,
     this.avatar,
+    this.position,
     this.resetToken,
     this.createdAt,
     this.updatedAt,
@@ -105,7 +107,8 @@ class User {
   DateTime? emailVerifiedAt;
   String? signature;
   String? avatar;
-  dynamic? resetToken;
+  String? position;
+  dynamic resetToken;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -119,6 +122,7 @@ class User {
             : DateTime.parse(json["email_verified_at"]),
         signature: json["signature"] == null ? null : json["signature"],
         avatar: json["avatar"] == null ? null : json["avatar"],
+        position: json["position"] == null ? null : json["position"],
         resetToken: json["reset_token"],
         createdAt: json["created_at"] == null
             ? null
@@ -137,6 +141,7 @@ class User {
             emailVerifiedAt == null ? null : emailVerifiedAt!.toIso8601String(),
         "signature": signature == null ? null : signature,
         "avatar": avatar == null ? null : avatar,
+        "position": position == null ? null : position,
         "reset_token": resetToken,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),

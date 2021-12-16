@@ -1,3 +1,4 @@
+import 'package:flutter_application_3/aliran_dras_icon_icons.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/main.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
@@ -43,28 +44,28 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   List<PersistentBottomNavBarItem> _itemList() {
     return [
       PersistentBottomNavBarItem(
-          icon: _controller.index == 0
-              ? Image.asset('assets/images/home_biru.png')
-              : Image.asset('assets/images/home_biru.png'),
+          icon: Icon(
+            AliranDrasIcon.home,
+            color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
+            size: 18,
+          ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),
       PersistentBottomNavBarItem(
-          icon: SvgPicture.asset(
-            'assets/icons/file-text.svg',
+          icon: Icon(
+            AliranDrasIcon.doc_text_inv,
             color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
-            height: 20,
-            width: 20,
+            size: 18,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
           title: 'Cek Status Pengajuan'),
       PersistentBottomNavBarItem(
-          icon: SvgPicture.asset(
-            'assets/icons/user.svg',
+          icon: Icon(
+            AliranDrasIcon.user,
             color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
-            height: 20,
-            width: 20,
+            size: 18,
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
