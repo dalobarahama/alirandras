@@ -14,7 +14,7 @@ class GetKecamatan {
   GetKecamatan({
     this.id,
     this.code,
-    this.districtCode,
+    this.cityCode,
     this.name,
     this.meta,
     this.createdAt,
@@ -23,30 +23,34 @@ class GetKecamatan {
 
   String? id;
   String? code;
-  String? districtCode;
+  String? cityCode;
   String? name;
   Meta? meta;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   factory GetKecamatan.fromJson(Map<String, dynamic> json) => GetKecamatan(
-        id: json["id"],
-        code: json["code"],
-        districtCode: json["district_code"],
-        name: json["name"],
-        meta: Meta.fromJson(json["meta"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        id: json["id"] == null ? null : json["id"],
+        code: json["code"] == null ? null : json["code"],
+        cityCode: json["city_code"] == null ? null : json["city_code"],
+        name: json["name"] == null ? null : json["name"],
+        meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "code": code,
-        "district_code": districtCode,
-        "name": name,
-        "meta": meta!.toJson(),
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
+        "id": id == null ? null : id,
+        "code": code == null ? null : code,
+        "city_code": cityCode == null ? null : cityCode,
+        "name": name == null ? null : name,
+        "meta": meta == null ? null : meta!.toJson(),
+        "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
       };
 }
 
@@ -60,12 +64,12 @@ class Meta {
   String? long;
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-        lat: json["lat"],
-        long: json["long"],
+        lat: json["lat"] == null ? null : json["lat"],
+        long: json["long"] == null ? null : json["long"],
       );
 
   Map<String, dynamic> toJson() => {
-        "lat": lat,
-        "long": long,
+        "lat": lat == null ? null : lat,
+        "long": long == null ? null : long,
       };
 }

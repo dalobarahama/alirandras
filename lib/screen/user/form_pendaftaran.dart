@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   TextEditingController _luasBangunanController = TextEditingController();
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
-
+  Timer? timer;
   LatLng point = LatLng(-1.240112, 116.873320);
 
   String district = 'BALIKPAPAN KOTA';
@@ -79,12 +80,26 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   initState() {
     _selectedKecamatan = null;
     _selectedKelurahan = null;
+    initData();
+    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      print('timer');
+      initData();
+    });
+    super.initState();
+  }
+
+  initData() {
     getUserLocation();
     getKecamatan();
     if (isFinish[0] == true) {
       isLoading = false;
     }
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   getUserLocation() async {
@@ -274,7 +289,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       }
     });
   }
-  
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
