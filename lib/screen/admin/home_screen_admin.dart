@@ -29,9 +29,20 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   User1 _userData = User1();
   bool isLoading = true;
   AdminHomeModel _data = AdminHomeModel();
+  List<String> statusData = [
+    'semua',
+    'diterima',
+    'ditolak',
+    'menunggu',
+    'selesai direvisi'
+  ];
+  String selectedStatus = 'semua';
+  List<String> tahunData = ['2020', '2021', '2022', '2023', '2024'];
+  String? selectedTahun;
 
   @override
   void initState() {
+    selectedTahun = null;
     setState(() {
       Timer(Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
@@ -48,7 +59,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   }
 
   initData(year, status) async {
-    await CallAdminApi().getAdminHomeData('', '').then((value) {
+    setState(() {
+      isLoading = true;
+    });
+    await CallAdminApi().getAdminHomeData(year, status).then((value) {
       setState(() {
         _data = value;
         isLoading = false;
@@ -264,62 +278,89 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             height: 20,
           ),
           Container(
-            width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'Semua',
-                          style: TextStyle(color: Colors.grey[600]),
+                Container(
+                  height: 35,
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  margin: EdgeInsets.only(left: 25),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(5)),
+                  child: DropdownButton<String>(
+                    items: statusData
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(value.toUpperCase(),
+                              style: GoogleFonts.roboto(fontSize: 10)),
                         ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey[600],
-                          size: 15,
-                        )
-                      ],
-                    ),
+                        value: value,
+                      );
+                    }).toList(),
+                    value: selectedStatus,
+                    underline: Container(),
+                    hint: Center(child: Text('Choose')),
+                    onChanged: (e) {
+                      setState(() {
+                        String? tempTahun;
+                        String? temptStatus;
+                        selectedStatus = e!.toLowerCase();
+                        selectedTahun == null
+                            ? tempTahun = ''
+                            : tempTahun = selectedTahun;
+                        selectedStatus == 'semua'
+                            ? temptStatus = ''
+                            : temptStatus = selectedStatus;
+                        initData(tempTahun, temptStatus);
+                      });
+                    },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'Pilih Tahun',
-                          style: TextStyle(color: Colors.grey[600]),
+                Container(
+                  height: 35,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin: EdgeInsets.only(right: 25),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(5)),
+                  child: DropdownButton<String>(
+                    items:
+                        tahunData.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(value.toUpperCase(),
+                              style: GoogleFonts.roboto(fontSize: 10)),
                         ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.calendar_today,
-                          color: Colors.grey[600],
-                          size: 15,
-                        )
-                      ],
-                    ),
+                        value: value,
+                      );
+                    }).toList(),
+                    value: selectedTahun,
+                    underline: Container(),
+                    icon: Icon(Icons.calendar_today),
+                    iconSize: 15,
+                    hint: Center(
+                        child: Text('Pilih Tahun    ',
+                            style: GoogleFonts.roboto(fontSize: 10))),
+                    onChanged: (e) {
+                      setState(() {
+                        String? tempTahun;
+                        String? temptStatus;
+                        selectedTahun = e!.toLowerCase();
+                        selectedTahun == null
+                            ? tempTahun = ''
+                            : tempTahun = selectedTahun;
+                        selectedStatus == 'semua'
+                            ? temptStatus = ''
+                            : temptStatus = selectedStatus;
+                        initData(tempTahun, temptStatus);
+                      });
+                    },
                   ),
-                )
+                ),
               ],
             ),
           ),

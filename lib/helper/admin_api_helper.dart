@@ -19,6 +19,7 @@ class CallAdminApi {
   final String GET_ADMIN_LIST_PEMOHON_DATA = '/api/surat-permohonan';
   final String EDIT_MANAJEMEN_PENGGUNA = '/api/edit-pengguna/';
   final String DELETE_PENGGUNA = '/api/hapus-pengguna/';
+  final String APPROVE_PERMOHONAN = '/api/verifikasi-surat-permohonan/';
 
   Future<SettingPengajuanModel> getSettingPengajuan() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -84,11 +85,11 @@ class CallAdminApi {
     Uri fullUrl = Uri.parse(
         SERVER_URL + GET_ADMIN_HOME_DATA + '?year=$year&status=$status');
     AdminHomeModel _data = AdminHomeModel();
-
+    print(SERVER_URL + GET_ADMIN_HOME_DATA + '?year=$year&status=$status');
     try {
       var get = http.get(fullUrl, headers: {
         'Authorization': 'Bearer $token',
-        'Accept': 'application/json'
+        // 'Accept': 'application/json'
       });
 
       var res = await get;
@@ -204,6 +205,71 @@ class CallAdminApi {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
       var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print('del penga');
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String> approvePermohonan(String id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + APPROVE_PERMOHONAN + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, body: {
+        'category': 'diterima'
+      }, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print('del penga');
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String> rejectPermohonan(String id, String reason) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + APPROVE_PERMOHONAN + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, body: {
+        'category': 'ditolak',
+        'reason_rejection': reason
+      }, headers: {
         'Authorization': 'Bearer $token',
         // 'Accept': 'application/json'
       });

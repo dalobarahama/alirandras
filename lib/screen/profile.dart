@@ -305,7 +305,7 @@ class _ProfileState extends State<Profile> {
                           child: Row(
                             children: [
                               Text(
-                                _userData.position!,
+                                _userData.position ?? '-',
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.black54),
                               )

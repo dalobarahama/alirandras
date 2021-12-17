@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/screen/admin/approval_screen.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ListPemohonScreen extends StatefulWidget {
   const ListPemohonScreen({Key? key}) : super(key: key);
@@ -38,6 +40,12 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
     });
     // TODO: implement initState
     super.initState();
+  }
+
+  navigateToApprovalScreen(String id) async {
+    var res = await pushNewScreen(context,
+        screen: ApprovalScreen('permohonan', id), withNavBar: false);
+    initData();
   }
 
   initData() async {
@@ -114,7 +122,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                     .applicationLetters![index]
                                                     .createdAt!),
                                             style: GoogleFonts.roboto(
-                                                fontSize: 14,
+                                                fontSize: 10,
                                                 textStyle: TextStyle(
                                                   color: Colors.grey[500],
                                                 )),
@@ -122,73 +130,140 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 15,
+                                        height: 20,
                                       ),
                                       Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Nama Pemohon',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 12,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.grey[500],
-                                                    )),
-                                              ),
-                                              Text(
-                                                _data.applicationLetters![index]
-                                                    .user!.name!,
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    textStyle: TextStyle(
-                                                      color: Colors.black54,
-                                                    )),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8, horizontal: 10),
-                                            decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                borderRadius:
-                                                    BorderRadius.circular(7)),
-                                            child: Row(
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5),
-                                                  child: Icon(
-                                                    Icons.check_circle,
-                                                    color: Colors.white,
-                                                    size: 15,
-                                                  ),
+                                                Text(
+                                                  'Nama Pemohon',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 12,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.grey[500],
+                                                      )),
                                                 ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 3),
-                                                  child: Text(
-                                                    'Verifikasi',
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 11,
-                                                        textStyle: TextStyle(
-                                                          color: Colors.white,
-                                                        )),
-                                                  ),
+                                                Text(
+                                                  _data
+                                                      .applicationLetters![
+                                                          index]
+                                                      .user!
+                                                      .name!,
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.black54,
+                                                      )),
                                                 ),
                                               ],
                                             ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Status',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 12,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.grey[500],
+                                                      )),
+                                                ),
+                                                Text(
+                                                  _data
+                                                          .applicationLetters![
+                                                              index]
+                                                          .status ??
+                                                      '-',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.black54,
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: _data
+                                                        .applicationLetters![
+                                                            index]
+                                                        .status !=
+                                                    'menunggu'
+                                                ? Container()
+                                                : InkWell(
+                                                    onTap: () {
+                                                      navigateToApprovalScreen(
+                                                          _data
+                                                              .applicationLetters![
+                                                                  index]
+                                                              .id!
+                                                              .toString());
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 8,
+                                                              horizontal: 10),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.red,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(7)),
+                                                      child: Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 5),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .check_circle,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 15,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 3),
+                                                            child: Text(
+                                                              'Verifikasi',
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                      fontSize:
+                                                                          11,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                      )),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
                                           ),
                                         ],
                                       )
