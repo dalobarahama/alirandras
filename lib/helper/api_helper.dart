@@ -27,6 +27,7 @@ class CallApi {
   final String GET_KELURAHAN = '/api/location/villages?id=';
   final String SUBMIT_FORMULIR = '/api/formulir';
   final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
+  final String SUBMIT_DOKUMEN = '/api/tambah-file-pendukung-formulir';
   final String GET_LIST_PENGAJUAN = '/api/formulir';
   final String UPDATE_FORMULIR = '/api/edit-formulir/';
   final String DELETE_FORMULIR = '/api/hapus-formulir/';
@@ -252,7 +253,8 @@ class CallApi {
       String buildingLocation,
       String lat,
       String lng,
-      List<XFile> _imageFileList) async {
+      List<XFile> _imageFileList,
+      List<File> _dokumenFileList) async {
     SubmitFormulir _dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
@@ -287,6 +289,12 @@ class CallApi {
           for (var i = 0; i < _imageFileList.length; i++) {
             await CallApi().submit_gambar(
                 _dataFormulir.registrationForm!.id, _imageFileList[i]);
+          }
+        }
+        if (_dokumenFileList.length > 0) {
+          for (var i = 0; i < _dokumenFileList.length; i++) {
+            await CallApi().submit_dokumen(
+                _dataFormulir.registrationForm!.id, _dokumenFileList[i]);
           }
         }
         return _dataFormulir;
@@ -351,7 +359,51 @@ class CallApi {
     }
   }
 
-  Future<List<RegistrationForm1>?> getListPengajuan() async {
+  Future<bool> submit_dokumen(var id, File? dokumen) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_DOKUMEN);
+    print('ini submit dokumen');
+    print(fullUrl);
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      // String token =
+      //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+      File? dokumen1 = File(dokumen!.path);
+      http.MultipartFile _file = http.MultipartFile(
+          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          filename: 'Dokumen_bangunan_$id _${dokumen.path.split(".").last}');
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['registration_form_id'] = id.toString();
+      request.files.add(_file);
+
+      print('asdasd');
+      print(request.fields);
+      print(request.files);
+      // var response = await request.send();
+      //var data = await http.Response.fromStream(response);
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+      print(data.body);
+      int a = jsonDecode(data.body)['status_code'];
+      print(a);
+      if (a == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<List<ApplicationLetter1>?> getListPengajuan() async {
     bool isNull = false;
     ListPengajuan _listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -373,21 +425,21 @@ class CallApi {
       //print(res.body);
       if (res.statusCode == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
-        print(_listPengajuan.registrationForms![0].id);
-        return _listPengajuan.registrationForms;
+        print(_listPengajuan.applicationLetters1![0].id);
+        return _listPengajuan.applicationLetters1;
       } else if (res.statusCode == 401) {
-        List<RegistrationForm1> temporary = <RegistrationForm1>[];
+        List<ApplicationLetter1> temporary = <ApplicationLetter1>[];
         temporary[0].status = '401';
-        _listPengajuan.registrationForms![0].add(temporary);
-        return _listPengajuan.registrationForms;
+        _listPengajuan.applicationLetters1![0].add(temporary);
+        return _listPengajuan.applicationLetters1;
       } else {
-        _listPengajuan.registrationForms!.clear();
-        return _listPengajuan.registrationForms;
+        _listPengajuan.applicationLetters1!.clear();
+        return _listPengajuan.applicationLetters1;
       }
     } catch (e) {
       print(e);
-      _listPengajuan.registrationForms!.clear();
-      return _listPengajuan.registrationForms;
+      _listPengajuan.applicationLetters1!.clear();
+      return _listPengajuan.applicationLetters1;
     }
   }
 
@@ -401,7 +453,8 @@ class CallApi {
       String lat,
       String lng,
       List<XFile> _imageFileList,
-      int? id) async {
+      int? id,
+      List<File> _dokumenFileList) async {
     SubmitFormulir _dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
@@ -436,6 +489,12 @@ class CallApi {
           for (var i = 0; i < _imageFileList.length; i++) {
             await CallApi().submit_gambar(
                 _dataFormulir.registrationForm!.id, _imageFileList[i]);
+          }
+        }
+        if (_dokumenFileList.length > 0) {
+          for (var i = 0; i < _dokumenFileList.length; i++) {
+            await CallApi().submit_dokumen(
+                _dataFormulir.registrationForm!.id, _dokumenFileList[i]);
           }
         }
         return _dataFormulir;

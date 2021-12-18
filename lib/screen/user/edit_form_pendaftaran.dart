@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_kecamatan.dart';
@@ -19,7 +20,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 
 class EditForm extends StatefulWidget {
-  RegistrationForm1 _dataForm = RegistrationForm1();
+  ApplicationLetter1 _dataForm = ApplicationLetter1();
   EditForm(this._dataForm);
 
   @override
@@ -27,7 +28,7 @@ class EditForm extends StatefulWidget {
 }
 
 class _EditFormState extends State<EditForm> {
-  RegistrationForm1 _dataForm = RegistrationForm1();
+  ApplicationLetter1 _dataForm = ApplicationLetter1();
   _EditFormState(this._dataForm);
 
   TextEditingController _luasBangunanController = TextEditingController();
@@ -58,10 +59,14 @@ class _EditFormState extends State<EditForm> {
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
   GetKelurahan? _selectedKelurahan = GetKelurahan();
   SubmitFormulir _dataFormulir = SubmitFormulir();
-  List<File> uploadFiles = <File>[];
   List<XFile>? _imageFileList = <XFile>[];
   set _imageFile(XFile? value) {
     _imageFileList = value == null ? null : [value];
+  }
+
+  List<File>? _dokumenFileList = <File>[];
+  set _dokumenFile(File? value) {
+    _dokumenFileList = value == null ? null : [value];
   }
 
   List<bool> isFinish = [
@@ -105,6 +110,29 @@ class _EditFormState extends State<EditForm> {
           source: ImageSource.gallery, imageQuality: 50);
       setState(() {
         _imageFileList![index] = image!;
+      });
+    }
+  }
+
+  _dokumenFromFiles(int index) async {
+    print(_dokumenFileList!.length);
+    if (_dokumenFileList!.length < 3) {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      File? file = File(result!.files.single.path.toString());
+      setState(() {
+        _dokumenFileList!.add(file);
+      });
+    } else {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      File? file = File(result!.files.single.path.toString());
+      setState(() {
+        _dokumenFileList![index] = file;
       });
     }
   }
@@ -206,7 +234,8 @@ class _EditFormState extends State<EditForm> {
             lat.toString(),
             lang.toString(),
             _imageFileList!,
-            _dataForm.id)
+            _dataForm.id,
+            _dokumenFileList!)
         .then((value) {
       setState(() {
         _dataFormulir = value;
@@ -706,6 +735,147 @@ class _EditFormState extends State<EditForm> {
                                     ? _imageFileList![2] != null
                                         ? Image.file(
                                             File(_imageFileList![2].path))
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )
+                                    : Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Lampiran Dokumen',
+                      style: GoogleFonts.roboto(
+                          fontSize: 12,
+                          textStyle: TextStyle(
+                            color: Colors.black54,
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        child: InkWell(
+                          onTap: () {
+                            _dokumenFromFiles(0);
+                          },
+                          child: DottedBorder(
+                            color: Colors.grey,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Center(
+                                  child: _dokumenFileList!.length != 0
+                                      ? _dokumenFileList![0] != null
+                                          ? Image(
+                                              image: AssetImage(
+                                                  'assets/images/pdf_icon.png'))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      child: InkWell(
+                        onTap: () {
+                          _dokumenFromFiles(1);
+                        },
+                        child: DottedBorder(
+                          color: Colors.grey,
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Center(
+                                child: _dokumenFileList!.length != 0 &&
+                                        _dokumenFileList!.length > 1
+                                    ? _dokumenFileList![1] != null
+                                        ? Image(
+                                            image: AssetImage(
+                                                'assets/images/pdf_icon.png'))
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )
+                                    : Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      child: InkWell(
+                        onTap: () {
+                          _dokumenFromFiles(2);
+                        },
+                        child: DottedBorder(
+                          color: Colors.grey,
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Center(
+                                child: _dokumenFileList!.length != 0 &&
+                                        _dokumenFileList!.length > 2
+                                    ? _dokumenFileList![2] != null
+                                        ? Image(
+                                            image: AssetImage(
+                                                'assets/images/pdf_icon.png'))
                                         : Text(
                                             '+',
                                             style: GoogleFonts.roboto(

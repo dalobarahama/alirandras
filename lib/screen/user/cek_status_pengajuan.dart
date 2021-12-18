@@ -21,8 +21,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   TextEditingController _cekStatusFilterController = TextEditingController();
   bool isLoading = true;
 
-  List<RegistrationForm1>? _listPengajuan = <RegistrationForm1>[];
-  List<RegistrationForm1>? _listPengajuanFiltered = <RegistrationForm1>[];
+  List<ApplicationLetter1>? _listPengajuan = <ApplicationLetter1>[];
+  List<ApplicationLetter1>? _listPengajuanFiltered = <ApplicationLetter1>[];
 
   @override
   void initState() {
@@ -47,8 +47,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
     super.initState();
   }
 
-  List<RegistrationForm1>? _filteredCekStatus(
-      List<RegistrationForm1>? _listPengajuan,
+  List<ApplicationLetter1>? _filteredCekStatus(
+      List<ApplicationLetter1>? _listPengajuan,
       String _cekStatusFilteredController) {
     setState(() {
       print('asd');

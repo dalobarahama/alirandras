@@ -10,7 +10,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
 
 class Detail_card_statuspengajuan extends StatefulWidget {
-  RegistrationForm1 _dataStatusPengajuan = RegistrationForm1();
+  ApplicationLetter1 _dataStatusPengajuan = ApplicationLetter1();
   Detail_card_statuspengajuan(this._dataStatusPengajuan);
 
   @override
@@ -20,7 +20,7 @@ class Detail_card_statuspengajuan extends StatefulWidget {
 
 class _Detail_card_statuspengajuanState
     extends State<Detail_card_statuspengajuan> {
-  RegistrationForm1 _dataStatusPengajuan = RegistrationForm1();
+  ApplicationLetter1 _dataStatusPengajuan = ApplicationLetter1();
   _Detail_card_statuspengajuanState(this._dataStatusPengajuan);
   @override
   bool isMap = false;
@@ -351,6 +351,51 @@ class _Detail_card_statuspengajuanState
                                       },
                                       child: Text(
                                         'Lampiran $index',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            decoration:
+                                                TextDecoration.underline),
+                                      )),
+                                );
+                              }),
+                        )
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 60, bottom: 20),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Lampiran Dokumen',
+                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                              itemCount: _dataStatusPengajuan
+                                  .registrationFormDocuments!.length,
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              padding: EdgeInsets.all(0),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  child: InkWell(
+                                      onTap: () {
+                                        String _link =
+                                            'http://alirandras.inotive.id' +
+                                                _dataStatusPengajuan
+                                                    .registrationFormDocuments![
+                                                        index]
+                                                    .document
+                                                    .toString();
+                                        _launchURL(_link);
+                                      },
+                                      child: Text(
+                                        'Lampiran Dokumen $index',
                                         style: TextStyle(
                                             color: Colors.blue,
                                             decoration:

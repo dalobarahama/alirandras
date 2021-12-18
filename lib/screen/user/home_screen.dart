@@ -60,11 +60,12 @@ class _HomeState extends State<Home> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: IconButton(
-                              onPressed: null,
-                              icon: Image(
-                                image: AssetImage('assets/images/logo.png'),
-                              )),
+                          child: Image(
+                            fit: BoxFit.cover,
+                            height: 70,
+                            width: 70,
+                            image: AssetImage('assets/images/logo.png'),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 15),
@@ -117,8 +118,8 @@ class _HomeState extends State<Home> {
                               // }));
                             },
                             child: Container(
-                              height: 40,
-                              width: 40,
+                              height: 70,
+                              width: 70,
                               decoration: BoxDecoration(
                                   color: Colors.lightBlue,
                                   borderRadius: BorderRadius.circular(45)),

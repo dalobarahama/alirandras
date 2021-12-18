@@ -93,7 +93,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         children: [
           Container(
             width: double.infinity,
-            height: 180,
+            height: 200,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -103,6 +103,40 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Image(
+                          fit: BoxFit.cover,
+                          height: 70,
+                          width: 70,
+                          image: AssetImage('assets/images/logo.png'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 0),
+                        child: IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.notifications_active_outlined,
+                              color: Colors.blue[900],
+                              size: 30,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
