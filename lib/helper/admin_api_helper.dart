@@ -190,7 +190,7 @@ class CallAdminApi {
             await SharedPreferences.getInstance();
 
         sharedPreferences.setString(
-            'user_data', userToJson(jsonDecode(data.body)['user']));
+            'user_data', user1ToJson(jsonDecode(data.body)['user']));
         return 'success';
       } else {
         return 'failed';

@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
-import 'package:flutter_application_3/models/get_kelurahan.dart';
-import 'package:flutter_application_3/models/get_list_pengajuan.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/register_data.dart';
 import 'package:flutter_application_3/models/get_kecamatan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
+import 'package:flutter_application_3/models/get_kelurahan.dart';
+import 'package:flutter_application_3/models/get_list_pengajuan.dart';
+import 'package:flutter_application_3/models/profile_data.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +49,7 @@ class CallApi {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setString('token', _loginData.token!);
-        sharedPreferences.setString('user_data', userToJson(_loginData.user!));
+        sharedPreferences.setString('user_data', user1ToJson(_loginData.user!));
         return 'success';
       } else if (a >= 400 && a <= 500) {
         // print('zzzzzz');
@@ -519,17 +521,15 @@ class CallApi {
   }
 
   Future<String> updateProfile(String name, String email, String password,
-      XFile? avatar, XFile? signature) async {
+      XFile? imageavatar, XFile? signature) async {
     Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_PROFILE);
-
+    User1 _dataProfile = User1();
     print(fullUrl);
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
-      print(avatar!.name);
       // String token =
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
-
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': 'Bearer $token'
@@ -539,11 +539,11 @@ class CallApi {
       request.fields['name'] = name;
       request.fields['email'] = email;
       request.fields['password'] = password;
-      if (avatar != null) {
-        File? image1 = File(avatar.path);
+      if (imageavatar != null) {
+        File? image1 = File(imageavatar.path);
         http.MultipartFile _file1 = http.MultipartFile(
-            'avatar', avatar.readAsBytes().asStream(), image1.lengthSync(),
-            filename: 'avatar_$name _${avatar.path.split(".").last}');
+            'avatar', imageavatar.readAsBytes().asStream(), image1.lengthSync(),
+            filename: 'avatar_$name _${imageavatar.path.split(".").last}');
         request.files.add(_file1);
       }
       if (signature != null) {
@@ -554,21 +554,21 @@ class CallApi {
         request.files.add(_file2);
       }
 
-      print('asdasd');
-      print(request.fields);
-      print(request.files);
-      print(request);
       http.StreamedResponse response = await request.send();
       var data = await http.Response.fromStream(response);
       print(data.body);
       int a = int.parse(jsonDecode(data.body)['status_code']);
       print(a);
       if (a == 200) {
+        print(jsonDecode(data.body)['user'].toString());
+        String temp = jsonDecode(data.body)['user'].toString();
+        _dataProfile = user1FromJson(temp);
+        print(_dataProfile.name);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-
+        //sharedPreferences.setString('user_data', user1ToJson(_dataProfile));
         sharedPreferences.setString(
-            'user_data', userToJson(jsonDecode(data.body)['user']));
+            'user_data', user1ToJson(jsonDecode(data.body)['user']));
         return 'success';
       } else {
         return 'failed';
