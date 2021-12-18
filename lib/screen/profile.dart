@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
     }
     CallApi()
         .updateProfile(_namaController.text, _emailController.text,
-            _passwordController.text, _imageFile!, _signatureFile!)
+            _passwordController.text, _imageFile, _signatureFile)
         .then((value) {
       if (value == 'success') {
         Fluttertoast.showToast(

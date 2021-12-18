@@ -22,7 +22,7 @@ class CallStorage {
     User1 _data = User1();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     String? data = localStorage.getString('user_data');
-    _data = userFromJson(data!);
+    _data = user1FromJson(data!);
     return _data;
   }
 }

@@ -59,6 +59,7 @@ class RegistrationForm2 {
     this.updatedAt,
     this.user,
     this.registrationFormAttachments,
+    this.registrationFormDocuments,
     this.mailRequest,
   });
 
@@ -79,6 +80,7 @@ class RegistrationForm2 {
   DateTime? updatedAt;
   User? user;
   List<RegistrationFormAttachment>? registrationFormAttachments;
+  List<RegistrationFormDocuments>? registrationFormDocuments;
   MailRequest? mailRequest;
 
   factory RegistrationForm2.fromJson(Map<String, dynamic> json) =>
@@ -114,6 +116,11 @@ class RegistrationForm2 {
                 : List<RegistrationFormAttachment>.from(
                     json["registration_form_attachments"]
                         .map((x) => RegistrationFormAttachment.fromJson(x))),
+        registrationFormDocuments: json["registration_form_documents"] == null
+            ? null
+            : List<RegistrationFormDocuments>.from(
+                json["registration_form_documents"]
+                    .map((x) => RegistrationFormDocuments.fromJson(x))),
         mailRequest: json["mail_request"] == null
             ? null
             : MailRequest.fromJson(json["mail_request"]),
@@ -233,6 +240,37 @@ class RegistrationFormAttachment {
             ? null
             : json["registration_form_id"],
         file: json["file"] == null ? null : json["file"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+}
+
+class RegistrationFormDocuments {
+  RegistrationFormDocuments({
+    this.id,
+    this.registrationFormId,
+    this.document,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? registrationFormId;
+  String? document;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory RegistrationFormDocuments.fromJson(Map<String, dynamic> json) =>
+      RegistrationFormDocuments(
+        id: json["id"] == null ? null : json["id"],
+        registrationFormId: json["registration_form_id"] == null
+            ? null
+            : json["registration_form_id"],
+        document: json["document"] == null ? null : json["document"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),

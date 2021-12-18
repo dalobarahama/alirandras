@@ -59,10 +59,14 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
   GetKelurahan? _selectedKelurahan = GetKelurahan();
   SubmitFormulir _dataFormulir = SubmitFormulir();
-  List<File> uploadFiles = <File>[];
   List<XFile>? _imageFileList = <XFile>[];
   set _imageFile(XFile? value) {
     _imageFileList = value == null ? null : [value];
+  }
+
+  List<File>? _dokumenFileList = <File>[];
+  set _dokumenFile(File? value) {
+    _dokumenFileList = value == null ? null : [value];
   }
 
   List<bool> isFinish = [
@@ -171,7 +175,30 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     }
   }
 
-  pickFile() async {
+  _dokumenFromFiles(int index) async {
+    print(_dokumenFileList!.length);
+    if (_dokumenFileList!.length < 3) {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      File? file = File(result!.files.single.path.toString());
+      setState(() {
+        _dokumenFileList!.add(file);
+      });
+    } else {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      File? file = File(result!.files.single.path.toString());
+      setState(() {
+        _dokumenFileList![index] = file;
+      });
+    }
+  }
+
+  /* pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
@@ -181,7 +208,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     } else {
       // User canceled the picker
     }
-  }
+  }*/
 
   void submit_formulir() async {
     if (_selectedPermohonan!.length < 2) {
@@ -216,6 +243,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
       return;
     }
+    if (_dokumenFileList!.length < 1) {
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran Dokumen');
+      return;
+    }
 
     setState(() {
       isLoading1 = true;
@@ -232,6 +263,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       lat.toString(),
       lang.toString(),
       _imageFileList!,
+      _dokumenFileList!,
     )
         .then((value) {
       setState(() {
@@ -639,6 +671,149 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                       ? _imageFileList![2] != null
                                           ? Image.file(
                                               File(_imageFileList![2].path))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Lampiran Dokumen',
+                        style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            textStyle: TextStyle(
+                              color: Colors.black54,
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: InkWell(
+                          onTap: () {
+                            _dokumenFromFiles(0);
+                          },
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            child: DottedBorder(
+                              color: Colors.grey,
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7)),
+                                child: Center(
+                                    child: _dokumenFileList!.length != 0
+                                        ? _dokumenFileList![0] != null
+                                            ? Image(
+                                                image: AssetImage(
+                                                    'assets/images/pdf_icon.png'))
+                                            : Text(
+                                                '+',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 30,
+                                                    textStyle: TextStyle(
+                                                      color: Colors.grey,
+                                                    )),
+                                              )
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _dokumenFromFiles(1);
+                        },
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          child: DottedBorder(
+                            color: Colors.grey,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Center(
+                                  child: _dokumenFileList!.length != 0 &&
+                                          _dokumenFileList!.length > 1
+                                      ? _dokumenFileList![1] != null
+                                          ? Image(
+                                              image: AssetImage(
+                                                  'assets/images/pdf_icon.png'))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _dokumenFromFiles(2);
+                        },
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          child: DottedBorder(
+                            color: Colors.grey,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Center(
+                                  child: _dokumenFileList!.length != 0 &&
+                                          _dokumenFileList!.length > 2
+                                      ? _dokumenFileList![2] != null
+                                          ? Image(
+                                              image: AssetImage(
+                                                  'assets/images/pdf_icon.png'))
                                           : Text(
                                               '+',
                                               style: GoogleFonts.roboto(

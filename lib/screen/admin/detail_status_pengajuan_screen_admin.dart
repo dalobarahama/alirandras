@@ -329,7 +329,8 @@ class _StatusPengajuanScreenAdminState
                                                     _launchURL(_link);
                                                   },
                                                   child: Text(
-                                                    'Lampiran $index',
+                                                    'Lampiran ' +
+                                                        (index + 1).toString(),
                                                     style: TextStyle(
                                                         color: Colors.blue,
                                                         decoration:
@@ -343,6 +344,59 @@ class _StatusPengajuanScreenAdminState
                           ),
                           SizedBox(
                             height: 15,
+                          ),
+                          Text(
+                            'Lampiran Dokumen',
+                            style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                textStyle: TextStyle(
+                                  color: Colors.grey[500],
+                                )),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              _dataPengajuan
+                                          .registrationFormDocuments!.length ==
+                                      0
+                                  ? Text('-')
+                                  : Expanded(
+                                      child: ListView.builder(
+                                          itemCount: _dataPengajuan
+                                              .registrationFormDocuments!
+                                              .length,
+                                          shrinkWrap: true,
+                                          physics: ClampingScrollPhysics(),
+                                          padding: EdgeInsets.all(0),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container(
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    String _link =
+                                                        'http://alirandras.inotive.id' +
+                                                            _dataPengajuan
+                                                                .registrationFormDocuments![
+                                                                    index]
+                                                                .document
+                                                                .toString();
+                                                    _launchURL(_link);
+                                                  },
+                                                  child: Text(
+                                                    'Lampiran Dokumen ' +
+                                                        (index + 1).toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline),
+                                                  )),
+                                            );
+                                          }),
+                                    )
+                            ],
                           ),
                           SizedBox(
                             height: 15,
