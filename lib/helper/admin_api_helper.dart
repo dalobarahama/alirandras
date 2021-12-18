@@ -7,6 +7,7 @@ import 'package:flutter_application_3/models/list_pengajuan_admin_model.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
 import 'package:flutter_application_3/models/setting_pengajuan.dart';
+import 'package:flutter_application_3/models/setting_pengajuan_user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class CallAdminApi {
   final String EDIT_MANAJEMEN_PENGGUNA = '/api/edit-pengguna/';
   final String DELETE_PENGGUNA = '/api/hapus-pengguna/';
   final String APPROVE_PERMOHONAN = '/api/verifikasi-surat-permohonan/';
+  final String GET_SETTING_USER_LIST = '/api/setting-pengajuan/list-user';
 
   Future<SettingPengajuanModel> getSettingPengajuan() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -291,6 +293,35 @@ class CallAdminApi {
     } catch (e) {
       print(e);
       return e.toString();
+    }
+  }
+
+  Future<SettingPengajuanListUser> getListUserSetting() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    Uri fullUrl = Uri.parse(SERVER_URL + GET_SETTING_USER_LIST);
+    SettingPengajuanListUser _data = SettingPengajuanListUser();
+
+    try {
+      var get = http.get(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json'
+      });
+
+      var res = await get;
+      //print(res.body);
+      print(res.statusCode);
+      print(res.body);
+      if (res.statusCode == 200) {
+        _data = settingPengajuanListUserFromJson(res.body);
+        return _data;
+      } else {
+        print('error');
+        throw 'error';
+      }
+    } catch (e) {
+      print(e);
+      throw 'error';
     }
   }
 }
