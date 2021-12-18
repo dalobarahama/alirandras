@@ -8,6 +8,7 @@ import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
 import 'package:flutter_application_3/models/setting_pengajuan.dart';
 import 'package:flutter_application_3/models/setting_pengajuan_user_model.dart';
+import 'package:flutter_application_3/models/setting_update_post_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,7 @@ class CallAdminApi {
   final String DELETE_PENGGUNA = '/api/hapus-pengguna/';
   final String APPROVE_PERMOHONAN = '/api/verifikasi-surat-permohonan/';
   final String GET_SETTING_USER_LIST = '/api/setting-pengajuan/list-user';
+  final String UPDATE_SETTING = '/api/setting-pengajuan';
 
   Future<SettingPengajuanModel> getSettingPengajuan() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -322,6 +324,39 @@ class CallAdminApi {
     } catch (e) {
       print(e);
       throw 'error';
+    }
+  }
+
+  Future<String> updateSetting(SettingUserPost _data) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_SETTING);
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl,
+          body: settingUserPostToJson(_data),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': '*/*',
+            'Content-Type' : 'application/json'
+          });
+          print(json.encode(settingUserPostToJson(_data)));
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
     }
   }
 }

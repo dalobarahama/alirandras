@@ -539,44 +539,35 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                               SizedBox(
                                                 height: 5,
                                               ),
-                                              _data.registrationForms?[index]
-                                                          .registrationFormAttachments ==
+                                              _data.registrationForms![index]
+                                                          .mailRequest?.body !=
                                                       null
-                                                  ? Text('-')
-                                                  : _data
-                                                              .registrationForms![
-                                                                  index]
-                                                              .mailRequest
-                                                              ?.body ==
-                                                          null
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            pushNewScreen(
-                                                                context,
-                                                                screen: PreviewSuratBalasanScreen(
-                                                                    _data
-                                                                        .registrationForms![
-                                                                            index]
-                                                                        .mailRequest!
-                                                                        .id!
-                                                                        .toString(),
-                                                                    'view'),
-                                                                withNavBar:
-                                                                    false);
-                                                          },
-                                                          child: Text(
-                                                            'Lihat Surat Balasan',
-                                                            style: GoogleFonts.roboto(
-                                                                fontSize: 12,
-                                                                textStyle: TextStyle(
-                                                                    color: Colors
-                                                                        .blueAccent,
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline)),
-                                                          ),
-                                                        )
-                                                      : Text('-')
+                                                  ? InkWell(
+                                                      onTap: () {
+                                                        pushNewScreen(context,
+                                                            screen: PreviewSuratBalasanScreen(
+                                                                _data
+                                                                    .registrationForms![
+                                                                        index]
+                                                                    .mailRequest!
+                                                                    .id!
+                                                                    .toString(),
+                                                                'view'),
+                                                            withNavBar: false);
+                                                      },
+                                                      child: Text(
+                                                        'Lihat Surat Balasan',
+                                                        style: GoogleFonts.roboto(
+                                                            fontSize: 12,
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .blueAccent,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline)),
+                                                      ),
+                                                    )
+                                                  : Text('-')
                                             ]),
                                       ),
                                       Expanded(
