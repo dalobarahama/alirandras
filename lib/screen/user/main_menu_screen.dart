@@ -119,7 +119,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               duration: Duration(milliseconds: 300)),
           backgroundColor: Colors.white,
           navBarStyle: NavBarStyle.style6,
-          stateManagement: true,
+          stateManagement: false,
           decoration: NavBarDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(7)),
               boxShadow: [

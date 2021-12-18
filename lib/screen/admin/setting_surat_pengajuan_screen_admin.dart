@@ -21,6 +21,7 @@ class _SettingSuratPengajuanScreenAdminState
   bool isLoading = true;
   bool isUpdating = false;
   SettingPengajuanModel _data = SettingPengajuanModel();
+
   SettingPengajuanListUser _userList = SettingPengajuanListUser();
   List<SettingUser> _selectedUser = <SettingUser>[];
 
@@ -48,6 +49,12 @@ class _SettingSuratPengajuanScreenAdminState
       });
     }).onError((error, stackTrace) {
       Fluttertoast.showToast(msg: 'Something wrong, try again later...');
+    });
+  }
+
+  void addIndex() {
+    setState(() {
+      _data.settings!.add(_data.settings![0]);
     });
   }
 

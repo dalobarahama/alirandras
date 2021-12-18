@@ -94,7 +94,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         children: [
           Container(
             width: double.infinity,
-            height: 180,
+            height: 200,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -109,7 +109,15 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Image(
+                          fit: BoxFit.cover,
+                          height: 70,
+                          width: 70,
+                          image: AssetImage('assets/images/logo.png'),
+                        ),
+                      ),
                       InkWell(
                         onTap: () {
                           pushNewScreen(context,
