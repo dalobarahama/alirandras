@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
 import 'package:flutter_application_3/models/setting_pengajuan.dart';
 import 'package:flutter_application_3/models/setting_pengajuan_user_model.dart';
+import 'package:flutter_application_3/models/setting_update_post_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,7 @@ class SettingSuratPengajuanScreenAdmin extends StatefulWidget {
 class _SettingSuratPengajuanScreenAdminState
     extends State<SettingSuratPengajuanScreenAdmin> {
   bool isLoading = true;
+  bool isUpdating = false;
   SettingPengajuanModel _data = SettingPengajuanModel();
   SettingPengajuanListUser _userList = SettingPengajuanListUser();
   List<SettingUser> _selectedUser = <SettingUser>[];
@@ -53,6 +55,28 @@ class _SettingSuratPengajuanScreenAdminState
   void initState() {
     initData();
     super.initState();
+  }
+
+  submit() async {
+    setState(() {
+      isUpdating = true;
+    });
+    SettingUserPost _postData = SettingUserPost();
+    List<UserId> _listPost = <UserId>[];
+    for (var i = 0; i < _selectedUser.length; i++) {
+      _listPost.add(UserId(userId: _selectedUser[i].id!));
+    }
+    _postData.userIds = _listPost;
+    await CallAdminApi().updateSetting(_postData).then((value) {
+      if (value == 'success') {
+        Fluttertoast.showToast(msg: 'Setting updated!');
+      } else {
+        Fluttertoast.showToast(msg: 'Something Wrong! $value');
+      }
+      setState(() {
+        isUpdating = false;
+      });
+    }).onError((error, stackTrace) {});
   }
 
   @override
@@ -227,17 +251,17 @@ class _SettingSuratPengajuanScreenAdminState
                                 index == _selectedUser.length
                                     ? Container()
                                     : InkWell(
-                                      onTap: (){
-                                        setState(() {
-                                          _selectedUser.removeAt(index);
-                                        });
-                                      },
-                                      child: Icon(
+                                        onTap: () {
+                                          setState(() {
+                                            _selectedUser.removeAt(index);
+                                          });
+                                        },
+                                        child: Icon(
                                           Icons.close,
                                           color: Colors.grey[600],
                                           size: 20,
                                         ),
-                                    )
+                                      )
                               ],
                             ),
                           );
@@ -247,21 +271,36 @@ class _SettingSuratPengajuanScreenAdminState
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(15)),
                     ),
-              Container(
-                height: 60,
-                margin:
-                    EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 20),
-                child: Center(
-                  child: Text(
-                    'Update',
-                    style: GoogleFonts.roboto(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {
+                  submit();
+                },
+                child: Container(
+                  height: 60,
+                  margin:
+                      EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 20),
+                  child: Center(
+                    child: isUpdating
+                        ? Container(
+                            height: 30,
+                            width: 30,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            'Update',
+                            style: GoogleFonts.roboto(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
                   ),
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10)),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(10)),
               )
             ],
           ),
