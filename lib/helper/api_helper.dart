@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:flutter_application_3/models/update_profile_return.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_application_3/models/login_data.dart';
@@ -582,7 +583,7 @@ class CallApi {
   Future<String> updateProfile(String name, String email, String password,
       XFile? imageavatar, XFile? signature) async {
     Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_PROFILE);
-    User1 _dataProfile = User1();
+    UpdateProfileReturn _dataProfile = UpdateProfileReturn();
     print(fullUrl);
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -619,15 +620,12 @@ class CallApi {
       int a = int.parse(jsonDecode(data.body)['status_code']);
       print(a);
       if (a == 200) {
-        print(jsonDecode(data.body)['user'].toString());
-        String temp = jsonDecode(data.body)['user'].toString();
-        _dataProfile = user1FromJson(temp);
-        print(_dataProfile.name);
+        _dataProfile = updateProfileReturnFromJson(data.body);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         //sharedPreferences.setString('user_data', user1ToJson(_dataProfile));
         sharedPreferences.setString(
-            'user_data', user1ToJson(jsonDecode(data.body)['user']));
+            'user_data', updateUserToJson(_dataProfile.user!));
         return 'success';
       } else {
         return 'failed';

@@ -81,14 +81,15 @@ class _Log_inState extends State<Log_in> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.white70),
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(color: Colors.white70),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
                 children: [
                   Center(
                     child: Padding(
@@ -261,21 +262,20 @@ class _Log_inState extends State<Log_in> {
                       ),
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                        width: double.infinity,
-                        height: 70,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/footer_login.png'),
-                                fit: BoxFit.cover))),
-                  )
                 ],
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    width: double.infinity,
+                    height: 70,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/footer_login.png'),
+                            fit: BoxFit.cover))),
+              )
+            ],
+          ),
         ),
       ),
     );

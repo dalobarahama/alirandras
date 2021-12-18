@@ -55,9 +55,9 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   final ImagePicker _picker = ImagePicker();
 
   List<GetKecamatan> _listKecamatan = <GetKecamatan>[];
-  GetKecamatan? _selectedKecamatan = GetKecamatan();
+  GetKecamatan? _selectedKecamatan;
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
-  GetKelurahan? _selectedKelurahan = GetKelurahan();
+  GetKelurahan? _selectedKelurahan;
   SubmitFormulir _dataFormulir = SubmitFormulir();
   List<XFile>? _imageFileList = <XFile>[];
   set _imageFile(XFile? value) {
@@ -81,14 +81,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   ];
   String? _selectedPermohonan;
 
+  @override
   initState() {
     _selectedKecamatan = null;
     _selectedKelurahan = null;
     initData();
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
-      print('timer');
-      initData();
-    });
     super.initState();
   }
 
@@ -317,7 +314,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
             getKelurahan(_selectedKecamatan!.id);
           });
         }
-        ;
+        
       }
     });
   }

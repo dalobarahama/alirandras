@@ -93,8 +93,8 @@ class _ProfileState extends State<Profile> {
       if (value == 'success') {
         Fluttertoast.showToast(
             msg: 'Success Update Profile', timeInSecForIosWeb: 2);
-        initState();
-        ;
+        initData();
+        
       } else if (value == 'failed') {
         Fluttertoast.showToast(
             msg: 'Gagal Update Profile', timeInSecForIosWeb: 2);
