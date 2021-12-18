@@ -9,12 +9,14 @@ import 'package:flutter_application_3/models/admin_home_model.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
   Function logout;
@@ -37,7 +39,19 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
     'selesai direvisi'
   ];
   String selectedStatus = 'semua';
-  List<String> tahunData = ['2020', '2021', '2022', '2023', '2024'];
+  List<String> tahunData = [
+    '2020',
+    '2021',
+    '2022',
+    '2023',
+    '2024',
+    '2025',
+    '2026',
+    '2027',
+    '2028',
+    '2029',
+    '2030'
+  ];
   String? selectedTahun;
 
   @override
@@ -93,7 +107,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text('Hallo, ' + _userData.name.toString() + '!',
+                      child: Text('Hallo, ${_userData.name ?? ''} !',
                           style: GoogleFonts.roboto(
                               color: Colors.white, fontSize: 20)),
                     ),
@@ -170,7 +184,6 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           Icon(
                             Icons.document_scanner,
                             color: Colors.blueAccent,
-                            textDirection: TextDirection.rtl,
                             size: 20,
                           ),
                           SizedBox(
@@ -226,7 +239,6 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           Icon(
                             Icons.account_circle,
                             color: Colors.blueAccent,
-                            textDirection: TextDirection.rtl,
                             size: 20,
                           ),
                           SizedBox(
@@ -265,7 +277,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Text(
-              'Surat Pengajuan',
+              'Surat Balasan',
               style: GoogleFonts.roboto(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -410,7 +422,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                             )),
                                       ),
                                       Text(
-                                        '20 September 2021, 09.41',
+                                        DateFormat('dd MMMM yyyy, HH.mm')
+                                            .format(_data
+                                                .registrationForms![index]
+                                                .createdAt!),
                                         style: GoogleFonts.roboto(
                                             fontSize: 10,
                                             textStyle: TextStyle(
@@ -475,7 +490,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                               height: 3,
                                             ),
                                             Text(
-                                                '${_data.registrationForms?[index].status == null ? '-' : _data.registrationForms![index].status!.toUpperCase()}',
+                                                '${_data.registrationForms?[index].mailRequest == null ? '-' : _data.registrationForms![index].status!.toUpperCase()}',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
@@ -489,7 +504,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                           : _data
                                                                       .registrationForms![
                                                                           index]
-                                                                      .status !=
+                                                                      .mailRequest!
+                                                                      .checkMailPermission !=
                                                                   'diterima'
                                                               ? Colors.grey
                                                               : Colors.green,
@@ -521,7 +537,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                     )),
                                               ),
                                               SizedBox(
-                                                height: 3,
+                                                height: 5,
                                               ),
                                               _data.registrationForms?[index]
                                                           .registrationFormAttachments ==
@@ -530,30 +546,34 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                   : _data
                                                               .registrationForms![
                                                                   index]
-                                                              .registrationFormAttachments!
-                                                              .length >
-                                                          0
-                                                      ? Container(
-                                                          child:
-                                                              ListView.builder(
-                                                            shrinkWrap: true,
-                                                            itemCount: _data
-                                                                .registrationForms![
-                                                                    index]
-                                                                .registrationFormAttachments!
-                                                                .length,
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    0),
-                                                            physics:
-                                                                NeverScrollableScrollPhysics(),
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int i) {
-                                                              return Text(
-                                                                  'Lampiran_${i + 1}');
-                                                            },
+                                                              .mailRequest
+                                                              ?.body ==
+                                                          null
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            pushNewScreen(
+                                                                context,
+                                                                screen: PreviewSuratBalasanScreen(
+                                                                    _data
+                                                                        .registrationForms![
+                                                                            index]
+                                                                        .mailRequest!
+                                                                        .id!
+                                                                        .toString(),
+                                                                    'view'),
+                                                                withNavBar:
+                                                                    false);
+                                                          },
+                                                          child: Text(
+                                                            'Lihat Surat Balasan',
+                                                            style: GoogleFonts.roboto(
+                                                                fontSize: 12,
+                                                                textStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .blueAccent,
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline)),
                                                           ),
                                                         )
                                                       : Text('-')

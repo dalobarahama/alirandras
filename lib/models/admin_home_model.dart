@@ -121,18 +121,18 @@ class RegistrationForm2 {
 }
 
 class MailRequest {
-  MailRequest({
-    this.id,
-    this.registrationFormId,
-    this.userId,
-    this.letterNumber,
-    this.body,
-    this.status,
-    this.reasonRejection,
-    this.createdAt,
-    this.updatedAt,
-    this.mailPermissions,
-  });
+  MailRequest(
+      {this.id,
+      this.registrationFormId,
+      this.userId,
+      this.letterNumber,
+      this.body,
+      this.status,
+      this.reasonRejection,
+      this.createdAt,
+      this.updatedAt,
+      this.mailPermissions,
+      this.checkMailPermission});
 
   int? id;
   int? registrationFormId;
@@ -144,6 +144,7 @@ class MailRequest {
   DateTime? createdAt;
   DateTime? updatedAt;
   List<MailPermission>? mailPermissions;
+  dynamic checkMailPermission;
 
   factory MailRequest.fromJson(Map<String, dynamic> json) => MailRequest(
         id: json["id"] == null ? null : json["id"],
@@ -161,6 +162,7 @@ class MailRequest {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        checkMailPermission: json["check_mail_permission"],
         mailPermissions: json["mail_permissions"] == null
             ? null
             : List<MailPermission>.from(json["mail_permissions"]
