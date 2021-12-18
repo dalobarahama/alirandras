@@ -9,6 +9,7 @@ import 'package:flutter_application_3/models/admin_home_model.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
+import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
 import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
@@ -101,54 +102,75 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     fit: BoxFit.cover)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text('Hallo, ${_userData.name ?? ''} !',
-                          style: GoogleFonts.roboto(
-                              color: Colors.white, fontSize: 20)),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        pushNewScreen(context,
-                            screen: Profile(logout), withNavBar: false);
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(65)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(65),
-                          child: CachedNetworkImage(
-                            imageUrl: _userData.avatar ?? '-',
-                            imageBuilder: (context, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
+                Padding(
+                  padding: const EdgeInsets.only(top: 35.0, right: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(),
+                      InkWell(
+                        onTap: () {
+                          pushNewScreen(context,
+                              screen: NotificationListScreen(),
+                              withNavBar: false);
+                        },
+                        child: Icon(
+                          Icons.notifications_active_outlined,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text('Hallo, ${_userData.name ?? ''} !',
+                            style: GoogleFonts.roboto(
+                                color: Colors.white, fontSize: 20)),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          pushNewScreen(context,
+                              screen: Profile(logout), withNavBar: false);
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(65)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(65),
+                            child: CachedNetworkImage(
+                              imageUrl: _userData.avatar ?? '-',
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => Icon(
-                              Icons.error,
-                              color: Colors.white,
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 10,
-                )
               ],
             ),
           ),

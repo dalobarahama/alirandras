@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
 import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,13 +69,20 @@ class _HomeState extends State<Home> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 15),
-                          child: IconButton(
-                              onPressed: null,
-                              icon: Icon(
-                                Icons.notifications_active_outlined,
-                                color: Colors.blue[900],
-                                size: 30,
-                              )),
+                          child: InkWell(
+                            onTap: () {
+                              pushNewScreen(context,
+                                  screen: NotificationListScreen(),
+                                  withNavBar: false);
+                            },
+                            child: IconButton(
+                                onPressed: null,
+                                icon: Icon(
+                                  Icons.notifications_active_outlined,
+                                  color: Colors.blue[900],
+                                  size: 30,
+                                )),
+                          ),
                         ),
                       ],
                     ),

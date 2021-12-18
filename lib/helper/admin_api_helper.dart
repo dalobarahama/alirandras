@@ -6,6 +6,7 @@ import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 import 'package:flutter_application_3/models/list_pengajuan_admin_model.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
+import 'package:flutter_application_3/models/notif_model.dart';
 import 'package:flutter_application_3/models/setting_pengajuan.dart';
 import 'package:flutter_application_3/models/setting_pengajuan_user_model.dart';
 import 'package:flutter_application_3/models/setting_update_post_model.dart';
@@ -24,6 +25,8 @@ class CallAdminApi {
   final String APPROVE_PERMOHONAN = '/api/verifikasi-surat-permohonan/';
   final String GET_SETTING_USER_LIST = '/api/setting-pengajuan/list-user';
   final String UPDATE_SETTING = '/api/setting-pengajuan';
+  final String UPDATE_FCM = '/api/update-fcm-token';
+  final String GET_NOTIFICATON = '/api/notif';
 
   Future<SettingPengajuanModel> getSettingPengajuan() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -332,14 +335,13 @@ class CallAdminApi {
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
-      var post = http.post(fullUrl,
-          body: settingUserPostToJson(_data),
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': '*/*',
-            'Content-Type' : 'application/json'
-          });
-          print(json.encode(settingUserPostToJson(_data)));
+      var post =
+          http.post(fullUrl, body: settingUserPostToJson(_data), headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
+      });
+      print(json.encode(settingUserPostToJson(_data)));
       print(fullUrl);
       var res = await post;
       int a = res.statusCode;
@@ -357,6 +359,65 @@ class CallAdminApi {
     } catch (e) {
       print(e);
       return e.toString();
+    }
+  }
+
+  Future<String> updateFCM(String fcm) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_FCM);
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, body: {
+        'fcm_token': fcm
+      }, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<NotifModel> getNotificationList() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    Uri fullUrl = Uri.parse(SERVER_URL + GET_NOTIFICATON);
+    NotifModel _data = NotifModel();
+
+    try {
+      var get = http.get(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json'
+      });
+
+      var res = await get;
+      //print(res.body);
+      print(res.statusCode);
+      print(res.body);
+      if (res.statusCode == 200) {
+        _data = notifModelFromJson(res.body);
+        return _data;
+      } else {
+        print('error');
+        throw 'error';
+      }
+    } catch (e) {
+      print(e);
+      throw 'error';
     }
   }
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/admin_api_helper.dart';
+import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/main.dart';
 import 'package:flutter_application_3/screen/admin/main_menu_screen_admin.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
@@ -19,7 +21,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  
+
   firebaseSetup() async {
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -33,8 +35,28 @@ class _SplashScreenState extends State<SplashScreen> {
     print('User granted permission: ${settings.authorizationStatus}');
     await FirebaseMessaging.instance.subscribeToTopic('notification');
 
-    messaging.getToken().then((value) {
-      print('token: $value');
+    messaging.getToken().then((token) {
+      CallStorage().checkIfLoggedIn().then((value) {
+        if (value) {
+          CallAdminApi().updateFCM(token!).then((value) {
+            CallStorage().getUserData().then((value) {
+              setState(() {
+                if (value.app == 'mobile user') {
+                  //go to user home screen
+                  Navigator.pushReplacement(
+                      context, SlideToLeftRoute(page: MainMenuScreen()));
+                } else {
+                  //go to admin home screen
+                  Navigator.pushReplacement(
+                      context, SlideToLeftRoute(page: MainMenuScreenAdmin()));
+                }
+              });
+            });
+          });
+        } else {
+          Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
+        }
+      });
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -53,30 +75,12 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
+
   void initState() {
     Timer(Duration(seconds: 1), () {
-    firebaseSetup();
       //Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
-      CallStorage().checkIfLoggedIn().then((value) {
-        if (value) {
-          CallStorage().getUserData().then((value) {
-            setState(() {
-              if (value.app == 'mobile user') {
-                //go to user home screen
-                Navigator.pushReplacement(
-                    context, SlideToLeftRoute(page: MainMenuScreen()));
-              } else {
-                //go to admin home screen
-                Navigator.pushReplacement(
-                    context, SlideToLeftRoute(page: MainMenuScreenAdmin()));
-              }
-            });
-          });
-        } else {
-          Navigator.pushReplacement(context, SlideToLeftRoute(page: Sign_up()));
-        }
-        ;
-      });
+
+      firebaseSetup();
     });
     super.initState();
   }

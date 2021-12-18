@@ -301,13 +301,15 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 33),
+                          padding: const EdgeInsets.only(left: 33, right: 33),
                           child: Row(
                             children: [
-                              Text(
-                                _userData.position ?? '-',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black54),
+                              Expanded(
+                                child: Text(
+                                  _userData.position ?? '-',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.black54),
+                                ),
                               )
                             ],
                           ),
@@ -317,7 +319,7 @@ class _ProfileState extends State<Profile> {
                   )
                 : Container(),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 33),
