@@ -18,6 +18,7 @@ class _SettingSuratPengajuanScreenAdminState
     extends State<SettingSuratPengajuanScreenAdmin> {
   bool isLoading = true;
   SettingPengajuanModel _data = SettingPengajuanModel();
+  List<SettingPengajuanData>? _selectedName = <SettingPengajuanData>[];
 
   initData() async {
     await CallAdminApi().getSettingPengajuan().then((value) {
@@ -27,6 +28,12 @@ class _SettingSuratPengajuanScreenAdminState
       });
     }).onError((error, stackTrace) {
       Fluttertoast.showToast(msg: 'Something wrong, try again later...');
+    });
+  }
+
+  void addIndex() {
+    setState(() {
+      _data.settings!.add(_data.settings![0]);
     });
   }
 
@@ -51,10 +58,10 @@ class _SettingSuratPengajuanScreenAdminState
               Text(
                 'Setting Surat Pengajuan ${_data.status}',
                 style: GoogleFonts.roboto(
-                    fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
-                    ),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[700],
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -85,6 +92,10 @@ class _SettingSuratPengajuanScreenAdminState
                         padding: EdgeInsets.all(0),
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
+                          for (int i = 0; i < _data.settings!.length; i++) {
+                            _selectedName!.add(_data.settings![i]);
+                            print(_selectedName![i].user!.name);
+                          }
                           return Container(
                             margin: EdgeInsets.only(bottom: 10, top: 10),
                             padding: EdgeInsets.symmetric(horizontal: 10),
@@ -115,17 +126,52 @@ class _SettingSuratPengajuanScreenAdminState
                                                   : Colors.white,
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          child: Text(
-                                            index == _data.settings!.length
-                                                ? '+ Tambah Alur'
-                                                : _data.settings?[index].user
-                                                        ?.name ??
-                                                    '-',
-                                            style: GoogleFonts.roboto(
-                                                color: Colors.grey[600],
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),
+                                          child: index != _data.settings!.length
+                                              ? Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.black38),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  padding: EdgeInsets.only(
+                                                      left: 12, right: 24),
+                                                  child: DropdownButton<
+                                                      SettingPengajuanData>(
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.black54),
+                                                    onChanged: (value) =>
+                                                        setState(() {
+                                                      _selectedName![index] =
+                                                          value!;
+                                                    }),
+                                                    value:
+                                                        _selectedName![index],
+                                                    items: _selectedName!.map(
+                                                        (SettingPengajuanData
+                                                            value) {
+                                                      return new DropdownMenuItem<
+                                                          SettingPengajuanData>(
+                                                        value: value,
+                                                        child: new Text(
+                                                            value.user!.name!),
+                                                      );
+                                                    }).toList(),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    isExpanded: true,
+                                                    underline:
+                                                        SizedBox.shrink(),
+                                                  ),
+                                                )
+                                              : InkWell(
+                                                  onTap: () {
+                                                    addIndex();
+                                                  },
+                                                  child: Text('+')),
                                         ),
                                       )
                                     ],
@@ -153,6 +199,31 @@ class _SettingSuratPengajuanScreenAdminState
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _builDropdown(int index1) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black38),
+          borderRadius: BorderRadius.circular(5)),
+      padding: EdgeInsets.only(left: 12, right: 24),
+      child: DropdownButton<SettingPengajuanData>(
+        style: TextStyle(fontSize: 12, color: Colors.black54),
+        onChanged: (value) => setState(() {
+          _selectedName![index1] = value!;
+        }),
+        value: _selectedName![index1],
+        items: _selectedName!.map((SettingPengajuanData value) {
+          return new DropdownMenuItem<SettingPengajuanData>(
+            value: value,
+            child: new Text(value.user!.name!),
+          );
+        }).toList(),
+        borderRadius: BorderRadius.circular(5),
+        isExpanded: true,
+        underline: SizedBox.shrink(),
       ),
     );
   }

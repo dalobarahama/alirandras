@@ -83,6 +83,8 @@ class SettingPengajuanData {
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "user": user == null ? null : user!.toJson(),
       };
+
+  void add(SettingPengajuanData settingPengajuanData) {}
 }
 
 class User {
