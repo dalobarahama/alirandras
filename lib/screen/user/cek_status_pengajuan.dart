@@ -467,9 +467,13 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                     width: 8,
                                                   ),
                                                   _listPengajuanFiltered![index]
-                                                              .status!
-                                                              .toLowerCase() ==
-                                                          'ditolak'
+                                                                  .status!
+                                                                  .toLowerCase() ==
+                                                              'ditolak' ||
+                                                          _listPengajuanFiltered![
+                                                                      index]
+                                                                  .mailRequest ==
+                                                              null
                                                       ? Container(
                                                           child: Row(
                                                             children: [

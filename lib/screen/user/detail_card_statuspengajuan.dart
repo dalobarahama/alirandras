@@ -240,6 +240,33 @@ class _Detail_card_statuspengajuanState
                     SizedBox(
                       height: 30,
                     ),
+                    _dataStatusPengajuan.type!.toLowerCase == 'ditolak'
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Alasan Ditolak',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 16),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        _dataStatusPengajuan.reasonRejection,
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: Row(

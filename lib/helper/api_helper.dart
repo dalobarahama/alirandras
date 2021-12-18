@@ -28,7 +28,7 @@ class CallApi {
   final String SUBMIT_FORMULIR = '/api/formulir';
   final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
   final String SUBMIT_DOKUMEN = '/api/tambah-file-pendukung-formulir';
-  final String GET_LIST_PENGAJUAN = '/api/formulir';
+  final String GET_LIST_PENGAJUAN = '/api/surat-permohonan';
   final String UPDATE_FORMULIR = '/api/edit-formulir/';
   final String DELETE_FORMULIR = '/api/hapus-formulir/';
   final String DELETE_DOKUMEN = '/api/hapus-file-formulir/';
