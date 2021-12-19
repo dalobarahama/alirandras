@@ -98,7 +98,7 @@ class _EditManajemenPenggunaScreenState
       if (value == 'success') {
         Fluttertoast.showToast(
             msg: 'Success Update Profile', timeInSecForIosWeb: 2);
-        initState();
+        initData();
         ;
       } else if (value == 'failed') {
         Fluttertoast.showToast(
