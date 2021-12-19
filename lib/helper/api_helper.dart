@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:flutter_application_3/models/admin_permission_model.dart';
 import 'package:flutter_application_3/models/update_profile_return.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,6 +39,7 @@ class CallApi {
   Future<String> login(String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + LOGIN_URL);
     LoginData _loginData = LoginData();
+    AdminPermission _dataPermission = AdminPermission();
     try {
       var post =
           http.post(fullUrl, body: {'email': email, 'password': password});
@@ -48,10 +50,13 @@ class CallApi {
 
       if (a == 200) {
         _loginData = loginDataFromJson(res.body);
+        _dataPermission = adminPermissionFromJson(res.body);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setString('token', _loginData.token!);
         sharedPreferences.setString('user_data', user1ToJson(_loginData.user!));
+        sharedPreferences.setString(
+            'admin_permission', adminPermissionToJson(_dataPermission));
         return 'success';
       } else if (a >= 400 && a <= 500) {
         // print('zzzzzz');

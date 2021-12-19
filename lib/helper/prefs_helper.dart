@@ -1,3 +1,5 @@
+import 'package:flutter_application_3/models/admin_home_model.dart';
+import 'package:flutter_application_3/models/admin_permission_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 
@@ -23,6 +25,14 @@ class CallStorage {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     String? data = localStorage.getString('user_data');
     _data = user1FromJson(data!);
+    return _data;
+  }
+
+  Future<AdminPermission> getUserPermission() async {
+    AdminPermission _data = AdminPermission();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String? data = localStorage.getString('admin_permission');
+    _data = adminPermissionFromJson(data!);
     return _data;
   }
 }

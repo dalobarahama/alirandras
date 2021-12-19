@@ -531,11 +531,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                   .status ==
                                                               null
                                                           ? Colors.grey
-                                                          : _data
-                                                                      .registrationForms![
-                                                                          index]
-                                                                      .mailRequest!
-                                                                      .checkMailPermission !=
+                                                          : _data.registrationForms![index].status!=
                                                                   'diterima'
                                                               ? Colors.grey
                                                               : Colors.green,

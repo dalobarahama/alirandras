@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
+import 'package:flutter_application_3/models/admin_permission_model.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
 import 'package:flutter_application_3/screen/admin/edit_manajemen_pengguna_screen_admin.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
@@ -22,8 +24,14 @@ class _ManajemenPenggunaScreenAdminState
   ManajemenPenggunaModel _data = ManajemenPenggunaModel();
   List<Pengguna>? _searchList;
   bool isLoading = true;
+  AdminPermission _adminPermission = AdminPermission();
 
   initData() async {
+    await CallStorage().getUserPermission().then((data) {
+      setState(() {
+        _adminPermission = data;
+      });
+    });
     await CallAdminApi().getListPengguna().then((value) {
       setState(() {
         _data = value;
@@ -63,7 +71,12 @@ class _ManajemenPenggunaScreenAdminState
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
-        child: Column(
+        child: 
+        _adminPermission.manajemenPengguna == 0?
+        Center(
+          child: Text('Anda tidak memiliki akses ke menu ini.'),
+        ):
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(

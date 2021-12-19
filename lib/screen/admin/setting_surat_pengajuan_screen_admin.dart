@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
+import 'package:flutter_application_3/helper/prefs_helper.dart';
+import 'package:flutter_application_3/models/admin_permission_model.dart';
 import 'package:flutter_application_3/models/setting_pengajuan.dart';
 import 'package:flutter_application_3/models/setting_pengajuan_user_model.dart';
 import 'package:flutter_application_3/models/setting_update_post_model.dart';
@@ -24,8 +26,14 @@ class _SettingSuratPengajuanScreenAdminState
 
   SettingPengajuanListUser _userList = SettingPengajuanListUser();
   List<SettingUser> _selectedUser = <SettingUser>[];
+  AdminPermission _adminPermission = AdminPermission();
 
   initData() async {
+    await CallStorage().getUserPermission().then((data) {
+      setState(() {
+        _adminPermission = data;
+      });
+    });
     await CallAdminApi().getSettingPengajuan().then((value) {
       setState(() {
         _data = value;
@@ -89,230 +97,249 @@ class _SettingSuratPengajuanScreenAdminState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 70,
-              ),
-              Text(
-                'Setting Surat Balasan',
-                style: GoogleFonts.roboto(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[700],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Atur alur pengajuan',
-                style: GoogleFonts.roboto(
-                    textStyle: TextStyle(
-                  color: Colors.grey,
-                )),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              isLoading
-                  ? Container(
-                      height: 100,
-                      child: Center(
-                        child: CircularProgressIndicator(),
+      body: _adminPermission.settingSuratPengajuan == 0
+          ? Center(
+              child: Text('Anda tidak memiliki akses ke menu ini.'),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Text(
+                      'Setting Surat Balasan',
+                      style: GoogleFonts.roboto(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700],
                       ),
-                    )
-                  : Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(15),
-                      child: ListView.builder(
-                        itemCount: _selectedUser.length + 1,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.all(0),
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 10, top: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Atur alur pengajuan',
+                      style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                        color: Colors.grey,
+                      )),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    isLoading
+                        ? Container(
+                            height: 100,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(15),
+                            child: ListView.builder(
+                              itemCount: _selectedUser.length + 1,
+                              shrinkWrap: true,
+                              padding: EdgeInsets.all(0),
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: EdgeInsets.only(bottom: 10, top: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        '${index + 1}',
-                                        style: GoogleFonts.roboto(
-                                            color: Colors.grey[600],
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
                                       Expanded(
-                                        child: Container(
-                                            padding:
-                                                index == _selectedUser.length
-                                                    ? EdgeInsets.symmetric(
-                                                        vertical: 15,
-                                                        horizontal: 15)
-                                                    : EdgeInsets.symmetric(
-                                                        horizontal: 15),
-                                            decoration: BoxDecoration(
-                                                color: index ==
-                                                        _selectedUser.length
-                                                    ? Colors.transparent
-                                                    : Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: index == _selectedUser.length
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        _selectedUser.add(
-                                                            _userList
-                                                                .users![0]);
-                                                      });
-                                                    },
-                                                    child: Text(
-                                                      '+ Tambah Alur',
-                                                      style: GoogleFonts.roboto(
-                                                          color:
-                                                              Colors.grey[600],
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 15),
-                                                    ),
-                                                  )
-                                                : _userList.users == null
-                                                    ? Container(
-                                                        height: 45,
-                                                        width: double.infinity,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 8),
-                                                        child: Text(
-                                                            'Pilih User',
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              '${index + 1}',
+                                              style: GoogleFonts.roboto(
+                                                  color: Colors.grey[600],
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                  padding: index ==
+                                                          _selectedUser.length
+                                                      ? EdgeInsets.symmetric(
+                                                          vertical: 15,
+                                                          horizontal: 15)
+                                                      : EdgeInsets.symmetric(
+                                                          horizontal: 15),
+                                                  decoration: BoxDecoration(
+                                                      color: index ==
+                                                              _selectedUser
+                                                                  .length
+                                                          ? Colors.transparent
+                                                          : Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                  child: index ==
+                                                          _selectedUser.length
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              _selectedUser.add(
+                                                                  _userList
+                                                                      .users![0]);
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            '+ Tambah Alur',
                                                             style: GoogleFonts.roboto(
                                                                 color: Colors
                                                                     .grey[600],
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                fontSize: 15)),
-                                                      )
-                                                    : DropdownButton<
-                                                        SettingUser>(
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.black54),
-                                                        onChanged: (value) =>
-                                                            setState(() {
-                                                          _selectedUser[index] =
-                                                              value!;
-                                                        }),
-                                                        value: _selectedUser[
-                                                            index],
-                                                        hint: Text(
-                                                          'Pilih Kelurahan',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      600],
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 15),
-                                                        ),
-                                                        items: _userList.users!
-                                                            .map((SettingUser
-                                                                value) {
-                                                          return new DropdownMenuItem<
+                                                                fontSize: 15),
+                                                          ),
+                                                        )
+                                                      : _userList.users == null
+                                                          ? Container(
+                                                              height: 45,
+                                                              width: double
+                                                                  .infinity,
+                                                              padding: EdgeInsets
+                                                                  .only(top: 8),
+                                                              child: Text(
+                                                                  'Pilih User',
+                                                                  style: GoogleFonts.roboto(
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          600],
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          15)),
+                                                            )
+                                                          : DropdownButton<
                                                               SettingUser>(
-                                                            value: value,
-                                                            child: new Text(
-                                                                value.name!),
-                                                          );
-                                                        }).toList(),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
-                                                        isExpanded: true,
-                                                        underline:
-                                                            SizedBox.shrink(),
-                                                      )),
-                                      )
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .black54),
+                                                              onChanged:
+                                                                  (value) =>
+                                                                      setState(
+                                                                          () {
+                                                                _selectedUser[
+                                                                        index] =
+                                                                    value!;
+                                                              }),
+                                                              value:
+                                                                  _selectedUser[
+                                                                      index],
+                                                              hint: Text(
+                                                                'Pilih Kelurahan',
+                                                                style: GoogleFonts.roboto(
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        600],
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        15),
+                                                              ),
+                                                              items: _userList
+                                                                  .users!
+                                                                  .map((SettingUser
+                                                                      value) {
+                                                                return new DropdownMenuItem<
+                                                                    SettingUser>(
+                                                                  value: value,
+                                                                  child: new Text(
+                                                                      value
+                                                                          .name!),
+                                                                );
+                                                              }).toList(),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          7),
+                                                              isExpanded: true,
+                                                              underline:
+                                                                  SizedBox
+                                                                      .shrink(),
+                                                            )),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      index == _selectedUser.length
+                                          ? Container()
+                                          : InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedUser.removeAt(index);
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close,
+                                                color: Colors.grey[600],
+                                                size: 20,
+                                              ),
+                                            )
                                     ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                index == _selectedUser.length
-                                    ? Container()
-                                    : InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedUser.removeAt(index);
-                                          });
-                                        },
-                                        child: Icon(
-                                          Icons.close,
-                                          color: Colors.grey[600],
-                                          size: 20,
-                                        ),
-                                      )
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(15)),
-                    ),
-              InkWell(
-                onTap: () {
-                  submit();
-                },
-                child: Container(
-                  height: 60,
-                  margin:
-                      EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 20),
-                  child: Center(
-                    child: isUpdating
-                        ? Container(
-                            height: 30,
-                            width: 30,
-                            child: CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
-                        : Text(
-                            'Update',
-                            style: GoogleFonts.roboto(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(15)),
                           ),
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10)),
+                    InkWell(
+                      onTap: () {
+                        submit();
+                      },
+                      child: Container(
+                        height: 60,
+                        margin: EdgeInsets.only(
+                            left: 20, right: 20, bottom: 50, top: 20),
+                        child: Center(
+                          child: isUpdating
+                              ? Container(
+                                  height: 30,
+                                  width: 30,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
+                                )
+                              : Text(
+                                  'Update',
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }
