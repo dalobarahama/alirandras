@@ -350,6 +350,7 @@ class CallApi {
       int a = jsonDecode(data.body)['status_code'];
       print(a);
       if (a == 200) {
+        print('selesai submit imeage');
         return true;
       } else {
         return false;
@@ -371,7 +372,7 @@ class CallApi {
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       File? dokumen1 = File(dokumen!.path);
       http.MultipartFile _file = http.MultipartFile(
-          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          'document', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
           filename: 'Dokumen_bangunan_$id _${dokumen.path.split(".").last}');
 
       Map<String, String> headers = {
