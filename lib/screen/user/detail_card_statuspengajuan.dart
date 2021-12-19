@@ -377,7 +377,7 @@ class _Detail_card_statuspengajuanState
                                         _launchURL(_link);
                                       },
                                       child: Text(
-                                        'Lampiran $index',
+                                        'Lampiran' + (index + 1).toString(),
                                         style: TextStyle(
                                             color: Colors.blue,
                                             decoration:
@@ -422,7 +422,7 @@ class _Detail_card_statuspengajuanState
                                         _launchURL(_link);
                                       },
                                       child: Text(
-                                        'Lampiran Dokumen $index',
+                                        'Lampiran' + (index + 1).toString(),
                                         style: TextStyle(
                                             color: Colors.blue,
                                             decoration:

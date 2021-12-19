@@ -32,7 +32,8 @@ class CallApi {
   final String GET_LIST_PENGAJUAN = '/api/surat-permohonan';
   final String UPDATE_FORMULIR = '/api/edit-formulir/';
   final String DELETE_FORMULIR = '/api/hapus-formulir/';
-  final String DELETE_DOKUMEN = '/api/hapus-file-formulir/';
+  final String DELETE_IMAGE = '/api/hapus-file-formulir/';
+  final String DELETE_DOCUMENT = '/api/hapus-file-pendukung-formulir/';
   final String UPDATE_PROFILE = '/api/auth/edit-profile';
 
   Future<String> login(String email, String password) async {
@@ -350,6 +351,7 @@ class CallApi {
       int a = jsonDecode(data.body)['status_code'];
       print(a);
       if (a == 200) {
+        print('selesai submit imeage');
         return true;
       } else {
         return false;
@@ -371,7 +373,7 @@ class CallApi {
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       File? dokumen1 = File(dokumen!.path);
       http.MultipartFile _file = http.MultipartFile(
-          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          'document', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
           filename: 'Dokumen_bangunan_$id _${dokumen.path.split(".").last}');
 
       Map<String, String> headers = {
@@ -534,7 +536,8 @@ class CallApi {
       print('del penga');
       print(a);
       if (a == 200) {
-        CallApi().deleteDokumen(id);
+        CallApi().deleteImage(id);
+        CallApi().deleteDocument(id);
         return 'success';
       } else if (a >= 400 && a <= 500) {
         // print('zzzzzz');
@@ -549,8 +552,39 @@ class CallApi {
     }
   }
 
-  Future<bool> deleteDokumen(int? id) async {
-    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_DOKUMEN + id.toString());
+  Future<bool> deleteImage(int? id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_IMAGE + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      print(res.body);
+      print('del dok');
+
+      var a = int.parse(jsonDecode(res.body)['status_code']);
+      print(res.body);
+      print(a);
+      if (a == 200) {
+        return true;
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+        return false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteDocument(int? id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_DOCUMENT + id.toString());
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
