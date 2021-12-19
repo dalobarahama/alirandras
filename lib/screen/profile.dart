@@ -27,6 +27,7 @@ class _ProfileState extends State<Profile> {
   _ProfileState(this.logout);
   TextEditingController _emailController = TextEditingController();
   TextEditingController _namaController = TextEditingController();
+  TextEditingController _jabatanController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   User1 _userData = User1();
   bool isLoading = true;
@@ -44,8 +45,13 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _userData = value;
         isLoading = false;
+        print(_userData.email);
         _namaController.text = _userData.name!;
         _emailController.text = _userData.email!;
+        if (_userData.position != null) {
+          _jabatanController.text = _userData.position!;
+          print(_userData.position!);
+        }
       });
     });
   }
@@ -94,7 +100,6 @@ class _ProfileState extends State<Profile> {
         Fluttertoast.showToast(
             msg: 'Success Update Profile', timeInSecForIosWeb: 2);
         initData();
-        
       } else if (value == 'failed') {
         Fluttertoast.showToast(
             msg: 'Gagal Update Profile', timeInSecForIosWeb: 2);
@@ -301,17 +306,24 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 33, right: 33),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  _userData.position ?? '-',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black54),
-                                ),
-                              )
-                            ],
+                          padding: const EdgeInsets.only(
+                              left: 33, right: 33, top: 20, bottom: 10),
+                          child: Container(
+                            height: 48,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.black12,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: TextStyle(color: Colors.black54),
+                                  controller: _jabatanController,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                  )),
+                            ),
                           ),
                         ),
                       ],

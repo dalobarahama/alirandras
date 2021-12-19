@@ -26,6 +26,11 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
 
   @override
   void initState() {
+    initData();
+    super.initState();
+  }
+
+  initData() {
     CallApi().getListPengajuan().then((value) {
       setState(() {
         print('asu');
@@ -44,7 +49,6 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
         // }
       });
     });
-    super.initState();
   }
 
   List<ApplicationLetter1>? _filteredCekStatus(
@@ -75,7 +79,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
         Fluttertoast.showToast(
             msg: 'Berhasil Hapus Data', timeInSecForIosWeb: 2);
         setState(() {
-          initState();
+          initData();
         });
       } else {
         Fluttertoast.showToast(msg: 'Gagal Hapus Data', timeInSecForIosWeb: 2);

@@ -227,7 +227,7 @@ class _EditFormState extends State<EditForm> {
         .update_formulir(
             jenisPermohonan,
             _selectedKecamatan!.name,
-            'DAMAI',
+            _selectedKelurahan!.name,
             _luasBangunanController.text,
             _luasLahanController.text,
             _lokasiBangunanController.text,
