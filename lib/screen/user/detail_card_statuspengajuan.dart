@@ -328,9 +328,36 @@ class _Detail_card_statuspengajuanState
                       padding: const EdgeInsets.only(top: 60, bottom: 20),
                       child: Row(
                         children: [
-                          Text(
-                            'Lokasi Bangunan',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          Container(
+                            width: 105,
+                            child: Text(
+                              'Lokasi Bangunan/Lahan',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          _dataStatusPengajuan.buildingLocation.toString(),
+                          style: TextStyle(color: Colors.black54, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 60, bottom: 20),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 105,
+                            child: Text(
+                              'Peruntukan Bangunan',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
                           ),
                         ],
                       ),
@@ -348,7 +375,7 @@ class _Detail_card_statuspengajuanState
                       child: Row(
                         children: [
                           Text(
-                            'Lampiran',
+                            'Gambar Dokumen / Lahan',
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
                         ],

@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CallAdminApi {
-  final String SERVER_URL = 'http://alirandras.inotive.id';
+  final String SERVER_URL = 'https://alirandras.inotive.id';
   final String GET_SETTING_PENGAJUAN = '/api/setting-pengajuan';
   final String GET_LIST_PENGGUNA = '/api/list-pengguna';
   final String GET_ADMIN_HOME_DATA = '/api/formulir';

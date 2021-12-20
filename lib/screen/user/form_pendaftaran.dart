@@ -32,6 +32,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   TextEditingController _luasBangunanController = TextEditingController();
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
+  TextEditingController _peruntukanBangunanController = TextEditingController();
   Timer? timer;
   LatLng point = LatLng(-1.240112, 116.873320);
 
@@ -244,6 +245,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran Dokumen');
       return;
     }
+    if (_peruntukanBangunanController.text.length < 1) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan Peruntukan Bangunan terlebih dahulu');
+      return;
+    }
 
     setState(() {
       isLoading1 = true;
@@ -257,6 +263,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       _luasBangunanController.text,
       _luasLahanController.text,
       _lokasiBangunanController.text,
+      _peruntukanBangunanController.text,
       lat.toString(),
       lang.toString(),
       _imageFileList!,
@@ -314,7 +321,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
             getKelurahan(_selectedKecamatan!.id);
           });
         }
-        
       }
     });
   }
@@ -529,13 +535,16 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Lokasi Bangunan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: TextStyle(
-                            color: Colors.black54,
-                          )),
+                    Container(
+                      width: 105,
+                      child: Text(
+                        'Lokasi Bangunan / Lahan',
+                        style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            textStyle: TextStyle(
+                              color: Colors.black54,
+                            )),
+                      ),
                     ),
                     Container(
                       width: 215,
@@ -552,19 +561,67 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 105,
+                      child: Text(
+                        'Peruntukan Bangunan',
+                        style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            textStyle: TextStyle(
+                              color: Colors.black54,
+                            )),
+                      ),
+                    ),
+                    Container(
+                      width: 215,
+                      height: 50,
+                      child: TextField(
+                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        controller: _peruntukanBangunanController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(7)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Container(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Gambar Bangunan',
-                        style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            textStyle: TextStyle(
-                              color: Colors.black54,
-                            )),
+                      Container(
+                        width: 105,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Gambar Bangunan/Lahan',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 12,
+                                  textStyle: TextStyle(
+                                    color: Colors.black54,
+                                  )),
+                            ),
+                            Text(
+                              '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 9,
+                                  textStyle: TextStyle(
+                                    color: Colors.black54,
+                                  )),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 30),
@@ -689,6 +746,22 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15, top: 5),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'dalam format jpg, jpeg, png',
+                      style: GoogleFonts.roboto(
+                          fontSize: 9,
+                          textStyle: TextStyle(
+                              color: Colors.black54,
+                              fontStyle: FontStyle.italic)),
+                    ),
                   ),
                 ),
               ),
@@ -832,6 +905,22 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15, top: 5),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'dalam format pdf',
+                      style: GoogleFonts.roboto(
+                          fontSize: 9,
+                          textStyle: TextStyle(
+                              color: Colors.black54,
+                              fontStyle: FontStyle.italic)),
+                    ),
                   ),
                 ),
               ),

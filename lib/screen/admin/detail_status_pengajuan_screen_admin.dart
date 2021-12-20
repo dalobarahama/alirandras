@@ -376,7 +376,7 @@ class _StatusPengajuanScreenAdminState
                                               child: InkWell(
                                                   onTap: () {
                                                     String _link =
-                                                        'http://alirandras.inotive.id' +
+                                                        'https://alirandras.inotive.id' +
                                                             _dataPengajuan
                                                                 .registrationFormDocuments![
                                                                     index]
