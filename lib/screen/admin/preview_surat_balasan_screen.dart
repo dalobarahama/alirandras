@@ -18,14 +18,18 @@ class PreviewSuratBalasanScreen extends StatefulWidget {
 }
 
 class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
-  String id, type;
+  String id, type, execURL = '';
   _PreviewSuratBalasanScreenState(this.id, this.type);
+  final String SERVER_URL = 'https://alirandras.inotive.id/api/preview-pdf/';
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   String? token;
 
   @override
   initState() {
+    execURL = SERVER_URL + id;
+    print(execURL);
+    initData();
     super.initState();
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
@@ -36,6 +40,7 @@ class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     setState(() {
       token = localStorage.getString('token');
+      print(token);
     });
   }
 
@@ -52,11 +57,12 @@ class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
             Expanded(
               child: Builder(builder: (BuildContext context) {
                 return WebView(
-                  initialUrl: 'https://flutter.dev',
+                  initialUrl: execURL,
                   javascriptMode: JavascriptMode.unrestricted,
                   onWebViewCreated: (WebViewController webViewController) {
-                    webViewController.loadUrl('https://flutter.dev',
-                        headers: {"Authorization": "Bearer $token"});
+                    webViewController.loadUrl(execURL, headers: {
+                      'Authorization': 'Bearer $token',
+                    });
                     _controller.complete(webViewController);
                   },
                   onWebResourceError: (a) {

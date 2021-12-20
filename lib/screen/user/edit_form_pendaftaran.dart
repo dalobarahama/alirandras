@@ -34,6 +34,7 @@ class _EditFormState extends State<EditForm> {
   TextEditingController _luasBangunanController = TextEditingController();
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
+  TextEditingController _peruntukanBangunanController = TextEditingController();
 
   LatLng point = LatLng(-1.240112, 116.873320);
   String jenisPermohonan = '';
@@ -598,7 +599,7 @@ class _EditFormState extends State<EditForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Lokasi Bangunan',
+                      'Lokasi Bangunan/Lahan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
                           textStyle: TextStyle(
@@ -626,12 +627,57 @@ class _EditFormState extends State<EditForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Gambar Bangunan',
+                      'Peruntukan Bangunan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
                           textStyle: TextStyle(
                             color: Colors.black54,
                           )),
+                    ),
+                    Container(
+                      width: 215,
+                      height: 50,
+                      child: TextField(
+                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        controller: _peruntukanBangunanController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(7)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 105,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Gambar Bangunan/Lahan',
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                textStyle: TextStyle(
+                                  color: Colors.black54,
+                                )),
+                          ),
+                          Text(
+                            '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
+                            style: GoogleFonts.roboto(
+                                fontSize: 9,
+                                textStyle: TextStyle(
+                                  color: Colors.black54,
+                                )),
+                          ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 30),
@@ -756,6 +802,22 @@ class _EditFormState extends State<EditForm> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15, top: 5),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'dalam format jpg, jpeg, png',
+                      style: GoogleFonts.roboto(
+                          fontSize: 9,
+                          textStyle: TextStyle(
+                              color: Colors.black54,
+                              fontStyle: FontStyle.italic)),
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -897,6 +959,22 @@ class _EditFormState extends State<EditForm> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15, top: 5),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'dalam format pdf',
+                      style: GoogleFonts.roboto(
+                          fontSize: 9,
+                          textStyle: TextStyle(
+                              color: Colors.black54,
+                              fontStyle: FontStyle.italic)),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(

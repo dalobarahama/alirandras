@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 
 class CallApi {
-  final String SERVER_URL = 'http://alirandras.inotive.id';
+  final String SERVER_URL = 'https://alirandras.inotive.id';
   final String LOGIN_URL = '/api/auth/login';
   final String REGISTER_URL = '/api/register';
   final String CEK_EMAIL = '/api/reset-password/cek-email';
@@ -258,6 +258,7 @@ class CallApi {
       String buildingArea,
       String landArea,
       String buildingLocation,
+      String peruntukanBangunan,
       String lat,
       String lng,
       List<XFile> _imageFileList,
@@ -280,6 +281,7 @@ class CallApi {
         'building_area': buildingArea,
         'land_area': landArea,
         'building_location': buildingLocation,
+        'peruntukan_bangunan': peruntukanBangunan,
         'lat': lat,
         'lng': lng
       });
