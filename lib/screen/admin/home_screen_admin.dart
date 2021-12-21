@@ -11,6 +11,7 @@ import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
 import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen.dart';
+import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
@@ -531,7 +532,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                   .status ==
                                                               null
                                                           ? Colors.grey
-                                                          : _data.registrationForms![index].status!=
+                                                          : _data
+                                                                      .registrationForms![
+                                                                          index]
+                                                                      .status !=
                                                                   'diterima'
                                                               ? Colors.grey
                                                               : Colors.green,
@@ -571,7 +575,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                   ? InkWell(
                                                       onTap: () {
                                                         pushNewScreen(context,
-                                                            screen: PreviewSuratBalasanScreen(
+                                                            screen: PreviewSuratBalasanScreenNew(
                                                                 _data
                                                                     .registrationForms![
                                                                         index]
