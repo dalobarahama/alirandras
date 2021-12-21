@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -67,7 +68,8 @@ class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
                     _controller.complete(webViewController);
                   },
                   onWebResourceError: (a) {
-                    print('error load : ${a.description}');
+                    Fluttertoast.showToast(
+                        msg: 'error load : ${a.description}');
                   },
                   onProgress: (int progress) {
                     print('WebView is loading (progress : $progress%)');
