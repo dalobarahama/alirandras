@@ -53,6 +53,7 @@ class ApplicationLetter {
     this.landArea,
     this.buildingLocation,
     this.completeAddress,
+    this.buildingDesignation,
     this.lat,
     this.lng,
     this.status,
@@ -72,6 +73,7 @@ class ApplicationLetter {
   String? landArea;
   String? buildingLocation;
   String? completeAddress;
+  String? buildingDesignation;
   double? lat;
   double? lng;
   String? status;
@@ -96,6 +98,9 @@ class ApplicationLetter {
             : json["building_location"],
         completeAddress:
             json["complete_address"] == null ? null : json["complete_address"],
+        buildingDesignation: json["building_designation"] == null
+            ? null
+            : json["building_designation"],
         lat: json["lat"] == null ? null : json["lat"].toDouble(),
         lng: json["lng"] == null ? null : json["lng"].toDouble(),
         status: json["status"] == null ? null : json["status"],
@@ -126,6 +131,8 @@ class ApplicationLetter {
         "land_area": landArea == null ? null : landArea,
         "building_location": buildingLocation == null ? null : buildingLocation,
         "complete_address": completeAddress == null ? null : completeAddress,
+        "building_designation":
+            buildingDesignation == null ? null : buildingDesignation,
         "lat": lat == null ? null : lat,
         "lng": lng == null ? null : lng,
         "status": status == null ? null : status,

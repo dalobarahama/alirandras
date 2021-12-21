@@ -286,6 +286,28 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 15,
                           ),
+                          Text(
+                            'Peruntukan Bangunan',
+                            style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                textStyle: TextStyle(
+                                  color: Colors.grey[500],
+                                )),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            _dataPengajuan.buildingDesignation.toString(),
+                            style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                textStyle: TextStyle(
+                                  color: Colors.grey[700],
+                                )),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
                           SizedBox(
                             height: 15,
                           ),

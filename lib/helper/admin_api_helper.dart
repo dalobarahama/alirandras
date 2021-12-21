@@ -12,6 +12,7 @@ import 'package:flutter_application_3/models/setting_pengajuan_user_model.dart';
 import 'package:flutter_application_3/models/setting_update_post_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CallAdminApi {
@@ -411,6 +412,37 @@ class CallAdminApi {
       if (res.statusCode == 200) {
         _data = notifModelFromJson(res.body);
         return _data;
+      } else {
+        print('error');
+        throw 'error';
+      }
+    } catch (e) {
+      print(e);
+      throw 'error';
+    }
+  }
+
+  Future getListPreviewSuratBalasan(String url) async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    Uri fullUrl = Uri.parse(url);
+    print(fullUrl);
+
+    try {
+      var get = http.get(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json'
+      });
+
+      var res = await get;
+      //print(res.body);
+      print(res.statusCode);
+      if (res.statusCode == 200) {
+        var dir = await getApplicationDocumentsDirectory();
+        File file = new File("${dir.path}/data.pdf");
+        file.writeAsBytesSync(res.bodyBytes, flush: true);
+        print(file.path);
+        return file.path;
       } else {
         print('error');
         throw 'error';

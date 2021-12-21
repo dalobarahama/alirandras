@@ -29,6 +29,7 @@ class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
   @override
   initState() {
     execURL = SERVER_URL + id;
+
     print(execURL);
     initData();
     super.initState();
@@ -61,7 +62,7 @@ class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
                   initialUrl: execURL,
                   javascriptMode: JavascriptMode.unrestricted,
                   onWebViewCreated: (WebViewController webViewController) {
-                    webViewController.loadUrl(execURL, headers: {
+                    webViewController.loadUrl('execURL', headers: {
                       'Authorization': 'Bearer $token',
                     });
                     _controller.complete(webViewController);

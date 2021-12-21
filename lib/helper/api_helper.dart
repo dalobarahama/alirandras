@@ -281,7 +281,7 @@ class CallApi {
         'building_area': buildingArea,
         'land_area': landArea,
         'building_location': buildingLocation,
-        'peruntukan_bangunan': peruntukanBangunan,
+        'building_designation': peruntukanBangunan,
         'lat': lat,
         'lng': lng
       });
@@ -430,14 +430,14 @@ class CallApi {
 
       var res = await get;
       //print(res.body);
-      print(res.statusCode);
+      int a = jsonDecode(res.body)['status_code'];
       // print(res.body);
       //print(res.body);
-      if (res.statusCode == 200) {
+      if (a == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
         print(_listPengajuan.applicationLetters1![0].id);
         return _listPengajuan.applicationLetters1;
-      } else if (res.statusCode == 401) {
+      } else if (a == 401) {
         List<ApplicationLetter1> temporary = <ApplicationLetter1>[];
         temporary[0].status = '401';
         _listPengajuan.applicationLetters1![0].add(temporary);
@@ -460,6 +460,7 @@ class CallApi {
       String buildingArea,
       String landArea,
       String buildingLocation,
+      String buildingDesignation,
       String lat,
       String lng,
       List<XFile> _imageFileList,
@@ -483,6 +484,7 @@ class CallApi {
         'building_area': buildingArea,
         'land_area': landArea,
         'building_location': buildingLocation,
+        'building_designation': buildingDesignation,
         'lat': lat,
         'lng': lng
       });
