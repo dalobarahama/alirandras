@@ -53,6 +53,7 @@ class ApplicationLetter1 {
     this.landArea,
     this.buildingLocation,
     this.completeAddress,
+    this.buildingDesignation,
     this.lat,
     this.lng,
     this.status,
@@ -74,6 +75,7 @@ class ApplicationLetter1 {
   String? landArea;
   String? buildingLocation;
   dynamic completeAddress;
+  String? buildingDesignation;
   double? lat;
   double? lng;
   String? status;
@@ -99,6 +101,9 @@ class ApplicationLetter1 {
             ? null
             : json["building_location"],
         completeAddress: json["complete_address"],
+        buildingDesignation: json["building_designation"] == null
+            ? null
+            : json["building_designation"],
         lat: json["lat"] == null ? null : json["lat"].toDouble(),
         lng: json["lng"] == null ? null : json["lng"].toDouble(),
         status: json["status"] == null ? null : json["status"],
@@ -136,6 +141,7 @@ class ApplicationLetter1 {
         "land_area": landArea == null ? null : landArea,
         "building_location": buildingLocation == null ? null : buildingLocation,
         "complete_address": completeAddress,
+        "building_designation": buildingDesignation,
         "lat": lat == null ? null : lat,
         "lng": lng == null ? null : lng,
         "status": status == null ? null : status,
