@@ -365,7 +365,7 @@ class _Detail_card_statuspengajuanState
                     Row(
                       children: [
                         Text(
-                          _dataStatusPengajuan.buildingLocation.toString(),
+                          _dataStatusPengajuan.buildingDesignation.toString(),
                           style: TextStyle(color: Colors.black54, fontSize: 16),
                         ),
                       ],

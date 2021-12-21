@@ -91,6 +91,7 @@ class _EditFormState extends State<EditForm> {
       _luasLahanController.text = _dataForm.landArea!;
       _lokasiBangunanController.text = _dataForm.buildingLocation!;
       jenisPermohonan = _dataForm.type!;
+      _peruntukanBangunanController.text = _dataForm.buildingDesignation!;
       point = LatLng(_dataForm.lat!, _dataForm.lng!);
       print(point);
       loc = true;
@@ -215,6 +216,9 @@ class _EditFormState extends State<EditForm> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
+    if (_peruntukanBangunanController.text.length < 2) {
+      Fluttertoast.showToast(msg: 'Silahkan Masukkan peruntukan bangunan');
+    }
     /*if (_imageFileList!.length < 1) {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
       return;
@@ -232,6 +236,7 @@ class _EditFormState extends State<EditForm> {
             _luasBangunanController.text,
             _luasLahanController.text,
             _lokasiBangunanController.text,
+            _peruntukanBangunanController.text,
             lat.toString(),
             lang.toString(),
             _imageFileList!,
