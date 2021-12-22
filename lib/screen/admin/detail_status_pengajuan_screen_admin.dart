@@ -175,6 +175,8 @@ class _StatusPengajuanScreenAdminState
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
                                                 child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 _dataPengajuan
                                                             .mailRequest!
@@ -186,24 +188,50 @@ class _StatusPengajuanScreenAdminState
                                                         color: Colors.green)
                                                     : Icon(Icons.person,
                                                         color: Colors.grey),
-                                                Text(
-                                                  'Surat telah ' +
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
                                                       _dataPengajuan
-                                                          .mailRequest!
-                                                          .mailPermissions![
-                                                              index1]
-                                                          .status
-                                                          .toString() +
-                                                      ' oleh ' +
-                                                      _dataPengajuan
-                                                          .mailRequest!
-                                                          .mailPermissions![
-                                                              index1]
-                                                          .user!
-                                                          .name
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.black54),
+                                                                  .mailRequest!
+                                                                  .mailPermissions![
+                                                                      index1]
+                                                                  .status!
+                                                                  .toLowerCase() !=
+                                                              'menunggu'
+                                                          ? Text(DateFormat(
+                                                                  'EEEE, dd MMMM yyyy',
+                                                                  'id_ID')
+                                                              .format(_dataPengajuan
+                                                                  .mailRequest!
+                                                                  .mailPermissions![
+                                                                      index1]
+                                                                  .updatedAt!))
+                                                          : Container(),
+                                                      Text(
+                                                        'Surat telah ' +
+                                                            _dataPengajuan
+                                                                .mailRequest!
+                                                                .mailPermissions![
+                                                                    index1]
+                                                                .status
+                                                                .toString() +
+                                                            ' oleh ' +
+                                                            _dataPengajuan
+                                                                .mailRequest!
+                                                                .mailPermissions![
+                                                                    index1]
+                                                                .user!
+                                                                .position
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black54),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 )
                                               ],
                                             )),

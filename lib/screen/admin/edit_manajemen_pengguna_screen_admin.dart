@@ -42,7 +42,9 @@ class _EditManajemenPenggunaScreenState
       isLoading = false;
       _namaController.text = _dataPengguna.name!;
       _emailController.text = _dataPengguna.email!;
-      _jabatanController.text = _dataPengguna.name!;
+      if (_dataPengguna.position != null) {
+        _jabatanController.text = _dataPengguna.position!;
+      }
     });
   }
 

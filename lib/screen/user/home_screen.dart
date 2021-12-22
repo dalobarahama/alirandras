@@ -24,6 +24,12 @@ class _HomeState extends State<Home> {
   User1 _userData = User1();
   @override
   void initState() {
+    initData();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  initData() {
     setState(() {
       Timer(Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
@@ -34,8 +40,6 @@ class _HomeState extends State<Home> {
         });
       });
     });
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
@@ -133,22 +137,25 @@ class _HomeState extends State<Home> {
                                   borderRadius: BorderRadius.circular(45)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(45),
-                                child: CachedNetworkImage(
-                                  imageUrl: _userData.avatar ?? '-',
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
+                                child: isLoading == true
+                                    ? Center(child: CircularProgressIndicator())
+                                    : CachedNetworkImage(
+                                        imageUrl: _userData.avatar ?? '-',
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        placeholder: (context, url) =>
+                                            CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
                                       ),
-                                    ),
-                                  ),
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                ),
                               ),
                             ),
                           ),

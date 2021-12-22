@@ -641,7 +641,10 @@ class CallApi {
         ..headers.addAll(headers);
       request.fields['name'] = name;
       request.fields['email'] = email;
-      request.fields['password'] = password;
+      if (password != null) {
+        request.fields['password'] = password;
+      }
+
       if (imageavatar != null) {
         File? image1 = File(imageavatar.path);
         http.MultipartFile _file1 = http.MultipartFile(

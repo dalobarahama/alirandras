@@ -219,16 +219,40 @@ class _Detail_card_statuspengajuanState
                                                 color: Colors.green)
                                             : Icon(Icons.person,
                                                 color: Colors.grey),
-                                        Text(
-                                          'Surat telah diverifikasi oleh ' +
+                                        Expanded(
+                                          child: Column(
+                                            children: [
                                               _dataStatusPengajuan
-                                                  .mailRequest!
-                                                  .mailPermissions![index1]
-                                                  .user!
-                                                  .name
-                                                  .toString(),
-                                          style:
-                                              TextStyle(color: Colors.black54),
+                                                          .mailRequest!
+                                                          .mailPermissions![
+                                                              index1]
+                                                          .status!
+                                                          .toLowerCase() !=
+                                                      'menunggu'
+                                                  ? Text(DateFormat(
+                                                          'EEEE, dd MMMM yy',
+                                                          'id_ID')
+                                                      .format(
+                                                          _dataStatusPengajuan
+                                                              .mailRequest!
+                                                              .mailPermissions![
+                                                                  index1]
+                                                              .updatedAt!))
+                                                  : Container(),
+                                              Text(
+                                                'Surat telah diverifikasi oleh ' +
+                                                    _dataStatusPengajuan
+                                                        .mailRequest!
+                                                        .mailPermissions![
+                                                            index1]
+                                                        .user!
+                                                        .position
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black54),
+                                              ),
+                                            ],
+                                          ),
                                         )
                                       ],
                                     )),
