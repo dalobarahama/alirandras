@@ -431,8 +431,8 @@ class CallApi {
       var res = await get;
       //print(res.body);
       int a = jsonDecode(res.body)['status_code'];
-      // print(res.body);
-      //print(res.body);
+      print(res.body);
+      print(res.body);
       if (a == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
         print(_listPengajuan.applicationLetters1![0].id);
