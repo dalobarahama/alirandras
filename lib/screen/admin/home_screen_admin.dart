@@ -65,7 +65,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
           setState(() {
             print(value.name);
             _userData = value;
-            print(_userData.name);
+            print(_userData.position);
             initData('', '');
           });
         });
