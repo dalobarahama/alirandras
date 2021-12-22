@@ -8,7 +8,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    title: 'Air Deras',
+    title: 'Alirandras',
     debugShowCheckedModeBanner: false,
 
     home: SplashScreen(),

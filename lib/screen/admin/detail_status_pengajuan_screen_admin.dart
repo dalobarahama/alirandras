@@ -200,7 +200,7 @@ class _StatusPengajuanScreenAdminState
                                                           .mailPermissions![
                                                               index1]
                                                           .user!
-                                                          .name
+                                                          .position
                                                           .toString(),
                                                   style: TextStyle(
                                                       color: Colors.black54),

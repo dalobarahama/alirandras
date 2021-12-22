@@ -54,7 +54,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
           ),
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          title: 'Surat Pengajuan'),
+          title: 'Surat Balasan'),
       PersistentBottomNavBarItem(
           icon: Icon(
             AliranDrasIcon.file_alt,

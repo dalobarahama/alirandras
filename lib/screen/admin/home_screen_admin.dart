@@ -156,24 +156,26 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               borderRadius: BorderRadius.circular(65)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(65),
-                            child: CachedNetworkImage(
-                              imageUrl: _userData.avatar ?? '-',
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator())
+                                : CachedNetworkImage(
+                                    imageUrl: _userData.avatar ?? '-',
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              ),
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.error,
-                                color: Colors.white,
-                              ),
-                            ),
                           ),
                         ),
                       ),

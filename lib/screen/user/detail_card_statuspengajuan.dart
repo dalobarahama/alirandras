@@ -225,7 +225,7 @@ class _Detail_card_statuspengajuanState
                                                   .mailRequest!
                                                   .mailPermissions![index1]
                                                   .user!
-                                                  .name
+                                                  .position
                                                   .toString(),
                                           style:
                                               TextStyle(color: Colors.black54),
