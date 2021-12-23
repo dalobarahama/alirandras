@@ -20,10 +20,17 @@ class _RejectScreenState extends State<RejectScreen> {
     setState(() {
       isLoading = true;
     });
-    await CallAdminApi().rejectPermohonan(id, _reason.text).then((value) {
-      Fluttertoast.showToast(msg: 'Surat Permohonan Rejected!');
-      Navigator.pop(context, 'true');
-    });
+    if (type == 'permohonan') {
+      await CallAdminApi().rejectPermohonan(id, _reason.text).then((value) {
+        Fluttertoast.showToast(msg: 'Surat Permohonan Rejected!');
+        Navigator.pop(context, 'true');
+      });
+    } else {
+      await CallAdminApi().rejectPengajuan(id, _reason.text).then((value) {
+        Fluttertoast.showToast(msg: 'Surat Pengajuan Rejected!');
+        Navigator.pop(context, 'true');
+      });
+    }
   }
 
   @override
@@ -80,20 +87,20 @@ class _RejectScreenState extends State<RejectScreen> {
                               ),
                             )
                           : Center(
-                            child: Text(
+                              child: Text(
                                 'Submit',
                                 style: GoogleFonts.roboto(
                                   color: Colors.white,
                                 ),
                               ),
-                          ),
+                            ),
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                     child: Container(

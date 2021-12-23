@@ -24,6 +24,7 @@ class CallAdminApi {
   final String EDIT_MANAJEMEN_PENGGUNA = '/api/edit-pengguna/';
   final String DELETE_PENGGUNA = '/api/hapus-pengguna/';
   final String APPROVE_PERMOHONAN = '/api/verifikasi-surat-permohonan/';
+  final String APPROVE_PENGAJUAH = '/api/verifikasi-formulir/';
   final String GET_SETTING_USER_LIST = '/api/setting-pengajuan/list-user';
   final String UPDATE_SETTING = '/api/setting-pengajuan';
   final String UPDATE_FCM = '/api/update-fcm-token';
@@ -452,4 +453,71 @@ class CallAdminApi {
       throw 'error';
     }
   }
+
+
+  Future<String> approvePengajuan(String id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + APPROVE_PENGAJUAH + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, body: {
+        'category': 'diterima'
+      }, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print('del penga');
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String> rejectPengajuan(String id, String reason) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + APPROVE_PENGAJUAH + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, body: {
+        'category': 'ditolak',
+        'reason_rejection': reason
+      }, headers: {
+        'Authorization': 'Bearer $token',
+        // 'Accept': 'application/json'
+      });
+      print(fullUrl);
+      var res = await post;
+      int a = res.statusCode;
+      print(res.body);
+      print('del penga');
+      print(a);
+      if (a == 200) {
+        return 'success';
+      } else if (a >= 400 && a <= 500) {
+        // print('zzzzzz');
+
+        return 'failed';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
 }

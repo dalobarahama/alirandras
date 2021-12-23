@@ -23,10 +23,17 @@ class _ApprovalScreenState extends State<ApprovalScreen> {
     setState(() {
       isLoading = true;
     });
-    await CallAdminApi().approvePermohonan(id).then((value) {
-      Fluttertoast.showToast(msg: 'Surat Permohonan Approved!');
-      Navigator.pop(context);
-    });
+    if (type == 'permohonan') {
+      await CallAdminApi().approvePermohonan(id).then((value) {
+        Fluttertoast.showToast(msg: 'Surat Permohonan Approved!');
+        Navigator.pop(context);
+      });
+    } else {
+      await CallAdminApi().approvePengajuan(id).then((value) {
+        Fluttertoast.showToast(msg: 'Surat Pengajuan Approved!');
+        Navigator.pop(context);
+      });
+    }
   }
 
   navigateToRejectScreen() async {
@@ -34,7 +41,7 @@ class _ApprovalScreenState extends State<ApprovalScreen> {
         context, SlideToLeftRoute(page: RejectScreen(type, id)));
     if (res == 'true') {
       Navigator.pop(context);
-    } 
+    }
   }
 
   @override
@@ -102,7 +109,7 @@ class _ApprovalScreenState extends State<ApprovalScreen> {
                   height: 15,
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     navigateToRejectScreen();
                   },
                   child: Container(

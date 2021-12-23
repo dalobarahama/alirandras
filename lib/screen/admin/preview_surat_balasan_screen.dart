@@ -85,21 +85,25 @@ class _PreviewSuratBalasanScreenState extends State<PreviewSuratBalasanScreen> {
                 );
               }),
             ),
-            Container(
-              height: 60,
-              margin: EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 20),
-              child: Center(
-                child: Text(
-                  'Lanjut Verifikasi',
-                  style: GoogleFonts.roboto(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.red, borderRadius: BorderRadius.circular(10)),
-            )
+            type == 'view'
+                ? Container()
+                : Container(
+                    height: 60,
+                    margin: EdgeInsets.only(
+                        left: 20, right: 20, bottom: 50, top: 20),
+                    child: Center(
+                      child: Text(
+                        'Lanjut Verifikasi',
+                        style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10)),
+                  )
           ],
         ));
   }

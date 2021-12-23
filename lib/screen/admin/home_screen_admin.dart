@@ -37,7 +37,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
     'semua',
     'diterima',
     'ditolak',
-    'menunggu',
+    'diproses',
     'selesai direvisi'
   ];
   String selectedStatus = 'semua';
@@ -84,6 +84,17 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         isLoading = false;
       });
     });
+  }
+
+  navigateToApproval(indexs) async {
+    var res = await pushNewScreen(context,
+        screen: PreviewSuratBalasanScreenNew(
+            _data.registrationForms![indexs].mailRequest!.id!.toString(),
+            'process',
+            _data.registrationForms![indexs].id.toString()),
+        withNavBar: false);
+
+    initData('', '');
   }
 
   @override
@@ -523,7 +534,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                               height: 3,
                                             ),
                                             Text(
-                                                '${_data.registrationForms?[index].mailRequest == null ? '-' : _data.registrationForms![index].status!.toUpperCase()}',
+                                                '${_data.registrationForms?[index].mailRequest == null ? '-' : _data.registrationForms![index].mailRequest!.status!.toUpperCase()}',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
@@ -537,6 +548,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                           : _data
                                                                       .registrationForms![
                                                                           index]
+                                                                      .mailRequest!
                                                                       .status !=
                                                                   'diterima'
                                                               ? Colors.grey
@@ -584,7 +596,12 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                     .mailRequest!
                                                                     .id!
                                                                     .toString(),
-                                                                'view'),
+                                                                'view',
+                                                                _data
+                                                                    .registrationForms![
+                                                                        index]
+                                                                    .id
+                                                                    .toString()),
                                                             withNavBar: false);
                                                       },
                                                       child: Text(
@@ -672,7 +689,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                             .registrationForms![
                                                                 index]
                                                             .status !=
-                                                        'menunggu'
+                                                        'diproses'
                                                     ? Container()
                                                     : Row(
                                                         children: [
@@ -743,51 +760,54 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                         ],
                                                       ),
                                       ),
-                                      _data.registrationForms?[index].status ==
+                                      _data.registrationForms?[index]
+                                                  .mailRequest ==
                                               null
                                           ? Container()
-                                          : _data.registrationForms![index]
-                                                      .status !=
-                                                  'menunggu'
+                                          : _data
+                                                      .registrationForms?[index]
+                                                      .mailRequest!
+                                                      .checkMailPermission ==
+                                                  null
                                               ? Container()
-                                              : Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7)),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons
-                                                            .double_arrow_outlined,
-                                                        color: Colors.white,
-                                                        size: 15,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 3),
-                                                        child: Text(
-                                                          'Balas dengan surat',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 11,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                  )),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ))
+                                              : _data
+                                                          .registrationForms![
+                                                              index]
+                                                          .mailRequest!
+                                                          .checkMailPermission!
+                                                          .status !=
+                                                      'diproses'
+                                                  ? Container()
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        navigateToApproval(
+                                                            index);
+                                                      },
+                                                      child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          7)),
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Tindak Lanjuti',
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                      fontSize:
+                                                                          11,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                      )),
+                                                            ),
+                                                          )),
+                                                    )
                                     ],
                                   )
                                 ],
@@ -890,7 +910,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               //             _data.registrationForms?[index].status == null
                               //                 ? Container()
                               //                 : _data.registrationForms![index].status !=
-                              //                         'menunggu'
+                              //                         'diproses'
                               // ?
                               //                         ),
                               //                       )
