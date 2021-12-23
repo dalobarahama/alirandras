@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/admin/approval_screen.dart';
+import 'package:flutter_application_3/screen/admin/detail_status_pemohon.dart';
+import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
+import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
@@ -97,177 +100,192 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                 margin: EdgeInsets.all(10),
                                 color: Colors.grey[100],
                                 shadowColor: Colors.black,
-                                child: Container(
-                                  padding: EdgeInsets.all(20),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'ID: ' +
-                                                _data.applicationLetters![index]
-                                                    .id!
-                                                    .toString(),
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 10,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
-                                          Text(
-                                            DateFormat('dd MMMM yy, HH:mm')
-                                                .format(_data
-                                                    .applicationLetters![index]
-                                                    .createdAt!),
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 10,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[500],
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Nama Pemohon',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 12,
-                                                      textStyle: TextStyle(
-                                                        color: Colors.grey[500],
-                                                      )),
-                                                ),
-                                                Text(
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        SlideToLeftRoute(
+                                            page: StatusPemohonScreenAdmin(_data
+                                                .applicationLetters![index])));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'ID: ' +
                                                   _data
                                                       .applicationLetters![
                                                           index]
-                                                      .user!
-                                                      .name!,
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      textStyle: TextStyle(
-                                                        color: Colors.black54,
-                                                      )),
-                                                ),
-                                              ],
+                                                      .id!
+                                                      .toString(),
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 10,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey[500],
+                                                  )),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Status',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 12,
-                                                      textStyle: TextStyle(
-                                                        color: Colors.grey[500],
-                                                      )),
-                                                ),
-                                                Text(
-                                                  _data
-                                                          .applicationLetters![
-                                                              index]
-                                                          .status ??
-                                                      '-',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      textStyle: TextStyle(
-                                                        color: Colors.black54,
-                                                      )),
-                                                ),
-                                              ],
+                                            Text(
+                                              DateFormat('dd MMMM yy, HH:mm')
+                                                  .format(_data
+                                                      .applicationLetters![
+                                                          index]
+                                                      .createdAt!),
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 10,
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey[500],
+                                                  )),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: _data
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Nama Pemohon',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 12,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[500],
+                                                        )),
+                                                  ),
+                                                  Text(
+                                                    _data
                                                         .applicationLetters![
                                                             index]
-                                                        .status !=
-                                                    'menunggu'
-                                                ? Container()
-                                                : InkWell(
-                                                    onTap: () {
-                                                      navigateToApprovalScreen(
-                                                          _data
-                                                              .applicationLetters![
-                                                                  index]
-                                                              .id!
-                                                              .toString());
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 8,
-                                                              horizontal: 10),
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(7)),
-                                                      child: Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 5),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .check_circle,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 15,
+                                                        .user!
+                                                        .name!,
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        textStyle: TextStyle(
+                                                          color: Colors.black54,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Status',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 12,
+                                                        textStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[500],
+                                                        )),
+                                                  ),
+                                                  Text(
+                                                    _data
+                                                            .applicationLetters![
+                                                                index]
+                                                            .status ??
+                                                        '-',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        textStyle: TextStyle(
+                                                          color: Colors.black54,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: _data
+                                                          .applicationLetters![
+                                                              index]
+                                                          .status !=
+                                                      'menunggu'
+                                                  ? Container()
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        navigateToApprovalScreen(
+                                                            _data
+                                                                .applicationLetters![
+                                                                    index]
+                                                                .id!
+                                                                .toString());
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 8,
+                                                                horizontal: 10),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7)),
+                                                        child: Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .check_circle,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 15,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 3),
-                                                            child: Text(
-                                                              'Verifikasi',
-                                                              style: GoogleFonts
-                                                                  .roboto(
-                                                                      fontSize:
-                                                                          11,
-                                                                      textStyle:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                      )),
+                                                            SizedBox(
+                                                              width: 5,
                                                             ),
-                                                          ),
-                                                        ],
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 3),
+                                                              child: Text(
+                                                                'Verifikasi',
+                                                                style: GoogleFonts
+                                                                    .roboto(
+                                                                        fontSize:
+                                                                            11,
+                                                                        textStyle:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        )),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );

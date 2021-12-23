@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/models/admin_home_model.dart';
 import 'package:flutter_application_3/models/admin_pemohon_model.dart';
+import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -9,20 +10,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StatusPengajuanScreenAdmin extends StatefulWidget {
+class StatusPemohonScreenAdmin extends StatefulWidget {
   //const StatusPengajuanScreenAdmin({Key? key}) : super(key: key);
-  RegistrationForm2 _dataPengajuan = RegistrationForm2();
-  StatusPengajuanScreenAdmin(this._dataPengajuan);
+  ApplicationLetter _dataPengajuan = ApplicationLetter();
+  StatusPemohonScreenAdmin(this._dataPengajuan);
 
   @override
-  _StatusPengajuanScreenAdminState createState() =>
-      _StatusPengajuanScreenAdminState(this._dataPengajuan);
+  _StatusPemohonScreenAdminState createState() =>
+      _StatusPemohonScreenAdminState(this._dataPengajuan);
 }
 
-class _StatusPengajuanScreenAdminState
-    extends State<StatusPengajuanScreenAdmin> {
-  RegistrationForm2 _dataPengajuan = RegistrationForm2();
-  _StatusPengajuanScreenAdminState(this._dataPengajuan);
+class _StatusPemohonScreenAdminState extends State<StatusPemohonScreenAdmin> {
+  ApplicationLetter _dataPengajuan = ApplicationLetter();
+  _StatusPemohonScreenAdminState(this._dataPengajuan);
   bool isMap = false;
   @override
   void initState() {
@@ -148,7 +148,7 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 10,
                           ),
-                          Container(
+                          /* Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Colors.grey[300],
@@ -239,7 +239,7 @@ class _StatusPengajuanScreenAdminState
                                           );
                                         },
                                       )),
-                          ),
+                          ),*/
                           SizedBox(
                             height: 15,
                           ),
