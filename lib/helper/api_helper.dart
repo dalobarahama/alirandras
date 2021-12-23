@@ -431,8 +431,8 @@ class CallApi {
       var res = await get;
       //print(res.body);
       int a = jsonDecode(res.body)['status_code'];
-      // print(res.body);
-      //print(res.body);
+      print(res.body);
+      print(res.body);
       if (a == 200) {
         _listPengajuan = listPengajuanFromJson(res.body);
         print(_listPengajuan.applicationLetters1![0].id);
@@ -641,7 +641,10 @@ class CallApi {
         ..headers.addAll(headers);
       request.fields['name'] = name;
       request.fields['email'] = email;
-      request.fields['password'] = password;
+      if (password != null) {
+        request.fields['password'] = password;
+      }
+
       if (imageavatar != null) {
         File? image1 = File(imageavatar.path);
         http.MultipartFile _file1 = http.MultipartFile(

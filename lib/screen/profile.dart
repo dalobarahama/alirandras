@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
         print(_userData.email);
         _namaController.text = _userData.name!;
         _emailController.text = _userData.email!;
-        if (_userData.position != null) {
+        if (_userData.app == 'admin') {
           _jabatanController.text = _userData.position!;
           print(_userData.position!);
         }
@@ -88,10 +88,14 @@ class _ProfileState extends State<Profile> {
       Fluttertoast.showToast(msg: 'Email tidak boleh kosong');
       return;
     }
-    if (_passwordController.text.length < 8) {
-      Fluttertoast.showToast(msg: 'password kurang dari 8 karakter');
-      return;
+    if (_passwordController.text.length > 0) {
+      if (_passwordController.text.length < 8) {
+        Fluttertoast.showToast(
+            msg: 'Password tidak boleh Kurang dari 8 karakter');
+        return;
+      }
     }
+
     CallApi()
         .updateProfile(_namaController.text, _emailController.text,
             _passwordController.text, _imageFile, _signatureFile)
@@ -266,7 +270,6 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.only(
                   left: 33, right: 33, top: 20, bottom: 20),
               child: Container(
-                height: 48,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.black12,
@@ -307,9 +310,8 @@ class _ProfileState extends State<Profile> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 33, right: 33, top: 20, bottom: 10),
+                              left: 33, right: 33, top: 20, bottom: 20),
                           child: Container(
-                            height: 48,
                             width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Colors.black12,
@@ -317,7 +319,7 @@ class _ProfileState extends State<Profile> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
-                                  keyboardType: TextInputType.emailAddress,
+                                  maxLines: 2,
                                   style: TextStyle(color: Colors.black54),
                                   controller: _jabatanController,
                                   decoration: InputDecoration(
@@ -348,7 +350,6 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.only(
                   left: 33, right: 33, top: 20, bottom: 10),
               child: Container(
-                height: 48,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.black12,
@@ -383,7 +384,6 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.only(
                   left: 33, right: 33, top: 20, bottom: 33),
               child: Container(
-                height: 48,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.black12,
@@ -429,11 +429,14 @@ class _ProfileState extends State<Profile> {
                             decoration: BoxDecoration(
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(8)),
-                            child: Center(
-                              child: Text(
-                                'Upload File',
-                                style: TextStyle(
-                                    color: Colors.black54, fontSize: 20),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  'Upload File',
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 20),
+                                ),
                               ),
                             ),
                           ),

@@ -100,14 +100,16 @@ class ApplicationLetter1 {
         buildingLocation: json["building_location"] == null
             ? null
             : json["building_location"],
-        completeAddress: json["complete_address"],
+        completeAddress:
+            json["complete_address"] == null ? null : json["complete_address"],
         buildingDesignation: json["building_designation"] == null
             ? null
             : json["building_designation"],
         lat: json["lat"] == null ? null : json["lat"].toDouble(),
         lng: json["lng"] == null ? null : json["lng"].toDouble(),
         status: json["status"] == null ? null : json["status"],
-        reasonRejection: json["reason_rejection"],
+        reasonRejection:
+            json["reason_rejection"] == null ? null : json["reason_rejection"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -140,12 +142,13 @@ class ApplicationLetter1 {
         "building_area": buildingArea == null ? null : buildingArea,
         "land_area": landArea == null ? null : landArea,
         "building_location": buildingLocation == null ? null : buildingLocation,
-        "complete_address": completeAddress,
-        "building_designation": buildingDesignation,
+        "complete_address": completeAddress == null ? null : completeAddress,
+        "building_designation":
+            buildingDesignation == null ? null : buildingDesignation,
         "lat": lat == null ? null : lat,
         "lng": lng == null ? null : lng,
         "status": status == null ? null : status,
-        "reason_rejection": reasonRejection,
+        "reason_rejection": reasonRejection == null ? null : reasonRejection,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "user": user == null ? null : user!.toJson(),
@@ -189,31 +192,40 @@ class MailRequest {
   List<MailPermission>? mailPermissions;
 
   factory MailRequest.fromJson(Map<String, dynamic> json) => MailRequest(
-        id: json["id"],
-        registrationFormId: json["registration_form_id"],
-        userId: json["user_id"],
-        letterNumber: json["letter_number"],
-        body: json["body"],
-        status: json["status"],
-        reasonRejection: json["reason_rejection"],
+        id: json["id"] == null ? null : json["id"],
+        registrationFormId: json["registration_form_id"] == null
+            ? null
+            : json["registration_form_id"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        letterNumber:
+            json["letter_number"] == null ? null : json["letter_number"],
+        body: json["body"] == null ? null : json["body"],
+        status: json["status"] == null ? null : json["status"],
+        reasonRejection:
+            json["reason_rejection"] == null ? null : json["reason_rejection"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        mailPermissions: List<MailPermission>.from(
-            json["mail_permissions"].map((x) => MailPermission.fromJson(x))),
+        mailPermissions: json["mail_permissions"] == null
+            ? null
+            : List<MailPermission>.from(json["mail_permissions"]
+                .map((x) => MailPermission.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "registration_form_id": registrationFormId,
-        "user_id": userId,
-        "letter_number": letterNumber,
-        "body": body,
-        "status": status,
-        "reason_rejection": reasonRejection,
+        "id": id == null ? null : id,
+        "registration_form_id":
+            registrationFormId == null ? null : registrationFormId,
+        "user_id": userId == null ? null : userId,
+        "letter_number": letterNumber == null ? null : letterNumber,
+        "body": body == null ? null : body,
+        "status": status == null ? null : status,
+        "reason_rejection": reasonRejection == null ? null : reasonRejection,
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),
         "mail_permissions":
-            List<dynamic>.from(mailPermissions!.map((x) => x.toJson())),
+            List<dynamic>.from(mailPermissions!.map((x) => x.toJson())) == null
+                ? null
+                : List<dynamic>.from(mailPermissions!.map((x) => x.toJson())),
       };
 }
 
@@ -241,27 +253,31 @@ class MailPermission {
   User? user;
 
   factory MailPermission.fromJson(Map<String, dynamic> json) => MailPermission(
-        id: json["id"],
-        userId: json["user_id"],
-        mailRequestId: json["mail_request_id"],
-        level: json["level"],
-        reasonRejection: json["reason_rejection"],
-        status: json["status"],
+        id: json["id"] == null ? null : json["id"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        mailRequestId:
+            json["mail_request_id"] == null ? null : json["mail_request_id"],
+        level: json["level"] == null ? null : json["level"],
+        reasonRejection:
+            json["reason_rejection"] == null ? null : json["reason_rejection"],
+        status: json["status"] == null ? null : json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        user: User.fromJson(json["user"]),
+        user: User.fromJson(json["user"]) == null
+            ? null
+            : User.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "mail_request_id": mailRequestId,
-        "level": level,
-        "reason_rejection": reasonRejection,
-        "status": status,
+        "id": id == null ? null : id,
+        "user_id": userId == null ? null : userId,
+        "mail_request_id": mailRequestId == null ? null : mailRequestId,
+        "level": level == null ? null : level,
+        "reason_rejection": reasonRejection == null ? null : reasonRejection,
+        "status": status == null ? null : status,
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt!.toIso8601String(),
-        "user": user!.toJson(),
+        "user": user!.toJson() == null ? null : user!.toJson(),
       };
 }
 
@@ -379,12 +395,14 @@ class User {
         name: json["name"] == null ? null : json["name"],
         app: json["app"] == null ? null : json["app"],
         email: json["email"] == null ? null : json["email"],
-        emailVerifiedAt: json["email_verified_at"],
-        signature: json["signature"],
-        avatar: json["avatar"],
+        emailVerifiedAt: json["email_verified_at"] == null
+            ? null
+            : json["email_verified_at"],
+        signature: json["signature"] == null ? null : json["signature"],
+        avatar: json["avatar"] == null ? null : json["avatar"],
         position: json["position"] == null ? null : json["position"],
-        resetToken: json["reset_token"],
-        fcmToken: json["fcm_token"],
+        resetToken: json["reset_token"] == null ? null : json["reset_token"],
+        fcmToken: json["fcm_token"] == null ? null : json["fcm_token"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -398,12 +416,12 @@ class User {
         "name": name == null ? null : name,
         "app": app == null ? null : app,
         "email": email == null ? null : email,
-        "email_verified_at": emailVerifiedAt,
-        "signature": signature,
-        "avatar": avatar,
+        "email_verified_at": emailVerifiedAt == null ? null : emailVerifiedAt,
+        "signature": signature == null ? null : signature,
+        "avatar": avatar == null ? null : avatar,
         "position": position == null ? null : position,
-        "reset_token": resetToken,
-        "fcm_token": fcmToken,
+        "reset_token": resetToken == null ? null : resetToken,
+        "fcm_token": fcmToken == null ? null : fcmToken,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
       };

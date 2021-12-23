@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_3/screen/splash_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting('id_ID', null);
   runApp(MaterialApp(
-    title: 'Air Deras',
+    title: 'Alirandras',
     debugShowCheckedModeBanner: false,
 
     home: SplashScreen(),
