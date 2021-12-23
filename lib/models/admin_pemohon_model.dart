@@ -52,8 +52,8 @@ class ApplicationLetter {
     this.buildingArea,
     this.landArea,
     this.buildingLocation,
-    this.completeAddress,
     this.buildingDesignation,
+    this.completeAddress,
     this.lat,
     this.lng,
     this.status,
@@ -62,6 +62,7 @@ class ApplicationLetter {
     this.updatedAt,
     this.user,
     this.registrationFormAttachments,
+    this.registrationFormDocuments,
   });
 
   int? id;
@@ -72,16 +73,17 @@ class ApplicationLetter {
   String? buildingArea;
   String? landArea;
   String? buildingLocation;
-  String? completeAddress;
   String? buildingDesignation;
+  dynamic completeAddress;
   double? lat;
   double? lng;
   String? status;
-  String? reasonRejection;
+  dynamic reasonRejection;
   DateTime? createdAt;
   DateTime? updatedAt;
   User? user;
-  List<RegistrationFormAttachment>? registrationFormAttachments;
+  List<RegistrationFormMent>? registrationFormAttachments;
+  List<RegistrationFormMent>? registrationFormDocuments;
 
   factory ApplicationLetter.fromJson(Map<String, dynamic> json) =>
       ApplicationLetter(
@@ -96,16 +98,14 @@ class ApplicationLetter {
         buildingLocation: json["building_location"] == null
             ? null
             : json["building_location"],
-        completeAddress:
-            json["complete_address"] == null ? null : json["complete_address"],
         buildingDesignation: json["building_designation"] == null
             ? null
             : json["building_designation"],
+        completeAddress: json["complete_address"],
         lat: json["lat"] == null ? null : json["lat"].toDouble(),
         lng: json["lng"] == null ? null : json["lng"].toDouble(),
         status: json["status"] == null ? null : json["status"],
-        reasonRejection:
-            json["reason_rejection"] == null ? null : json["reason_rejection"],
+        reasonRejection: json["reason_rejection"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -116,9 +116,14 @@ class ApplicationLetter {
         registrationFormAttachments:
             json["registration_form_attachments"] == null
                 ? null
-                : List<RegistrationFormAttachment>.from(
+                : List<RegistrationFormMent>.from(
                     json["registration_form_attachments"]
-                        .map((x) => RegistrationFormAttachment.fromJson(x))),
+                        .map((x) => RegistrationFormMent.fromJson(x))),
+        registrationFormDocuments: json["registration_form_documents"] == null
+            ? null
+            : List<RegistrationFormMent>.from(
+                json["registration_form_documents"]
+                    .map((x) => RegistrationFormMent.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -130,13 +135,13 @@ class ApplicationLetter {
         "building_area": buildingArea == null ? null : buildingArea,
         "land_area": landArea == null ? null : landArea,
         "building_location": buildingLocation == null ? null : buildingLocation,
-        "complete_address": completeAddress == null ? null : completeAddress,
         "building_designation":
             buildingDesignation == null ? null : buildingDesignation,
+        "complete_address": completeAddress,
         "lat": lat == null ? null : lat,
         "lng": lng == null ? null : lng,
         "status": status == null ? null : status,
-        "reason_rejection": reasonRejection == null ? null : reasonRejection,
+        "reason_rejection": reasonRejection,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
         "user": user == null ? null : user!.toJson(),
@@ -144,16 +149,21 @@ class ApplicationLetter {
             ? null
             : List<dynamic>.from(
                 registrationFormAttachments!.map((x) => x.toJson())),
+        "registration_form_documents": registrationFormDocuments == null
+            ? null
+            : List<dynamic>.from(
+                registrationFormDocuments!.map((x) => x.toJson())),
       };
 }
 
-class RegistrationFormAttachment {
-  RegistrationFormAttachment({
+class RegistrationFormMent {
+  RegistrationFormMent({
     this.id,
     this.registrationFormId,
     this.file,
     this.createdAt,
     this.updatedAt,
+    this.document,
   });
 
   int? id;
@@ -161,9 +171,10 @@ class RegistrationFormAttachment {
   String? file;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? document;
 
-  factory RegistrationFormAttachment.fromJson(Map<String, dynamic> json) =>
-      RegistrationFormAttachment(
+  factory RegistrationFormMent.fromJson(Map<String, dynamic> json) =>
+      RegistrationFormMent(
         id: json["id"] == null ? null : json["id"],
         registrationFormId: json["registration_form_id"] == null
             ? null
@@ -175,6 +186,7 @@ class RegistrationFormAttachment {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        document: json["document"] == null ? null : json["document"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -184,6 +196,7 @@ class RegistrationFormAttachment {
         "file": file == null ? null : file,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "document": document == null ? null : document,
       };
 }
 
@@ -207,12 +220,12 @@ class User {
   String? name;
   String? app;
   String? email;
-  DateTime? emailVerifiedAt;
-  String? signature;
+  dynamic emailVerifiedAt;
+  dynamic signature;
   String? avatar;
-  String? position;
+  dynamic position;
   dynamic resetToken;
-  dynamic fcmToken;
+  String? fcmToken;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -221,14 +234,12 @@ class User {
         name: json["name"] == null ? null : json["name"],
         app: json["app"] == null ? null : json["app"],
         email: json["email"] == null ? null : json["email"],
-        emailVerifiedAt: json["email_verified_at"] == null
-            ? null
-            : DateTime.parse(json["email_verified_at"]),
-        signature: json["signature"] == null ? null : json["signature"],
+        emailVerifiedAt: json["email_verified_at"],
+        signature: json["signature"],
         avatar: json["avatar"] == null ? null : json["avatar"],
-        position: json["position"] == null ? null : json["position"],
+        position: json["position"],
         resetToken: json["reset_token"],
-        fcmToken: json["fcm_token"],
+        fcmToken: json["fcm_token"] == null ? null : json["fcm_token"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -242,11 +253,12 @@ class User {
         "name": name == null ? null : name,
         "app": app == null ? null : app,
         "email": email == null ? null : email,
-        "email_verified_at":
-            emailVerifiedAt == null ? null : emailVerifiedAt!.toIso8601String(),
-        "signature": signature == null ? null : signature,
+        "email_verified_at": emailVerifiedAt,
+        "signature": signature,
         "avatar": avatar == null ? null : avatar,
+        "position": position,
         "reset_token": resetToken,
+        "fcm_token": fcmToken == null ? null : fcmToken,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
       };
