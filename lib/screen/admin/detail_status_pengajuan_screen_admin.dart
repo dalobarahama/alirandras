@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/models/admin_home_model.dart';
 import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
+import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StatusPengajuanScreenAdmin extends StatefulWidget {
@@ -73,7 +75,7 @@ class _StatusPengajuanScreenAdminState
                     child: Text(
                       'Detail',
                       style: GoogleFonts.roboto(
-                          fontSize: 18,
+                          fontSize: 25,
                           textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[700],
@@ -81,13 +83,14 @@ class _StatusPengajuanScreenAdminState
                     ),
                   ),
                 ),
+                SizedBox(height: 15),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.white70,
                       borderRadius: BorderRadius.circular(20)),
                   child: Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(25),
                     child: Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,12 +105,12 @@ class _StatusPengajuanScreenAdminState
                                 )),
                           ),
                           SizedBox(
-                            height: 15,
+                            height: 25,
                           ),
                           Text(
                             'Nama Pemohon',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -129,7 +132,7 @@ class _StatusPengajuanScreenAdminState
                           Text(
                             'Status dan Proses Pengajuan',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -146,7 +149,7 @@ class _StatusPengajuanScreenAdminState
                                     fontWeight: FontWeight.bold)),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 15,
                           ),
                           Container(
                             width: double.infinity,
@@ -169,6 +172,7 @@ class _StatusPengajuanScreenAdminState
                                         itemCount: _dataPengajuan.mailRequest!
                                             .mailPermissions!.length,
                                         shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
                                         padding: EdgeInsets.all(0),
                                         itemBuilder:
                                             (BuildContext context, int index1) {
@@ -183,12 +187,15 @@ class _StatusPengajuanScreenAdminState
                                                             .mailRequest!
                                                             .mailPermissions![
                                                                 index1]
-                                                            .status ==
-                                                        'diproses'
+                                                            .status !=
+                                                        'menunggu'
                                                     ? Icon(Icons.person,
                                                         color: Colors.green)
                                                     : Icon(Icons.person,
                                                         color: Colors.grey),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
                                                 Expanded(
                                                   child: Column(
                                                     crossAxisAlignment:
@@ -202,14 +209,27 @@ class _StatusPengajuanScreenAdminState
                                                                   .status!
                                                                   .toLowerCase() !=
                                                               'menunggu'
-                                                          ? Text(DateFormat(
-                                                                  'EEEE, dd MMMM yyyy',
-                                                                  'id_ID')
-                                                              .format(_dataPengajuan
-                                                                  .mailRequest!
-                                                                  .mailPermissions![
-                                                                      index1]
-                                                                  .updatedAt!))
+                                                          ? Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          3.0),
+                                                              child: Text(
+                                                                DateFormat(
+                                                                        'EEEE, dd MMMM yyyy',
+                                                                        'id_ID')
+                                                                    .format(_dataPengajuan
+                                                                        .mailRequest!
+                                                                        .mailPermissions![
+                                                                            index1]
+                                                                        .updatedAt!),
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            )
                                                           : Container(),
                                                       Text(
                                                         'Surat telah ' +
@@ -229,7 +249,8 @@ class _StatusPengajuanScreenAdminState
                                                                 .toString(),
                                                         style: TextStyle(
                                                             color:
-                                                                Colors.black54),
+                                                                Colors.black54,
+                                                            fontSize: 12),
                                                       ),
                                                     ],
                                                   ),
@@ -246,7 +267,7 @@ class _StatusPengajuanScreenAdminState
                           Text(
                             'Jenis Permohonan',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -265,13 +286,10 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 15,
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
                           Text(
                             'Luas Bangunan',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -290,13 +308,10 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 15,
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
                           Text(
                             'Luas Lahan',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -318,7 +333,7 @@ class _StatusPengajuanScreenAdminState
                           Text(
                             'Peruntukan Bangunan',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -337,13 +352,10 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 15,
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
                           Text(
                             'Lampiran',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -351,55 +363,32 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            children: [
-                              _dataPengajuan.registrationFormAttachments!
-                                          .length ==
-                                      0
-                                  ? Text('-')
-                                  : Expanded(
-                                      child: ListView.builder(
-                                          itemCount: _dataPengajuan
-                                              .registrationFormAttachments!
-                                              .length,
-                                          shrinkWrap: true,
-                                          physics: ClampingScrollPhysics(),
-                                          padding: EdgeInsets.all(0),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              child: InkWell(
-                                                  onTap: () {
-                                                    String _link =
-                                                        'http://alirandras.inotive.id' +
-                                                            _dataPengajuan
-                                                                .registrationFormAttachments![
-                                                                    index]
-                                                                .file
-                                                                .toString();
-                                                    _launchURL(_link);
-                                                  },
-                                                  child: Text(
-                                                    'Lampiran ' +
-                                                        (index + 1).toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.blue,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
-                                                  )),
-                                            );
-                                          }),
-                                    )
-                            ],
-                          ),
+                          _dataPengajuan.mailRequest?.body != null
+                              ? InkWell(
+                                  onTap: () {
+                                    pushNewScreen(context,
+                                        screen: PreviewSuratBalasanScreenNew(
+                                            _dataPengajuan.mailRequest!.id!
+                                                .toString(),
+                                            'view',
+                                            _dataPengajuan.id.toString()),
+                                        withNavBar: false);
+                                  },
+                                  child: Text(
+                                    'Lihat Surat Balasan',
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                )
+                              : Text('-'),
                           SizedBox(
                             height: 15,
                           ),
                           Text(
                             'Lampiran Dokumen',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -455,7 +444,7 @@ class _StatusPengajuanScreenAdminState
                           Text(
                             'Alamat Lengkap',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),
@@ -474,13 +463,10 @@ class _StatusPengajuanScreenAdminState
                           SizedBox(
                             height: 15,
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
                           Text(
                             'Peta Lokasi',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
+                                fontSize: 12,
                                 textStyle: TextStyle(
                                   color: Colors.grey[500],
                                 )),

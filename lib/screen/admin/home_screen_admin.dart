@@ -93,8 +93,12 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             'process',
             _data.registrationForms![indexs].id.toString()),
         withNavBar: false);
-
-    initData('', '');
+        setState(() {
+          isLoading = true;
+        });
+    Timer(Duration(seconds: 2), () {
+      initData('', '');
+    });
   }
 
   @override
@@ -442,11 +446,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         shadowColor: Colors.black,
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                SlideToLeftRoute(
-                                    page: StatusPengajuanScreenAdmin(
-                                        _data.registrationForms![index])));
+                            pushNewScreen(context,
+                                screen: StatusPengajuanScreenAdmin(
+                                    _data.registrationForms![index]),
+                                withNavBar: false);
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(
