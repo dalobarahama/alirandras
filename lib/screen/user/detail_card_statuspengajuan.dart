@@ -189,7 +189,10 @@ class _Detail_card_statuspengajuanState
                           borderRadius: BorderRadius.circular(10)),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 15, left: 20),
-                        child: _dataStatusPengajuan.mailRequest == null
+                        child: _dataStatusPengajuan.mailRequest == null ||
+                                _dataStatusPengajuan
+                                        .mailRequest!.mailPermissions ==
+                                    null
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Center(
@@ -205,58 +208,63 @@ class _Detail_card_statuspengajuanState
                                 padding: EdgeInsets.all(0),
                                 itemBuilder:
                                     (BuildContext context, int index1) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                        child: Row(
-                                      children: [
-                                        _dataStatusPengajuan
-                                                    .mailRequest!
-                                                    .mailPermissions![index1]
-                                                    .status ==
-                                                'diproses'
-                                            ? Icon(Icons.person,
-                                                color: Colors.green)
-                                            : Icon(Icons.person,
-                                                color: Colors.grey),
-                                        Expanded(
-                                          child: Column(
+                                  return _dataStatusPengajuan.mailRequest!
+                                              .mailPermissions![index1] !=
+                                          null
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                              child: Row(
                                             children: [
                                               _dataStatusPengajuan
                                                           .mailRequest!
                                                           .mailPermissions![
                                                               index1]
-                                                          .status!
-                                                          .toLowerCase() !=
-                                                      'menunggu'
-                                                  ? Text(DateFormat(
-                                                          'EEEE, dd MMMM yy',
-                                                          'id_ID')
-                                                      .format(
+                                                          .status ==
+                                                      'diproses'
+                                                  ? Icon(Icons.person,
+                                                      color: Colors.green)
+                                                  : Icon(Icons.person,
+                                                      color: Colors.grey),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    _dataStatusPengajuan
+                                                                .mailRequest!
+                                                                .mailPermissions![
+                                                                    index1]
+                                                                .status!
+                                                                .toLowerCase() !=
+                                                            'menunggu'
+                                                        ? Text(DateFormat(
+                                                                'EEEE, dd MMMM yy',
+                                                                'id_ID')
+                                                            .format(_dataStatusPengajuan
+                                                                .mailRequest!
+                                                                .mailPermissions![
+                                                                    index1]
+                                                                .updatedAt!))
+                                                        : Container(),
+                                                    Text(
+                                                      'Surat telah diverifikasi oleh ' +
                                                           _dataStatusPengajuan
                                                               .mailRequest!
                                                               .mailPermissions![
                                                                   index1]
-                                                              .updatedAt!))
-                                                  : Container(),
-                                              Text(
-                                                'Surat telah diverifikasi oleh ' +
-                                                    _dataStatusPengajuan
-                                                        .mailRequest!
-                                                        .mailPermissions![
-                                                            index1]
-                                                        .user!
-                                                        .position
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.black54),
-                                              ),
+                                                              .user!
+                                                              .position
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black54),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
                                             ],
-                                          ),
+                                          )),
                                         )
-                                      ],
-                                    )),
-                                  );
+                                      : Container();
                                 },
                               ),
                       ),
