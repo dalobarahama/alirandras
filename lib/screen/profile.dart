@@ -45,12 +45,14 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _userData = value;
         isLoading = false;
-        print(_userData.email);
+        print(_userData.avatar);
         _namaController.text = _userData.name!;
         _emailController.text = _userData.email!;
         if (_userData.app == 'admin') {
-          _jabatanController.text = _userData.position!;
-          print(_userData.position!);
+          if (_userData.position != null) {
+            _jabatanController.text = _userData.position;
+            print(_userData.position);
+          }
         }
       });
     });
