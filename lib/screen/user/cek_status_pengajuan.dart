@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
+import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/edit_form_pendaftaran.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -440,54 +442,47 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                           null
                                                       ? _listPengajuanFiltered![
                                                                       index]
-                                                                  .mailRequest!
-                                                                  .status!
-                                                                  .toLowerCase() ==
-                                                              'diterima'
-                                                          ? Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 8,
-                                                                      right: 10,
-                                                                      top: 8),
-                                                              child: Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    flex: 1,
-                                                                    child: ListView.builder(
-                                                                        itemCount: _listPengajuanFiltered![index].registrationFormAttachments!.length,
-                                                                        shrinkWrap: true,
-                                                                        physics: ClampingScrollPhysics(),
-                                                                        padding: EdgeInsets.all(0),
-                                                                        itemBuilder: (BuildContext context, int index1) {
-                                                                          return Container(
-                                                                            child: InkWell(
-                                                                                onTap: () {
-                                                                                  String _link = 'http://alirandras.inotive.id' + _listPengajuanFiltered![index].registrationFormAttachments![index1].file.toString();
-                                                                                  _launchURL(_link);
-                                                                                },
-                                                                                child: Text(
-                                                                                  'Lampiran ' + (index1 + 1).toString(),
-                                                                                  style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-                                                                                )),
-                                                                          );
-                                                                        }),
-                                                                  )
-                                                                  /*Text(
-                                            'Gambar bangunan.png',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 14,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey[700],
-                                                )),
-                                          ),*/
-                                                                  ,
-                                                                ],
-                                                              ),
-                                                            )
-                                                          : Container()
+                                                                  .mailRequest
+                                                                  ?.body !=
+                                                              null
+                                                          ? Align(alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: InkWell(
+                                                                  onTap: () {
+                                                                    pushNewScreen(
+                                                                        context,
+                                                                        screen: PreviewSuratBalasanScreenNew(
+                                                                            _listPengajuanFiltered![index]
+                                                                                .mailRequest!
+                                                                                .id!
+                                                                                .toString(),
+                                                                            'view',
+                                                                            _listPengajuanFiltered![index]
+                                                                                .id
+                                                                                .toString()),
+                                                                        withNavBar:
+                                                                            false);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Lihat Surat Balasan',
+                                                                    style: GoogleFonts.roboto(
+                                                                        fontSize:
+                                                                            12,
+                                                                        textStyle: TextStyle(
+                                                                            color: Colors
+                                                                                .blueAccent,
+                                                                            decoration:
+                                                                                TextDecoration.underline)),
+                                                                  ),
+                                                                ),
+                                                            ),
+                                                          )
+                                                          : Text('-')
                                                       : Container(),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
                                                   Container(
                                                     child: Row(
                                                       mainAxisAlignment:
