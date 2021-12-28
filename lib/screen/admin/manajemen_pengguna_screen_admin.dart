@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
@@ -23,6 +25,7 @@ class _ManajemenPenggunaScreenAdminState
   TextEditingController _searchListController = TextEditingController();
   ManajemenPenggunaModel _data = ManajemenPenggunaModel();
   List<Pengguna>? _searchList;
+  List<Pengguna>? _searchListFiltered;
   bool isLoading = true;
   AdminPermission _adminPermission = AdminPermission();
   bool isDelete = false;
@@ -39,8 +42,21 @@ class _ManajemenPenggunaScreenAdminState
       setState(() {
         _data = value;
         _searchList = value.users;
+        _searchListFiltered = _searchList;
         isLoading = false;
       });
+    });
+  }
+
+  navigateToEditPengguna(int index) async {
+    var res = await pushNewScreen(context,
+        screen: EditManajemenPenggunaScreen(_searchListFiltered![index]),
+        withNavBar: false);
+    setState(() {
+      isLoading = true;
+    });
+    Timer(Duration(seconds: 2), () {
+      initData();
     });
   }
 
@@ -76,6 +92,21 @@ class _ManajemenPenggunaScreenAdminState
         }
       });
     }
+  }
+
+  List<Pengguna>? _filteredUser(
+      List<Pengguna>? _searchList, String _userFilteredController) {
+    setState(() {
+      print('asd');
+      _searchListFiltered = _searchList!
+          .where((u) => (u.name
+              .toString()
+              .toLowerCase()
+              .contains(_userFilteredController.toLowerCase())))
+          .toList();
+    });
+
+    return _searchListFiltered;
   }
 
   @override
@@ -121,7 +152,12 @@ class _ManajemenPenggunaScreenAdminState
                           child: TextFormField(
                             controller: _searchListController,
                             decoration: InputDecoration(
-                                suffixIcon: Icon(Icons.search),
+                                suffixIcon: InkWell(
+                                    onTap: () {
+                                      _filteredUser(_searchList,
+                                          _searchListController.text);
+                                    },
+                                    child: Icon(Icons.search)),
                                 border: InputBorder.none),
                           ),
                         ),
@@ -139,7 +175,7 @@ class _ManajemenPenggunaScreenAdminState
                                 child: Container(
                                   width: double.infinity,
                                   child: ListView.builder(
-                                    itemCount: _searchList!.length,
+                                    itemCount: _searchListFiltered!.length,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.all(0),
                                     itemBuilder:
@@ -179,10 +215,11 @@ class _ManajemenPenggunaScreenAdminState
                                                                   .circular(65),
                                                           child:
                                                               CachedNetworkImage(
-                                                            imageUrl: _searchList?[
-                                                                        index]
-                                                                    .avatar ??
-                                                                '-',
+                                                            imageUrl:
+                                                                _searchListFiltered?[
+                                                                            index]
+                                                                        .avatar ??
+                                                                    '-',
                                                             imageBuilder: (context,
                                                                     imageProvider) =>
                                                                 Container(
@@ -221,7 +258,8 @@ class _ManajemenPenggunaScreenAdminState
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            _searchList?[index]
+                                                            _searchListFiltered?[
+                                                                        index]
                                                                     .name ??
                                                                 '-',
                                                             style: GoogleFonts
@@ -238,7 +276,8 @@ class _ManajemenPenggunaScreenAdminState
                                                                     )),
                                                           ),
                                                           Text(
-                                                            _searchList![index]
+                                                            _searchListFiltered![
+                                                                            index]
                                                                         .app ==
                                                                     'admin'
                                                                 ? 'Admin'
@@ -252,7 +291,7 @@ class _ManajemenPenggunaScreenAdminState
                                                                             .bold,
                                                                     textStyle:
                                                                         TextStyle(
-                                                                      color: _searchList![index].app ==
+                                                                      color: _searchListFiltered![index].app ==
                                                                               'admin'
                                                                           ? Colors
                                                                               .blue
@@ -261,7 +300,8 @@ class _ManajemenPenggunaScreenAdminState
                                                                     )),
                                                           ),
                                                           Text(
-                                                            _searchList?[index]
+                                                            _searchListFiltered?[
+                                                                        index]
                                                                     .email ??
                                                                 '-',
                                                             style: GoogleFonts
@@ -284,11 +324,8 @@ class _ManajemenPenggunaScreenAdminState
                                                 children: [
                                                   InkWell(
                                                     onTap: () {
-                                                      pushNewScreen(context,
-                                                          screen:
-                                                              EditManajemenPenggunaScreen(
-                                                                  _searchList![
-                                                                      index]));
+                                                      navigateToEditPengguna(
+                                                          index);
                                                     },
                                                     child: Padding(
                                                       padding:
@@ -308,7 +345,8 @@ class _ManajemenPenggunaScreenAdminState
                                                         isDelete = true;
                                                       });
                                                       deletePengguna(
-                                                          _searchList![index]
+                                                          _searchListFiltered![
+                                                                  index]
                                                               .id!);
                                                     },
                                                     child: Padding(

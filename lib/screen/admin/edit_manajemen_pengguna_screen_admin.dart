@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -80,28 +81,33 @@ class _EditManajemenPenggunaScreenState
       Fluttertoast.showToast(msg: 'Email tidak boleh kosong');
       return;
     }
-    if (_passwordController.text.length < 8) {
-      Fluttertoast.showToast(msg: 'password kurang dari 8 karakter');
-      return;
+    if (_passwordController.text.length > 0) {
+      if (_passwordController.text.length < 8) {
+        Fluttertoast.showToast(msg: 'password kurang dari 8 karakter');
+        return;
+      }
     }
-    if (_jabatanController.text.length < 1) {
-      Fluttertoast.showToast(msg: 'Jabatan tidak boleh kosong');
-      return;
+    if (_dataPengguna.app == 'admin') {
+      if (_jabatanController.text.length < 1) {
+        Fluttertoast.showToast(msg: 'Jabatan tidak boleh kosong');
+        return;
+      }
     }
     CallAdminApi()
         .editManajemenPengguna(
             _namaController.text,
             _emailController.text,
             _passwordController.text,
-            _avatarFile!,
-            _signatureFile!,
+            _avatarFile,
+            _signatureFile,
             _dataPengguna.id.toString())
         .then((value) {
       if (value == 'success') {
         Fluttertoast.showToast(
             msg: 'Success Update Profile', timeInSecForIosWeb: 2);
-        initData();
-        ;
+        Timer(Duration(seconds: 2), () {
+          Navigator.pop(context);
+        });
       } else if (value == 'failed') {
         Fluttertoast.showToast(
             msg: 'Gagal Update Profile', timeInSecForIosWeb: 2);

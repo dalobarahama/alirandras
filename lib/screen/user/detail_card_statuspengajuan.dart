@@ -422,7 +422,7 @@ class _Detail_card_statuspengajuanState
                                   child: InkWell(
                                       onTap: () {
                                         String _link =
-                                            'http://alirandras.inotive.id' +
+                                            'https://alirandras.inotive.id' +
                                                 _dataStatusPengajuan
                                                     .registrationFormAttachments![
                                                         index]
