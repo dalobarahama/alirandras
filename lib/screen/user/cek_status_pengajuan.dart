@@ -196,12 +196,12 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                         shadowColor: Colors.black,
                                         child: InkWell(
                                           onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                SlideToLeftRoute(
-                                                    page: Detail_card_statuspengajuan(
+                                            pushNewScreen(context,
+                                                screen:
+                                                    Detail_card_statuspengajuan(
                                                         _listPengajuanFiltered![
-                                                            index])));
+                                                            index]),
+                                                withNavBar: false);
                                           },
                                           child: Container(
                                             child: Padding(
@@ -445,10 +445,15 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                   .mailRequest
                                                                   ?.body !=
                                                               null
-                                                          ? Align(alignment: Alignment.centerLeft,
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
-                                                              child: InkWell(
+                                                          ? Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: InkWell(
                                                                   onTap: () {
                                                                     pushNewScreen(
                                                                         context,
@@ -470,14 +475,13 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                         fontSize:
                                                                             12,
                                                                         textStyle: TextStyle(
-                                                                            color: Colors
-                                                                                .blueAccent,
-                                                                            decoration:
-                                                                                TextDecoration.underline)),
+                                                                            color:
+                                                                                Colors.blueAccent,
+                                                                            decoration: TextDecoration.underline)),
                                                                   ),
                                                                 ),
-                                                            ),
-                                                          )
+                                                              ),
+                                                            )
                                                           : Text('-')
                                                       : Container(),
                                                   SizedBox(
@@ -501,12 +505,13 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                         ),
                                                         InkWell(
                                                           onTap: () {
-                                                            Navigator.push(
+                                                            pushNewScreen(
                                                                 context,
-                                                                SlideToLeftRoute(
-                                                                    page: Detail_card_statuspengajuan(
-                                                                        _listPengajuanFiltered![
-                                                                            index])));
+                                                                screen: Detail_card_statuspengajuan(
+                                                                    _listPengajuanFiltered![
+                                                                        index]),
+                                                                withNavBar:
+                                                                    false);
                                                           },
                                                           child: Text(
                                                             'Detail',
@@ -545,9 +550,10 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                     InkWell(
                                                                       onTap:
                                                                           () {
-                                                                        Navigator.push(
+                                                                        pushNewScreen(
                                                                             context,
-                                                                            SlideToLeftRoute(page: EditForm(_listPengajuanFiltered![index])));
+                                                                            screen:
+                                                                                EditForm(_listPengajuanFiltered![index]));
                                                                       },
                                                                       child:
                                                                           Text(

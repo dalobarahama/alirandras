@@ -48,7 +48,12 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
   navigateToApprovalScreen(String id) async {
     var res = await pushNewScreen(context,
         screen: ApprovalScreen('permohonan', id), withNavBar: false);
-    initData();
+        setState(() {
+          isLoading = true;
+        });
+    Timer(Duration(seconds: 1), () {
+            initData();
+      });
   }
 
   initData() async {
@@ -183,6 +188,9 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                 ],
                                               ),
                                             ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
@@ -215,73 +223,80 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                               ),
                                             ),
                                             Expanded(
-                                              child: _data
-                                                          .applicationLetters![
-                                                              index]
-                                                          .status !=
-                                                      'menunggu'
-                                                  ? Container()
-                                                  : InkWell(
-                                                      onTap: () {
-                                                        navigateToApprovalScreen(
-                                                            _data
+                                                child: _data
                                                                 .applicationLetters![
                                                                     index]
-                                                                .id!
-                                                                .toString());
-                                                      },
-                                                      child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8,
-                                                                horizontal: 10),
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.red,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        7)),
-                                                        child: Row(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 5),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .check_circle,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 15,
+                                                                .status ==
+                                                            'menunggu' ||
+                                                        _data
+                                                                .applicationLetters![
+                                                                    index]
+                                                                .status ==
+                                                            "selesai direvisi"
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          navigateToApprovalScreen(
+                                                              _data
+                                                                  .applicationLetters![
+                                                                      index]
+                                                                  .id!
+                                                                  .toString());
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 8,
+                                                                  horizontal:
+                                                                      10),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          7)),
+                                                          child: Row(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            5),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .check_circle,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 15,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 3),
-                                                              child: Text(
-                                                                'Verifikasi',
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            11,
-                                                                        textStyle:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.white,
-                                                                        )),
+                                                              SizedBox(
+                                                                width: 5,
                                                               ),
-                                                            ),
-                                                          ],
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            3),
+                                                                child: Text(
+                                                                  'Verifikasi',
+                                                                  style: GoogleFonts
+                                                                      .roboto(
+                                                                          fontSize:
+                                                                              11,
+                                                                          textStyle:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          )),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                            ),
+                                                      )
+                                                    : Container()),
                                           ],
                                         )
                                       ],
