@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,6 +20,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EditForm extends StatefulWidget {
   ApplicationLetter1 _dataForm = ApplicationLetter1();
@@ -35,7 +38,7 @@ class _EditFormState extends State<EditForm> {
   TextEditingController _luasLahanController = TextEditingController();
   TextEditingController _lokasiBangunanController = TextEditingController();
   TextEditingController _peruntukanBangunanController = TextEditingController();
-
+  String link = 'http://alirandras.inotive.id';
   LatLng point = LatLng(-1.240112, 116.873320);
   String jenisPermohonan = '';
   String district = 'BALIKPAPAN KOTA';
@@ -43,6 +46,8 @@ class _EditFormState extends State<EditForm> {
   bool isLoading = true;
   bool isLoading1 = false;
   bool loc = false;
+  int countImg = 0;
+  int countDoc = 0;
   Position currentLocation = Position(
       longitude: 0,
       latitude: 0,
@@ -87,6 +92,18 @@ class _EditFormState extends State<EditForm> {
     print(point);
     getKecamatan();
     setState(() {
+      if (_dataForm.registrationFormAttachments != null) {
+        for (var item in _dataForm.registrationFormAttachments!) {
+          print('item ' + _dataForm.registrationFormAttachments![0].file!);
+          countImg += 1;
+        }
+      }
+      if (_dataForm.registrationFormDocuments != null) {
+        for (var item in _dataForm.registrationFormDocuments!) {
+          countDoc += 1;
+        }
+      }
+      print('count image $countImg');
       _luasBangunanController.text = _dataForm.buildingArea!;
       _luasLahanController.text = _dataForm.landArea!;
       _lokasiBangunanController.text = _dataForm.buildingLocation!;
@@ -99,6 +116,11 @@ class _EditFormState extends State<EditForm> {
     super.initState();
   }
 
+  void _launchURL(String? url) async {
+    print(url);
+    if (!await launch(url!)) throw 'Could not launch $url';
+  }
+
   _imgFromGallery(int index) async {
     print(_imageFileList!.length);
     if (_imageFileList!.length < 3) {
@@ -106,12 +128,8 @@ class _EditFormState extends State<EditForm> {
           source: ImageSource.gallery, imageQuality: 50);
       setState(() {
         _imageFileList!.add(image!);
-      });
-    } else {
-      XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
-      setState(() {
-        _imageFileList![index] = image!;
+        countImg += 1;
+        print('count image gasle$countImg');
       });
     }
   }
@@ -187,6 +205,15 @@ class _EditFormState extends State<EditForm> {
     });
   }
 
+  void deleteImage(int id, int index) async {
+    await CallApi().deleteImage(id).then((value) {
+      setState(() {
+        _dataForm.registrationFormAttachments![index].file = null;
+        countImg -= 1;
+      });
+    });
+  }
+
   void update_formulir() async {
     if (jenisPermohonan.length < 2) {
       Fluttertoast.showToast(
@@ -250,8 +277,12 @@ class _EditFormState extends State<EditForm> {
           if (_dataFormulir.statusCode == 200) {
             setState(() {
               isFinish[3] = true;
-              // isLoading1 = false;
+              isLoading1 = false;
               print('ini2' + isFinish[2].toString());
+              Fluttertoast.showToast(msg: 'data berhasil di submit');
+              Timer(Duration(seconds: 3), () {
+                Navigator.pop(context);
+              });
             });
           } else if (_dataFormulir.statusCode! >= 400 &&
               _dataFormulir.statusCode! <= 500) {
@@ -656,155 +687,651 @@ class _EditFormState extends State<EditForm> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    Container(
-                      width: 105,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Gambar Bangunan/Lahan',
-                            style: GoogleFonts.roboto(
-                                fontSize: 12,
-                                textStyle: TextStyle(
-                                  color: Colors.black54,
-                                )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 105,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Gambar Bangunan/Lahan',
+                                style: GoogleFonts.roboto(
+                                    fontSize: 12,
+                                    textStyle: TextStyle(
+                                      color: Colors.black54,
+                                    )),
+                              ),
+                              Text(
+                                '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
+                                style: GoogleFonts.roboto(
+                                    fontSize: 9,
+                                    textStyle: TextStyle(
+                                      color: Colors.black54,
+                                    )),
+                              ),
+                            ],
                           ),
-                          Text(
-                            '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
-                            style: GoogleFonts.roboto(
-                                fontSize: 9,
-                                textStyle: TextStyle(
-                                  color: Colors.black54,
-                                )),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        child: InkWell(
-                          onTap: () {
-                            _imgFromGallery(0);
-                          },
-                          child: DottedBorder(
-                            color: Colors.grey,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Center(
-                                  child: _imageFileList!.length != 0
-                                      ? _imageFileList![0] != null
-                                          ? Image.file(
-                                              File(_imageFileList![0].path))
-                                          : Text(
-                                              '+',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 30,
-                                                  textStyle: TextStyle(
-                                                    color: Colors.grey,
-                                                  )),
-                                            )
-                                      : Text(
-                                          '+',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 30,
-                                              textStyle: TextStyle(
-                                                color: Colors.grey,
-                                              )),
-                                        )),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: Container(
+                                width: 215,
+                                height: 60,
+                                child: InkWell(
+                                  onTap: () {
+                                    countImg < 3
+                                        ? _imgFromGallery(countImg)
+                                        : Fluttertoast.showToast(
+                                            msg: 'Maksimal 3 gambar');
+                                  },
+                                  child: DottedBorder(
+                                    color: Colors.grey,
+                                    child: Container(
+                                      height: 60,
+                                      width: 215,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7)),
+                                      child: Center(
+                                          child: Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              width: 250,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 30),
+                                        child: Container(
+                                          width: 60,
+                                          height: 60,
+                                          child: DottedBorder(
+                                            color: Colors.grey,
+                                            child: Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(7)),
+                                              child: Center(
+                                                  child: _dataForm
+                                                              .registrationFormAttachments!
+                                                              .length !=
+                                                          0
+                                                      ? CachedNetworkImage(
+                                                          imageUrl: (link +
+                                                              _dataForm
+                                                                  .registrationFormAttachments![
+                                                                      0]
+                                                                  .file!),
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              CircularProgressIndicator(),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(
+                                                            Icons.error,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )
+                                                      : _imageFileList!
+                                                                      .length !=
+                                                                  0 &&
+                                                              _imageFileList![
+                                                                      0] !=
+                                                                  null
+                                                          ? Image.file(File(
+                                                              _imageFileList![0]
+                                                                  .path))
+                                                          : Text(
+                                                              '-',
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                      fontSize:
+                                                                          30,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      )),
+                                                            )),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      _dataForm.registrationFormAttachments!
+                                                  .length !=
+                                              0
+                                          ? _dataForm
+                                                      .registrationFormAttachments![
+                                                          0]
+                                                      .file !=
+                                                  null
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 30),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      deleteImage(
+                                                          _dataForm
+                                                              .registrationFormAttachments![
+                                                                  0]
+                                                              .id!,
+                                                          0);
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.red),
+                                                      height: 30,
+                                                      width: 60,
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                          : Container()
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        child: DottedBorder(
+                                          color: Colors.grey,
+                                          child: Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7)),
+                                            child: Center(
+                                                child: _dataForm
+                                                            .registrationFormAttachments!
+                                                            .length >=
+                                                        2
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: (link +
+                                                            _dataForm
+                                                                .registrationFormAttachments![
+                                                                    1]
+                                                                .file!),
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            CircularProgressIndicator(),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Icon(
+                                                          Icons.error,
+                                                          color: Colors.white,
+                                                        ),
+                                                      )
+                                                    : _imageFileList!.length > 1
+                                                        ? Image.file(File(
+                                                            _imageFileList![1]
+                                                                .path))
+                                                        : Text(
+                                                            '-',
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontSize:
+                                                                        30,
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    )),
+                                                          )),
+                                          ),
+                                        ),
+                                      ),
+                                      _dataForm.registrationFormAttachments!
+                                                  .length >=
+                                              2
+                                          ? _dataForm
+                                                      .registrationFormAttachments![
+                                                          1]
+                                                      .file !=
+                                                  null
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 30),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      deleteImage(
+                                                          _dataForm
+                                                              .registrationFormAttachments![
+                                                                  1]
+                                                              .id!,
+                                                          1);
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.red),
+                                                      height: 30,
+                                                      width: 60,
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                          : Container()
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        child: DottedBorder(
+                                          color: Colors.grey,
+                                          child: Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7)),
+                                            child: Center(
+                                                child: _dataForm
+                                                            .registrationFormAttachments!
+                                                            .length >=
+                                                        3
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: (link +
+                                                            _dataForm
+                                                                .registrationFormAttachments![
+                                                                    2]
+                                                                .file!),
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            CircularProgressIndicator(),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Icon(
+                                                          Icons.error,
+                                                          color: Colors.white,
+                                                        ),
+                                                      )
+                                                    : _imageFileList!.length > 2
+                                                        ? Image.file(File(
+                                                            _imageFileList![2]
+                                                                .path))
+                                                        : Text(
+                                                            '-',
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontSize:
+                                                                        30,
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    )),
+                                                          )),
+                                          ),
+                                        ),
+                                      ),
+                                      _dataForm.registrationFormAttachments!
+                                                  .length >=
+                                              3
+                                          ? _dataForm
+                                                      .registrationFormAttachments![
+                                                          2]
+                                                      .file !=
+                                                  null
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 30),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      deleteImage(
+                                                          _dataForm
+                                                              .registrationFormAttachments![
+                                                                  2]
+                                                              .id!,
+                                                          2);
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.red),
+                                                      height: 30,
+                                                      width: 60,
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                          : Container()
+                                    ],
+                                  ),
+
+                                  /*   Container(
+                                    width: 60,
+                                    height: 60,
+                                    child: InkWell(
+                                      onTap: () {
+                                        _imgFromGallery(1);
+                                      },
+                                      child: DottedBorder(
+                                        color: Colors.grey,
+                                        child: Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7)),
+                                          child: Center(
+                                              child: _imageFileList!.length !=
+                                                          0 &&
+                                                      _imageFileList!.length > 1
+                                                  ? _imageFileList![1] != null
+                                                      ? Image.file(File(
+                                                          _imageFileList![1]
+                                                              .path))
+                                                      : _dataForm
+                                                                  .registrationFormAttachments![
+                                                                      1]
+                                                                  .file !=
+                                                              null
+                                                          ? CachedNetworkImage(
+                                                              imageUrl: _dataForm
+                                                                      .registrationFormAttachments![
+                                                                          1]
+                                                                      .file ??
+                                                                  '-',
+                                                              imageBuilder: (context,
+                                                                      imageProvider) =>
+                                                                  Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  image:
+                                                                      DecorationImage(
+                                                                    image:
+                                                                        imageProvider,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              placeholder: (context,
+                                                                      url) =>
+                                                                  CircularProgressIndicator(),
+                                                              errorWidget:
+                                                                  (context, url,
+                                                                          error) =>
+                                                                      Icon(
+                                                                Icons.error,
+                                                                color:
+                                                                    Colors.white,
+                                                              ),
+                                                            )
+                                                          : Text(
+                                                              '+',
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                      fontSize:
+                                                                          30,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      )),
+                                                            )
+                                                  : _dataForm
+                                                              .registrationFormAttachments![
+                                                                  1]
+                                                              .file !=
+                                                          null
+                                                      ? CachedNetworkImage(
+                                                          imageUrl: _dataForm
+                                                                  .registrationFormAttachments![
+                                                                      1]
+                                                                  .file ??
+                                                              '-',
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              CircularProgressIndicator(),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(
+                                                            Icons.error,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          '+',
+                                                          style:
+                                                              GoogleFonts.roboto(
+                                                                  fontSize: 30,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  )),
+                                                        )),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    child: InkWell(
+                                      onTap: () {
+                                        _imgFromGallery(2);
+                                      },
+                                      child: DottedBorder(
+                                        color: Colors.grey,
+                                        child: Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7)),
+                                          child: Center(
+                                              child: _imageFileList!.length !=
+                                                          0 &&
+                                                      _imageFileList!.length > 2
+                                                  ? _imageFileList![2] != null
+                                                      ? Image.file(File(
+                                                          _imageFileList![2]
+                                                              .path))
+                                                      : _dataForm
+                                                                  .registrationFormAttachments![
+                                                                      2]
+                                                                  .file !=
+                                                              null
+                                                          ? CachedNetworkImage(
+                                                              imageUrl: _dataForm
+                                                                      .registrationFormAttachments![
+                                                                          2]
+                                                                      .file ??
+                                                                  '-',
+                                                              imageBuilder: (context,
+                                                                      imageProvider) =>
+                                                                  Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  image:
+                                                                      DecorationImage(
+                                                                    image:
+                                                                        imageProvider,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              placeholder: (context,
+                                                                      url) =>
+                                                                  CircularProgressIndicator(),
+                                                              errorWidget:
+                                                                  (context, url,
+                                                                          error) =>
+                                                                      Icon(
+                                                                Icons.error,
+                                                                color:
+                                                                    Colors.white,
+                                                              ),
+                                                            )
+                                                          : Text(
+                                                              '+',
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                      fontSize:
+                                                                          30,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      )),
+                                                            )
+                                                  : _dataForm
+                                                              .registrationFormAttachments![
+                                                                  2]
+                                                              .file !=
+                                                          null
+                                                      ? CachedNetworkImage(
+                                                          imageUrl: _dataForm
+                                                                  .registrationFormAttachments![
+                                                                      2]
+                                                                  .file ??
+                                                              '-',
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              CircularProgressIndicator(),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(
+                                                            Icons.error,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          '+',
+                                                          style:
+                                                              GoogleFonts.roboto(
+                                                                  fontSize: 30,
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  )),
+                                                        )),
+                                        ),
+                                      ),
+                                    ),
+                                  ),*/
+                                ],
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                    ),
-                    Container(
-                      width: 60,
-                      height: 60,
-                      child: InkWell(
-                        onTap: () {
-                          _imgFromGallery(1);
-                        },
-                        child: DottedBorder(
-                          color: Colors.grey,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7)),
-                            child: Center(
-                                child: _imageFileList!.length != 0 &&
-                                        _imageFileList!.length > 1
-                                    ? _imageFileList![1] != null
-                                        ? Image.file(
-                                            File(_imageFileList![1].path))
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )
-                                    : Text(
-                                        '+',
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 30,
-                                            textStyle: TextStyle(
-                                              color: Colors.grey,
-                                            )),
-                                      )),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 60,
-                      height: 60,
-                      child: InkWell(
-                        onTap: () {
-                          _imgFromGallery(2);
-                        },
-                        child: DottedBorder(
-                          color: Colors.grey,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7)),
-                            child: Center(
-                                child: _imageFileList!.length != 0 &&
-                                        _imageFileList!.length > 2
-                                    ? _imageFileList![2] != null
-                                        ? Image.file(
-                                            File(_imageFileList![2].path))
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )
-                                    : Text(
-                                        '+',
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 30,
-                                            textStyle: TextStyle(
-                                              color: Colors.grey,
-                                            )),
-                                      )),
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

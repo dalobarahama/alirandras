@@ -147,19 +147,23 @@ class CallAdminApi {
     }
   }
 
-  Future<String> editManajemenPengguna(String name, String email,
-      String password, XFile avatar, XFile signature, String id) async {
-    Uri fullUrl = Uri.parse(SERVER_URL + EDIT_MANAJEMEN_PENGGUNA);
+  Future<String> editManajemenPengguna(
+    String name,
+    String email,
+    String? password,
+    XFile? avatar,
+    XFile? signature,
+    String id,
+  ) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + EDIT_MANAJEMEN_PENGGUNA + id);
 
     print(fullUrl);
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
-      print(avatar.name);
+      // print(avatar.name);
       // String token =
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
-      File? image1 = File(avatar.path);
-      File? image2 = File(signature.path);
 
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
@@ -169,14 +173,19 @@ class CallAdminApi {
         ..headers.addAll(headers);
       request.fields['name'] = name;
       request.fields['email'] = email;
-      request.fields['password'] = password;
+      if (password != null) {
+        request.fields['password'] = password;
+      }
+
       if (avatar != null) {
+        File? image1 = File(avatar.path);
         http.MultipartFile _file1 = http.MultipartFile(
             'avatar', avatar.readAsBytes().asStream(), image1.lengthSync(),
             filename: 'avatar_$name _${avatar.path.split(".").last}');
         request.files.add(_file1);
       }
       if (signature != null) {
+        File? image2 = File(signature.path);
         http.MultipartFile _file2 = http.MultipartFile('signature',
             signature.readAsBytes().asStream(), image2.lengthSync(),
             filename: 'signature_$name _${signature.path.split(".").last}');
@@ -189,15 +198,16 @@ class CallAdminApi {
       print(request);
       http.StreamedResponse response = await request.send();
       var data = await http.Response.fromStream(response);
+      print('aa4');
       print(data.body);
-      int a = int.parse(jsonDecode(data.body)['status_code']);
+      int a = jsonDecode(data.body)['status_code'];
       print(a);
       if (a == 200) {
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
+        //SharedPreferences sharedPreferences =
+        //    await SharedPreferences.getInstance();
 
-        sharedPreferences.setString(
-            'user_data', user1ToJson(jsonDecode(data.body)['user']));
+        //  sharedPreferences.setString(
+        //    'user_data', user1ToJson(jsonDecode(data.body)['user']));
         return 'success';
       } else {
         return 'failed';
@@ -454,7 +464,6 @@ class CallAdminApi {
     }
   }
 
-
   Future<String> approvePengajuan(String id) async {
     Uri fullUrl = Uri.parse(SERVER_URL + APPROVE_PENGAJUAH + id.toString());
     try {
@@ -519,5 +528,4 @@ class CallAdminApi {
       return e.toString();
     }
   }
-
 }

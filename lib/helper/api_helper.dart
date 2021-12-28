@@ -575,7 +575,7 @@ class CallApi {
       print(res.body);
       print('del dok');
 
-      var a = int.parse(jsonDecode(res.body)['status_code']);
+      var a = jsonDecode(res.body)['status_code'];
       print(res.body);
       print(a);
       if (a == 200) {
