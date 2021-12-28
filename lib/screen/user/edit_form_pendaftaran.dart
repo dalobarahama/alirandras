@@ -88,7 +88,8 @@ class _EditFormState extends State<EditForm> {
   void initState() {
     _selectedKecamatan = null;
     _selectedKelurahan = null;
-
+    countImg = _dataForm.registrationFormAttachments!.length;
+    countDoc = _dataForm.registrationFormDocuments!.length;
     print(point);
     getKecamatan();
     setState(() {
@@ -691,8 +692,9 @@ class _EditFormState extends State<EditForm> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 105,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,

@@ -553,7 +553,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                         pushNewScreen(
                                                                             context,
                                                                             screen:
-                                                                                EditForm(_listPengajuanFiltered![index]));
+                                                                                EditForm(_listPengajuanFiltered![index]),
+                                                                            withNavBar: false);
                                                                       },
                                                                       child:
                                                                           Text(

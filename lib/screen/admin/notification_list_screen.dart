@@ -39,6 +39,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.blueAccent),
+        title: Text("Notifications", style: GoogleFonts.roboto(color:Colors.blueAccent),),
+        centerTitle: false,
         elevation: 0,
       ),
       body: SingleChildScrollView(

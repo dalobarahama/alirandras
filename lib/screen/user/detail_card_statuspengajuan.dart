@@ -48,7 +48,7 @@ class _Detail_card_statuspengajuanState
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 50, left: 35),
+              padding: const EdgeInsets.only(top: 50, left: 27),
               child: Row(
                 children: [
                   Container(
@@ -69,7 +69,7 @@ class _Detail_card_statuspengajuanState
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 25),
+                  padding: const EdgeInsets.only(left: 27, top: 15),
                   child: Container(
                     child: Text(
                       'Detail',
@@ -98,6 +98,7 @@ class _Detail_card_statuspengajuanState
                   right: 30,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
@@ -121,67 +122,42 @@ class _Detail_card_statuspengajuanState
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: 1,
-                        width: double.infinity,
-                        color: Colors.grey[200],
-                      ),
+                    Container(
+                      height: 1,
+                      width: double.infinity,
+                      color: Colors.grey[200],
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'Nama Pemohon',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
+                    Text(
+                      'Nama Pemohon',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.user!.name.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
+                    SizedBox(
+                      height: 5,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Status dan Proses Pengajuan',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                          SizedBox(
-                            height: 40,
-                          ),
-                        ],
-                      ),
+                    Text(
+                      _dataStatusPengajuan.user!.name.toString(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.status.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
+                    SizedBox(
+                      height: 20,
                     ),
-                    SizedBox(height: 10),
+                    Text(
+                      'Status dan Proses Pengajuan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      _dataStatusPengajuan.status.toString().toUpperCase(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                    ),
+                    SizedBox(height: 20),
                     _dataStatusPengajuan.mailRequest != null
                         ? _dataStatusPengajuan.mailRequest!.mailPermissions !=
                                 null
@@ -191,12 +167,12 @@ class _Detail_card_statuspengajuanState
                                     color: Colors.grey[300],
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 15, left: 20),
+                                  padding: const EdgeInsets.all(10),
                                   child: ListView.builder(
                                     itemCount: _dataStatusPengajuan
                                         .mailRequest!.mailPermissions!.length,
                                     shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
                                     padding: EdgeInsets.all(0),
                                     itemBuilder:
                                         (BuildContext context, int index1) {
@@ -205,22 +181,32 @@ class _Detail_card_statuspengajuanState
                                               null
                                           ? Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(15.0),
                                               child: Container(
                                                   child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   _dataStatusPengajuan
                                                               .mailRequest!
                                                               .mailPermissions![
                                                                   index1]
-                                                              .status ==
-                                                          'diproses'
+                                                              .status
+                                                              .toString()
+                                                              .toLowerCase() !=
+                                                          'menunggu'
                                                       ? Icon(Icons.person,
                                                           color: Colors.green)
                                                       : Icon(Icons.person,
                                                           color: Colors.grey),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
                                                   Expanded(
                                                     child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         _dataStatusPengajuan
                                                                     .mailRequest!
@@ -264,162 +250,113 @@ class _Detail_card_statuspengajuanState
                               )
                             : Container()
                         : Container(),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    _dataStatusPengajuan.type!.toLowerCase == 'ditolak'
-                        ? Container(
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 20),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Alasan Ditolak',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 16),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        _dataStatusPengajuan.reasonRejection,
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 16),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                    _dataStatusPengajuan.status!.toString() == 'ditolak'
+                        ? Column(
+                            children: [
+                              Text(
+                                'Alasan Ditolak',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 12),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                _dataStatusPengajuan.reasonRejection,
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 16),
+                              )
+                            ],
                           )
                         : Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Jenis Permohonan',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.type.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                      ],
+                    Text(
+                      'Jenis Permohonan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Luas Bangunan',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 5,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.buildingArea.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                      ],
+                    Text(
+                      _dataStatusPengajuan.type.toString(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Luas Lahan',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.landArea.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                      ],
+                    Text(
+                      'Luas Bangunan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 105,
-                            child: Text(
-                              'Lokasi Bangunan/Lahan',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 5,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.buildingLocation.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                      ],
+                    Text(
+                      _dataStatusPengajuan.buildingArea.toString(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 105,
-                            child: Text(
-                              'Peruntukan Bangunan',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          _dataStatusPengajuan.buildingDesignation.toString(),
-                          style: TextStyle(color: Colors.black54, fontSize: 16),
-                        ),
-                      ],
+                    Text(
+                      'Luas Lahan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Gambar Dokumen / Lahan',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 5,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                              itemCount: _dataStatusPengajuan
-                                  .registrationFormAttachments!.length,
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              padding: EdgeInsets.all(0),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  child: InkWell(
+                    Text(
+                      _dataStatusPengajuan.landArea.toString(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Lokasi Bangunan/Lahan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      _dataStatusPengajuan.buildingLocation.toString(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Peruntukan Bangunan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      _dataStatusPengajuan.buildingDesignation.toString(),
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Gambar Dokumen / Lahan',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    _dataStatusPengajuan.registrationFormAttachments!.length > 0
+                        ? Container(
+                            child: ListView.builder(
+                                itemCount: _dataStatusPengajuan
+                                    .registrationFormAttachments!.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.all(0),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
                                       onTap: () {
                                         String _link =
                                             'https://alirandras.inotive.id' +
@@ -436,70 +373,58 @@ class _Detail_card_statuspengajuanState
                                             color: Colors.blue,
                                             decoration:
                                                 TextDecoration.underline),
-                                      )),
-                                );
-                              }),
-                        )
-                      ],
+                                      ));
+                                }),
+                          )
+                        : Text('-'),
+                    SizedBox(
+                      height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Lampiran Dokumen',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'Lampiran Dokumen',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                              itemCount: _dataStatusPengajuan
-                                  .registrationFormDocuments!.length,
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              padding: EdgeInsets.all(0),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  child: InkWell(
-                                      onTap: () {
-                                        String _link =
-                                            'http://alirandras.inotive.id' +
-                                                _dataStatusPengajuan
-                                                    .registrationFormDocuments![
-                                                        index]
-                                                    .document
-                                                    .toString();
-                                        _launchURL(_link);
-                                      },
-                                      child: Text(
-                                        'Lampiran' + (index + 1).toString(),
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
-                                      )),
-                                );
-                              }),
-                        )
-                      ],
+                    SizedBox(
+                      height: 5,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 20),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Lokasi',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                        ],
-                      ),
+                    Container(
+                      child: ListView.builder(
+                          itemCount: _dataStatusPengajuan
+                              .registrationFormDocuments!.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.all(0),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              child: InkWell(
+                                  onTap: () {
+                                    String _link =
+                                        'http://alirandras.inotive.id' +
+                                            _dataStatusPengajuan
+                                                .registrationFormDocuments![
+                                                    index]
+                                                .document
+                                                .toString();
+                                    _launchURL(_link);
+                                  },
+                                  child: Text(
+                                    'Lampiran' + (index + 1).toString(),
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        decoration: TextDecoration.underline),
+                                  )),
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Lokasi',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Container(
                       width: double.infinity,
