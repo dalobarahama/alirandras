@@ -260,7 +260,7 @@ class _Detail_card_statuspengajuanState
                               ),
                               SizedBox(height: 5),
                               Text(
-                                _dataStatusPengajuan.reasonRejection,
+                                _dataStatusPengajuan.reasonRejection ?? '-',
                                 style: TextStyle(
                                     color: Colors.black54, fontSize: 16),
                               )

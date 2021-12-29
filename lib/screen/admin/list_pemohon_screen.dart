@@ -48,12 +48,12 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
   navigateToApprovalScreen(String id) async {
     var res = await pushNewScreen(context,
         screen: ApprovalScreen('permohonan', id), withNavBar: false);
-        setState(() {
-          isLoading = true;
-        });
+    setState(() {
+      isLoading = true;
+    });
     Timer(Duration(seconds: 1), () {
-            initData();
-      });
+      initData();
+    });
   }
 
   initData() async {
@@ -189,7 +189,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 15,
+                                              width: 10,
                                             ),
                                             Expanded(
                                               child: Column(
@@ -221,6 +221,9 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                   ),
                                                 ],
                                               ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
                                             ),
                                             Expanded(
                                                 child: _data

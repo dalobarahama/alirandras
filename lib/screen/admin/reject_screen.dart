@@ -17,19 +17,23 @@ class _RejectScreenState extends State<RejectScreen> {
   bool isLoading = false;
 
   reject() async {
-    setState(() {
-      isLoading = true;
-    });
-    if (type == 'permohonan') {
-      await CallAdminApi().rejectPermohonan(id, _reason.text).then((value) {
-        Fluttertoast.showToast(msg: 'Surat Permohonan Rejected!');
-        Navigator.pop(context, 'true');
+    if (_reason.text.length > 0) {
+      setState(() {
+        isLoading = true;
       });
+      if (type == 'permohonan') {
+        await CallAdminApi().rejectPermohonan(id, _reason.text).then((value) {
+          Fluttertoast.showToast(msg: 'Surat Permohonan Rejected!');
+          Navigator.pop(context, 'true');
+        });
+      } else {
+        await CallAdminApi().rejectPengajuan(id, _reason.text).then((value) {
+          Fluttertoast.showToast(msg: 'Surat Pengajuan Rejected!');
+          Navigator.pop(context, 'true');
+        });
+      }
     } else {
-      await CallAdminApi().rejectPengajuan(id, _reason.text).then((value) {
-        Fluttertoast.showToast(msg: 'Surat Pengajuan Rejected!');
-        Navigator.pop(context, 'true');
-      });
+          Fluttertoast.showToast(msg: 'Mohon isi kolom alasan terlebih dahulu..');
     }
   }
 

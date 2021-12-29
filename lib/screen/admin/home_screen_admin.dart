@@ -93,9 +93,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             'process',
             _data.registrationForms![indexs].id.toString()),
         withNavBar: false);
-        setState(() {
-          isLoading = true;
-        });
+    setState(() {
+      isLoading = true;
+    });
     Timer(Duration(seconds: 2), () {
       initData('', '');
     });
@@ -781,36 +781,44 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                           .status !=
                                                       'diproses'
                                                   ? Container()
-                                                  : InkWell(
-                                                      onTap: () {
-                                                        navigateToApproval(
-                                                            index);
-                                                      },
-                                                      child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  10),
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.red,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          7)),
-                                                          child: Center(
-                                                            child: Text(
-                                                              'Tindak Lanjuti',
-                                                              style: GoogleFonts
-                                                                  .roboto(
-                                                                      fontSize:
-                                                                          11,
-                                                                      textStyle:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                      )),
-                                                            ),
-                                                          )),
-                                                    )
+                                                  : _data
+                                                              .registrationForms![
+                                                                  index]
+                                                              .mailRequest
+                                                              ?.body ==
+                                                          null
+                                                      ? Container()
+                                                      : InkWell(
+                                                          onTap: () {
+                                                            navigateToApproval(
+                                                                index);
+                                                          },
+                                                          child: Container(
+                                                              padding:
+                                                                  EdgeInsets.all(
+                                                                      10),
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              7)),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  'Tindak Lanjuti',
+                                                                  style: GoogleFonts
+                                                                      .roboto(
+                                                                          fontSize:
+                                                                              11,
+                                                                          textStyle:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          )),
+                                                                ),
+                                                              )),
+                                                        )
                                     ],
                                   )
                                 ],
