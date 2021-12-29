@@ -297,7 +297,8 @@ class CallApi {
         if (_imageFileList.length > 0) {
           for (var i = 0; i < _imageFileList.length; i++) {
             await CallApi().submit_gambar(
-                _dataFormulir.registrationForm!.id, _imageFileList[i]);
+                _dataFormulir.registrationForm!.id.toString(),
+                _imageFileList[i]);
           }
         }
         if (_dokumenFileList.length > 0) {
@@ -324,7 +325,7 @@ class CallApi {
     }
   }
 
-  Future<bool> submit_gambar(var id, XFile? image) async {
+  Future<bool> submit_gambar(String id, XFile? image) async {
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_GAMBAR);
     print('ini submit gambar');
     print(fullUrl);
@@ -463,9 +464,9 @@ class CallApi {
       String buildingDesignation,
       String lat,
       String lng,
-      List<XFile> _imageFileList,
+      List<XFile>? _imageFileList,
       int? id,
-      List<File> _dokumenFileList) async {
+      List<File>? _dokumenFileList) async {
     SubmitFormulir _dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
@@ -497,13 +498,17 @@ class CallApi {
       if (a == 200) {
         print('masul200');
         _dataFormulir = submitFormulirFromJson(res.body);
-        if (_imageFileList.length > 0) {
+        print('abnis masul200');
+        if (_imageFileList!.length > 0) {
+          print(';bieh dari0');
           for (var i = 0; i < _imageFileList.length; i++) {
+            print('looping $i');
             await CallApi().submit_gambar(
-                _dataFormulir.registrationForm!.id, _imageFileList[i]);
+                _dataFormulir.registrationForm!.id.toString(),
+                _imageFileList[i]);
           }
         }
-        if (_dokumenFileList.length > 0) {
+        if (_dokumenFileList!.length > 0) {
           for (var i = 0; i < _dokumenFileList.length; i++) {
             await CallApi().submit_dokumen(
                 _dataFormulir.registrationForm!.id, _dokumenFileList[i]);

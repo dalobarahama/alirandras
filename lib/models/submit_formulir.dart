@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'dart:ffi';
+
 SubmitFormulir submitFormulirFromJson(String str) =>
     SubmitFormulir.fromJson(json.decode(str));
 
@@ -67,8 +69,8 @@ class RegistrationForm {
   String? landArea;
   String? buildingLocation;
   String? buildingDesignation;
-  String? lat;
-  String? lng;
+  double? lat;
+  double? lng;
   String? status;
   DateTime? updatedAt;
   DateTime? createdAt;
