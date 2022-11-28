@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
-import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/edit_form_pendaftaran.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -120,7 +118,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                       Padding(
                         padding: const EdgeInsets.only(top: 95),
                         child: Container(
-                          child: Text(
+                          child: const Text(
                             'Cek Status Pengajuan',
                             style: TextStyle(
                                 fontSize: 23,
@@ -143,7 +141,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(10)),
                         hintText: ' Masukkan ID Pengajuan',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
+                        hintStyle:
+                            const TextStyle(color: Colors.grey, fontSize: 16),
                         suffixIcon: InkWell(
                           onTap: () {
                             _filteredCekStatus(_listPengajuan,
@@ -151,11 +150,11 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                           },
                           child: Container(
                             width: 120,
-                            margin: EdgeInsets.only(right: 5),
+                            margin: const EdgeInsets.only(right: 5),
                             decoration: BoxDecoration(
                                 color: Colors.red,
                                 borderRadius: BorderRadius.circular(8)),
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               'Cek Status',
                               style:
@@ -166,16 +165,16 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 25),
                     child: Container(
                       width: double.infinity,
-                      decoration: BoxDecoration(),
+                      decoration: const BoxDecoration(),
                       child: isLoading == true
-                          ? Center(child: CircularProgressIndicator())
+                          ? const Center(child: CircularProgressIndicator())
                           : Row(
                               children: [
                                 Expanded(
@@ -183,20 +182,21 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                   child: ListView.builder(
                                     itemCount: _listPengajuanFiltered!.length,
                                     shrinkWrap: true,
-                                    physics: PageScrollPhysics(),
-                                    padding: EdgeInsets.all(0),
+                                    physics: const PageScrollPhysics(),
+                                    padding: const EdgeInsets.all(0),
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return Card(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20)),
-                                        margin: EdgeInsets.all(10),
+                                        margin: const EdgeInsets.all(10),
                                         color: Colors.grey[200],
                                         shadowColor: Colors.black,
                                         child: InkWell(
                                           onTap: () {
-                                            pushNewScreen(context,
+                                            PersistentNavBarNavigator.pushNewScreen(
+                                                context,
                                                 screen:
                                                     Detail_card_statuspengajuan(
                                                         _listPengajuanFiltered![
@@ -249,7 +249,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 5,
                                                   ),
                                                   Container(
@@ -351,7 +351,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                         fontSize:
                                                                             14,
                                                                         textStyle:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.green,
                                                                         )),
@@ -455,7 +455,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                         8.0),
                                                                 child: InkWell(
                                                                   onTap: () {
-                                                                    pushNewScreen(
+                                                                    PersistentNavBarNavigator.pushNewScreen(
                                                                         context,
                                                                         screen: PreviewSuratBalasanScreenNew(
                                                                             _listPengajuanFiltered![index]
@@ -474,7 +474,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                     style: GoogleFonts.roboto(
                                                                         fontSize:
                                                                             12,
-                                                                        textStyle: TextStyle(
+                                                                        textStyle: const TextStyle(
                                                                             color:
                                                                                 Colors.blueAccent,
                                                                             decoration: TextDecoration.underline)),
@@ -482,9 +482,9 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                 ),
                                                               ),
                                                             )
-                                                          : Text('-')
+                                                          : const Text('-')
                                                       : Container(),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                   ),
                                                   Container(
@@ -492,26 +492,27 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
                                                       children: [
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 16,
                                                         ),
-                                                        Icon(
+                                                        const Icon(
                                                           Icons.visibility,
                                                           color: Colors.green,
                                                           size: 12,
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 4,
                                                         ),
                                                         InkWell(
                                                           onTap: () {
-                                                            pushNewScreen(
-                                                                context,
-                                                                screen: Detail_card_statuspengajuan(
-                                                                    _listPengajuanFiltered![
-                                                                        index]),
-                                                                withNavBar:
-                                                                    false);
+                                                            PersistentNavBarNavigator
+                                                                .pushNewScreen(
+                                                                    context,
+                                                                    screen: Detail_card_statuspengajuan(
+                                                                        _listPengajuanFiltered![
+                                                                            index]),
+                                                                    withNavBar:
+                                                                        false);
                                                           },
                                                           child: Text(
                                                             'Detail',
@@ -520,13 +521,13 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                     fontSize:
                                                                         12,
                                                                     textStyle:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .green,
                                                                     )),
                                                           ),
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 8,
                                                         ),
                                                         _listPengajuanFiltered![
@@ -537,20 +538,20 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                             ? Container(
                                                                 child: Row(
                                                                   children: [
-                                                                    Icon(
+                                                                    const Icon(
                                                                       Icons
                                                                           .edit,
                                                                       color: Colors
                                                                           .red,
                                                                       size: 12,
                                                                     ),
-                                                                    SizedBox(
+                                                                    const SizedBox(
                                                                       width: 4,
                                                                     ),
                                                                     InkWell(
                                                                       onTap:
                                                                           () {
-                                                                        pushNewScreen(
+                                                                        PersistentNavBarNavigator.pushNewScreen(
                                                                             context,
                                                                             screen:
                                                                                 EditForm(_listPengajuanFiltered![index]),
@@ -561,7 +562,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                         'Edit',
                                                                         style: GoogleFonts.roboto(
                                                                             fontSize: 12,
-                                                                            textStyle: TextStyle(
+                                                                            textStyle: const TextStyle(
                                                                               color: Colors.red,
                                                                             )),
                                                                       ),
@@ -570,15 +571,15 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                 ),
                                                               )
                                                             : Container(),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 8,
                                                         ),
-                                                        Icon(
+                                                        const Icon(
                                                           Icons.delete,
                                                           color: Colors.red,
                                                           size: 12,
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 4,
                                                         ),
                                                         InkWell(
@@ -598,7 +599,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                                     fontSize:
                                                                         12,
                                                                     textStyle:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .red,
                                                                     )),
@@ -620,7 +621,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                             ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 100,
                   ),
                 ],
@@ -643,7 +644,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                             height: 300,
                             child: Column(
                               children: [
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       left: 40, right: 40),
@@ -657,18 +658,18 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 30,
                                         ),
                                         Text(
                                           'Yakin ingin menghapus data?',
                                           style: GoogleFonts.roboto(
                                               fontSize: 14,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.black54,
                                               )),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 30,
                                         ),
                                         Row(
@@ -700,7 +701,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                             GoogleFonts.roboto(
                                                                 fontSize: 12,
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                 )),
@@ -733,7 +734,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                             GoogleFonts.roboto(
                                                                 fontSize: 12,
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                 )),
@@ -759,7 +760,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                 decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius: BorderRadius.circular(50)),
-                                child: Icon(Icons.delete,
+                                child: const Icon(Icons.delete,
                                     size: 50, color: Colors.white),
                               ),
                             ],

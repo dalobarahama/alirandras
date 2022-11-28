@@ -1,17 +1,13 @@
 import 'package:flutter_application_3/aliran_dras_icon_icons.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
-import 'package:flutter_application_3/main.dart';
 import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
-import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({Key? key}) : super(key: key);
@@ -29,14 +25,14 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
   void logout() async {
     await CallStorage().logout();
-    Navigator.pushReplacement(context, SlideToRightRoute(page: Log_in()));
+    Navigator.pushReplacement(context, SlideToRightRoute(page: const Log_in()));
     Fluttertoast.showToast(msg: 'Your login session is expired.');
   }
 
   List<Widget> _screenList() {
     return [
-      Home(),
-      Cek_status_pengajuan(),
+      const Home(),
+      const Cek_status_pengajuan(),
       Profile(logout),
     ];
   }
@@ -80,18 +76,18 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               //the return value will be from "Yes" or "No" options
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('logout App'),
-                content: Text('Do you want to logout an App?'),
+                title: const Text('logout App'),
+                content: const Text('Do you want to logout an App?'),
                 actions: [
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     //return false when click on "NO"
-                    child: Text('No'),
+                    child: const Text('No'),
                   ),
                   ElevatedButton(
                     onPressed: () => logout(),
                     //return true when click on "Yes"
-                    child: Text('Yes'),
+                    child: const Text('Yes'),
                   ),
                 ],
               ),
@@ -114,18 +110,19 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             setState(() {});
           },
           controller: _controller,
-          screenTransitionAnimation: ScreenTransitionAnimation(
+          screenTransitionAnimation: const ScreenTransitionAnimation(
               animateTabTransition: true,
               duration: Duration(milliseconds: 300)),
           backgroundColor: Colors.white,
           navBarStyle: NavBarStyle.style6,
           stateManagement: false,
           decoration: NavBarDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(7)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(7)),
               boxShadow: [
                 BoxShadow(
                     color: Colors.black.withOpacity(0.2),
-                    offset: Offset(0, -1),
+                    offset: const Offset(0, -1),
                     blurRadius: 6)
               ]),
         ),

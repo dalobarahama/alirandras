@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/admin/approval_screen.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pemohon.dart';
-import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +13,7 @@ import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ListPemohonScreen extends StatefulWidget {
   const ListPemohonScreen({Key? key}) : super(key: key);
@@ -30,7 +29,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
   @override
   void initState() {
     setState(() {
-      Timer(Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
           setState(() {
             print(value.name);
@@ -46,12 +45,12 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
   }
 
   navigateToApprovalScreen(String id) async {
-    var res = await pushNewScreen(context,
+    var res = await PersistentNavBarNavigator.pushNewScreen(context,
         screen: ApprovalScreen('permohonan', id), withNavBar: false);
     setState(() {
       isLoading = true;
     });
-    Timer(Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 1), () {
       initData();
     });
   }
@@ -74,7 +73,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 70,
               ),
               Text(
@@ -85,24 +84,24 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                   color: Colors.grey[700],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               isLoading == true
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : _data.applicationLetters!.length == 0
-                      ? Center(child: Text('-'))
+                      ? const Center(child: Text('-'))
                       : Container(
                           child: ListView.builder(
                             itemCount: _data.applicationLetters!.length,
                             shrinkWrap: true,
-                            padding: EdgeInsets.only(bottom: 20),
-                            physics: NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(bottom: 20),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, int index) {
                               return Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
-                                margin: EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(10),
                                 color: Colors.grey[100],
                                 shadowColor: Colors.black,
                                 child: InkWell(
@@ -114,7 +113,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                 .applicationLetters![index])));
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.all(20),
+                                    padding: const EdgeInsets.all(20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -148,7 +147,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Row(
@@ -181,14 +180,15 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        textStyle: TextStyle(
+                                                        textStyle:
+                                                            const TextStyle(
                                                           color: Colors.black54,
                                                         )),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Expanded(
@@ -215,14 +215,15 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        textStyle: TextStyle(
+                                                        textStyle:
+                                                            const TextStyle(
                                                           color: Colors.black54,
                                                         )),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Expanded(
@@ -246,8 +247,9 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                                   .toString());
                                                         },
                                                         child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   vertical: 8,
                                                                   horizontal:
                                                                       10),
@@ -259,10 +261,9 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                                           7)),
                                                           child: Row(
                                                             children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
+                                                              const Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
                                                                         left:
                                                                             5),
                                                                 child: Icon(
@@ -273,7 +274,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                                   size: 15,
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 width: 5,
                                                               ),
                                                               Padding(
@@ -289,7 +290,7 @@ class _ListPemohonScreenState extends State<ListPemohonScreen> {
                                                                           fontSize:
                                                                               11,
                                                                           textStyle:
-                                                                              TextStyle(
+                                                                              const TextStyle(
                                                                             color:
                                                                                 Colors.white,
                                                                           )),

@@ -3,22 +3,16 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
-import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/admin_home_model.dart';
-import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
-import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen.dart';
 import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_application_3/screen/profile.dart';
-import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:intl/intl.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
   Function logout;
@@ -60,7 +54,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   void initState() {
     selectedTahun = null;
     setState(() {
-      Timer(Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
           setState(() {
             print(value.name);
@@ -87,7 +81,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   }
 
   navigateToApproval(indexs) async {
-    var res = await pushNewScreen(context,
+    var res = await PersistentNavBarNavigator.pushNewScreen(context,
         screen: PreviewSuratBalasanScreenNew(
             _data.registrationForms![indexs].mailRequest!.id!.toString(),
             'process',
@@ -96,7 +90,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
     setState(() {
       isLoading = true;
     });
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       initData('', '');
     });
   }
@@ -111,8 +105,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
           Container(
             width: double.infinity,
             height: 200,
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(15),
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/header_admin.png'),
                     fit: BoxFit.cover)),
@@ -125,8 +119,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 0),
                         child: Image(
                           fit: BoxFit.cover,
                           height: 70,
@@ -136,11 +130,11 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       ),
                       InkWell(
                         onTap: () {
-                          pushNewScreen(context,
-                              screen: NotificationListScreen(),
+                          PersistentNavBarNavigator.pushNewScreen(context,
+                              screen: const NotificationListScreen(),
                               withNavBar: false);
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.notifications_active_outlined,
                           color: Colors.white,
                         ),
@@ -160,7 +154,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       ),
                       InkWell(
                         onTap: () {
-                          pushNewScreen(context,
+                          PersistentNavBarNavigator.pushNewScreen(context,
                               screen: Profile(logout), withNavBar: false);
                         },
                         child: Container(
@@ -172,7 +166,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(65),
                             child: isLoading == true
-                                ? Center(child: CircularProgressIndicator())
+                                ? const Center(
+                                    child: CircularProgressIndicator())
                                 : CachedNetworkImage(
                                     imageUrl: _userData.avatar ?? '-',
                                     imageBuilder: (context, imageProvider) =>
@@ -185,8 +180,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                       ),
                                     ),
                                     placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(
                                       Icons.error,
                                       color: Colors.white,
                                     ),
@@ -200,7 +196,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Container(
@@ -208,12 +204,12 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
-                          offset: Offset(0, -1),
+                          offset: const Offset(0, -1),
                           blurRadius: 8,
                         )
                       ],
@@ -223,18 +219,18 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.document_scanner,
                             color: Colors.blueAccent,
                             size: 20,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(
@@ -247,7 +243,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Center(
@@ -256,19 +252,20 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         style: GoogleFonts.roboto(
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
-                            textStyle: TextStyle(color: Colors.redAccent)),
+                            textStyle:
+                                const TextStyle(color: Colors.redAccent)),
                       ))
                     ],
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Container(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
-                          offset: Offset(0, -1),
+                          offset: const Offset(0, -1),
                           blurRadius: 8,
                         )
                       ],
@@ -278,18 +275,18 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.account_circle,
                             color: Colors.blueAccent,
                             size: 20,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(
@@ -302,7 +299,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Center(
@@ -311,7 +308,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         style: GoogleFonts.roboto(
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
-                            textStyle: TextStyle(color: Colors.redAccent)),
+                            textStyle:
+                                const TextStyle(color: Colors.redAccent)),
                       ))
                     ],
                   ),
@@ -319,7 +317,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
@@ -334,7 +332,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   )),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Container(
@@ -343,8 +341,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               children: [
                 Container(
                   height: 35,
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  margin: EdgeInsets.only(left: 25),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  margin: const EdgeInsets.only(left: 25),
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(5)),
@@ -362,7 +361,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     }).toList(),
                     value: selectedStatus,
                     underline: Container(),
-                    hint: Center(child: Text('Choose')),
+                    hint: const Center(child: Text('Choose')),
                     onChanged: (e) {
                       setState(() {
                         String? tempTahun;
@@ -381,8 +380,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 ),
                 Container(
                   height: 35,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  margin: EdgeInsets.only(right: 25),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin: const EdgeInsets.only(right: 25),
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(5)),
@@ -400,7 +400,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     }).toList(),
                     value: selectedTahun,
                     underline: Container(),
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                     iconSize: 15,
                     hint: Center(
                         child: Text('Pilih Tahun    ',
@@ -424,35 +424,35 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: isLoading == true
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: _data.registrationForms!.length,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(bottom: 100),
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 100),
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         color: Colors.grey[100],
                         shadowColor: Colors.black,
                         child: InkWell(
                           onTap: () {
-                            pushNewScreen(context,
+                            PersistentNavBarNavigator.pushNewScreen(context,
                                 screen: StatusPengajuanScreenAdmin(
                                     _data.registrationForms![index]),
                                 withNavBar: false);
                           },
                           child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 25),
                               child: Column(
                                 children: [
@@ -481,10 +481,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
-                                  Divider(),
+                                  const Divider(),
                                   Row(
                                     children: [
                                       Expanded(
@@ -492,7 +492,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 5,
                                               ),
                                               Text(
@@ -503,7 +503,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                       color: Colors.grey[500],
                                                     )),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 3,
                                               ),
                                               Text(
@@ -511,7 +511,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
-                                                    textStyle: TextStyle(
+                                                    textStyle: const TextStyle(
                                                       color: Colors.black54,
                                                     )),
                                               ),
@@ -522,7 +522,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             Text(
@@ -533,7 +533,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                     color: Colors.grey[500],
                                                   )),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 3,
                                             ),
                                             Text(
@@ -562,7 +562,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                       )
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   Row(
@@ -572,7 +572,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 5,
                                               ),
                                               Text(
@@ -583,7 +583,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                       color: Colors.grey[500],
                                                     )),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 5,
                                               ),
                                               _data.registrationForms![index]
@@ -591,7 +591,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                       null
                                                   ? InkWell(
                                                       onTap: () {
-                                                        pushNewScreen(context,
+                                                        PersistentNavBarNavigator.pushNewScreen(
+                                                            context,
                                                             screen: PreviewSuratBalasanScreenNew(
                                                                 _data
                                                                     .registrationForms![
@@ -611,7 +612,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                         'Lihat Surat Balasan',
                                                         style: GoogleFonts.roboto(
                                                             fontSize: 12,
-                                                            textStyle: TextStyle(
+                                                            textStyle: const TextStyle(
                                                                 color: Colors
                                                                     .blueAccent,
                                                                 decoration:
@@ -619,7 +620,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                         .underline)),
                                                       ),
                                                     )
-                                                  : Text('-')
+                                                  : const Text('-')
                                             ]),
                                       ),
                                       Expanded(
@@ -635,7 +636,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment.end,
                                                     children: [
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 5,
                                                       ),
                                                       Text(
@@ -650,7 +651,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                       500],
                                                                 )),
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 3,
                                                       ),
                                                       Text(
@@ -677,7 +678,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                       )
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   Row(
@@ -734,7 +735,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                             child: Container(
                                                               child: Row(
                                                                 children: [
-                                                                  Icon(
+                                                                  const Icon(
                                                                     Icons
                                                                         .delete,
                                                                     color: Colors
@@ -750,7 +751,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                       'Hapus',
                                                                       style: GoogleFonts.roboto(
                                                                           fontSize: 12,
-                                                                          textStyle: TextStyle(
+                                                                          textStyle: const TextStyle(
                                                                             color:
                                                                                 Colors.redAccent,
                                                                           )),
@@ -795,8 +796,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                           },
                                                           child: Container(
                                                               padding:
-                                                                  EdgeInsets.all(
-                                                                      10),
+                                                                  const EdgeInsets
+                                                                      .all(10),
                                                               decoration: BoxDecoration(
                                                                   color: Colors
                                                                       .red,
@@ -812,7 +813,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                           fontSize:
                                                                               11,
                                                                           textStyle:
-                                                                              TextStyle(
+                                                                              const TextStyle(
                                                                             color:
                                                                                 Colors.white,
                                                                           )),

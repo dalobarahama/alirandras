@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
 import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
-import 'package:flutter_application_3/screen/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -31,7 +28,7 @@ class _HomeState extends State<Home> {
 
   initData() {
     setState(() {
-      Timer(Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 1), () {
         CallStorage().getUserData().then((value) {
           setState(() {
             _userData = value;
@@ -46,14 +43,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var overvlow;
     return isLoading
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Container(
@@ -63,8 +60,8 @@ class _HomeState extends State<Home> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 15),
                           child: Image(
                             fit: BoxFit.cover,
                             height: 70,
@@ -76,8 +73,8 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(right: 15),
                           child: InkWell(
                             onTap: () {
-                              pushNewScreen(context,
-                                  screen: NotificationListScreen(),
+                              PersistentNavBarNavigator.pushNewScreen(context,
+                                  screen: const NotificationListScreen(),
                                   withNavBar: false);
                             },
                             child: IconButton(
@@ -138,7 +135,8 @@ class _HomeState extends State<Home> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(45),
                                 child: isLoading == true
-                                    ? Center(child: CircularProgressIndicator())
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
                                     : CachedNetworkImage(
                                         imageUrl: _userData.avatar ?? '-',
                                         imageBuilder:
@@ -152,9 +150,9 @@ class _HomeState extends State<Home> {
                                           ),
                                         ),
                                         placeholder: (context, url) =>
-                                            CircularProgressIndicator(),
+                                            const CircularProgressIndicator(),
                                         errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                                            const Icon(Icons.error),
                                       ),
                               ),
                             ),
@@ -163,21 +161,21 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Stack(clipBehavior: Clip.none, children: [
                     Container(
                       height: 250,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage('assets/images/bg_home.png'),
                               fit: BoxFit.fill)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 60,
                           ),
                           Padding(
@@ -188,7 +186,7 @@ class _HomeState extends State<Home> {
                                   'Selamat Datang, di ',
                                   style: GoogleFonts.roboto(
                                       fontSize: 20,
-                                      textStyle: TextStyle(
+                                      textStyle: const TextStyle(
                                         color: Colors.white,
                                       )),
                                 ),
@@ -196,7 +194,7 @@ class _HomeState extends State<Home> {
                                   'ALIRANDRAS ',
                                   style: GoogleFonts.roboto(
                                       fontSize: 20,
-                                      textStyle: TextStyle(
+                                      textStyle: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       )),
@@ -204,7 +202,7 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Padding(
@@ -216,7 +214,7 @@ class _HomeState extends State<Home> {
                                   'Aplikasi layanan informasi/rekomendasi',
                                   style: GoogleFonts.roboto(
                                       fontSize: 15,
-                                      textStyle: TextStyle(
+                                      textStyle: const TextStyle(
                                         color: Colors.white,
                                       )),
                                 ),
@@ -224,7 +222,7 @@ class _HomeState extends State<Home> {
                                   'drainase ekspress',
                                   style: GoogleFonts.roboto(
                                       fontSize: 15,
-                                      textStyle: TextStyle(
+                                      textStyle: const TextStyle(
                                         color: Colors.white,
                                       )),
                                 )
@@ -235,11 +233,14 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     Positioned(
+                      bottom: -110,
+                      left: 10,
+                      right: 10,
                       child: Container(
                         height: 170,
                         width: 360,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
+                            gradient: const LinearGradient(colors: [
                               Color(0xFFCFE7FF),
                               Colors.white,
                               Color(0xFFCFE7FF)
@@ -250,8 +251,8 @@ class _HomeState extends State<Home> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding: EdgeInsets.only(left: 35),
-                              child: Text(
+                              padding: const EdgeInsets.only(left: 35),
+                              child: const Text(
                                 'Alur Proses',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -259,7 +260,7 @@ class _HomeState extends State<Home> {
                                     color: Colors.lightBlue),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 22,
                             ),
                             Row(
@@ -273,16 +274,16 @@ class _HomeState extends State<Home> {
                                       width: 30,
                                       color: Colors.lightBlue,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
-                                    Text(
+                                    const Text(
                                       '1. Pengajuan',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
                                           fontSize: 10),
                                     ),
-                                    Text(
+                                    const Text(
                                       '   ',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
@@ -298,16 +299,16 @@ class _HomeState extends State<Home> {
                                       width: 30,
                                       color: Colors.lightBlue,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
-                                    Text(
+                                    const Text(
                                       '2. Isi formulir',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
                                           fontSize: 10),
                                     ),
-                                    Text(
+                                    const Text(
                                       '   ',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
@@ -323,16 +324,16 @@ class _HomeState extends State<Home> {
                                       width: 30,
                                       color: Colors.lightBlue,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
-                                    Text(
+                                    const Text(
                                       '3. Menunggu',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
                                           fontSize: 10),
                                     ),
-                                    Text(
+                                    const Text(
                                       'pemberitahuan',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
@@ -348,16 +349,16 @@ class _HomeState extends State<Home> {
                                       height: 30,
                                       width: 30,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
-                                    Text(
+                                    const Text(
                                       '4. Selalu cek',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
                                           fontSize: 10),
                                     ),
-                                    Text(
+                                    const Text(
                                       'pemberitahuan',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
@@ -373,16 +374,16 @@ class _HomeState extends State<Home> {
                                       height: 30,
                                       width: 30,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
-                                    Text(
+                                    const Text(
                                       '5. Disetujui',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
                                           fontSize: 10),
                                     ),
-                                    Text(
+                                    const Text(
                                       'dan selesai',
                                       style: TextStyle(
                                           color: Colors.lightBlue,
@@ -395,18 +396,15 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                       ),
-                      bottom: -110,
-                      left: 10,
-                      right: 10,
                     ),
                   ]),
-                  SizedBox(
+                  const SizedBox(
                     height: 120,
                   ),
                   InkWell(
                     onTap: () {
-                      pushNewScreen(context,
-                          screen: Form_pendaftaran(), withNavBar: false);
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: const Form_pendaftaran(), withNavBar: false);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -423,13 +421,13 @@ class _HomeState extends State<Home> {
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Container(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   height: 200,
-                                  child: Image(
+                                  child: const Image(
                                     image: AssetImage(
                                         'assets/images/upload_dokumen.png'),
                                     fit: BoxFit.fitWidth,
@@ -447,18 +445,18 @@ class _HomeState extends State<Home> {
                                           'Isi Formulir Pengajuan',
                                           style: GoogleFonts.roboto(
                                               fontSize: 16,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.white,
                                               )),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
                                         Text(
                                           'Klik untuk ajukan formulir pengajuan',
                                           style: GoogleFonts.roboto(
                                               fontSize: 12,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.white,
                                               )),
                                         ),
@@ -467,7 +465,7 @@ class _HomeState extends State<Home> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 30),
                                       child: Container(
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.arrow_forward,
                                           color: Colors.white,
                                           size: 25,
@@ -483,7 +481,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],

@@ -6,14 +6,10 @@ import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_kecamatan.dart';
 import 'package:flutter_application_3/models/get_kelurahan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
-import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -360,7 +356,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         style: GoogleFonts.roboto(
                             fontSize: 23,
                             fontWeight: FontWeight.w400,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.lightBlue,
                             )),
                       ),
@@ -375,7 +371,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   width: double.infinity,
                   color: Colors.grey,
                   child: loc == false
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : FlutterMap(
                           options: MapOptions(
                               center: point,
@@ -389,24 +385,27 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                   _getPlace(lat, lang);
                                 });
                               }),
-                          layers: [
-                            TileLayerOptions(
+                          children: [
+                            TileLayer(
                               urlTemplate:
                                   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                              subdomains: ['a', 'b', 'c'],
+                              subdomains: const ['a', 'b', 'c'],
                             ),
-                            MarkerLayerOptions(markers: [
-                              Marker(
+                            MarkerLayer(
+                              markers: [
+                                Marker(
                                   width: 100,
                                   height: 100,
                                   point: point,
                                   builder: (ctx) => Container(
-                                        child: Image(
-                                          image: AssetImage(
-                                              'assets/images/Vector.png'),
-                                        ),
-                                      ))
-                            ])
+                                    child: const Image(
+                                      image: AssetImage(
+                                          'assets/images/Vector.png'),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                 ),
@@ -420,7 +419,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'Jenis Permohonan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -441,7 +440,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'Kecamatan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -449,7 +448,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         width: 215,
                         height: 50,
                         child: _listKecamatan == null
-                            ? CircularProgressIndicator()
+                            ? const CircularProgressIndicator()
                             : _buildKecamatanDropdown()),
                   ],
                 ),
@@ -463,7 +462,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'Kelurahan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -483,7 +482,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'Luas Bangunan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -491,7 +490,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _luasBangunanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -511,7 +511,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'Luas Lahan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -519,7 +519,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _luasLahanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -541,7 +542,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         'Lokasi Bangunan / Lahan',
                         style: GoogleFonts.roboto(
                             fontSize: 12,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.black54,
                             )),
                       ),
@@ -550,7 +551,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _lokasiBangunanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -572,7 +574,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         'Peruntukan Bangunan',
                         style: GoogleFonts.roboto(
                             fontSize: 12,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.black54,
                             )),
                       ),
@@ -581,7 +583,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _peruntukanBangunanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -608,7 +611,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                               'Gambar Bangunan/Lahan',
                               style: GoogleFonts.roboto(
                                   fontSize: 12,
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                     color: Colors.black54,
                                   )),
                             ),
@@ -616,7 +619,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                               '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
                               style: GoogleFonts.roboto(
                                   fontSize: 9,
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                     color: Colors.black54,
                                   )),
                             ),
@@ -648,7 +651,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                                 '+',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 30,
-                                                    textStyle: TextStyle(
+                                                    textStyle: const TextStyle(
                                                       color: Colors.grey,
                                                     )),
                                               )
@@ -656,7 +659,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                             '+',
                                             style: GoogleFonts.roboto(
                                                 fontSize: 30,
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                   color: Colors.grey,
                                                 )),
                                           )),
@@ -689,7 +692,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                               '+',
                                               style: GoogleFonts.roboto(
                                                   fontSize: 30,
-                                                  textStyle: TextStyle(
+                                                  textStyle: const TextStyle(
                                                     color: Colors.grey,
                                                   )),
                                             )
@@ -697,7 +700,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                           '+',
                                           style: GoogleFonts.roboto(
                                               fontSize: 30,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.grey,
                                               )),
                                         )),
@@ -729,7 +732,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                               '+',
                                               style: GoogleFonts.roboto(
                                                   fontSize: 30,
-                                                  textStyle: TextStyle(
+                                                  textStyle: const TextStyle(
                                                     color: Colors.grey,
                                                   )),
                                             )
@@ -737,7 +740,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                           '+',
                                           style: GoogleFonts.roboto(
                                               fontSize: 30,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.grey,
                                               )),
                                         )),
@@ -758,7 +761,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'dalam format jpg, jpeg, png',
                       style: GoogleFonts.roboto(
                           fontSize: 9,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               color: Colors.black54,
                               fontStyle: FontStyle.italic)),
                     ),
@@ -775,7 +778,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         'Lampiran Dokumen',
                         style: GoogleFonts.roboto(
                             fontSize: 12,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.black54,
                             )),
                       ),
@@ -798,14 +801,14 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                 child: Center(
                                     child: _dokumenFileList!.length != 0
                                         ? _dokumenFileList![0] != null
-                                            ? Image(
+                                            ? const Image(
                                                 image: AssetImage(
                                                     'assets/images/pdf_icon.png'))
                                             : Text(
                                                 '+',
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 30,
-                                                    textStyle: TextStyle(
+                                                    textStyle: const TextStyle(
                                                       color: Colors.grey,
                                                     )),
                                               )
@@ -813,7 +816,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                             '+',
                                             style: GoogleFonts.roboto(
                                                 fontSize: 30,
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                   color: Colors.grey,
                                                 )),
                                           )),
@@ -840,14 +843,14 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                   child: _dokumenFileList!.length != 0 &&
                                           _dokumenFileList!.length > 1
                                       ? _dokumenFileList![1] != null
-                                          ? Image(
+                                          ? const Image(
                                               image: AssetImage(
                                                   'assets/images/pdf_icon.png'))
                                           : Text(
                                               '+',
                                               style: GoogleFonts.roboto(
                                                   fontSize: 30,
-                                                  textStyle: TextStyle(
+                                                  textStyle: const TextStyle(
                                                     color: Colors.grey,
                                                   )),
                                             )
@@ -855,7 +858,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                           '+',
                                           style: GoogleFonts.roboto(
                                               fontSize: 30,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.grey,
                                               )),
                                         )),
@@ -881,14 +884,14 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                   child: _dokumenFileList!.length != 0 &&
                                           _dokumenFileList!.length > 2
                                       ? _dokumenFileList![2] != null
-                                          ? Image(
+                                          ? const Image(
                                               image: AssetImage(
                                                   'assets/images/pdf_icon.png'))
                                           : Text(
                                               '+',
                                               style: GoogleFonts.roboto(
                                                   fontSize: 30,
-                                                  textStyle: TextStyle(
+                                                  textStyle: const TextStyle(
                                                     color: Colors.grey,
                                                   )),
                                             )
@@ -896,7 +899,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                           '+',
                                           style: GoogleFonts.roboto(
                                               fontSize: 30,
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                 color: Colors.grey,
                                               )),
                                         )),
@@ -917,14 +920,14 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                       'dalam format pdf',
                       style: GoogleFonts.roboto(
                           fontSize: 9,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               color: Colors.black54,
                               fontStyle: FontStyle.italic)),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Padding(
@@ -941,21 +944,21 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                         child: isLoading1 == true
-                            ? CircularProgressIndicator(
+                            ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
                             : Text(
                                 'Submit',
                                 style: GoogleFonts.roboto(
                                     fontSize: 16,
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       color: Colors.white70,
                                     )),
                               )),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ],
@@ -976,7 +979,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                           height: 300,
                           child: Column(
                             children: [
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 40, right: 40),
@@ -989,18 +992,18 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                       Text(
                                         'Submit Berhasil!',
                                         style: GoogleFonts.roboto(
                                             fontSize: 14,
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                               color: Colors.black54,
                                             )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                       Padding(
@@ -1022,7 +1025,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                                   'Kembali',
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 12,
-                                                      textStyle: TextStyle(
+                                                      textStyle:
+                                                          const TextStyle(
                                                         color: Colors.white,
                                                       )),
                                                 ),
@@ -1045,7 +1049,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                               decoration: BoxDecoration(
                                   color: Colors.green,
                                   borderRadius: BorderRadius.circular(50)),
-                              child: Icon(Icons.check,
+                              child: const Icon(Icons.check,
                                   size: 50, color: Colors.white),
                             ),
                           ],
@@ -1065,9 +1069,9 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.only(left: 12, right: 24),
+      padding: const EdgeInsets.only(left: 12, right: 24),
       child: DropdownButton<GetKecamatan>(
-        style: TextStyle(fontSize: 12, color: Colors.black54),
+        style: const TextStyle(fontSize: 12, color: Colors.black54),
         onChanged: (value) => setState(() {
           _selectedKecamatan = value;
           print(_selectedKecamatan!.id);
@@ -1076,16 +1080,16 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           //Future.microtask(() => context.requestFocus(FocusNode()));
         }),
         value: _selectedKecamatan,
-        hint: Text('Pilih Kecamatan'),
+        hint: const Text('Pilih Kecamatan'),
         items: _listKecamatan.map((GetKecamatan value) {
-          return new DropdownMenuItem<GetKecamatan>(
+          return DropdownMenuItem<GetKecamatan>(
             value: value,
-            child: new Text(value.name!),
+            child: Text(value.name!),
           );
         }).toList(),
         borderRadius: BorderRadius.circular(5),
         isExpanded: true,
-        underline: SizedBox.shrink(),
+        underline: const SizedBox.shrink(),
       ),
     );
   }
@@ -1095,31 +1099,31 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.only(left: 12, right: 24),
+      padding: const EdgeInsets.only(left: 12, right: 24),
       child: _listKelurahan == null
           ? Container(
               height: 45,
               width: double.infinity,
-              padding: EdgeInsets.only(top: 8),
-              child: Text('Pilih Kelurahan',
+              padding: const EdgeInsets.only(top: 8),
+              child: const Text('Pilih Kelurahan',
                   style: TextStyle(fontSize: 12, color: Colors.black54)),
             )
           : DropdownButton<GetKelurahan>(
-              style: TextStyle(fontSize: 12, color: Colors.black54),
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
               onChanged: (value) => setState(() {
                 _selectedKelurahan = value;
               }),
               value: _selectedKelurahan,
-              hint: Text('Pilih Kelurahan'),
+              hint: const Text('Pilih Kelurahan'),
               items: _listKelurahan.map((GetKelurahan value) {
-                return new DropdownMenuItem<GetKelurahan>(
+                return DropdownMenuItem<GetKelurahan>(
                   value: value,
-                  child: new Text(value.name!),
+                  child: Text(value.name!),
                 );
               }).toList(),
               borderRadius: BorderRadius.circular(7),
               isExpanded: true,
-              underline: SizedBox.shrink(),
+              underline: const SizedBox.shrink(),
             ),
     );
   }
@@ -1129,31 +1133,31 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.only(left: 12, right: 24),
+      padding: const EdgeInsets.only(left: 12, right: 24),
       child: jenis_permohonan == null
           ? Container(
               height: 45,
               width: double.infinity,
-              padding: EdgeInsets.only(top: 8),
-              child: Text('Pilih Jenis Permohonan',
+              padding: const EdgeInsets.only(top: 8),
+              child: const Text('Pilih Jenis Permohonan',
                   style: TextStyle(fontSize: 12, color: Colors.black54)),
             )
           : DropdownButton<String>(
-              style: TextStyle(fontSize: 12, color: Colors.black54),
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
               value: _selectedPermohonan,
-              hint: Text('Pilih Jenis Permohonan'),
+              hint: const Text('Pilih Jenis Permohonan'),
               onChanged: (newValue) => setState(() {
                 _selectedPermohonan = newValue;
               }),
               items: jenis_permohonan.map((String value1) {
-                return new DropdownMenuItem<String>(
+                return DropdownMenuItem<String>(
                   value: value1,
-                  child: new Text(value1),
+                  child: Text(value1),
                 );
               }).toList(),
               borderRadius: BorderRadius.circular(7),
               isExpanded: true,
-              underline: SizedBox.shrink(),
+              underline: const SizedBox.shrink(),
             ),
     );
   }

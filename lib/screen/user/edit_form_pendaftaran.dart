@@ -290,7 +290,7 @@ class _EditFormState extends State<EditForm> {
               isLoading1 = false;
               print('ini2' + isFinish[2].toString());
               Fluttertoast.showToast(msg: 'data berhasil di submit');
-              Timer(Duration(seconds: 3), () {
+              Timer(const Duration(seconds: 3), () {
                 Navigator.pop(context);
               });
             });
@@ -336,10 +336,10 @@ class _EditFormState extends State<EditForm> {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 70),
+                      const SizedBox(height: 70),
                       Container(
                         height: 50,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Update Berhasil!',
                             style: TextStyle(color: Colors.black54),
@@ -352,7 +352,7 @@ class _EditFormState extends State<EditForm> {
                               context,
                               SlideToRightRoute(
                                   page:
-                                      MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
+                                      const MainMenuScreen())); //ini nanti ubah yang pakai index supaya ga ilang nav bar
                         },
                         child: Container(
                           height: 50,
@@ -361,7 +361,7 @@ class _EditFormState extends State<EditForm> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.green,
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Kembali',
                               style: TextStyle(
@@ -383,7 +383,8 @@ class _EditFormState extends State<EditForm> {
                       decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(50)),
-                      child: Icon(Icons.check, size: 30, color: Colors.white),
+                      child: const Icon(Icons.check,
+                          size: 30, color: Colors.white),
                     ),
                   ],
                 ),
@@ -429,7 +430,7 @@ class _EditFormState extends State<EditForm> {
                         style: GoogleFonts.roboto(
                             fontSize: 23,
                             fontWeight: FontWeight.w400,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.lightBlue,
                             )),
                       ),
@@ -444,7 +445,7 @@ class _EditFormState extends State<EditForm> {
                   width: double.infinity,
                   color: Colors.grey,
                   child: loc == false
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : FlutterMap(
                           options: MapOptions(
                               center: point,
@@ -458,19 +459,19 @@ class _EditFormState extends State<EditForm> {
                                   _getPlace(lat, lang);
                                 });
                               }),
-                          layers: [
-                            TileLayerOptions(
+                          children: [
+                            TileLayer(
                               urlTemplate:
                                   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                              subdomains: ['a', 'b', 'c'],
+                              subdomains: const ['a', 'b', 'c'],
                             ),
-                            MarkerLayerOptions(markers: [
+                            MarkerLayer(markers: [
                               Marker(
                                   width: 100,
                                   height: 100,
                                   point: point,
                                   builder: (ctx) => Container(
-                                        child: Image(
+                                        child: const Image(
                                           image: AssetImage(
                                               'assets/images/Vector.png'),
                                         ),
@@ -489,7 +490,7 @@ class _EditFormState extends State<EditForm> {
                       'Jenis Permohonan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -497,39 +498,61 @@ class _EditFormState extends State<EditForm> {
                       width: 215,
                       height: 50,
                       child: DropdownSearch<String>(
-                        mode: Mode.MENU,
-                        showSelectedItems: true,
+                        // mode: Mode.MENU,
+                        // showSelectedItems: true,
+                        autoValidateMode: AutovalidateMode.onUserInteraction,
                         selectedItem: jenisPermohonan,
                         items: jenis_permohonan,
                         //  hint: "Pilih Jenis Permohonan",
                         dropdownBuilder: (context, selectedItem) {
                           return Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 10),
                             child: Text(
-                              selectedItem == null
-                                  ? 'Pilih Jenis Permohonan'
-                                  : selectedItem,
-                              style: TextStyle(
+                              selectedItem ?? 'Pilih Jenis Permohonan',
+                              style: const TextStyle(
                                   fontSize: 12, color: Colors.black54),
                             ),
                           );
                         },
-                        popupItemBuilder: (context, item, isSelected) {
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Text(
-                              item,
-                              style: TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          );
-                        },
+                        // popupItemBuilder: (context, item, isSelected) {
+                        //   return Container(
+                        //     padding: const EdgeInsets.symmetric(
+                        //         horizontal: 20, vertical: 10),
+                        //     child: Text(
+                        //       item,
+                        //       style: const TextStyle(
+                        //           fontSize: 12, color: Colors.black54),
+                        //     ),
+                        //   );
+                        // },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.black54),
+                              ),
+                            );
+                          },
+                          showSearchBox: true,
+                        ),
 
                         // dropdownBuilder: _customDropDownExample,
-                        dropdownSearchBaseStyle:
-                            TextStyle(fontSize: 12.0, color: Colors.black54),
+                        // dropdownSearchBaseStyle: const TextStyle(
+                        //     fontSize: 12.0, color: Colors.black54),
+                        //   dropdownDecoratorProps: DropDownDecoratorProps(
+                        //   dropdownSearchDecoration: InputDecoration(
+                        //     labelText: 'User *',
+                        //     filled: true,
+                        //     fillColor:
+                        //         Theme.of(context).inputDecorationTheme.fillColor,
+                        //   ),
+                        // ),
 
                         onChanged: (value) {
                           setState(() {
@@ -550,7 +573,7 @@ class _EditFormState extends State<EditForm> {
                       'Kecamatan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -558,7 +581,7 @@ class _EditFormState extends State<EditForm> {
                         width: 215,
                         height: 50,
                         child: _listKecamatan == null
-                            ? CircularProgressIndicator()
+                            ? const CircularProgressIndicator()
                             : _buildKecamatanDropdown()),
                   ],
                 ),
@@ -572,7 +595,7 @@ class _EditFormState extends State<EditForm> {
                       'Kelurahan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -592,7 +615,7 @@ class _EditFormState extends State<EditForm> {
                       'Luas Bangunan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -600,7 +623,8 @@ class _EditFormState extends State<EditForm> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _luasBangunanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -620,7 +644,7 @@ class _EditFormState extends State<EditForm> {
                       'Luas Lahan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -628,7 +652,8 @@ class _EditFormState extends State<EditForm> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _luasLahanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -648,7 +673,7 @@ class _EditFormState extends State<EditForm> {
                       'Lokasi Bangunan/Lahan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -656,7 +681,8 @@ class _EditFormState extends State<EditForm> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _lokasiBangunanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -676,7 +702,7 @@ class _EditFormState extends State<EditForm> {
                       'Peruntukan Bangunan',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -684,7 +710,8 @@ class _EditFormState extends State<EditForm> {
                       width: 215,
                       height: 50,
                       child: TextField(
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black54),
                         controller: _peruntukanBangunanController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -713,7 +740,7 @@ class _EditFormState extends State<EditForm> {
                                 'Gambar Bangunan/Lahan',
                                 style: GoogleFonts.roboto(
                                     fontSize: 12,
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       color: Colors.black54,
                                     )),
                               ),
@@ -721,7 +748,7 @@ class _EditFormState extends State<EditForm> {
                                 '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
                                 style: GoogleFonts.roboto(
                                     fontSize: 9,
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       color: Colors.black54,
                                     )),
                               ),
@@ -777,7 +804,7 @@ class _EditFormState extends State<EditForm> {
                                                                           fontSize:
                                                                               30,
                                                                           textStyle:
-                                                                              TextStyle(
+                                                                              const TextStyle(
                                                                             color:
                                                                                 Colors.grey,
                                                                           )),
@@ -797,12 +824,12 @@ class _EditFormState extends State<EditForm> {
                                                       },
                                                       child: Container(
                                                         decoration:
-                                                            BoxDecoration(
+                                                            const BoxDecoration(
                                                                 color:
                                                                     Colors.red),
                                                         height: 30,
                                                         width: 60,
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons.delete,
                                                           color: Colors.white,
                                                         ),
@@ -851,7 +878,7 @@ class _EditFormState extends State<EditForm> {
                                                                         fontSize:
                                                                             30,
                                                                         textStyle:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.grey,
                                                                         )),
@@ -870,11 +897,13 @@ class _EditFormState extends State<EditForm> {
                                                       });
                                                     },
                                                     child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              color:
+                                                                  Colors.red),
                                                       height: 30,
                                                       width: 60,
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.delete,
                                                         color: Colors.white,
                                                       ),
@@ -912,7 +941,8 @@ class _EditFormState extends State<EditForm> {
                                                       '+',
                                                       style: GoogleFonts.roboto(
                                                           fontSize: 30,
-                                                          textStyle: TextStyle(
+                                                          textStyle:
+                                                              const TextStyle(
                                                             color: Colors.grey,
                                                           )),
                                                     )),
@@ -930,11 +960,13 @@ class _EditFormState extends State<EditForm> {
                                                       });
                                                     },
                                                     child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              color:
+                                                                  Colors.red),
                                                       height: 30,
                                                       width: 60,
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.delete,
                                                         color: Colors.white,
                                                       ),
@@ -947,7 +979,7 @@ class _EditFormState extends State<EditForm> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             _dataForm.registrationFormAttachments!.length > 0
@@ -1007,9 +1039,9 @@ class _EditFormState extends State<EditForm> {
                                                                               ),
                                                                             ),
                                                                             placeholder: (context, url) =>
-                                                                                CircularProgressIndicator(),
+                                                                                const CircularProgressIndicator(),
                                                                             errorWidget: (context, url, error) =>
-                                                                                Icon(
+                                                                                const Icon(
                                                                               Icons.error,
                                                                               color: Colors.white,
                                                                             ),
@@ -1019,7 +1051,7 @@ class _EditFormState extends State<EditForm> {
                                                                           '-',
                                                                           style: GoogleFonts.roboto(
                                                                               fontSize: 30,
-                                                                              textStyle: TextStyle(
+                                                                              textStyle: const TextStyle(
                                                                                 color: Colors.grey,
                                                                               )),
                                                                         )),
@@ -1051,13 +1083,13 @@ class _EditFormState extends State<EditForm> {
                                                                     child:
                                                                         Container(
                                                                       decoration:
-                                                                          BoxDecoration(
+                                                                          const BoxDecoration(
                                                                               color: Colors.red),
                                                                       height:
                                                                           30,
                                                                       width: 60,
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .delete,
                                                                         color: Colors
@@ -1119,9 +1151,9 @@ class _EditFormState extends State<EditForm> {
                                                                             ),
                                                                           ),
                                                                           placeholder: (context, url) =>
-                                                                              CircularProgressIndicator(),
+                                                                              const CircularProgressIndicator(),
                                                                           errorWidget: (context, url, error) =>
-                                                                              Icon(
+                                                                              const Icon(
                                                                             Icons.error,
                                                                             color:
                                                                                 Colors.white,
@@ -1132,7 +1164,7 @@ class _EditFormState extends State<EditForm> {
                                                                         '-',
                                                                         style: GoogleFonts.roboto(
                                                                             fontSize: 30,
-                                                                            textStyle: TextStyle(
+                                                                            textStyle: const TextStyle(
                                                                               color: Colors.grey,
                                                                             )),
                                                                       )),
@@ -1156,12 +1188,13 @@ class _EditFormState extends State<EditForm> {
                                                                   child:
                                                                       Container(
                                                                     decoration:
-                                                                        BoxDecoration(
+                                                                        const BoxDecoration(
                                                                             color:
                                                                                 Colors.red),
                                                                     height: 30,
                                                                     width: 60,
-                                                                    child: Icon(
+                                                                    child:
+                                                                        const Icon(
                                                                       Icons
                                                                           .delete,
                                                                       color: Colors
@@ -1225,9 +1258,9 @@ class _EditFormState extends State<EditForm> {
                                                                               ),
                                                                             ),
                                                                             placeholder: (context, url) =>
-                                                                                CircularProgressIndicator(),
+                                                                                const CircularProgressIndicator(),
                                                                             errorWidget: (context, url, error) =>
-                                                                                Icon(
+                                                                                const Icon(
                                                                               Icons.error,
                                                                               color: Colors.white,
                                                                             ),
@@ -1237,7 +1270,7 @@ class _EditFormState extends State<EditForm> {
                                                                           '-',
                                                                           style: GoogleFonts.roboto(
                                                                               fontSize: 30,
-                                                                              textStyle: TextStyle(
+                                                                              textStyle: const TextStyle(
                                                                                 color: Colors.grey,
                                                                               )),
                                                                         )),
@@ -1269,13 +1302,13 @@ class _EditFormState extends State<EditForm> {
                                                                     child:
                                                                         Container(
                                                                       decoration:
-                                                                          BoxDecoration(
+                                                                          const BoxDecoration(
                                                                               color: Colors.red),
                                                                       height:
                                                                           30,
                                                                       width: 60,
                                                                       child:
-                                                                          Icon(
+                                                                          const Icon(
                                                                         Icons
                                                                             .delete,
                                                                         color: Colors
@@ -1310,7 +1343,7 @@ class _EditFormState extends State<EditForm> {
                       'dalam format jpg, jpeg, png',
                       style: GoogleFonts.roboto(
                           fontSize: 9,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               color: Colors.black54,
                               fontStyle: FontStyle.italic)),
                     ),
@@ -1326,7 +1359,7 @@ class _EditFormState extends State<EditForm> {
                       'Lampiran Dokumen',
                       style: GoogleFonts.roboto(
                           fontSize: 12,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black54,
                           )),
                     ),
@@ -1365,7 +1398,7 @@ class _EditFormState extends State<EditForm> {
                                                         0
                                                     ? _dokumenFileList![0] !=
                                                             null
-                                                        ? Image(
+                                                        ? const Image(
                                                             image: AssetImage(
                                                                 'assets/images/pdf_icon.png'))
                                                         : Text(
@@ -1375,7 +1408,7 @@ class _EditFormState extends State<EditForm> {
                                                                     fontSize:
                                                                         30,
                                                                     textStyle:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
                                                                           .grey,
                                                                     )),
@@ -1386,7 +1419,7 @@ class _EditFormState extends State<EditForm> {
                                                             GoogleFonts.roboto(
                                                                 fontSize: 30,
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   color: Colors
                                                                       .grey,
                                                                 )),
@@ -1404,11 +1437,11 @@ class _EditFormState extends State<EditForm> {
                                               });
                                             },
                                             child: Container(
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                   color: Colors.red),
                                               height: 30,
                                               width: 60,
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.delete,
                                                 color: Colors.white,
                                               ),
@@ -1441,7 +1474,7 @@ class _EditFormState extends State<EditForm> {
                                                       _dokumenFileList!.length >
                                                           1
                                                   ? _dokumenFileList![1] != null
-                                                      ? Image(
+                                                      ? const Image(
                                                           image: AssetImage(
                                                               'assets/images/pdf_icon.png'))
                                                       : Text(
@@ -1450,7 +1483,7 @@ class _EditFormState extends State<EditForm> {
                                                               .roboto(
                                                                   fontSize: 30,
                                                                   textStyle:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     color: Colors
                                                                         .grey,
                                                                   )),
@@ -1459,7 +1492,8 @@ class _EditFormState extends State<EditForm> {
                                                       '+',
                                                       style: GoogleFonts.roboto(
                                                           fontSize: 30,
-                                                          textStyle: TextStyle(
+                                                          textStyle:
+                                                              const TextStyle(
                                                             color: Colors.grey,
                                                           )),
                                                     )),
@@ -1476,11 +1510,11 @@ class _EditFormState extends State<EditForm> {
                                             });
                                           },
                                           child: Container(
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                                 color: Colors.red),
                                             height: 30,
                                             width: 60,
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.delete,
                                               color: Colors.white,
                                             ),
@@ -1512,7 +1546,7 @@ class _EditFormState extends State<EditForm> {
                                                       _dokumenFileList!.length >
                                                           2
                                                   ? _dokumenFileList![2] != null
-                                                      ? Image(
+                                                      ? const Image(
                                                           image: AssetImage(
                                                               'assets/images/pdf_icon.png'))
                                                       : Text(
@@ -1521,7 +1555,7 @@ class _EditFormState extends State<EditForm> {
                                                               .roboto(
                                                                   fontSize: 30,
                                                                   textStyle:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     color: Colors
                                                                         .grey,
                                                                   )),
@@ -1530,7 +1564,8 @@ class _EditFormState extends State<EditForm> {
                                                       '+',
                                                       style: GoogleFonts.roboto(
                                                           fontSize: 30,
-                                                          textStyle: TextStyle(
+                                                          textStyle:
+                                                              const TextStyle(
                                                             color: Colors.grey,
                                                           )),
                                                     )),
@@ -1547,11 +1582,11 @@ class _EditFormState extends State<EditForm> {
                                             });
                                           },
                                           child: Container(
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                                 color: Colors.red),
                                             height: 30,
                                             width: 60,
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.delete,
                                               color: Colors.white,
                                             ),
@@ -1562,7 +1597,7 @@ class _EditFormState extends State<EditForm> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -1601,7 +1636,7 @@ class _EditFormState extends State<EditForm> {
                                                                       .registrationFormDocuments!
                                                                       .length >
                                                                   0
-                                                              ? Image(
+                                                              ? const Image(
                                                                   image: AssetImage(
                                                                       'assets/images/pdf_icon.png'))
                                                               : Text(
@@ -1611,7 +1646,7 @@ class _EditFormState extends State<EditForm> {
                                                                           fontSize:
                                                                               30,
                                                                           textStyle:
-                                                                              TextStyle(
+                                                                              const TextStyle(
                                                                             color:
                                                                                 Colors.grey,
                                                                           )),
@@ -1634,12 +1669,12 @@ class _EditFormState extends State<EditForm> {
                                                       },
                                                       child: Container(
                                                         decoration:
-                                                            BoxDecoration(
+                                                            const BoxDecoration(
                                                                 color:
                                                                     Colors.red),
                                                         height: 30,
                                                         width: 60,
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons.delete,
                                                           color: Colors.white,
                                                         ),
@@ -1681,7 +1716,7 @@ class _EditFormState extends State<EditForm> {
                                                                     .registrationFormDocuments!
                                                                     .length >
                                                                 1
-                                                            ? Image(
+                                                            ? const Image(
                                                                 image: AssetImage(
                                                                     'assets/images/pdf_icon.png'))
                                                             : Text(
@@ -1691,7 +1726,7 @@ class _EditFormState extends State<EditForm> {
                                                                         fontSize:
                                                                             30,
                                                                         textStyle:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.grey,
                                                                         )),
@@ -1713,11 +1748,13 @@ class _EditFormState extends State<EditForm> {
                                                           1);
                                                     },
                                                     child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              color:
+                                                                  Colors.red),
                                                       height: 30,
                                                       width: 60,
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.delete,
                                                         color: Colors.white,
                                                       ),
@@ -1758,7 +1795,7 @@ class _EditFormState extends State<EditForm> {
                                                                     .registrationFormDocuments!
                                                                     .length >
                                                                 2
-                                                            ? Image(
+                                                            ? const Image(
                                                                 image: AssetImage(
                                                                     'assets/images/pdf_icon.png'))
                                                             : Text(
@@ -1768,7 +1805,7 @@ class _EditFormState extends State<EditForm> {
                                                                         fontSize:
                                                                             30,
                                                                         textStyle:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               Colors.grey,
                                                                         )),
@@ -1790,11 +1827,13 @@ class _EditFormState extends State<EditForm> {
                                                           2);
                                                     },
                                                     child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              color:
+                                                                  Colors.red),
                                                       height: 30,
                                                       width: 60,
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.delete,
                                                         color: Colors.white,
                                                       ),
@@ -1822,14 +1861,14 @@ class _EditFormState extends State<EditForm> {
                       'dalam format pdf',
                       style: GoogleFonts.roboto(
                           fontSize: 9,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               color: Colors.black54,
                               fontStyle: FontStyle.italic)),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Padding(
@@ -1848,21 +1887,21 @@ class _EditFormState extends State<EditForm> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                         child: isLoading1 == true
-                            ? CircularProgressIndicator(
+                            ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
                             : Text(
                                 'Update',
                                 style: GoogleFonts.roboto(
                                     fontSize: 16,
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       color: Colors.white70,
                                     )),
                               )),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ],
@@ -1877,9 +1916,9 @@ class _EditFormState extends State<EditForm> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.only(left: 12, right: 24),
+      padding: const EdgeInsets.only(left: 12, right: 24),
       child: DropdownButton<GetKecamatan>(
-        style: TextStyle(fontSize: 12, color: Colors.black54),
+        style: const TextStyle(fontSize: 12, color: Colors.black54),
         onChanged: (value) => setState(() {
           _selectedKecamatan = value;
           print(_selectedKecamatan!.id);
@@ -1888,7 +1927,7 @@ class _EditFormState extends State<EditForm> {
           //Future.microtask(() => context.requestFocus(FocusNode()));
         }),
         value: _selectedKecamatan,
-        hint: Text('Pilih Kecamatan'),
+        hint: const Text('Pilih Kecamatan'),
         items: _listKecamatan.map((GetKecamatan value) {
           return new DropdownMenuItem<GetKecamatan>(
             value: value,
@@ -1897,7 +1936,7 @@ class _EditFormState extends State<EditForm> {
         }).toList(),
         borderRadius: BorderRadius.circular(5),
         isExpanded: true,
-        underline: SizedBox.shrink(),
+        underline: const SizedBox.shrink(),
       ),
     );
   }
@@ -1907,22 +1946,22 @@ class _EditFormState extends State<EditForm> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.only(left: 12, right: 24),
+      padding: const EdgeInsets.only(left: 12, right: 24),
       child: _listKelurahan == null
           ? Container(
               height: 45,
               width: double.infinity,
-              padding: EdgeInsets.only(top: 8),
-              child: Text('Pilih Kelurahan',
+              padding: const EdgeInsets.only(top: 8),
+              child: const Text('Pilih Kelurahan',
                   style: TextStyle(fontSize: 12, color: Colors.black54)),
             )
           : DropdownButton<GetKelurahan>(
-              style: TextStyle(fontSize: 12, color: Colors.black54),
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
               onChanged: (value) => setState(() {
                 _selectedKelurahan = value;
               }),
               value: _selectedKelurahan,
-              hint: Text('Pilih Kelurahan'),
+              hint: const Text('Pilih Kelurahan'),
               items: _listKelurahan.map((GetKelurahan value) {
                 return new DropdownMenuItem<GetKelurahan>(
                   value: value,
@@ -1931,7 +1970,7 @@ class _EditFormState extends State<EditForm> {
               }).toList(),
               borderRadius: BorderRadius.circular(7),
               isExpanded: true,
-              underline: SizedBox.shrink(),
+              underline: const SizedBox.shrink(),
             ),
     );
   }

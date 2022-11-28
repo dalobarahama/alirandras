@@ -6,11 +6,10 @@ import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/admin_permission_model.dart';
 import 'package:flutter_application_3/models/manajemen_pengguna_model.dart';
 import 'package:flutter_application_3/screen/admin/edit_manajemen_pengguna_screen_admin.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ManajemenPenggunaScreenAdmin extends StatefulWidget {
   const ManajemenPenggunaScreenAdmin({Key? key}) : super(key: key);
@@ -49,7 +48,7 @@ class _ManajemenPenggunaScreenAdminState
   }
 
   navigateToEditPengguna(int index) async {
-    var res = await pushNewScreen(context,
+    var res = await PersistentNavBarNavigator.pushNewScreen(context,
         screen: EditManajemenPenggunaScreen(_searchListFiltered![index]),
         withNavBar: false);
     setState(() {

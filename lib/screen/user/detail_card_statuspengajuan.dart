@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
-import 'package:flutter_application_3/screen/user/cek_status_pengajuan.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -71,7 +68,7 @@ class _Detail_card_statuspengajuanState
                 Padding(
                   padding: const EdgeInsets.only(left: 27, top: 15),
                   child: Container(
-                    child: Text(
+                    child: const Text(
                       'Detail',
                       style: TextStyle(
                           fontSize: 23,
@@ -82,12 +79,12 @@ class _Detail_card_statuspengajuanState
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(40),
@@ -107,7 +104,7 @@ class _Detail_card_statuspengajuanState
                         children: [
                           Text(
                             'ID: ' + _dataStatusPengajuan.id.toString(),
-                            style: TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.grey),
                           ),
                           Text(
                             DateFormat('dd MMMM yy, HH:mm')
@@ -121,7 +118,7 @@ class _Detail_card_statuspengajuanState
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
@@ -129,35 +126,37 @@ class _Detail_card_statuspengajuanState
                       width: double.infinity,
                       color: Colors.grey[200],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Nama Pemohon',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.user!.name.toString(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Status dan Proses Pengajuan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.status.toString().toUpperCase(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _dataStatusPengajuan.mailRequest != null
                         ? _dataStatusPengajuan.mailRequest!.mailPermissions !=
                                 null
@@ -172,8 +171,9 @@ class _Detail_card_statuspengajuanState
                                     itemCount: _dataStatusPengajuan
                                         .mailRequest!.mailPermissions!.length,
                                     shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    padding: EdgeInsets.all(0),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    padding: const EdgeInsets.all(0),
                                     itemBuilder:
                                         (BuildContext context, int index1) {
                                       return _dataStatusPengajuan.mailRequest!
@@ -195,11 +195,11 @@ class _Detail_card_statuspengajuanState
                                                               .toString()
                                                               .toLowerCase() !=
                                                           'menunggu'
-                                                      ? Icon(Icons.person,
+                                                      ? const Icon(Icons.person,
                                                           color: Colors.green)
-                                                      : Icon(Icons.person,
+                                                      : const Icon(Icons.person,
                                                           color: Colors.grey),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 20,
                                                   ),
                                                   Expanded(
@@ -233,9 +233,10 @@ class _Detail_card_statuspengajuanState
                                                                   .user!
                                                                   .position
                                                                   .toString(),
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black54),
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .black54),
                                                         ),
                                                       ],
                                                     ),
@@ -253,98 +254,103 @@ class _Detail_card_statuspengajuanState
                     _dataStatusPengajuan.status!.toString() == 'ditolak'
                         ? Column(
                             children: [
-                              Text(
+                              const Text(
                                 'Alasan Ditolak',
                                 style:
                                     TextStyle(color: Colors.grey, fontSize: 12),
                               ),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text(
                                 _dataStatusPengajuan.reasonRejection ?? '-',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black54, fontSize: 16),
                               )
                             ],
                           )
                         : Container(),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Jenis Permohonan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.type.toString(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Luas Bangunan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.buildingArea.toString(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Luas Lahan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.landArea.toString(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Lokasi Bangunan/Lahan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.buildingLocation.toString(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Peruntukan Bangunan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
                       _dataStatusPengajuan.buildingDesignation.toString(),
-                      style: TextStyle(color: Colors.black54, fontSize: 16),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Gambar Dokumen / Lahan',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     _dataStatusPengajuan.registrationFormAttachments!.length > 0
@@ -353,8 +359,8 @@ class _Detail_card_statuspengajuanState
                                 itemCount: _dataStatusPengajuan
                                     .registrationFormAttachments!.length,
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.all(0),
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.all(0),
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                       onTap: () {
@@ -369,22 +375,22 @@ class _Detail_card_statuspengajuanState
                                       },
                                       child: Text(
                                         'Lampiran' + (index + 1).toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.blue,
                                             decoration:
                                                 TextDecoration.underline),
                                       ));
                                 }),
                           )
-                        : Text('-'),
-                    SizedBox(
+                        : const Text('-'),
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Lampiran Dokumen',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Container(
@@ -392,8 +398,8 @@ class _Detail_card_statuspengajuanState
                           itemCount: _dataStatusPengajuan
                               .registrationFormDocuments!.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.all(0),
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(0),
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
                               child: InkWell(
@@ -409,21 +415,21 @@ class _Detail_card_statuspengajuanState
                                   },
                                   child: Text(
                                     'Lampiran' + (index + 1).toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.blue,
                                         decoration: TextDecoration.underline),
                                   )),
                             );
                           }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       'Lokasi',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Container(
@@ -433,34 +439,37 @@ class _Detail_card_statuspengajuanState
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(8)),
                       child: isMap == false
-                          ? Center(child: CircularProgressIndicator())
+                          ? const Center(child: CircularProgressIndicator())
                           : FlutterMap(
                               options: MapOptions(
                                 center: point,
                                 zoom: 18.0,
                               ),
-                              layers: [
-                                TileLayerOptions(
+                              children: [
+                                TileLayer(
                                   urlTemplate:
                                       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                  subdomains: ['a', 'b', 'c'],
+                                  subdomains: const ['a', 'b', 'c'],
                                 ),
-                                MarkerLayerOptions(markers: [
-                                  Marker(
+                                MarkerLayer(
+                                  markers: [
+                                    Marker(
                                       width: 100,
                                       height: 100,
                                       point: point,
                                       builder: (ctx) => Container(
-                                            child: Image(
-                                              image: AssetImage(
-                                                  'assets/images/Vector.png'),
-                                            ),
-                                          ))
-                                ])
+                                        child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/Vector.png'),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                   ],
