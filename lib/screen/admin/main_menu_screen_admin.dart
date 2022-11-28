@@ -44,7 +44,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
     return [
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.list_alt,
+            AliranDrasIcon.file,
             color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
             size: 18,
           ),
@@ -53,7 +53,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
           title: 'Surat Balasan'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.file_alt,
+            AliranDrasIcon.file,
             color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
             size: 18,
           ),
@@ -62,7 +62,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
           title: 'Pemohon'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.user_cog,
+            AliranDrasIcon.profile,
             color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
             size: 18,
           ),
@@ -71,7 +71,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
           title: 'Pengguna'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.cog,
+            AliranDrasIcon.profile,
             color: _controller.index == 3 ? Colors.blueAccent : Colors.grey,
             size: 18,
           ),

@@ -42,28 +42,31 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       PersistentBottomNavBarItem(
           icon: Icon(
             AliranDrasIcon.home,
-            color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
+            color:
+                _controller.index == 0 ? const Color(0xFF0B1EC5) : Colors.grey,
             size: 18,
           ),
-          activeColorPrimary: Colors.blueAccent,
+          activeColorPrimary: const Color(0xFF0B1EC5),
           inactiveColorPrimary: Colors.grey,
           title: 'Home'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.doc_text_inv,
-            color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
+            AliranDrasIcon.file,
+            color:
+                _controller.index == 1 ? const Color(0xFF0B1EC5) : Colors.grey,
             size: 18,
           ),
-          activeColorPrimary: Colors.blueAccent,
+          activeColorPrimary: const Color(0xFF0B1EC5),
           inactiveColorPrimary: Colors.grey,
-          title: 'Cek Status Pengajuan'),
+          title: 'Status Pengajuan'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.user,
-            color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
+            AliranDrasIcon.profile,
+            color:
+                _controller.index == 2 ? const Color(0xFF0B1EC5) : Colors.grey,
             size: 18,
           ),
-          activeColorPrimary: Colors.blueAccent,
+          activeColorPrimary: const Color(0xFF0B1EC5),
           inactiveColorPrimary: Colors.grey,
           title: 'Profile'),
     ];
