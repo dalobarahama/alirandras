@@ -66,6 +66,7 @@ class _Forgot_passwordState extends State<Forgot_password> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        centerTitle: true,
         backgroundColor: ColorPallete.mainBackgroundColor,
         elevation: 0,
       ),

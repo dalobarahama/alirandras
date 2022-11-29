@@ -77,6 +77,7 @@ class _Reset_passwordState extends State<Reset_password> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        centerTitle: true,
         backgroundColor: ColorPallete.mainBackgroundColor,
         elevation: 0,
       ),

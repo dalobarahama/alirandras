@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
 import 'package:flutter_application_3/models/notif_model.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -38,15 +39,29 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.blueAccent),
-        title: Text("Notifications", style: GoogleFonts.roboto(color:Colors.blueAccent),),
-        centerTitle: false,
+        title: const Text(
+          "Notifications",
+        ),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        centerTitle: true,
         elevation: 0,
       ),
       body: SingleChildScrollView(
         child: isLoading
             ? Container(
-                height: 100, child: Center(child: CircularProgressIndicator()))
+                height: 100,
+                child: const Center(child: CircularProgressIndicator()))
             : _data.notifications == null
                 ? Container(
                     height: 100,
@@ -59,15 +74,15 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                   )
                 : _data.notifications!.length > 0
                     ? Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: _data.notifications!.length,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
-                                padding: EdgeInsets.all(20),
-                                margin: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.all(20),
+                                margin: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 5),
                                 child: Row(
                                   children: [
@@ -78,12 +93,15 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                         style: GoogleFonts.roboto(),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 15,
                                     ),
-                                    _data.notifications?[index].status == 'diterima'?
-                                    Icon(Icons.check_circle_outline, size:30, color:Colors.green):
-                                    Icon(Icons.close_outlined, size:30, color:Colors.red),
+                                    _data.notifications?[index].status ==
+                                            'diterima'
+                                        ? const Icon(Icons.check_circle_outline,
+                                            size: 30, color: Colors.green)
+                                        : const Icon(Icons.close_outlined,
+                                            size: 30, color: Colors.red),
                                   ],
                                 ),
                                 decoration: BoxDecoration(

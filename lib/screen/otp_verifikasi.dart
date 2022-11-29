@@ -115,6 +115,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        centerTitle: true,
         backgroundColor: ColorPallete.mainBackgroundColor,
         elevation: 0,
       ),

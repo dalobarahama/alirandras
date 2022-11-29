@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
 import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
@@ -41,96 +42,30 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var overvlow;
     return isLoading
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: ColorPallete.mainBackgroundColor,
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Image(
-                            fit: BoxFit.cover,
-                            height: 70,
-                            width: 70,
-                            image: AssetImage('assets/images/logo.png'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: InkWell(
-                            onTap: () {
-                              PersistentNavBarNavigator.pushNewScreen(context,
-                                  screen: const NotificationListScreen(),
-                                  withNavBar: false);
-                            },
-                            child: IconButton(
-                                onPressed: null,
-                                icon: Icon(
-                                  Icons.notifications_active_outlined,
-                                  color: Colors.blue[900],
-                                  size: 30,
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 100,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 25, right: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Hello, ',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 20,
-                                    textStyle: TextStyle(
-                                      color: Colors.lightBlue[700],
-                                    )),
-                              ),
-                              Text(
-                                _userData.name!,
-                                style: GoogleFonts.roboto(
-                                    fontSize: 20,
-                                    textStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.lightBlue[700],
-                                    )),
-                              ),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () {
-                              // Navigator.push(context,
-                              //     MaterialPageRoute(builder: (context) {
-                              //   return Profile();
-                              // }));
-                            },
-                            child: Container(
-                              height: 70,
-                              width: 70,
+                  Stack(
+                    children: [
+                      Image.asset(
+                        'assets/images/header_new.png',
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                      Positioned(
+                        bottom: 30,
+                        left: 20,
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 25,
+                              width: 25,
                               decoration: BoxDecoration(
-                                  color: Colors.lightBlue,
                                   borderRadius: BorderRadius.circular(45)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(45),
@@ -152,332 +87,128 @@ class _HomeState extends State<Home> {
                                         placeholder: (context, url) =>
                                             const CircularProgressIndicator(),
                                         errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
+                                            Image.asset(
+                                                'assets/images/default_profile_pic.png'),
                                       ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Stack(clipBehavior: Clip.none, children: [
-                    Container(
-                      height: 250,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/bg_home.png'),
-                              fit: BoxFit.fill)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 60,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Selamat Datang, di ',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 20,
-                                      textStyle: const TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                ),
-                                Text(
-                                  'ALIRANDRAS ',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 20,
-                                      textStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Aplikasi layanan informasi/rekomendasi',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 15,
-                                      textStyle: const TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                ),
-                                Text(
-                                  'drainase ekspress',
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 15,
-                                      textStyle: const TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      bottom: -110,
-                      left: 10,
-                      right: 10,
-                      child: Container(
-                        height: 170,
-                        width: 360,
-                        decoration: BoxDecoration(
-                            gradient: const LinearGradient(colors: [
-                              Color(0xFFCFE7FF),
-                              Colors.white,
-                              Color(0xFFCFE7FF)
-                            ]),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(left: 35),
-                              child: const Text(
-                                'Alur Proses',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.lightBlue),
-                              ),
-                            ),
                             const SizedBox(
-                              height: 22,
+                              width: 10,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/navigation_line.svg',
-                                      height: 30,
-                                      width: 30,
-                                      color: Colors.lightBlue,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      '1. Pengajuan',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                    const Text(
-                                      '   ',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/draft_line.svg',
-                                      height: 30,
-                                      width: 30,
-                                      color: Colors.lightBlue,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      '2. Isi formulir',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                    const Text(
-                                      '   ',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/clock.svg',
-                                      height: 30,
-                                      width: 30,
-                                      color: Colors.lightBlue,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      '3. Menunggu',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                    const Text(
-                                      'pemberitahuan',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/circle.svg',
-                                      color: Colors.lightBlue,
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      '4. Selalu cek',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                    const Text(
-                                      'pemberitahuan',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/user_follow.svg',
-                                      color: Colors.lightBlue,
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      '5. Disetujui',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                    const Text(
-                                      'dan selesai',
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
+                            Text(
+                              'Hello ',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 18,
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                  )),
+                            ),
+                            Text(
+                              _userData.name!,
+                              style: GoogleFonts.roboto(
+                                  fontSize: 18,
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  )),
+                            ),
                           ],
                         ),
                       ),
+                      Positioned(
+                        bottom: 20,
+                        right: 20,
+                        child: InkWell(
+                          onTap: () {
+                            PersistentNavBarNavigator.pushNewScreen(context,
+                                screen: const NotificationListScreen(),
+                                withNavBar: false);
+                          },
+                          child: const IconButton(
+                              onPressed: null,
+                              icon: Icon(
+                                Icons.notifications,
+                                color: Colors.white,
+                                size: 30,
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
                     ),
-                  ]),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(
+                          top: 25,
+                          left: 5,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const <Widget>[
+                              Text(
+                                'Welcome to',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                'Alirandras App',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: ColorPallete.mainColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Image.asset(
+                          'assets/images/banner_alur_pengajuan.png',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(
-                    height: 120,
+                    height: 20,
                   ),
                   InkWell(
                     onTap: () {
                       PersistentNavBarNavigator.pushNewScreen(context,
                           screen: const Form_pendaftaran(), withNavBar: false);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: 200,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.lightBlue.shade100, Colors.blue],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  height: 200,
-                                  child: const Image(
-                                    image: AssetImage(
-                                        'assets/images/upload_dokumen.png'),
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Isi Formulir Pengajuan',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 16,
-                                              textStyle: const TextStyle(
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          'Klik untuk ajukan formulir pengajuan',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 12,
-                                              textStyle: const TextStyle(
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 30),
-                                      child: Container(
-                                        child: const Icon(
-                                          Icons.arrow_forward,
-                                          color: Colors.white,
-                                          size: 25,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 48,
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.edit_note_sharp,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'Isi Formulir Pengajuan',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
