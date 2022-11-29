@@ -4,10 +4,8 @@ import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/forgot_password.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:flutter_application_3/screen/admin/main_menu_screen_admin.dart';
-import 'package:flutter_application_3/screen/reset_password.dart';
 import 'package:flutter_application_3/screen/sign_up.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +24,6 @@ class _Log_inState extends State<Log_in> {
   bool isLoading = false;
   User1 _userData = User1();
 
-  @override
   login() async {
     setState(() {
       isLoading = true;
@@ -35,24 +32,21 @@ class _Log_inState extends State<Log_in> {
         .login(_emailController.text, _passwordController.text)
         .then((value) {
       setState(() {
-        // print('qqqwqwq');
-        //print(value);
-
         print(value);
 
         if (value == 'success') {
-          Timer(Duration(seconds: 1), () {
+          Timer(const Duration(seconds: 1), () {
             CallStorage().getUserData().then((value) {
               setState(() {
                 _userData = value;
                 if (_userData.app == 'mobile user') {
                   //go to user home screen
                   Navigator.pushReplacement(
-                      context, SlideToLeftRoute(page: MainMenuScreen()));
+                      context, SlideToLeftRoute(page: const MainMenuScreen()));
                 } else {
                   //go to admin home screen
-                  Navigator.pushReplacement(
-                      context, SlideToLeftRoute(page: MainMenuScreenAdmin()));
+                  Navigator.pushReplacement(context,
+                      SlideToLeftRoute(page: const MainMenuScreenAdmin()));
                 }
                 isLoading = false;
               });
@@ -61,7 +55,7 @@ class _Log_inState extends State<Log_in> {
         } else if (value == 'failed') {
           CallStorage().logout();
           Navigator.pushReplacement(
-              context, SlideToRightRoute(page: Sign_up()));
+              context, SlideToRightRoute(page: const Sign_up()));
 
           isLoading = false;
         } else {
@@ -75,116 +69,155 @@ class _Log_inState extends State<Log_in> {
         isLoading = false;
       });
     });
-    //print('wwww');
-    //print(isError);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF6F7FF),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: Colors.white70),
+          decoration: const BoxDecoration(color: Colors.white70),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 50),
-                      child: Container(
-                        height: 150,
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
+                  const SizedBox(
+                    height: 90,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 25),
                     child: Row(
                       children: [
                         Text(
-                          'Log In',
+                          'Sign In',
                           style: GoogleFonts.roboto(
-                              fontSize: 24,
-                              textStyle: TextStyle(
-                                  color: Colors.grey[500],
-                                  fontWeight: FontWeight.bold)),
+                            fontSize: 36,
+                            textStyle: const TextStyle(
+                                color: Color(0xFF0B1EC5),
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(
+                      left: 30,
+                    ),
                     child: Row(
                       children: [
                         Text(
                           'Email',
                           style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
+                            fontSize: 15,
+                            textStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 33, right: 33, top: 20, bottom: 20),
+                      left: 30,
+                      right: 30,
+                      top: 12,
+                      bottom: 20,
+                    ),
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey[300],
+                      decoration: const InputDecoration(
+                        hintText: 'Masukkan email',
+                        hintStyle: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFC4C4C4),
+                        ),
+                        fillColor: Colors.white,
                         filled: true,
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
                       ),
                       controller: _emailController,
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
+                  const SizedBox(
+                    height: 15,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(
+                      left: 30,
+                    ),
                     child: Row(
                       children: [
                         Text(
                           'Password',
                           style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
+                            fontSize: 15,
+                            textStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 33, right: 33, top: 20, bottom: 30),
+                      left: 30,
+                      right: 30,
+                      top: 12,
+                      bottom: 30,
+                    ),
                     child: TextFormField(
                       obscureText: true,
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey[300],
+                      decoration: const InputDecoration(
+                        hintText: 'Masukkan password',
+                        hintStyle: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFC4C4C4),
+                        ),
+                        fillColor: Colors.white,
                         filled: true,
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
                       ),
                       controller: _passwordController,
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 33, right: 33, bottom: 30),
+                    padding: const EdgeInsets.only(
+                      left: 30,
+                      right: 30,
+                      bottom: 30,
+                    ),
                     child: InkWell(
                       onTap: () {
                         login();
@@ -193,87 +226,92 @@ class _Log_inState extends State<Log_in> {
                         height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(8)),
+                            color: const Color(0xFF0B1EC5),
+                            borderRadius: BorderRadius.circular(6)),
                         child: Center(
                           child: isLoading
-                              ? CircularProgressIndicator(
+                              ? const CircularProgressIndicator(
                                   color: Colors.white70,
                                 )
                               : Text(
-                                  'Log In',
+                                  'Sign In',
                                   style: GoogleFonts.roboto(
-                                      fontSize: 18,
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                      )),
+                                    fontSize: 18,
+                                    textStyle: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Lupa password?',
-                        style: TextStyle(color: Colors.black54),
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                       ),
                       InkWell(
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return Forgot_password();
+                            return const Forgot_password();
                           }));
                         },
-                        child: Text(
+                        child: const Text(
                           ' Reset Password',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                            color: Color(0xFF0B1EC5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Belum punya akun?',
-                        style: TextStyle(color: Colors.black54),
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                       ),
                       InkWell(
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return Sign_up();
+                            return const Sign_up();
                           }));
                         },
-                        child: Text(
+                        child: const Text(
                           ' Daftar',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                            color: Color(0xFF0B1EC5),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                    width: double.infinity,
-                    height: 70,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/footer_login.png'),
-                            fit: BoxFit.cover))),
-              )
             ],
           ),
         ),
