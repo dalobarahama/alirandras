@@ -192,12 +192,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
               ),
               child: InkWell(
                 onTap: () {
-                  // verifikasi_otp();
-                  Navigator.push(
-                      context,
-                      SlideToRightRoute(
-                          page: Reset_password(_otpController.text)));
-                  Fluttertoast.showToast(msg: _otpController.text);
+                  verifikasi_otp();
                 },
                 child: Container(
                   height: 50,
