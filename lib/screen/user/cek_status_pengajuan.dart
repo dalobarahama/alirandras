@@ -4,6 +4,7 @@ import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/edit_form_pendaftaran.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -102,402 +103,382 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorPallete.mainBackgroundColor,
       body: Stack(
         children: [
           SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 27,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 95),
-                        child: Container(
-                          child: const Text(
-                            'Cek Status Pengajuan',
-                            style: TextStyle(
-                                fontSize: 23,
-                                color: Colors.lightBlue,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Image.asset(
+                      'assets/images/header_new.png',
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    const Positioned(
+                      bottom: 30,
+                      left: 90,
+                      child: Text(
+                        'Cek Status Pengajuan',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 25,
+                    top: 30,
+                    left: 25,
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(right: 35, top: 20, left: 10),
-                    child: TextField(
-                      controller: _cekStatusFilterController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10)),
-                        hintText: ' Masukkan ID Pengajuan',
-                        hintStyle:
-                            const TextStyle(color: Colors.grey, fontSize: 16),
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            _filteredCekStatus(_listPengajuan,
-                                _cekStatusFilterController.text);
-                          },
-                          child: Container(
-                            width: 120,
-                            margin: const EdgeInsets.only(right: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(8)),
-                            child: const Center(
-                                child: Text(
-                              'Cek Status',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            )),
+                  child: TextField(
+                    controller: _cekStatusFilterController,
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[300],
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      hintText: 'Masukkan ID Pengajuan',
+                      hintStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          _filteredCekStatus(
+                            _listPengajuan,
+                            _cekStatusFilterController.text,
+                          );
+                        },
+                        child: Container(
+                          width: 120,
+                          margin: const EdgeInsets.only(right: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(6),
                           ),
+                          child: const Center(
+                              child: Text(
+                            'Cek Status',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          )),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 25,
+                    left: 25,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 25),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(),
-                      child: isLoading == true
-                          ? const Center(child: CircularProgressIndicator())
-                          : Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: ListView.builder(
-                                    itemCount: _listPengajuanFiltered!.length,
-                                    shrinkWrap: true,
-                                    physics: const PageScrollPhysics(),
-                                    padding: const EdgeInsets.all(0),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        margin: const EdgeInsets.all(10),
-                                        color: Colors.grey[200],
-                                        shadowColor: Colors.black,
-                                        child: InkWell(
-                                          onTap: () {
-                                            PersistentNavBarNavigator.pushNewScreen(
-                                                context,
-                                                screen:
-                                                    Detail_card_statuspengajuan(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(),
+                    child: isLoading == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: _listPengajuanFiltered!.length,
+                            shrinkWrap: true,
+                            physics: const PageScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                color: Colors.white,
+                                shadowColor: Colors.black,
+                                child: InkWell(
+                                  onTap: () {
+                                    PersistentNavBarNavigator.pushNewScreen(
+                                        context,
+                                        screen: Detail_card_statuspengajuan(
+                                            _listPengajuanFiltered![index]),
+                                        withNavBar: false);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              DateFormat('dd MMM yy, HH:mm')
+                                                  .format(
+                                                      _listPengajuanFiltered![
+                                                              index]
+                                                          .createdAt!),
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 14,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              'ID :${_listPengajuanFiltered![index].id}',
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 14,
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Divider(
+                                          height: 1,
+                                          color: Colors.grey,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Nama Pengguna',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                  )),
+                                            ),
+                                            Text(
+                                              'Status',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              _listPengajuanFiltered![index]
+                                                  .user!
+                                                  .name!,
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  textStyle: const TextStyle(
+                                                    color:
+                                                        ColorPallete.mainColor,
+                                                  )),
+                                            ),
+                                            _listPengajuanFiltered![index]
+                                                        .status!
+                                                        .toLowerCase !=
+                                                    'disetujui'
+                                                ? Text(
+                                                    _listPengajuanFiltered![
+                                                            index]
+                                                        .status!
+                                                        .toUpperCase(),
+                                                    style: GoogleFonts.roboto(
+                                                      fontSize: 14,
+                                                      textStyle: TextStyle(
+                                                        color: Colors.grey[700],
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    _listPengajuanFiltered![
+                                                            index]
+                                                        .status!
+                                                        .toUpperCase(),
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          color: Colors.green,
+                                                        )),
+                                                  ),
+                                          ],
+                                        ),
+                                        _listPengajuanFiltered![index]
+                                                    .status!
+                                                    .toLowerCase ==
+                                                'ditolak'
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 8,
+                                                  right: 10,
+                                                  top: 20,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      'Alasan Ditolak',
+                                                      style: GoogleFonts.roboto(
+                                                        fontSize: 14,
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Container(),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 10, top: 40),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Lampiran',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 14,
+                                                    textStyle: TextStyle(
+                                                      color: Colors.grey[500],
+                                                    )),
+                                              ),
+                                              _listPengajuanFiltered![index]
+                                                          .status!
+                                                          .toLowerCase ==
+                                                      'ditolak'
+                                                  ? Text(
+                                                      _listPengajuanFiltered![
+                                                              index]
+                                                          .reasonRejection!,
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 14,
+                                                          textStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[700],
+                                                          )),
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ),
+                                        ),
+                                        _listPengajuanFiltered![index]
+                                                    .mailRequest !=
+                                                null
+                                            ? _listPengajuanFiltered![index]
+                                                        .mailRequest
+                                                        ?.body !=
+                                                    null
+                                                ? Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          PersistentNavBarNavigator.pushNewScreen(
+                                                              context,
+                                                              screen: PreviewSuratBalasanScreenNew(
+                                                                  _listPengajuanFiltered![
+                                                                          index]
+                                                                      .mailRequest!
+                                                                      .id!
+                                                                      .toString(),
+                                                                  'view',
+                                                                  _listPengajuanFiltered![
+                                                                          index]
+                                                                      .id
+                                                                      .toString()),
+                                                              withNavBar:
+                                                                  false);
+                                                        },
+                                                        child: Text(
+                                                          'Lihat Surat Balasan',
+                                                          style: GoogleFonts.roboto(
+                                                              fontSize: 12,
+                                                              textStyle: const TextStyle(
+                                                                  color: Colors
+                                                                      .blueAccent,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .underline)),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const Text('-')
+                                            : Container(),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            const SizedBox(
+                                              width: 16,
+                                            ),
+                                            const Icon(
+                                              Icons.visibility,
+                                              color: Colors.green,
+                                              size: 12,
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                PersistentNavBarNavigator.pushNewScreen(
+                                                    context,
+                                                    screen: Detail_card_statuspengajuan(
                                                         _listPengajuanFiltered![
                                                             index]),
-                                                withNavBar: false);
-                                          },
-                                          child: Container(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(17.0),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        'ID :' +
-                                                            _listPengajuanFiltered![
-                                                                    index]
-                                                                .id
-                                                                .toString(),
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                                fontSize: 14,
-                                                                textStyle:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      500],
-                                                                )),
-                                                      ),
-                                                      Text(
-                                                        DateFormat(
-                                                                'dd MMMM yy, HH:mm')
-                                                            .format(
-                                                                _listPengajuanFiltered![
-                                                                        index]
-                                                                    .createdAt!),
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                                fontSize: 14,
-                                                                textStyle:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      500],
-                                                                )),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Container(
-                                                    height: 1,
-                                                    width: double.infinity,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8,
-                                                            right: 10,
-                                                            top: 8),
+                                                    withNavBar: false);
+                                              },
+                                              child: Text(
+                                                'Detail',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 12,
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.green,
+                                                    )),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            _listPengajuanFiltered![index]
+                                                        .status!
+                                                        .toLowerCase() ==
+                                                    'ditolak'
+                                                ? Container(
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
                                                       children: [
-                                                        Text(
-                                                          'Nama Pengguna',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 14,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        500],
-                                                                  )),
-                                                        ),
-                                                        Text(
-                                                          'Status',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 14,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        500],
-                                                                  )),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8,
-                                                            right: 10,
-                                                            top: 8),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          _listPengajuanFiltered![
-                                                                  index]
-                                                              .user!
-                                                              .name!,
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 14,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        700],
-                                                                  )),
-                                                        ),
-                                                        _listPengajuanFiltered![
-                                                                        index]
-                                                                    .status!
-                                                                    .toLowerCase !=
-                                                                'disetujui'
-                                                            ? Text(
-                                                                _listPengajuanFiltered![
-                                                                        index]
-                                                                    .status!
-                                                                    .toUpperCase(),
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            14,
-                                                                        textStyle:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey[700],
-                                                                        )),
-                                                              )
-                                                            : Text(
-                                                                _listPengajuanFiltered![
-                                                                        index]
-                                                                    .status!
-                                                                    .toUpperCase(),
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            14,
-                                                                        textStyle:
-                                                                            const TextStyle(
-                                                                          color:
-                                                                              Colors.green,
-                                                                        )),
-                                                              ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  _listPengajuanFiltered![index]
-                                                              .status!
-                                                              .toLowerCase ==
-                                                          'ditolak'
-                                                      ? Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 8,
-                                                                  right: 10,
-                                                                  top: 20),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Text(
-                                                                'Alasan Ditolak',
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            14,
-                                                                        textStyle:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey[500],
-                                                                        )),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Container(),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8,
-                                                            right: 10,
-                                                            top: 40),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          'Lampiran',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 14,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        500],
-                                                                  )),
-                                                        ),
-                                                        _listPengajuanFiltered![
-                                                                        index]
-                                                                    .status!
-                                                                    .toLowerCase ==
-                                                                'ditolak'
-                                                            ? Text(
-                                                                _listPengajuanFiltered![
-                                                                        index]
-                                                                    .reasonRejection!,
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            14,
-                                                                        textStyle:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey[700],
-                                                                        )),
-                                                              )
-                                                            : Container(),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  _listPengajuanFiltered![index]
-                                                              .mailRequest !=
-                                                          null
-                                                      ? _listPengajuanFiltered![
-                                                                      index]
-                                                                  .mailRequest
-                                                                  ?.body !=
-                                                              null
-                                                          ? Align(
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child: InkWell(
-                                                                  onTap: () {
-                                                                    PersistentNavBarNavigator.pushNewScreen(
-                                                                        context,
-                                                                        screen: PreviewSuratBalasanScreenNew(
-                                                                            _listPengajuanFiltered![index]
-                                                                                .mailRequest!
-                                                                                .id!
-                                                                                .toString(),
-                                                                            'view',
-                                                                            _listPengajuanFiltered![index]
-                                                                                .id
-                                                                                .toString()),
-                                                                        withNavBar:
-                                                                            false);
-                                                                  },
-                                                                  child: Text(
-                                                                    'Lihat Surat Balasan',
-                                                                    style: GoogleFonts.roboto(
-                                                                        fontSize:
-                                                                            12,
-                                                                        textStyle: const TextStyle(
-                                                                            color:
-                                                                                Colors.blueAccent,
-                                                                            decoration: TextDecoration.underline)),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : const Text('-')
-                                                      : Container(),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        const SizedBox(
-                                                          width: 16,
-                                                        ),
                                                         const Icon(
-                                                          Icons.visibility,
-                                                          color: Colors.green,
+                                                          Icons.edit,
+                                                          color: Colors.red,
                                                           size: 12,
                                                         ),
                                                         const SizedBox(
@@ -508,92 +489,14 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                             PersistentNavBarNavigator
                                                                 .pushNewScreen(
                                                                     context,
-                                                                    screen: Detail_card_statuspengajuan(
+                                                                    screen: EditForm(
                                                                         _listPengajuanFiltered![
                                                                             index]),
                                                                     withNavBar:
                                                                         false);
                                                           },
                                                           child: Text(
-                                                            'Detail',
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                                    fontSize:
-                                                                        12,
-                                                                    textStyle:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .green,
-                                                                    )),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        _listPengajuanFiltered![
-                                                                        index]
-                                                                    .status!
-                                                                    .toLowerCase() ==
-                                                                'ditolak'
-                                                            ? Container(
-                                                                child: Row(
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons
-                                                                          .edit,
-                                                                      color: Colors
-                                                                          .red,
-                                                                      size: 12,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        PersistentNavBarNavigator.pushNewScreen(
-                                                                            context,
-                                                                            screen:
-                                                                                EditForm(_listPengajuanFiltered![index]),
-                                                                            withNavBar: false);
-                                                                      },
-                                                                      child:
-                                                                          Text(
-                                                                        'Edit',
-                                                                        style: GoogleFonts.roboto(
-                                                                            fontSize: 12,
-                                                                            textStyle: const TextStyle(
-                                                                              color: Colors.red,
-                                                                            )),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            : Container(),
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        const Icon(
-                                                          Icons.delete,
-                                                          color: Colors.red,
-                                                          size: 12,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 4,
-                                                        ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              isDelete = true;
-                                                            });
-                                                            deletePengajuan(
-                                                                _listPengajuanFiltered![
-                                                                        index]
-                                                                    .id);
-                                                          },
-                                                          child: Text(
-                                                            'Hapus',
+                                                            'Edit',
                                                             style: GoogleFonts
                                                                 .roboto(
                                                                     fontSize:
@@ -608,138 +511,36 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                       ],
                                                     ),
                                                   )
-                                                ],
-                                              ),
+                                                : Container(),
+                                            const SizedBox(
+                                              width: 8,
                                             ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          isDelete == true
-              ? Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration:
-                      BoxDecoration(color: Colors.black.withOpacity(0.1)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 300,
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 40, right: 40),
-                                  child: Container(
-                                    height: 200,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(7)),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        Text(
-                                          'Yakin ingin menghapus data?',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 14,
-                                              textStyle: const TextStyle(
-                                                color: Colors.black54,
-                                              )),
-                                        ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10, left: 10),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    deleteCont = true;
-                                                    deletePengajuan(idDel);
-                                                  });
-                                                },
-                                                child: Container(
-                                                    width: 100,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.red,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7)),
-                                                    child: Center(
-                                                      child: Text(
-                                                        'Hapus',
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                                fontSize: 12,
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                )),
-                                                      ),
-                                                    )),
-                                              ),
+                                            const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 12,
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                right: 10,
-                                              ),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    isDelete = false;
-                                                  });
-                                                },
-                                                child: Container(
-                                                    width: 100,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.red,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7)),
-                                                    child: Center(
-                                                      child: Text(
-                                                        'Tidak',
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                                fontSize: 12,
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                )),
-                                                      ),
-                                                    )),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  isDelete = true;
+                                                });
+                                                deletePengajuan(
+                                                    _listPengajuanFiltered![
+                                                            index]
+                                                        .id);
+                                              },
+                                              child: Text(
+                                                'Hapus',
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 12,
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -747,26 +548,135 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                       ],
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                              );
+                            },
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: const Icon(Icons.delete,
-                                    size: 50, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+              ],
+            ),
+          ),
+          isDelete == true
+              ? Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.1),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              right: 20,
+                            ),
+                            child: Container(
+                              height: 265,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7),
                               ),
-                            ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/dustbin.png',
+                                    height: 72,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Data akan dihapus',
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 14,
+                                      textStyle: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 10,
+                                          left: 10,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              deleteCont = true;
+                                              deletePengajuan(idDel);
+                                            });
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'Lanjutkan',
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 16,
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 10,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              isDelete = false;
+                                            });
+                                          },
+                                          child: SizedBox(
+                                            height: 50,
+                                            child: Center(
+                                              child: Text(
+                                                'Cancel',
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 16,
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           )
                         ],
-                      )
+                      ),
                     ],
                   ),
                 )
