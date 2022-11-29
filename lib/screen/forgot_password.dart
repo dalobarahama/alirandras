@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
-import 'package:flutter_application_3/helper/prefs_helper.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
-import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/otp_verifikasi.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,6 +16,7 @@ class Forgot_password extends StatefulWidget {
 class _Forgot_passwordState extends State<Forgot_password> {
   TextEditingController _emailController = TextEditingController();
   bool isLoading = false;
+
   forgot_email() async {
     setState(() {
       isLoading = true;
@@ -55,122 +52,75 @@ class _Forgot_passwordState extends State<Forgot_password> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Reset Password'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: ColorPallete.mainBackgroundColor,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 15),
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.lightBlue[300],
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 45),
-                  child: Container(
-                    child: Text(
-                      'Forgot Password',
-                      style: GoogleFonts.roboto(
-                          fontSize: 33,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey[600],
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 30),
-                  child: Container(
-                    child: Text(
-                      'Kami akan mengirimkan kode OTP ke ',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 27,
-                  ),
-                  child: Container(
-                    child: Text(
-                      'email anda ',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Row(
-                children: [
-                  Text(
-                    'Email',
-                    style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        textStyle: TextStyle(
-                          color: Colors.grey[500],
-                        )),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
+            Container(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 15, bottom: 18),
+                left: 30,
+                top: 30,
+                right: 30,
+              ),
+              child: Text(
+                'Kami akan mengirimkan panduan reset password ke email Anda',
+                style: GoogleFonts.roboto(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 30,
+                right: 30,
+              ),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: 'Masukkan email anda',
-                  hintStyle: GoogleFonts.roboto(
-                      fontSize: 15,
-                      textStyle: TextStyle(
-                        color: Colors.grey[500],
-                      )),
+                  hintText: 'Masukkan email',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
                   fillColor: Colors.grey[300],
                   filled: true,
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
                 ),
                 controller: _emailController,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, bottom: 30, top: 20),
+                left: 30,
+                right: 30,
+                bottom: 30,
+                top: 30,
+              ),
               child: InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,
@@ -186,11 +136,12 @@ class _Forgot_passwordState extends State<Forgot_password> {
                     height: 50,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(8)),
+                      color: ColorPallete.mainColor,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                     child: isLoading == true
-                        ? Center(
-                            child: Container(
+                        ? const Center(
+                            child: SizedBox(
                               height: 30,
                               width: 30,
                               child: CircularProgressIndicator(
@@ -202,10 +153,11 @@ class _Forgot_passwordState extends State<Forgot_password> {
                             child: Text(
                               'Submit',
                               style: GoogleFonts.roboto(
-                                  fontSize: 18,
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                  )),
+                                fontSize: 16,
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                   ),
