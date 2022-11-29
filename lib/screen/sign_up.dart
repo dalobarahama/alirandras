@@ -1,12 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
-import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
+import '../utils/color_pallete.dart';
 import 'log_in.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
-import 'package:flutter_application_3/helper/prefs_helper.dart';
-import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +21,7 @@ class _Sign_upState extends State<Sign_up> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _namaController = TextEditingController();
   bool isLoading = false;
-  @override
+
   register() async {
     setState(() {
       isLoading = true;
@@ -37,9 +34,9 @@ class _Sign_upState extends State<Sign_up> {
         print(value);
         if (value == 'success') {
           Fluttertoast.showToast(msg: 'Berhasil Registrasi');
-          Timer(Duration(seconds: 2), () {
+          Timer(const Duration(seconds: 2), () {
             Navigator.pushReplacement(
-                context, SlideToLeftRoute(page: Log_in()));
+                context, SlideToLeftRoute(page: const Log_in()));
           });
         } else if (value == 'failed') {
           Fluttertoast.showToast(msg: 'Terjadi kesalahan');
@@ -56,219 +53,247 @@ class _Sign_upState extends State<Sign_up> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ColorPallete.mainBackgroundColor,
         body: SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.white70),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 50,
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 90,
                     ),
-                    child: Container(
-                      height: 150,
-                      child: Image.asset(
-                        'assets/images/logo.png',
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Sign Up',
+                            style: GoogleFonts.roboto(
+                              fontSize: 36,
+                              textStyle: const TextStyle(
+                                  color: ColorPallete.mainColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 25),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Sign Up',
-                        style: GoogleFonts.roboto(
-                            fontSize: 24,
-                            textStyle: TextStyle(
-                                color: Colors.grey[500],
-                                fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Nama',
-                        style: GoogleFonts.roboto(
-                            fontSize: 15,
-                            textStyle: TextStyle(
-                              color: Colors.grey[500],
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 30, right: 33, top: 10, bottom: 20),
-                  child: TextFormField(
-                    style: TextStyle(
-                      height: 0.8,
-                    ),
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey[300],
-                      filled: true,
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                    controller: _namaController,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Email',
-                        style: GoogleFonts.roboto(
-                            fontSize: 15,
-                            textStyle: TextStyle(
-                              color: Colors.grey[500],
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 33, right: 33, top: 10, bottom: 20),
-                  child: TextFormField(
-                    style: TextStyle(
-                      height: 0.8,
-                    ),
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey[300],
-                      filled: true,
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                    controller: _emailController,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 33),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Password',
-                        style: GoogleFonts.roboto(
-                            fontSize: 15,
-                            textStyle: TextStyle(
-                              color: Colors.grey[500],
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 33, right: 33, top: 10, bottom: 30),
-                  child: TextFormField(
-                    style: TextStyle(
-                      height: 0.8,
-                    ),
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey[300],
-                      filled: true,
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                    controller: _passwordController,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 33, right: 33, bottom: 30),
-                  child: InkWell(
-                    onTap: () {
-                      register();
-                    },
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(
-                              color: Colors.white70,
-                            ))
-                          : Center(
-                              child: Text(
-                                'Sign Up',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 18,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                    )),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Nama',
+                            style: GoogleFonts.roboto(
+                              fontSize: 15,
+                              textStyle: const TextStyle(
+                                color: Colors.black,
                               ),
                             ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Sudah punya akun?',
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Log_in();
-                        }));
-                      },
-                      child: Text(
-                        ' Login',
-                        style: TextStyle(color: Colors.red),
+                          ),
+                        ],
                       ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
+                        right: 30,
+                        top: 12,
+                        bottom: 20,
+                      ),
+                      child: TextFormField(
+                        style: const TextStyle(
+                          height: 0.8,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Masukkan nama',
+                          hintStyle: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black26,
+                          ),
+                          fillColor: Colors.grey[300],
+                          filled: true,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        controller: _namaController,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Email',
+                            style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
+                        right: 30,
+                        top: 10,
+                        bottom: 20,
+                      ),
+                      child: TextFormField(
+                        style: const TextStyle(
+                          height: 0.8,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Masukkan email',
+                          hintStyle: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black26,
+                          ),
+                          fillColor: Colors.grey[300],
+                          filled: true,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        controller: _emailController,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Password',
+                            style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 30,
+                        right: 30,
+                        top: 10,
+                        bottom: 30,
+                      ),
+                      child: TextFormField(
+                        style: const TextStyle(
+                          height: 0.8,
+                        ),
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: 'Masukkan password',
+                          hintStyle: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black26,
+                          ),
+                          fillColor: Colors.grey[300],
+                          filled: true,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        controller: _passwordController,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 33, right: 33, bottom: 30),
+                      child: InkWell(
+                        onTap: () {
+                          register();
+                        },
+                        child: Container(
+                          height: 50,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: ColorPallete.mainColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ))
+                              : Center(
+                                  child: Text(
+                                    'Sign Up',
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 18,
+                                      textStyle: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Sudah punya akun?',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const Log_in();
+                            }));
+                          },
+                          child: const Text(
+                            ' Login',
+                            style: TextStyle(
+                              color: ColorPallete.mainColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  width: double.infinity,
-                  height: 70,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/footer_login.png'),
-                          fit: BoxFit.cover))),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }

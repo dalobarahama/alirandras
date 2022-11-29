@@ -75,7 +75,7 @@ class _Log_inState extends State<Log_in> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF6F7FF),
+      backgroundColor: ColorPallete.mainBackgroundColor,
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
