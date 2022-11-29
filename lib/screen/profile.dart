@@ -1,17 +1,12 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/screen/sign_up.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
-import 'package:flutter_application_3/screen/log_in.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatefulWidget {
@@ -139,15 +134,17 @@ class _ProfileState extends State<Profile> {
     });
   }*/
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Stack(
+              clipBehavior: Clip.none,
               children: [
                 Image.asset(
-                  'assets/images/header_home.png',
+                  'assets/images/header_new.png',
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -161,68 +158,57 @@ class _ProfileState extends State<Profile> {
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back,
                               color: Colors.white,
                               size: 30,
                             )),
                       )
-                    : Container()
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33, top: 5),
-              child: Container(
-                child: Row(
-                  children: [
-                    Text(
-                      'Profil',
-                      style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 36,
-                          fontWeight: FontWeight.w500),
+                    : Container(),
+                Positioned(
+                  bottom: -50,
+                  right: 135,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: ColorPallete.mainColor,
+                      borderRadius: BorderRadius.circular(65),
                     ),
-                  ],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(65),
+                      child: _imageFile != null
+                          ? Image.file(
+                              File(_imageFile!.path),
+                              fit: BoxFit.cover,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: _userData.avatar ?? '-',
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Image.asset(
+                                  'assets/images/default_profile_pic.png'),
+                            ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(65)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(65),
-                    child: _imageFile != null
-                        ? Image.file(
-                            File(_imageFile!.path),
-                            fit: BoxFit.cover,
-                          )
-                        : CachedNetworkImage(
-                            imageUrl: _userData.avatar ?? '-',
-                            imageBuilder: (context, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => Icon(
-                              Icons.error,
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
+                const SizedBox(
+                  height: 60,
                 ),
                 Center(
                   child: Row(
@@ -232,15 +218,20 @@ class _ProfileState extends State<Profile> {
                         onTap: () {
                           _imgFromGallery();
                         },
-                        child: Text(
+                        child: const Text(
                           'Ganti',
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 16),
+                          style: TextStyle(
+                            color: ColorPallete.mainColor,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                       Text(
                         '  |  ',
-                        style: TextStyle(color: Colors.grey[300], fontSize: 23),
+                        style: TextStyle(
+                          color: Colors.grey[300],
+                          fontSize: 24,
+                        ),
                       ),
                       InkWell(
                         onTap: () {
@@ -248,8 +239,10 @@ class _ProfileState extends State<Profile> {
                         },
                         child: Text(
                           'Hapus',
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 16),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -257,57 +250,68 @@ class _ProfileState extends State<Profile> {
                 )
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33),
-              child: Row(
-                children: [
-                  Text(
-                    'Nama',
-                    style: TextStyle(fontSize: 20, color: Colors.black54),
-                  )
-                ],
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 30),
+              child: const Text(
+                'Nama',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 33, top: 20, bottom: 20),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      style: TextStyle(color: Colors.black54),
-                      controller: _namaController,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.grey[300],
-                          filled: true)),
+                left: 30,
+                right: 30,
+                top: 12,
+              ),
+              child: TextFormField(
+                style: const TextStyle(
+                  height: 0.8,
                 ),
+                decoration: InputDecoration(
+                  suffixIcon: const Icon(
+                    Icons.edit_outlined,
+                    size: 20,
+                  ),
+                  hintText: 'Masukkan nama',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
+                  fillColor: Colors.grey[300],
+                  filled: true,
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                controller: _namaController,
               ),
             ),
-            SizedBox(
-              height: 10,
+            const SizedBox(
+              height: 15,
             ),
             _userData.app == 'admin'
                 ? Container(
+                    margin: const EdgeInsets.only(
+                      bottom: 15,
+                    ),
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 33),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Jabatan',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.black54),
-                              )
-                            ],
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 30),
+                          child: const Text(
+                            'Jabatan',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -322,9 +326,9 @@ class _ProfileState extends State<Profile> {
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
                                   maxLines: 2,
-                                  style: TextStyle(color: Colors.black54),
+                                  style: const TextStyle(color: Colors.black54),
                                   controller: _jabatanController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: InputBorder.none,
                                   )),
                             ),
@@ -334,88 +338,104 @@ class _ProfileState extends State<Profile> {
                     ),
                   )
                 : Container(),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33),
-              child: Row(
-                children: [
-                  Text(
-                    'Email',
-                    style: TextStyle(fontSize: 20, color: Colors.black54),
-                  )
-                ],
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 30),
+              child: const Text(
+                'Email',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 33, top: 20, bottom: 10),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(color: Colors.black54),
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      )),
+                left: 30,
+                right: 30,
+                top: 10,
+              ),
+              child: TextFormField(
+                style: const TextStyle(
+                  height: 0.8,
                 ),
+                decoration: InputDecoration(
+                  suffixIcon: const Icon(
+                    Icons.edit_outlined,
+                    size: 20,
+                  ),
+                  hintText: 'Masukkan email',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
+                  fillColor: Colors.grey[300],
+                  filled: true,
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                controller: _emailController,
               ),
             ),
-            SizedBox(
-              height: 10,
+            const SizedBox(
+              height: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33),
-              child: Row(
-                children: [
-                  Text(
-                    'Password',
-                    style: TextStyle(fontSize: 20, color: Colors.black54),
-                  )
-                ],
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 30),
+              child: const Text(
+                'Password',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 33, top: 20, bottom: 33),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      controller: _passwordController,
-                      style: TextStyle(color: Colors.black54),
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      )),
+                left: 30,
+                right: 30,
+                top: 10,
+                bottom: 30,
+              ),
+              child: TextFormField(
+                style: const TextStyle(
+                  height: 0.8,
                 ),
+                obscureText: true,
+                decoration: InputDecoration(
+                  suffixIcon: const Icon(
+                    Icons.edit_outlined,
+                    size: 20,
+                  ),
+                  hintText: '********',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
+                  fillColor: Colors.grey[300],
+                  filled: true,
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                controller: _passwordController,
               ),
             ),
             _userData.app == 'admin'
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 33, bottom: 20),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Tanda Tangan',
-                              style: TextStyle(
-                                  fontSize: 20, color: Colors.black54),
-                            )
-                          ],
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 30),
+                        child: const Text(
+                          'Tanda tangan',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                       Padding(
@@ -431,8 +451,8 @@ class _ProfileState extends State<Profile> {
                             decoration: BoxDecoration(
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Center(
                                 child: Text(
                                   'Upload File',
@@ -447,63 +467,67 @@ class _ProfileState extends State<Profile> {
                     ],
                   )
                 : Container(),
-            Padding(
-              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 20),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 30,
+                right: 30,
+              ),
               child: InkWell(
                 onTap: () {
-                  // Navigator.pushReplacement(context,
-                  //     MaterialPageRoute(builder: (context) {
-                  //   return Profile();
-                  // }));
+                  updateProfile();
                 },
-                child: InkWell(
-                  onTap: () {
-                    updateProfile();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Center(
-                      child: Text(
-                        'Update',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: ColorPallete.mainColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: isLoading == true
+                      ? const Center(
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: Text(
+                            'Update',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                logout();
+                CallStorage().logout();
+              },
+              child: const SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(
+                      color: ColorPallete.mainColor,
+                      fontSize: 16,
                     ),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 30),
-              child: InkWell(
-                onTap: () {
-                  CallStorage().logout();
-                },
-                child: InkWell(
-                  onTap: () {
-                    logout();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.red),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Center(
-                      child: Text(
-                        'Log Out',
-                        style: TextStyle(color: Colors.red, fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30,
+            const SizedBox(
+              height: 20,
             )
           ],
         ),
