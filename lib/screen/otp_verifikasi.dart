@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
-import 'package:flutter_application_3/screen/forgot_password.dart';
-import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:pinput/pinput.dart';
+
+import '../utils/color_pallete.dart';
 
 class Otp_verifikasi extends StatefulWidget {
   String email = '';
@@ -24,8 +23,9 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
   _Otp_verifikasiState(this.email);
   TextEditingController _otpController = TextEditingController();
   String currentText = "";
-  StreamController<ErrorAnimationType> errorController = StreamController();
+  // StreamController<ErrorAnimationType> errorController = StreamController();
   bool isLoading = false;
+
   verifikasi_otp() async {
     setState(() {
       isLoading = true;
@@ -84,182 +84,172 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
 
   @override
   Widget build(BuildContext context) {
+    const borderColor = ColorPallete.mainColor;
+    var fillColor = Colors.white;
+
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: const TextStyle(
+        fontSize: 22,
+        color: Colors.black,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: borderColor),
+      ),
+    );
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Reset Password'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: ColorPallete.mainBackgroundColor,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50, left: 15),
-              child: Row(
-                children: [
-                  Container(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.lightBlue[300],
-                        size: 40,
-                      ),
-                    ),
-                  ),
-                ],
+            Container(
+              padding: const EdgeInsets.only(
+                left: 30,
+                top: 30,
+                right: 30,
               ),
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 45),
-                  child: Container(
-                    child: Text(
-                      'OTP Verification',
-                      style: GoogleFonts.roboto(
-                          fontSize: 33,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey[600],
-                          )),
-                    ),
+              child: Text(
+                'Masukkan kode OTP yang tertera pada email Anda',
+                style: GoogleFonts.roboto(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  textStyle: const TextStyle(
+                    color: Colors.black,
                   ),
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 30),
-                  child: Container(
-                    child: Text(
-                      'Masukkan kode OTP yang telah dikirim ke\nemail anda',
-                      style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Row(
-                children: [
-                  Text(
-                    'Masukkan kode OTP',
-                    style: GoogleFonts.roboto(
-                        fontSize: 17,
-                        textStyle: TextStyle(
-                          color: Colors.grey[500],
-                        )),
-                  ),
-                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, right: 50, left: 40),
-              child: Container(
-                child: Column(
+            const SizedBox(
+              height: 24,
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                right: 50,
+                left: 40,
+              ),
+              child: Pinput(
+                controller: _otpController,
+                androidSmsAutofillMethod:
+                    AndroidSmsAutofillMethod.smsUserConsentApi,
+                listenForMultipleSmsOnAndroid: true,
+                defaultPinTheme: defaultPinTheme,
+                hapticFeedbackType: HapticFeedbackType.lightImpact,
+                cursor: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    PinCodeTextField(
-                      appContext: context,
-                      keyboardType: TextInputType.number,
-                      length: 6,
-                      obscureText: false,
-                      animationType: AnimationType.fade,
-                      pinTheme: PinTheme(
-                          shape: PinCodeFieldShape.box,
-                          borderRadius: BorderRadius.circular(5),
-                          fieldHeight: 50,
-                          fieldWidth: 45,
-                          activeFillColor: Colors.grey[200],
-                          activeColor: Colors.grey[200],
-                          disabledColor: Colors.grey[200],
-                          inactiveColor: Colors.grey[200],
-                          selectedColor: Colors.grey[200],
-                          inactiveFillColor: Colors.grey[200],
-                          selectedFillColor: Colors.grey[200]),
-                      animationDuration: Duration(milliseconds: 300),
-                      enableActiveFill: true,
-                      errorAnimationController: errorController,
-                      controller: _otpController,
-                      onCompleted: (v) {
-                        verifikasi_otp();
-                      },
-                      onChanged: (value) {
-                        print(value);
-                        setState(() {
-                          currentText = value;
-                        });
-                      },
-                      beforeTextPaste: (text) {
-                        print("Allowing to paste $text");
-                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                        return true;
-                      },
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 9),
+                      width: 22,
+                      height: 1,
+                      color: borderColor,
                     ),
                   ],
                 ),
+                focusedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: borderColor),
+                  ),
+                ),
+                submittedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    color: fillColor,
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: borderColor),
+                  ),
+                ),
+                errorPinTheme: defaultPinTheme.copyBorderWith(
+                  border: Border.all(color: Colors.redAccent),
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 33, right: 33, bottom: 30, top: 20),
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 30,
+                right: 30,
+              ),
               child: InkWell(
                 onTap: () {
-                  verifikasi_otp();
+                  // verifikasi_otp();
+                  Navigator.push(
+                      context,
+                      SlideToRightRoute(
+                          page: Reset_password(_otpController.text)));
+                  Fluttertoast.showToast(msg: _otpController.text);
                 },
                 child: Container(
                   height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8)),
+                    color: ColorPallete.mainColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
                   child: Center(
                     child: isLoading == true
-                        ? CircularProgressIndicator(
-                            color: Colors.white,
+                        ? const Center(
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ),
                           )
-                        : Text(
-                            'Verifikasi',
-                            style: GoogleFonts.roboto(
-                                fontSize: 18,
-                                textStyle: TextStyle(
+                        : Center(
+                            child: Text(
+                              'Submit',
+                              style: GoogleFonts.roboto(
+                                fontSize: 16,
+                                textStyle: const TextStyle(
                                   color: Colors.white,
-                                )),
+                                ),
+                              ),
+                            ),
                           ),
                   ),
                 ),
               ),
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 20),
-                  child: InkWell(
-                    onTap: () {
-                      resend_otp();
-                    },
-                    child: Container(
-                      child: Text(
-                        'Resend kode ',
-                        style: GoogleFonts.roboto(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            textStyle: TextStyle(
-                              color: Colors.red,
-                            )),
-                      ),
-                    ),
-                  ),
+            InkWell(
+              onTap: () {
+                resend_otp();
+              },
+              child: Container(
+                margin: const EdgeInsets.only(
+                  top: 20,
                 ),
-              ],
+                child: Text(
+                  'Kirim ulang kode OTP',
+                  style: GoogleFonts.roboto(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      textStyle: const TextStyle(
+                        color: ColorPallete.mainColor,
+                      )),
+                ),
+              ),
             ),
           ],
         ),

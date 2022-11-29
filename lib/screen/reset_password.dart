@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
-import 'package:flutter_application_3/screen/user/home_screen.dart';
-import 'package:flutter_application_3/screen/log_in.dart';
-import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
-import 'package:flutter_application_3/screen/otp_verifikasi.dart';
-import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,6 +17,7 @@ class _Reset_passwordState extends State<Reset_password> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmpasswordController = TextEditingController();
   bool isLoading = false;
+
   reset_password() async {
     setState(() {
       isLoading = true;
@@ -36,9 +32,9 @@ class _Reset_passwordState extends State<Reset_password> {
           if (value == 'success') {
             Fluttertoast.showToast(
                 msg: 'Berhasil Reset Password', timeInSecForIosWeb: 2);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
           } else if (value == 'failed') {
             setState(() {
               isLoading = false;
@@ -64,6 +60,13 @@ class _Reset_passwordState extends State<Reset_password> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Reset Password'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -114,7 +117,7 @@ class _Reset_passwordState extends State<Reset_password> {
                       style: GoogleFonts.roboto(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.grey,
                           )),
                     ),
@@ -122,7 +125,7 @@ class _Reset_passwordState extends State<Reset_password> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Padding(
@@ -147,12 +150,12 @@ class _Reset_passwordState extends State<Reset_password> {
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
                 ),
                 controller: _passwordController,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
@@ -177,7 +180,7 @@ class _Reset_passwordState extends State<Reset_password> {
                 decoration: InputDecoration(
                   fillColor: Colors.grey[300],
                   filled: true,
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
                 ),
                 controller: _confirmpasswordController,
               ),
@@ -199,7 +202,7 @@ class _Reset_passwordState extends State<Reset_password> {
                       'Save',
                       style: GoogleFonts.roboto(
                           fontSize: 18,
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.white,
                           )),
                     ),

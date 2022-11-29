@@ -114,53 +114,46 @@ class _Forgot_passwordState extends State<Forgot_password> {
                 controller: _emailController,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              margin: const EdgeInsets.only(
                 left: 30,
                 right: 30,
-                bottom: 30,
-                top: 30,
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Otp_verifikasi(_emailController.text);
-                  }));
+                  forgot_email();
                 },
-                child: InkWell(
-                  onTap: () {
-                    forgot_email();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: ColorPallete.mainColor,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: isLoading == true
-                        ? const Center(
-                            child: SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: CircularProgressIndicator(
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: ColorPallete.mainColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: isLoading == true
+                      ? const Center(
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: Text(
+                            'Submit',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
                                 color: Colors.white,
                               ),
                             ),
-                          )
-                        : Center(
-                            child: Text(
-                              'Submit',
-                              style: GoogleFonts.roboto(
-                                fontSize: 16,
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
                           ),
-                  ),
+                        ),
                 ),
               ),
             ),
