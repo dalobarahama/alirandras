@@ -143,8 +143,8 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
             ),
             Container(
               padding: const EdgeInsets.only(
-                right: 50,
-                left: 40,
+                right: 30,
+                left: 30,
               ),
               child: Pinput(
                 controller: _otpController,

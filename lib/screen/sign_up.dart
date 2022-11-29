@@ -190,10 +190,11 @@ class _Sign_upState extends State<Sign_up> {
                           Text(
                             'Password',
                             style: GoogleFonts.roboto(
-                                fontSize: 15,
-                                textStyle: const TextStyle(
-                                  color: Colors.black,
-                                )),
+                              fontSize: 15,
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
                           )
                         ],
                       ),

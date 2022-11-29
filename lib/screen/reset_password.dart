@@ -3,6 +3,8 @@ import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../utils/color_pallete.dart';
+
 class Reset_password extends StatefulWidget {
   String code = '';
   Reset_password(this.code);
@@ -60,127 +62,133 @@ class _Reset_passwordState extends State<Reset_password> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorPallete.mainBackgroundColor,
       appBar: AppBar(
         title: const Text('Reset Password'),
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: ColorPallete.mainBackgroundColor,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(
+                left: 30,
+                top: 30,
+                right: 30,
+              ),
+              child: Text(
+                'Masukkan password baru Anda',
+                textAlign: TextAlign.start,
+                style: GoogleFonts.roboto(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
             Padding(
-              padding: const EdgeInsets.only(top: 50, left: 30),
+              padding: const EdgeInsets.only(left: 30),
               child: Row(
                 children: [
-                  Container(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.lightBlue[300],
-                        size: 40,
+                  Text(
+                    'Password baru',
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      textStyle: const TextStyle(
+                        color: Colors.black,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 45),
-                  child: Container(
-                    child: Text(
-                      'Reset Password',
-                      style: GoogleFonts.roboto(
-                          fontSize: 33,
-                          fontWeight: FontWeight.w400,
-                          textStyle: TextStyle(
-                            color: Colors.grey[600],
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 27, top: 30),
-                  child: Container(
-                    child: Text(
-                      'Reset Password Anda',
-                      style: GoogleFonts.roboto(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          textStyle: const TextStyle(
-                            color: Colors.grey,
-                          )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Row(
-                children: [
-                  Text(
-                    'New Password',
-                    style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        textStyle: TextStyle(
-                          color: Colors.grey[500],
-                        )),
-                  ),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 33, top: 10, bottom: 20),
+                left: 30,
+                right: 30,
+                top: 10,
+              ),
               child: TextFormField(
+                style: const TextStyle(
+                  height: 0.8,
+                ),
+                obscureText: true,
                 decoration: InputDecoration(
+                  hintText: 'Masukkan password',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
                   fillColor: Colors.grey[300],
                   filled: true,
-                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
                 ),
                 controller: _passwordController,
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 30),
               child: Row(
                 children: [
                   Text(
-                    'Confirm Password',
+                    'Konfirmasi password baru',
                     style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        textStyle: TextStyle(
-                          color: Colors.grey[500],
-                        )),
+                      fontSize: 15,
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  left: 33, right: 32, top: 10, bottom: 30),
+                left: 30,
+                right: 30,
+                top: 10,
+                bottom: 30,
+              ),
               child: TextFormField(
+                style: const TextStyle(
+                  height: 0.8,
+                ),
+                obscureText: true,
                 decoration: InputDecoration(
+                  hintText: 'Konfirmasi password',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
                   fillColor: Colors.grey[300],
                   filled: true,
-                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
                 ),
                 controller: _confirmpasswordController,
               ),
@@ -195,16 +203,17 @@ class _Reset_passwordState extends State<Reset_password> {
                   height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8)),
+                      color: ColorPallete.mainColor,
+                      borderRadius: BorderRadius.circular(6)),
                   child: Center(
                     child: Text(
-                      'Save',
+                      'Reset Password',
                       style: GoogleFonts.roboto(
-                          fontSize: 18,
-                          textStyle: const TextStyle(
-                            color: Colors.white,
-                          )),
+                        fontSize: 16,
+                        textStyle: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
