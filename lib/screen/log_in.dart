@@ -7,6 +7,7 @@ import 'package:flutter_application_3/screen/forgot_password.dart';
 import 'package:flutter_application_3/screen/user/main_menu_screen.dart';
 import 'package:flutter_application_3/screen/admin/main_menu_screen_admin.dart';
 import 'package:flutter_application_3/screen/sign_up.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -74,7 +75,7 @@ class _Log_inState extends State<Log_in> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7FF),
+      backgroundColor: const Color(0xffF6F7FF),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -97,7 +98,7 @@ class _Log_inState extends State<Log_in> {
                           style: GoogleFonts.roboto(
                             fontSize: 36,
                             textStyle: const TextStyle(
-                                color: Color(0xFF0B1EC5),
+                                color: ColorPallete.mainColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -134,25 +135,16 @@ class _Log_inState extends State<Log_in> {
                     ),
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'Masukkan email',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFFC4C4C4),
+                          color: Colors.black26,
                         ),
-                        fillColor: Colors.white,
+                        fillColor: Colors.grey[300],
                         filled: true,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
                         ),
                       ),
                       controller: _emailController,
@@ -188,25 +180,16 @@ class _Log_inState extends State<Log_in> {
                     ),
                     child: TextFormField(
                       obscureText: true,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'Masukkan password',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFFC4C4C4),
+                          color: Colors.black26,
                         ),
-                        fillColor: Colors.white,
+                        fillColor: Colors.grey[300],
                         filled: true,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
                         ),
                       ),
                       controller: _passwordController,
@@ -226,7 +209,7 @@ class _Log_inState extends State<Log_in> {
                         height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: const Color(0xFF0B1EC5),
+                            color: ColorPallete.mainColor,
                             borderRadius: BorderRadius.circular(6)),
                         child: Center(
                           child: isLoading
@@ -270,7 +253,7 @@ class _Log_inState extends State<Log_in> {
                         child: const Text(
                           ' Reset Password',
                           style: TextStyle(
-                            color: Color(0xFF0B1EC5),
+                            color: ColorPallete.mainColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -302,7 +285,7 @@ class _Log_inState extends State<Log_in> {
                         child: const Text(
                           ' Daftar',
                           style: TextStyle(
-                            color: Color(0xFF0B1EC5),
+                            color: ColorPallete.mainColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
