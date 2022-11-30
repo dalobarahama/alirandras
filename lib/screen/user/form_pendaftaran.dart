@@ -15,6 +15,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:path/path.dart';
 
 import '../../utils/color_pallete.dart';
 
@@ -171,27 +172,23 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     }
   }
 
-  _dokumenFromFiles(int index) async {
+  _dokumenFromFiles() async {
     print(_dokumenFileList!.length);
-    if (_dokumenFileList!.length < 3) {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'],
-      );
-      File? file = File(result!.files.single.path.toString());
-      setState(() {
-        _dokumenFileList!.add(file);
-      });
-    } else {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'],
-      );
-      File? file = File(result!.files.single.path.toString());
-      setState(() {
-        _dokumenFileList![index] = file;
-      });
-    }
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+      ],
+    );
+    File? file = File(result!.files.single.path.toString());
+    String basename = file.path.split('/').last;
+    print("file name: $basename");
+    setState(() {
+      _dokumenFileList!.add(file);
+    });
   }
 
   /* pickFile() async {
@@ -584,333 +581,139 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                           ],
                         ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 105,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Gambar Bangunan/Lahan',
-                            style: GoogleFonts.roboto(
-                                fontSize: 12,
-                                textStyle: const TextStyle(
-                                  color: Colors.black54,
-                                )),
-                          ),
-                          Text(
-                            '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
-                            style: GoogleFonts.roboto(
-                                fontSize: 9,
-                                textStyle: const TextStyle(
-                                  color: Colors.black54,
-                                )),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: InkWell(
-                        onTap: () {
-                          _imgFromGallery(0);
-                        },
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          child: DottedBorder(
-                            color: Colors.grey,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Center(
-                                  child: _imageFileList!.length != 0
-                                      ? _imageFileList![0] != null
-                                          ? Image.file(
-                                              File(_imageFileList![0].path))
-                                          : Text(
-                                              '+',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 30,
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.grey,
-                                                  )),
-                                            )
-                                      : Text(
-                                          '+',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 30,
-                                              textStyle: const TextStyle(
-                                                color: Colors.grey,
-                                              )),
-                                        )),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        _imgFromGallery(1);
-                      },
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        child: DottedBorder(
-                          color: Colors.grey,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7)),
-                            child: Center(
-                                child: _imageFileList!.length != 0 &&
-                                        _imageFileList!.length > 1
-                                    ? _imageFileList![1] != null
-                                        ? Image.file(
-                                            File(_imageFileList![1].path))
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: const TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )
-                                    : Text(
-                                        '+',
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 30,
-                                            textStyle: const TextStyle(
-                                              color: Colors.grey,
-                                            )),
-                                      )),
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        _imgFromGallery(2);
-                      },
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        child: DottedBorder(
-                          color: Colors.grey,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7)),
-                            child: Center(
-                                child: _imageFileList!.length != 0 &&
-                                        _imageFileList!.length > 2
-                                    ? _imageFileList![2] != null
-                                        ? Image.file(
-                                            File(_imageFileList![2].path))
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: const TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )
-                                    : Text(
-                                        '+',
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 30,
-                                            textStyle: const TextStyle(
-                                              color: Colors.grey,
-                                            )),
-                                      )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                const SizedBox(
+                  height: 24,
                 ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 15, top: 5),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'dalam format jpg, jpeg, png',
-                        style: GoogleFonts.roboto(
-                            fontSize: 9,
-                            textStyle: const TextStyle(
-                                color: Colors.black54,
-                                fontStyle: FontStyle.italic)),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 35, left: 15, right: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Lampiran Dokumen',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: const TextStyle(
-                                color: Colors.black54,
-                              )),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _dokumenFromFiles(0);
-                          },
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            child: DottedBorder(
-                              color: Colors.grey,
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Center(
-                                    child: _dokumenFileList!.length != 0
-                                        ? _dokumenFileList![0] != null
-                                            ? const Image(
-                                                image: AssetImage(
-                                                    'assets/images/pdf_icon.png'))
-                                            : Text(
-                                                '+',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 30,
-                                                    textStyle: const TextStyle(
-                                                      color: Colors.grey,
-                                                    )),
-                                              )
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: const TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )),
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _dokumenFromFiles(1);
-                          },
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            child: DottedBorder(
-                              color: Colors.grey,
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Center(
-                                    child: _dokumenFileList!.length != 0 &&
-                                            _dokumenFileList!.length > 1
-                                        ? _dokumenFileList![1] != null
-                                            ? const Image(
-                                                image: AssetImage(
-                                                    'assets/images/pdf_icon.png'))
-                                            : Text(
-                                                '+',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 30,
-                                                    textStyle: const TextStyle(
-                                                      color: Colors.grey,
-                                                    )),
-                                              )
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: const TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )),
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _dokumenFromFiles(2);
-                          },
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            child: DottedBorder(
-                              color: Colors.grey,
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Center(
-                                    child: _dokumenFileList!.length != 0 &&
-                                            _dokumenFileList!.length > 2
-                                        ? _dokumenFileList![2] != null
-                                            ? const Image(
-                                                image: AssetImage(
-                                                    'assets/images/pdf_icon.png'))
-                                            : Text(
-                                                '+',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 30,
-                                                    textStyle: const TextStyle(
-                                                      color: Colors.grey,
-                                                    )),
-                                              )
-                                        : Text(
-                                            '+',
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 30,
-                                                textStyle: const TextStyle(
-                                                  color: Colors.grey,
-                                                )),
-                                          )),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 15, top: 5),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'dalam format pdf',
-                        style: GoogleFonts.roboto(
-                            fontSize: 9,
-                            textStyle: const TextStyle(
-                                color: Colors.black54,
-                                fontStyle: FontStyle.italic)),
-                      ),
+                Text(
+                  'Upload File',
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    textStyle: const TextStyle(
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 12,
+                ),
+                InkWell(
+                  onTap: () {
+                    _dokumenFromFiles();
+                    print("file length: ${_dokumenFileList!.length}");
+                  },
+                  child: DottedBorder(
+                    color: ColorPallete.mainColor,
+                    borderType: BorderType.RRect,
+                    strokeWidth: 1,
+                    radius: const Radius.circular(6),
+                    dashPattern: const [
+                      10,
+                      3,
+                    ],
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(6),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: 65,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          // border: Border.all(color: ColorPallete.mainColor),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.upload,
+                              color: ColorPallete.mainColor,
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Text(
+                              'Browse',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: ColorPallete.mainColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    ..._dokumenFileList!.map((file) {
+                      return Container(
+                        margin: const EdgeInsets.only(
+                          top: 12,
+                        ),
+                        padding: const EdgeInsets.only(
+                          top: 14,
+                          bottom: 14,
+                          left: 17,
+                          right: 17,
+                        ),
+                        height: 80,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  child: file.path.split('.').last != 'pdf'
+                                      ? Image.file(File(file.path))
+                                      : Image.asset(
+                                          'assets/images/pdf_icon.png'),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                    file.path.split('/').last,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _dokumenFileList!.remove(file);
+                                });
+                              },
+                              child: const Icon(
+                                Icons.cancel_sharp,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 InkWell(
                   onTap: () {
