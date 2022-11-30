@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
 import 'package:flutter_application_3/utils/color_pallete.dart';
@@ -19,9 +21,19 @@ class _Detail_card_statuspengajuanState
     extends State<Detail_card_statuspengajuan> {
   ApplicationLetter1 _dataStatusPengajuan = ApplicationLetter1();
   _Detail_card_statuspengajuanState(this._dataStatusPengajuan);
-  @override
+
+  List<String>? _dokumenFileList = <String>[];
+
   bool isMap = false;
+
+  @override
   void initState() {
+    for (var item in _dataStatusPengajuan.registrationFormAttachments!) {
+      _dokumenFileList!.add(item.file!);
+    }
+    for (var item in _dataStatusPengajuan.registrationFormDocuments!) {
+      _dokumenFileList!.add(item.document!);
+    }
     setState(() {
       double? lat = _dataStatusPengajuan.lat;
       double? lng = _dataStatusPengajuan.lng;
@@ -111,6 +123,125 @@ class _Detail_card_statuspengajuanState
                   fontSize: 14,
                 ),
               ),
+              const SizedBox(
+                height: 12,
+              ),
+              _dataStatusPengajuan.mailRequest != null
+                  ? _dataStatusPengajuan.mailRequest!.mailPermissions != null
+                      ? Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: ListView.separated(
+                              itemCount: _dataStatusPengajuan
+                                  .mailRequest!.mailPermissions!.length,
+                              shrinkWrap: true,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
+                                thickness: 1,
+                              ),
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(0),
+                              itemBuilder: (BuildContext context, int index1) {
+                                return _dataStatusPengajuan.mailRequest!
+                                            .mailPermissions![index1] !=
+                                        null
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            _dataStatusPengajuan
+                                                        .mailRequest!
+                                                        .mailPermissions![
+                                                            index1]
+                                                        .status
+                                                        .toString()
+                                                        .toLowerCase() !=
+                                                    'menunggu'
+                                                ? const ImageIcon(
+                                                    AssetImage(
+                                                        'assets/icons/icon_user_permission.png'),
+                                                    color: Colors.green)
+                                                : const ImageIcon(
+                                                    AssetImage(
+                                                        'assets/icons/icon_user_permission.png'),
+                                                    color: Colors.grey),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  _dataStatusPengajuan
+                                                              .mailRequest!
+                                                              .mailPermissions![
+                                                                  index1]
+                                                              .status!
+                                                              .toLowerCase() !=
+                                                          'menunggu'
+                                                      ? Text(
+                                                          DateFormat(
+                                                                  'EEEE, dd MMMM yy',
+                                                                  'id_ID')
+                                                              .format(_dataStatusPengajuan
+                                                                  .mailRequest!
+                                                                  .mailPermissions![
+                                                                      index1]
+                                                                  .updatedAt!),
+                                                        )
+                                                      : Container(),
+                                                  Text(
+                                                    'Surat telah diverifikasi oleh ${_dataStatusPengajuan.mailRequest!.mailPermissions![index1].user!.position}',
+                                                    style: const TextStyle(
+                                                        color: Colors.black54),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : Container();
+                              },
+                            ),
+                          ),
+                        )
+                      : Container()
+                  : Container(),
+              const SizedBox(
+                height: 24,
+              ),
+              _dataStatusPengajuan.status!.toString() == 'ditolak'
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Alasan Ditolak',
+                          style: TextStyle(
+                            color: ColorPallete.mainColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          _dataStatusPengajuan.reasonRejection ?? '-',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        )
+                      ],
+                    )
+                  : Container(),
               const SizedBox(
                 height: 24,
               ),
@@ -278,182 +409,77 @@ class _Detail_card_statuspengajuanState
               const SizedBox(
                 height: 24,
               ),
-              _dataStatusPengajuan.mailRequest != null
-                  ? _dataStatusPengajuan.mailRequest!.mailPermissions != null
-                      ? Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ListView.builder(
-                              itemCount: _dataStatusPengajuan
-                                  .mailRequest!.mailPermissions!.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.all(0),
-                              itemBuilder: (BuildContext context, int index1) {
-                                return _dataStatusPengajuan.mailRequest!
-                                            .mailPermissions![index1] !=
-                                        null
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Container(
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              _dataStatusPengajuan
-                                                          .mailRequest!
-                                                          .mailPermissions![
-                                                              index1]
-                                                          .status
-                                                          .toString()
-                                                          .toLowerCase() !=
-                                                      'menunggu'
-                                                  ? const Icon(Icons.person,
-                                                      color: Colors.green)
-                                                  : const Icon(Icons.person,
-                                                      color: Colors.grey),
-                                              const SizedBox(
-                                                width: 20,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    _dataStatusPengajuan
-                                                                .mailRequest!
-                                                                .mailPermissions![
-                                                                    index1]
-                                                                .status!
-                                                                .toLowerCase() !=
-                                                            'menunggu'
-                                                        ? Text(
-                                                            DateFormat(
-                                                                    'EEEE, dd MMMM yy',
-                                                                    'id_ID')
-                                                                .format(_dataStatusPengajuan
-                                                                    .mailRequest!
-                                                                    .mailPermissions![
-                                                                        index1]
-                                                                    .updatedAt!),
-                                                          )
-                                                        : Container(),
-                                                    Text(
-                                                      'Surat telah diverifikasi oleh ${_dataStatusPengajuan.mailRequest!.mailPermissions![index1].user!.position}',
-                                                      style: const TextStyle(
-                                                          color:
-                                                              Colors.black54),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : Container();
-                              },
-                            ),
-                          ),
-                        )
-                      : Container()
-                  : Container(),
-              _dataStatusPengajuan.status!.toString() == 'ditolak'
-                  ? Column(
-                      children: [
-                        const Text(
-                          'Alasan Ditolak',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          _dataStatusPengajuan.reasonRejection ?? '-',
-                          style: const TextStyle(
-                              color: Colors.black54, fontSize: 16),
-                        )
-                      ],
-                    )
-                  : Container(),
               const Text(
-                'Gambar Dokumen / Lahan',
+                'FIle terlampir',
                 style: TextStyle(
                   color: ColorPallete.mainColor,
                   fontSize: 14,
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 6,
               ),
-              _dataStatusPengajuan.registrationFormAttachments!.length > 0
-                  ? Container(
-                      child: ListView.builder(
-                        itemCount: _dataStatusPengajuan
-                            .registrationFormAttachments!.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(0),
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              String _link =
-                                  'https://alirandras.inotive.id${_dataStatusPengajuan.registrationFormAttachments![index].file}';
-                              _launchURL(_link);
-                            },
-                            child: Text(
-                              'Lampiran${index + 1}',
-                              style: const TextStyle(
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          );
-                        },
+              Column(
+                children: [
+                  ..._dokumenFileList!.map((file) {
+                    return Container(
+                      margin: const EdgeInsets.only(
+                        top: 6,
                       ),
-                    )
-                  : const Text('-'),
+                      padding: const EdgeInsets.only(
+                        top: 14,
+                        bottom: 14,
+                        left: 17,
+                        right: 17,
+                      ),
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          String link = 'https://alirandras.inotive.id$file';
+                          _launchURL(link);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  child: file.split('.').last != 'pdf'
+                                      ? Image.file(File(file))
+                                      : Image.asset(
+                                          'assets/images/pdf_icon.png'),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                    file.split('/').last,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
               const SizedBox(
                 height: 24,
-              ),
-              const Text(
-                'Lampiran Dokumen',
-                style: TextStyle(
-                  color: ColorPallete.mainColor,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              ListView.builder(
-                itemCount:
-                    _dataStatusPengajuan.registrationFormDocuments!.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(0),
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      String _link =
-                          'http://alirandras.inotive.id${_dataStatusPengajuan.registrationFormDocuments![index].document}';
-                      _launchURL(_link);
-                    },
-                    child: Text(
-                      'Lampiran${index + 1}',
-                      style: const TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const SizedBox(
-                height: 30,
               ),
             ],
           ),

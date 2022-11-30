@@ -718,10 +718,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 InkWell(
                   onTap: () {
                     submit_formulir();
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (BuildContext context) =>
-                    //         customDialog(context));
                   },
                   child: Container(
                     height: 50,
