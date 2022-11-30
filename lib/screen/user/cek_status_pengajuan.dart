@@ -186,7 +186,12 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                     width: double.infinity,
                     decoration: const BoxDecoration(),
                     child: isLoading == true
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 50),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
                         : ListView.builder(
                             itemCount: _listPengajuanFiltered!.length,
                             shrinkWrap: true,
