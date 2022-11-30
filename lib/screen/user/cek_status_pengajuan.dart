@@ -84,8 +84,6 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
         print('ceksts');
         print(value.toString());
         if (value == 'success') {
-          Fluttertoast.showToast(
-              msg: 'Berhasil Hapus Data', timeInSecForIosWeb: 2);
           setState(() {
             isDelete = false;
             deleteCont = false;
@@ -631,10 +629,10 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                             },
                                             child: Row(
                                               children: [
-                                                const Icon(
-                                                  Icons.delete,
+                                                Image.asset(
+                                                  'assets/icons/trash.png',
+                                                  width: 15,
                                                   color: Colors.white,
-                                                  size: 15,
                                                 ),
                                                 const SizedBox(
                                                   width: 6,
@@ -727,6 +725,11 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                               deleteCont = true;
                                               deletePengajuan(idDel);
                                             });
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        customDialog());
                                           },
                                           child: Container(
                                             width: double.infinity,
@@ -789,6 +792,78 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                 )
               : Container(),
         ],
+      ),
+    );
+  }
+
+  Widget customDialog() {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: SizedBox(
+        height: 230,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/dustbin_success.png',
+                height: 72,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Data berhaslil dihapus',
+                style: GoogleFonts.roboto(
+                  fontSize: 14,
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 10,
+                  left: 10,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColorPallete.mainColor,
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Ok',
+                        style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
