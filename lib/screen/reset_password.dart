@@ -133,15 +133,15 @@ class _Reset_passwordState extends State<Reset_password> {
                   height: 0.8,
                 ),
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Masukkan password',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black26,
                   ),
-                  fillColor: Colors.grey[300],
+                  fillColor: Colors.white,
                   filled: true,
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -179,15 +179,15 @@ class _Reset_passwordState extends State<Reset_password> {
                   height: 0.8,
                 ),
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Konfirmasi password',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black26,
                   ),
-                  fillColor: Colors.grey[300],
+                  fillColor: Colors.white,
                   filled: true,
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -195,7 +195,11 @@ class _Reset_passwordState extends State<Reset_password> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 33, right: 33, bottom: 20),
+              padding: const EdgeInsets.only(
+                left: 30,
+                right: 30,
+                bottom: 20,
+              ),
               child: InkWell(
                 onTap: () {
                   reset_password();

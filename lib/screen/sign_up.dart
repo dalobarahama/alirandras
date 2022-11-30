@@ -117,15 +117,15 @@ class _Sign_upState extends State<Sign_up> {
                         style: const TextStyle(
                           height: 0.8,
                         ),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Masukkan nama',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.black26,
                           ),
-                          fillColor: Colors.grey[300],
+                          fillColor: Colors.white,
                           filled: true,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
@@ -163,15 +163,15 @@ class _Sign_upState extends State<Sign_up> {
                         style: const TextStyle(
                           height: 0.8,
                         ),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Masukkan email',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.black26,
                           ),
-                          fillColor: Colors.grey[300],
+                          fillColor: Colors.white,
                           filled: true,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
@@ -211,15 +211,15 @@ class _Sign_upState extends State<Sign_up> {
                           height: 0.8,
                         ),
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Masukkan password',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.black26,
                           ),
-                          fillColor: Colors.grey[300],
+                          fillColor: Colors.white,
                           filled: true,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
@@ -243,8 +243,9 @@ class _Sign_upState extends State<Sign_up> {
                           child: isLoading
                               ? const Center(
                                   child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ))
+                                    color: Colors.white,
+                                  ),
+                                )
                               : Center(
                                   child: Text(
                                     'Sign Up',

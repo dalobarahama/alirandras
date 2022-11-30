@@ -100,15 +100,15 @@ class _Forgot_passwordState extends State<Forgot_password> {
               ),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Masukkan email',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black26,
                   ),
-                  fillColor: Colors.grey[300],
+                  fillColor: Colors.white,
                   filled: true,
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),

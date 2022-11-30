@@ -77,194 +77,190 @@ class _Log_inState extends State<Log_in> {
     return Scaffold(
       backgroundColor: ColorPallete.mainBackgroundColor,
       body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(color: Colors.white70),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 90,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Sign In',
-                          style: GoogleFonts.roboto(
-                            fontSize: 36,
-                            textStyle: const TextStyle(
-                                color: ColorPallete.mainColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Email',
-                          style: GoogleFonts.roboto(
-                            fontSize: 15,
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                      right: 30,
-                      top: 12,
-                      bottom: 20,
-                    ),
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Masukkan email',
-                        hintStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black26,
-                        ),
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      controller: _emailController,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Password',
-                          style: GoogleFonts.roboto(
-                            fontSize: 15,
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                      right: 30,
-                      top: 12,
-                      bottom: 30,
-                    ),
-                    child: TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Masukkan password',
-                        hintStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black26,
-                        ),
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      controller: _passwordController,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                      right: 30,
-                      bottom: 30,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        login();
-                      },
-                      child: Container(
-                        height: 50,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: ColorPallete.mainColor,
-                            borderRadius: BorderRadius.circular(6)),
-                        child: Center(
-                          child: isLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white70,
-                                )
-                              : Text(
-                                  'Sign In',
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 18,
-                                    textStyle: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                const SizedBox(
+                  height: 90,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: Row(
                     children: [
-                      const Text(
-                        'Lupa password?',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
+                      Text(
+                        'Sign In',
+                        style: GoogleFonts.roboto(
+                          fontSize: 36,
+                          textStyle: const TextStyle(
+                              color: ColorPallete.mainColor,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const Forgot_password();
-                          }));
-                        },
-                        child: const Text(
-                          ' Reset Password',
-                          style: TextStyle(
-                            color: ColorPallete.mainColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Email',
+                        style: GoogleFonts.roboto(
+                          fontSize: 15,
+                          textStyle: const TextStyle(
+                            color: Colors.black,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                    right: 30,
+                    top: 12,
+                    bottom: 20,
+                  ),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      hintText: 'Masukkan email',
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black26,
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    controller: _emailController,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Password',
+                        style: GoogleFonts.roboto(
+                          fontSize: 15,
+                          textStyle: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                    right: 30,
+                    top: 12,
+                    bottom: 30,
+                  ),
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Masukkan password',
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black26,
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    controller: _passwordController,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                    right: 30,
+                    bottom: 30,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      login();
+                    },
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: ColorPallete.mainColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Center(
+                        child: isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Sign In',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18,
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Lupa password?',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const Forgot_password();
+                        }));
+                      },
+                      child: const Text(
+                        ' Reset Password',
+                        style: TextStyle(
+                          color: ColorPallete.mainColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
