@@ -16,6 +16,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../utils/color_pallete.dart';
+
 class Form_pendaftaran extends StatefulWidget {
   const Form_pendaftaran({Key? key}) : super(key: key);
 
@@ -321,52 +323,225 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorPallete.mainBackgroundColor,
+        title: const Text(
+          "Form Pengajuan",
+        ),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      backgroundColor: ColorPallete.mainBackgroundColor,
       body: Stack(children: [
         SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 50, left: 15),
-                child: Row(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 35,
+              left: 28,
+              right: 28,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Jenis Permohonan',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: _buildTypeDropdown(),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Text(
+                  'Kecamatan',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: _buildKecamatanDropdown(),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Text(
+                  'Kelurahan',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: _buildKelurahanDropdown(),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.lightBlue[300],
-                          size: 30,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Luas Bangunan',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                            controller: _luasBangunanController,
+                            decoration: InputDecoration(
+                              hintText: 'Luas Bangunan',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[400],
+                              ),
+                              fillColor: Colors.white,
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Luas Lahan',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                          width: 150,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                            controller: _luasLahanController,
+                            decoration: InputDecoration(
+                              hintText: 'Luas Lahan',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[400],
+                              ),
+                              fillColor: Colors.white,
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 27, top: 20),
-                    child: Container(
-                      child: Text(
-                        'Isi Formulir Pendaftaran',
-                        style: GoogleFonts.roboto(
-                            fontSize: 23,
-                            fontWeight: FontWeight.w400,
-                            textStyle: const TextStyle(
-                              color: Colors.lightBlue,
-                            )),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Text(
+                  'Lokasi Bangunan',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: TextField(
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                    controller: _lokasiBangunanController,
+                    decoration: InputDecoration(
+                      hintText: 'Lokasi Bangunan',
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[400],
+                      ),
+                      fillColor: Colors.white,
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Container(
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Container(
                   height: 230,
                   width: double.infinity,
                   color: Colors.grey,
@@ -409,252 +584,96 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                           ],
                         ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Jenis Permohonan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: _buildTypeDropdown(),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Kecamatan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                        width: 215,
-                        height: 50,
-                        child: _listKecamatan == null
-                            ? const CircularProgressIndicator()
-                            : _buildKecamatanDropdown()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Kelurahan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                        width: 215,
-                        height: 50,
-                        child: _buildKelurahanDropdown()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Luas Bangunan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _luasBangunanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Luas Lahan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _luasLahanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       width: 105,
-                      child: Text(
-                        'Lokasi Bangunan / Lahan',
-                        style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            textStyle: const TextStyle(
-                              color: Colors.black54,
-                            )),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Gambar Bangunan/Lahan',
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                textStyle: const TextStyle(
+                                  color: Colors.black54,
+                                )),
+                          ),
+                          Text(
+                            '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
+                            style: GoogleFonts.roboto(
+                                fontSize: 9,
+                                textStyle: const TextStyle(
+                                  color: Colors.black54,
+                                )),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _lokasiBangunanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 105,
-                      child: Text(
-                        'Peruntukan Bangunan',
-                        style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            textStyle: const TextStyle(
-                              color: Colors.black54,
-                            )),
-                      ),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _peruntukanBangunanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 105,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Gambar Bangunan/Lahan',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 12,
-                                  textStyle: const TextStyle(
-                                    color: Colors.black54,
-                                  )),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: InkWell(
+                        onTap: () {
+                          _imgFromGallery(0);
+                        },
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          child: DottedBorder(
+                            color: Colors.grey,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7)),
+                              child: Center(
+                                  child: _imageFileList!.length != 0
+                                      ? _imageFileList![0] != null
+                                          ? Image.file(
+                                              File(_imageFileList![0].path))
+                                          : Text(
+                                              '+',
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 30,
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.grey,
+                                                  )),
+                                            )
+                                      : Text(
+                                          '+',
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 30,
+                                              textStyle: const TextStyle(
+                                                color: Colors.grey,
+                                              )),
+                                        )),
                             ),
-                            Text(
-                              '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 9,
-                                  textStyle: const TextStyle(
-                                    color: Colors.black54,
-                                  )),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: InkWell(
-                          onTap: () {
-                            _imgFromGallery(0);
-                          },
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _imgFromGallery(1);
+                      },
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        child: DottedBorder(
+                          color: Colors.grey,
                           child: Container(
-                            width: 60,
                             height: 60,
-                            child: DottedBorder(
-                              color: Colors.grey,
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Center(
-                                    child: _imageFileList!.length != 0
-                                        ? _imageFileList![0] != null
-                                            ? Image.file(
-                                                File(_imageFileList![0].path))
-                                            : Text(
-                                                '+',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 30,
-                                                    textStyle: const TextStyle(
-                                                      color: Colors.grey,
-                                                    )),
-                                              )
+                            width: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Center(
+                                child: _imageFileList!.length != 0 &&
+                                        _imageFileList!.length > 1
+                                    ? _imageFileList![1] != null
+                                        ? Image.file(
+                                            File(_imageFileList![1].path))
                                         : Text(
                                             '+',
                                             style: GoogleFonts.roboto(
@@ -662,129 +681,93 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                                                 textStyle: const TextStyle(
                                                   color: Colors.grey,
                                                 )),
-                                          )),
-                              ),
-                            ),
+                                          )
+                                    : Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: const TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          _imgFromGallery(1);
-                        },
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          child: DottedBorder(
-                            color: Colors.grey,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Center(
-                                  child: _imageFileList!.length != 0 &&
-                                          _imageFileList!.length > 1
-                                      ? _imageFileList![1] != null
-                                          ? Image.file(
-                                              File(_imageFileList![1].path))
-                                          : Text(
-                                              '+',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 30,
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.grey,
-                                                  )),
-                                            )
-                                      : Text(
-                                          '+',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 30,
-                                              textStyle: const TextStyle(
-                                                color: Colors.grey,
-                                              )),
-                                        )),
-                            ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _imgFromGallery(2);
+                      },
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        child: DottedBorder(
+                          color: Colors.grey,
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7)),
+                            child: Center(
+                                child: _imageFileList!.length != 0 &&
+                                        _imageFileList!.length > 2
+                                    ? _imageFileList![2] != null
+                                        ? Image.file(
+                                            File(_imageFileList![2].path))
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: const TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )
+                                    : Text(
+                                        '+',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            textStyle: const TextStyle(
+                                              color: Colors.grey,
+                                            )),
+                                      )),
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          _imgFromGallery(2);
-                        },
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          child: DottedBorder(
-                            color: Colors.grey,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Center(
-                                  child: _imageFileList!.length != 0 &&
-                                          _imageFileList!.length > 2
-                                      ? _imageFileList![2] != null
-                                          ? Image.file(
-                                              File(_imageFileList![2].path))
-                                          : Text(
-                                              '+',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 30,
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.grey,
-                                                  )),
-                                            )
-                                      : Text(
-                                          '+',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 30,
-                                              textStyle: const TextStyle(
-                                                color: Colors.grey,
-                                              )),
-                                        )),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 15, top: 5),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'dalam format jpg, jpeg, png',
-                      style: GoogleFonts.roboto(
-                          fontSize: 9,
-                          textStyle: const TextStyle(
-                              color: Colors.black54,
-                              fontStyle: FontStyle.italic)),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 15, top: 5),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'dalam format jpg, jpeg, png',
+                        style: GoogleFonts.roboto(
+                            fontSize: 9,
+                            textStyle: const TextStyle(
+                                color: Colors.black54,
+                                fontStyle: FontStyle.italic)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Lampiran Dokumen',
-                        style: GoogleFonts.roboto(
-                            fontSize: 12,
-                            textStyle: const TextStyle(
-                              color: Colors.black54,
-                            )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: InkWell(
+                Container(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 35, left: 15, right: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Lampiran Dokumen',
+                          style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              textStyle: const TextStyle(
+                                color: Colors.black54,
+                              )),
+                        ),
+                        InkWell(
                           onTap: () {
                             _dokumenFromFiles(0);
                           },
@@ -824,144 +807,143 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                             ),
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _dokumenFromFiles(1);
-                        },
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          child: DottedBorder(
-                            color: Colors.grey,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Center(
-                                  child: _dokumenFileList!.length != 0 &&
-                                          _dokumenFileList!.length > 1
-                                      ? _dokumenFileList![1] != null
-                                          ? const Image(
-                                              image: AssetImage(
-                                                  'assets/images/pdf_icon.png'))
-                                          : Text(
-                                              '+',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 30,
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.grey,
-                                                  )),
-                                            )
-                                      : Text(
-                                          '+',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 30,
-                                              textStyle: const TextStyle(
-                                                color: Colors.grey,
-                                              )),
-                                        )),
+                        InkWell(
+                          onTap: () {
+                            _dokumenFromFiles(1);
+                          },
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            child: DottedBorder(
+                              color: Colors.grey,
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7)),
+                                child: Center(
+                                    child: _dokumenFileList!.length != 0 &&
+                                            _dokumenFileList!.length > 1
+                                        ? _dokumenFileList![1] != null
+                                            ? const Image(
+                                                image: AssetImage(
+                                                    'assets/images/pdf_icon.png'))
+                                            : Text(
+                                                '+',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 30,
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.grey,
+                                                    )),
+                                              )
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: const TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _dokumenFromFiles(2);
-                        },
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          child: DottedBorder(
-                            color: Colors.grey,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Center(
-                                  child: _dokumenFileList!.length != 0 &&
-                                          _dokumenFileList!.length > 2
-                                      ? _dokumenFileList![2] != null
-                                          ? const Image(
-                                              image: AssetImage(
-                                                  'assets/images/pdf_icon.png'))
-                                          : Text(
-                                              '+',
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 30,
-                                                  textStyle: const TextStyle(
-                                                    color: Colors.grey,
-                                                  )),
-                                            )
-                                      : Text(
-                                          '+',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 30,
-                                              textStyle: const TextStyle(
-                                                color: Colors.grey,
-                                              )),
-                                        )),
+                        InkWell(
+                          onTap: () {
+                            _dokumenFromFiles(2);
+                          },
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            child: DottedBorder(
+                              color: Colors.grey,
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7)),
+                                child: Center(
+                                    child: _dokumenFileList!.length != 0 &&
+                                            _dokumenFileList!.length > 2
+                                        ? _dokumenFileList![2] != null
+                                            ? const Image(
+                                                image: AssetImage(
+                                                    'assets/images/pdf_icon.png'))
+                                            : Text(
+                                                '+',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 30,
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.grey,
+                                                    )),
+                                              )
+                                        : Text(
+                                            '+',
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 30,
+                                                textStyle: const TextStyle(
+                                                  color: Colors.grey,
+                                                )),
+                                          )),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 15, top: 5),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'dalam format pdf',
-                      style: GoogleFonts.roboto(
-                          fontSize: 9,
-                          textStyle: const TextStyle(
-                              color: Colors.black54,
-                              fontStyle: FontStyle.italic)),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: InkWell(
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 15, top: 5),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'dalam format pdf',
+                        style: GoogleFonts.roboto(
+                            fontSize: 9,
+                            textStyle: const TextStyle(
+                                color: Colors.black54,
+                                fontStyle: FontStyle.italic)),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                InkWell(
                   onTap: () {
                     submit_formulir();
                   },
                   child: Container(
-                    height: 70,
+                    height: 50,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10)),
+                        color: ColorPallete.mainColor,
+                        borderRadius: BorderRadius.circular(6)),
                     child: Center(
-                        child: isLoading1 == true
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Text(
-                                'Submit',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    textStyle: const TextStyle(
-                                      color: Colors.white70,
-                                    )),
-                              )),
+                      child: isLoading1 == true
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : Text(
+                              'Submit',
+                              style: GoogleFonts.roboto(
+                                fontSize: 16,
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
           ),
         ),
         isFinish[3] == true
@@ -1067,11 +1049,18 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   Widget _buildKecamatanDropdown() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(5)),
-      padding: const EdgeInsets.only(left: 12, right: 24),
+        borderRadius: BorderRadius.circular(6),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
       child: DropdownButton<GetKecamatan>(
-        style: const TextStyle(fontSize: 12, color: Colors.black54),
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+        ),
         onChanged: (value) => setState(() {
           _selectedKecamatan = value;
           print(_selectedKecamatan!.id);
@@ -1080,16 +1069,23 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           //Future.microtask(() => context.requestFocus(FocusNode()));
         }),
         value: _selectedKecamatan,
-        hint: const Text('Pilih Kecamatan'),
+        hint: Text(
+          'Pilih Kecamatan',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[400],
+          ),
+        ),
         items: _listKecamatan.map((GetKecamatan value) {
           return DropdownMenuItem<GetKecamatan>(
             value: value,
             child: Text(value.name!),
           );
         }).toList(),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
         isExpanded: true,
         underline: const SizedBox.shrink(),
+        icon: const Icon(Icons.keyboard_arrow_down),
       ),
     );
   }
@@ -1097,33 +1093,52 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   Widget _buildKelurahanDropdown() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(5)),
-      padding: const EdgeInsets.only(left: 12, right: 24),
+        borderRadius: BorderRadius.circular(6),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
       child: _listKelurahan == null
           ? Container(
               height: 45,
               width: double.infinity,
               padding: const EdgeInsets.only(top: 8),
-              child: const Text('Pilih Kelurahan',
-                  style: TextStyle(fontSize: 12, color: Colors.black54)),
+              child: Text(
+                'Pilih Permohonan',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                ),
+              ),
             )
           : DropdownButton<GetKelurahan>(
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
               onChanged: (value) => setState(() {
                 _selectedKelurahan = value;
               }),
               value: _selectedKelurahan,
-              hint: const Text('Pilih Kelurahan'),
+              hint: Text(
+                'Pilih Kelurahan',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                ),
+              ),
               items: _listKelurahan.map((GetKelurahan value) {
                 return DropdownMenuItem<GetKelurahan>(
                   value: value,
                   child: Text(value.name!),
                 );
               }).toList(),
-              borderRadius: BorderRadius.circular(7),
+              borderRadius: BorderRadius.circular(6),
               isExpanded: true,
               underline: const SizedBox.shrink(),
+              icon: const Icon(Icons.keyboard_arrow_down),
             ),
     );
   }
@@ -1131,21 +1146,39 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   Widget _buildTypeDropdown() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(5)),
-      padding: const EdgeInsets.only(left: 12, right: 24),
+        borderRadius: BorderRadius.circular(6),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
       child: jenis_permohonan == null
           ? Container(
               height: 45,
               width: double.infinity,
               padding: const EdgeInsets.only(top: 8),
-              child: const Text('Pilih Jenis Permohonan',
-                  style: TextStyle(fontSize: 12, color: Colors.black54)),
+              child: Text(
+                'Pilih Permohonan',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                ),
+              ),
             )
           : DropdownButton<String>(
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
               value: _selectedPermohonan,
-              hint: const Text('Pilih Jenis Permohonan'),
+              hint: Text(
+                'Pilih Permohonan',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                ),
+              ),
               onChanged: (newValue) => setState(() {
                 _selectedPermohonan = newValue;
               }),
@@ -1155,9 +1188,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   child: Text(value1),
                 );
               }).toList(),
-              borderRadius: BorderRadius.circular(7),
+              borderRadius: BorderRadius.circular(6),
               isExpanded: true,
               underline: const SizedBox.shrink(),
+              icon: const Icon(Icons.keyboard_arrow_down),
             ),
     );
   }
