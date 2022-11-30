@@ -451,7 +451,8 @@ class _Detail_card_statuspengajuanState
                                 SizedBox(
                                   width: 50,
                                   child: file.split('.').last != 'pdf'
-                                      ? Image.file(File(file))
+                                      ? Image.network(
+                                          'https://alirandras.inotive.id$file')
                                       : Image.asset(
                                           'assets/images/pdf_icon.png'),
                                 ),
@@ -459,7 +460,7 @@ class _Detail_card_statuspengajuanState
                                   width: 16,
                                 ),
                                 SizedBox(
-                                  width: 150,
+                                  width: 200,
                                   child: Text(
                                     file.split('/').last,
                                     overflow: TextOverflow.ellipsis,

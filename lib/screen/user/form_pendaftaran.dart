@@ -15,7 +15,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:path/path.dart';
 
 import '../../utils/color_pallete.dart';
 
@@ -537,6 +536,16 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 ),
                 const SizedBox(
                   height: 24,
+                ),
+                const Text(
+                  'Map',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 Container(
                   height: 230,

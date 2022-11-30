@@ -22,6 +22,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/color_pallete.dart';
+
 class EditForm extends StatefulWidget {
   ApplicationLetter1 _dataForm = ApplicationLetter1();
   EditForm(this._dataForm);
@@ -75,6 +77,8 @@ class _EditFormState extends State<EditForm> {
     _dokumenFileList = value == null ? null : [value];
   }
 
+  List<String>? _dokumenFileListFromUrl = <String>[];
+
   List<bool> isFinish = [
     false,
     false,
@@ -101,11 +105,13 @@ class _EditFormState extends State<EditForm> {
       if (_dataForm.registrationFormAttachments != null) {
         for (var item in _dataForm.registrationFormAttachments!) {
           countImg += 1;
+          _dokumenFileListFromUrl!.add(item.file!);
         }
       }
       if (_dataForm.registrationFormDocuments != null) {
         for (var item in _dataForm.registrationFormDocuments!) {
           countDoc += 1;
+          _dokumenFileListFromUrl!.add(item.document!);
         }
       }
       print('count image $countImg');
@@ -140,21 +146,20 @@ class _EditFormState extends State<EditForm> {
     }
   }
 
-  _dokumenFromFiles(int index) async {
-    print(_dokumenFileList!.length);
-    if (_dokumenFileList!.length < 3) {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf'],
-      );
-      if (result != null) {
-        File? file = File(result.files.single.path.toString());
-        setState(() {
-          _dokumenFileList!.add(file);
-          countDoc += 1;
-        });
-      }
-    }
+  _dokumenFromFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+      ],
+    );
+    File? file = File(result!.files.single.path.toString());
+    setState(() {
+      _dokumenFileList!.add(file);
+    });
   }
 
   getKecamatan() async {
@@ -397,1507 +402,494 @@ class _EditFormState extends State<EditForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorPallete.mainBackgroundColor,
+        title: const Text(
+          "Edit Pengajuan",
+        ),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      backgroundColor: ColorPallete.mainBackgroundColor,
       body: SingleChildScrollView(
-        child: Stack(children: [
-          Column(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 35,
+            left: 28,
+            right: 28,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 50, left: 15),
-                child: Row(
-                  children: [
-                    Container(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.lightBlue[300],
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ],
+              const Text(
+                'Jenis Permohonan',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
                 ),
               ),
+              const SizedBox(
+                height: 12,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: _buildJenisPermohonanDropdown(),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Kecamatan',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: _buildKecamatanDropdown(),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Kelurahan',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: _buildJenisPermohonanDropdown(),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 27, top: 20),
-                    child: Container(
-                      child: Text(
-                        'Isi Formulir Pendaftaran',
-                        style: GoogleFonts.roboto(
-                            fontSize: 23,
-                            fontWeight: FontWeight.w400,
-                            textStyle: const TextStyle(
-                              color: Colors.lightBlue,
-                            )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Luas Bangunan',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                        width: 150,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: TextField(
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                          controller: _luasBangunanController,
+                          decoration: InputDecoration(
+                            hintText: 'Luas Bangunan',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+                            ),
+                            fillColor: Colors.white,
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Luas Lahan',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                        width: 150,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: TextField(
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                          controller: _luasLahanController,
+                          decoration: InputDecoration(
+                            hintText: 'Luas Lahan',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+                            ),
+                            fillColor: Colors.white,
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Container(
-                  height: 230,
-                  width: double.infinity,
-                  color: Colors.grey,
-                  child: loc == false
-                      ? const Center(child: CircularProgressIndicator())
-                      : FlutterMap(
-                          options: MapOptions(
-                              center: point,
-                              zoom: 18.0,
-                              onTap: (p, y) {
-                                setState(() {
-                                  point = y;
-                                  print(point);
-                                  lat = y.latitude;
-                                  lang = y.longitude;
-                                  _getPlace(lat, lang);
-                                });
-                              }),
-                          children: [
-                            TileLayer(
-                              urlTemplate:
-                                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                              subdomains: const ['a', 'b', 'c'],
-                            ),
-                            MarkerLayer(markers: [
-                              Marker(
-                                  width: 100,
-                                  height: 100,
-                                  point: point,
-                                  builder: (ctx) => Container(
-                                        child: const Image(
-                                          image: AssetImage(
-                                              'assets/images/Vector.png'),
-                                        ),
-                                      ))
-                            ])
-                          ],
-                        ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Lokasi Bangunan',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Jenis Permohonan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: DropdownSearch<String>(
-                        // mode: Mode.MENU,
-                        // showSelectedItems: true,
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        selectedItem: jenisPermohonan,
-                        items: jenis_permohonan,
-                        //  hint: "Pilih Jenis Permohonan",
-                        dropdownBuilder: (context, selectedItem) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 10),
-                            child: Text(
-                              selectedItem ?? 'Pilih Jenis Permohonan',
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.black54),
-                            ),
-                          );
-                        },
-                        // popupItemBuilder: (context, item, isSelected) {
-                        //   return Container(
-                        //     padding: const EdgeInsets.symmetric(
-                        //         horizontal: 20, vertical: 10),
-                        //     child: Text(
-                        //       item,
-                        //       style: const TextStyle(
-                        //           fontSize: 12, color: Colors.black54),
-                        //     ),
-                        //   );
-                        // },
-                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                          showSelectedItems: true,
-                          itemBuilder: (context, item, isSelected) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.black54),
-                              ),
-                            );
-                          },
-                          showSearchBox: true,
-                        ),
-
-                        // dropdownBuilder: _customDropDownExample,
-                        // dropdownSearchBaseStyle: const TextStyle(
-                        //     fontSize: 12.0, color: Colors.black54),
-                        //   dropdownDecoratorProps: DropDownDecoratorProps(
-                        //   dropdownSearchDecoration: InputDecoration(
-                        //     labelText: 'User *',
-                        //     filled: true,
-                        //     fillColor:
-                        //         Theme.of(context).inputDecorationTheme.fillColor,
-                        //   ),
-                        // ),
-
-                        onChanged: (value) {
-                          setState(() {
-                            jenisPermohonan = value!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Kecamatan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                        width: 215,
-                        height: 50,
-                        child: _listKecamatan == null
-                            ? const CircularProgressIndicator()
-                            : _buildKecamatanDropdown()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Kelurahan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                        width: 215,
-                        height: 50,
-                        child: _buildKelurahanDropdown()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Luas Bangunan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _luasBangunanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Luas Lahan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _luasLahanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Lokasi Bangunan/Lahan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _lokasiBangunanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Peruntukan Bangunan',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
-                    ),
-                    Container(
-                      width: 215,
-                      height: 50,
-                      child: TextField(
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black54),
-                        controller: _peruntukanBangunanController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 105,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Gambar Bangunan/Lahan',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 12,
-                                    textStyle: const TextStyle(
-                                      color: Colors.black54,
-                                    )),
-                              ),
-                              Text(
-                                '(Deetail Site Plan, Peta Kontur, Tata Kelola Air',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 9,
-                                    textStyle: const TextStyle(
-                                      color: Colors.black54,
-                                    )),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 250,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  countImg <= 3
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 30),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                width: 60,
-                                                height: 60,
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    countImg < 3
-                                                        ? _imgFromGallery(0)
-                                                        : Fluttertoast.showToast(
-                                                            msg:
-                                                                'Maksimal 3 gambar');
-                                                  },
-                                                  child: DottedBorder(
-                                                    color: Colors.grey,
-                                                    child: Container(
-                                                      height: 60,
-                                                      width: 60,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(7)),
-                                                      child: Center(
-                                                          child: _imageFileList!
-                                                                      .length >
-                                                                  0
-                                                              ? Image.file(File(
-                                                                  (_imageFileList![
-                                                                          0]
-                                                                      .path)))
-                                                              : Text(
-                                                                  '+',
-                                                                  style: GoogleFonts
-                                                                      .roboto(
-                                                                          fontSize:
-                                                                              30,
-                                                                          textStyle:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.grey,
-                                                                          )),
-                                                                )),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              _imageFileList!.length > 0
-                                                  ? InkWell(
-                                                      onTap: () {
-                                                        _imageFileList!
-                                                            .removeAt(0);
-                                                        setState(() {
-                                                          countImg -= 1;
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                                color:
-                                                                    Colors.red),
-                                                        height: 30,
-                                                        width: 60,
-                                                        child: const Icon(
-                                                          Icons.delete,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          ),
-                                        )
-                                      : Container(),
-                                  countImg <= 3
-                                      ? Column(
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  countImg < 3
-                                                      ? _imgFromGallery(1)
-                                                      : Fluttertoast.showToast(
-                                                          msg:
-                                                              'Maksimal 3 gambar');
-                                                },
-                                                child: DottedBorder(
-                                                  color: Colors.grey,
-                                                  child: Container(
-                                                    height: 60,
-                                                    width: 215,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7)),
-                                                    child: Center(
-                                                        child: _imageFileList!
-                                                                    .length >
-                                                                1
-                                                            ? Image.file(File(
-                                                                _imageFileList![
-                                                                        1]
-                                                                    .path))
-                                                            : Text(
-                                                                '+',
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            30,
-                                                                        textStyle:
-                                                                            const TextStyle(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                        )),
-                                                              )),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            _imageFileList!.length > 1
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      _imageFileList!
-                                                          .removeAt(1);
-                                                      setState(() {
-                                                        countImg -= 1;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              color:
-                                                                  Colors.red),
-                                                      height: 30,
-                                                      width: 60,
-                                                      child: const Icon(
-                                                        Icons.delete,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        )
-                                      : Container(),
-                                  countImg <= 1
-                                      ? Column(
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  countImg < 3
-                                                      ? _imgFromGallery(2)
-                                                      : Fluttertoast.showToast(
-                                                          msg:
-                                                              'Maksimal 3 gambar');
-                                                },
-                                                child: DottedBorder(
-                                                  color: Colors.grey,
-                                                  child: Container(
-                                                    height: 60,
-                                                    width: 215,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7)),
-                                                    child: Center(
-                                                        child: Text(
-                                                      '+',
-                                                      style: GoogleFonts.roboto(
-                                                          fontSize: 30,
-                                                          textStyle:
-                                                              const TextStyle(
-                                                            color: Colors.grey,
-                                                          )),
-                                                    )),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            _imageFileList!.length > 2
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      _imageFileList!
-                                                          .removeAt(2);
-                                                      setState(() {
-                                                        countImg -= 1;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              color:
-                                                                  Colors.red),
-                                                      height: 30,
-                                                      width: 60,
-                                                      child: const Icon(
-                                                        Icons.delete,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            _dataForm.registrationFormAttachments!.length > 0
-                                ? Container(
-                                    width: 250,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        _dataForm.registrationFormAttachments!
-                                                    .length >
-                                                0
-                                            ? _dataForm.registrationFormAttachments![
-                                                        0] !=
-                                                    null
-                                                ? Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 30),
-                                                        child: Container(
-                                                          width: 60,
-                                                          height: 60,
-                                                          child: DottedBorder(
-                                                            color: Colors.grey,
-                                                            child: Container(
-                                                              height: 60,
-                                                              width: 60,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              7)),
-                                                              child: Center(
-                                                                  child: _dataForm
-                                                                              .registrationFormAttachments!
-                                                                              .length !=
-                                                                          0
-                                                                      ? InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            _launchURL((link +
-                                                                                _dataForm.registrationFormAttachments![0].file!));
-                                                                          },
-                                                                          child:
-                                                                              CachedNetworkImage(
-                                                                            imageUrl:
-                                                                                (link + _dataForm.registrationFormAttachments![0].file!),
-                                                                            imageBuilder: (context, imageProvider) =>
-                                                                                Container(
-                                                                              decoration: BoxDecoration(
-                                                                                image: DecorationImage(
-                                                                                  image: imageProvider,
-                                                                                  fit: BoxFit.fill,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            placeholder: (context, url) =>
-                                                                                const CircularProgressIndicator(),
-                                                                            errorWidget: (context, url, error) =>
-                                                                                const Icon(
-                                                                              Icons.error,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : Text(
-                                                                          '-',
-                                                                          style: GoogleFonts.roboto(
-                                                                              fontSize: 30,
-                                                                              textStyle: const TextStyle(
-                                                                                color: Colors.grey,
-                                                                              )),
-                                                                        )),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      _dataForm.registrationFormAttachments!
-                                                                  .length !=
-                                                              0
-                                                          ? _dataForm
-                                                                      .registrationFormAttachments![
-                                                                          0]
-                                                                      .file !=
-                                                                  null
-                                                              ? Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 30),
-                                                                  child:
-                                                                      InkWell(
-                                                                    onTap: () {
-                                                                      deleteImage(
-                                                                          _dataForm
-                                                                              .registrationFormAttachments![0]
-                                                                              .id!,
-                                                                          0);
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          const BoxDecoration(
-                                                                              color: Colors.red),
-                                                                      height:
-                                                                          30,
-                                                                      width: 60,
-                                                                      child:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : Container()
-                                                          : Container()
-                                                    ],
-                                                  )
-                                                : Container()
-                                            : Container(),
-                                        _dataForm.registrationFormAttachments!
-                                                    .length >
-                                                1
-                                            ? _dataForm.registrationFormAttachments![
-                                                        1] !=
-                                                    null
-                                                ? Column(
-                                                    children: [
-                                                      Container(
-                                                        width: 60,
-                                                        height: 60,
-                                                        child: DottedBorder(
-                                                          color: Colors.grey,
-                                                          child: Container(
-                                                            height: 60,
-                                                            width: 60,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            7)),
-                                                            child: Center(
-                                                                child: _dataForm
-                                                                            .registrationFormAttachments!
-                                                                            .length >=
-                                                                        2
-                                                                    ? InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          _launchURL((link +
-                                                                              _dataForm.registrationFormAttachments![1].file!));
-                                                                        },
-                                                                        child:
-                                                                            CachedNetworkImage(
-                                                                          imageUrl:
-                                                                              (link + _dataForm.registrationFormAttachments![1].file!),
-                                                                          imageBuilder: (context, imageProvider) =>
-                                                                              Container(
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              image: DecorationImage(
-                                                                                image: imageProvider,
-                                                                                fit: BoxFit.fill,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          placeholder: (context, url) =>
-                                                                              const CircularProgressIndicator(),
-                                                                          errorWidget: (context, url, error) =>
-                                                                              const Icon(
-                                                                            Icons.error,
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                      )
-                                                                    : Text(
-                                                                        '-',
-                                                                        style: GoogleFonts.roboto(
-                                                                            fontSize: 30,
-                                                                            textStyle: const TextStyle(
-                                                                              color: Colors.grey,
-                                                                            )),
-                                                                      )),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      _dataForm.registrationFormAttachments!
-                                                                  .length >=
-                                                              2
-                                                          ? _dataForm.registrationFormAttachments![
-                                                                      1] !=
-                                                                  null
-                                                              ? InkWell(
-                                                                  onTap: () {
-                                                                    deleteImage(
-                                                                        _dataForm
-                                                                            .registrationFormAttachments![1]
-                                                                            .id!,
-                                                                        1);
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                            color:
-                                                                                Colors.red),
-                                                                    height: 30,
-                                                                    width: 60,
-                                                                    child:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .delete,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : Container()
-                                                          : Container()
-                                                    ],
-                                                  )
-                                                : Container()
-                                            : Container(),
-                                        _dataForm.registrationFormAttachments!
-                                                    .length >
-                                                2
-                                            ? _dataForm.registrationFormAttachments![
-                                                        2] !=
-                                                    null
-                                                ? Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 30),
-                                                        child: Container(
-                                                          width: 60,
-                                                          height: 60,
-                                                          child: DottedBorder(
-                                                            color: Colors.grey,
-                                                            child: Container(
-                                                              height: 60,
-                                                              width: 60,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              7)),
-                                                              child: Center(
-                                                                  child: _dataForm
-                                                                              .registrationFormAttachments!
-                                                                              .length >=
-                                                                          3
-                                                                      ? InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            _launchURL((link +
-                                                                                _dataForm.registrationFormAttachments![2].file!));
-                                                                          },
-                                                                          child:
-                                                                              CachedNetworkImage(
-                                                                            imageUrl:
-                                                                                (link + _dataForm.registrationFormAttachments![2].file!),
-                                                                            imageBuilder: (context, imageProvider) =>
-                                                                                Container(
-                                                                              decoration: BoxDecoration(
-                                                                                image: DecorationImage(
-                                                                                  image: imageProvider,
-                                                                                  fit: BoxFit.fill,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            placeholder: (context, url) =>
-                                                                                const CircularProgressIndicator(),
-                                                                            errorWidget: (context, url, error) =>
-                                                                                const Icon(
-                                                                              Icons.error,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : Text(
-                                                                          '-',
-                                                                          style: GoogleFonts.roboto(
-                                                                              fontSize: 30,
-                                                                              textStyle: const TextStyle(
-                                                                                color: Colors.grey,
-                                                                              )),
-                                                                        )),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      _dataForm.registrationFormAttachments!
-                                                                  .length >=
-                                                              3
-                                                          ? _dataForm
-                                                                      .registrationFormAttachments![
-                                                                          2]
-                                                                      .file !=
-                                                                  null
-                                                              ? Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 30),
-                                                                  child:
-                                                                      InkWell(
-                                                                    onTap: () {
-                                                                      deleteImage(
-                                                                          _dataForm
-                                                                              .registrationFormAttachments![2]
-                                                                              .id!,
-                                                                          2);
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          const BoxDecoration(
-                                                                              color: Colors.red),
-                                                                      height:
-                                                                          30,
-                                                                      width: 60,
-                                                                      child:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : Container()
-                                                          : Container()
-                                                    ],
-                                                  )
-                                                : Container()
-                                            : Container(),
-                                      ],
-                                    ),
-                                  )
-                                : Container()
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              const SizedBox(
+                height: 12,
               ),
               Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 15, top: 5),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'dalam format jpg, jpeg, png',
-                      style: GoogleFonts.roboto(
-                          fontSize: 9,
-                          textStyle: const TextStyle(
-                              color: Colors.black54,
-                              fontStyle: FontStyle.italic)),
-                    ),
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: TextField(
+                  style: const TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 14,
+                    color: Colors.black,
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Lampiran Dokumen',
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          textStyle: const TextStyle(
-                            color: Colors.black54,
-                          )),
+                  controller: _lokasiBangunanController,
+                  decoration: InputDecoration(
+                    hintText: 'Lokasi Bangunan',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[400],
                     ),
-                    Container(
-                      width: 250,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      child: InkWell(
-                                        onTap: () {
-                                          countDoc < 3
-                                              ? _dokumenFromFiles(0)
-                                              : Fluttertoast.showToast(
-                                                  msg: 'Maksimal 3 dokumen');
-                                        },
-                                        child: DottedBorder(
-                                          color: Colors.grey,
-                                          child: Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(7)),
-                                            child: Center(
-                                                child: _dokumenFileList!
-                                                            .length !=
-                                                        0
-                                                    ? _dokumenFileList![0] !=
-                                                            null
-                                                        ? const Image(
-                                                            image: AssetImage(
-                                                                'assets/images/pdf_icon.png'))
-                                                        : Text(
-                                                            '+',
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                                    fontSize:
-                                                                        30,
-                                                                    textStyle:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                    )),
-                                                          )
-                                                    : Text(
-                                                        '+',
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                                fontSize: 30,
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .grey,
-                                                                )),
-                                                      )),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    _dokumenFileList!.length > 0
-                                        ? InkWell(
-                                            onTap: () {
-                                              _dokumenFileList!.removeAt(0);
-                                              setState(() {
-                                                countDoc -= 1;
-                                              });
-                                            },
-                                            child: Container(
-                                              decoration: const BoxDecoration(
-                                                  color: Colors.red),
-                                              height: 30,
-                                              width: 60,
-                                              child: const Icon(
-                                                Icons.delete,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          )
-                                        : Container()
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    child: InkWell(
-                                      onTap: () {
-                                        _dokumenFromFiles(1);
-                                      },
-                                      child: DottedBorder(
-                                        color: Colors.grey,
-                                        child: Container(
-                                          height: 60,
-                                          width: 60,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7)),
-                                          child: Center(
-                                              child: _dokumenFileList!.length !=
-                                                          0 &&
-                                                      _dokumenFileList!.length >
-                                                          1
-                                                  ? _dokumenFileList![1] != null
-                                                      ? const Image(
-                                                          image: AssetImage(
-                                                              'assets/images/pdf_icon.png'))
-                                                      : Text(
-                                                          '+',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 30,
-                                                                  textStyle:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  )),
-                                                        )
-                                                  : Text(
-                                                      '+',
-                                                      style: GoogleFonts.roboto(
-                                                          fontSize: 30,
-                                                          textStyle:
-                                                              const TextStyle(
-                                                            color: Colors.grey,
-                                                          )),
-                                                    )),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  _dokumenFileList!.length > 1
-                                      ? InkWell(
-                                          onTap: () {
-                                            _dokumenFileList!.removeAt(1);
-                                            setState(() {
-                                              countDoc -= 1;
-                                            });
-                                          },
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.red),
-                                            height: 30,
-                                            width: 60,
-                                            child: const Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        )
-                                      : Container()
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    child: InkWell(
-                                      onTap: () {
-                                        _dokumenFromFiles(2);
-                                      },
-                                      child: DottedBorder(
-                                        color: Colors.grey,
-                                        child: Container(
-                                          height: 60,
-                                          width: 60,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7)),
-                                          child: Center(
-                                              child: _dokumenFileList!.length !=
-                                                          0 &&
-                                                      _dokumenFileList!.length >
-                                                          2
-                                                  ? _dokumenFileList![2] != null
-                                                      ? const Image(
-                                                          image: AssetImage(
-                                                              'assets/images/pdf_icon.png'))
-                                                      : Text(
-                                                          '+',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                                  fontSize: 30,
-                                                                  textStyle:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  )),
-                                                        )
-                                                  : Text(
-                                                      '+',
-                                                      style: GoogleFonts.roboto(
-                                                          fontSize: 30,
-                                                          textStyle:
-                                                              const TextStyle(
-                                                            color: Colors.grey,
-                                                          )),
-                                                    )),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  _dokumenFileList!.length > 2
-                                      ? InkWell(
-                                          onTap: () {
-                                            _dokumenFileList!.removeAt(2);
-                                            setState(() {
-                                              countDoc -= 1;
-                                            });
-                                          },
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.red),
-                                            height: 30,
-                                            width: 60,
-                                            child: const Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        )
-                                      : Container()
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: _dataForm
-                                            .registrationFormDocuments!.length >
-                                        0
-                                    ? _dataForm.registrationFormDocuments![0] !=
-                                            null
-                                        ? Column(
-                                            children: [
-                                              Container(
-                                                width: 60,
-                                                height: 60,
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    _launchURL((link +
-                                                        _dataForm
-                                                            .registrationFormDocuments![
-                                                                0]
-                                                            .document!));
-                                                  },
-                                                  child: DottedBorder(
-                                                    color: Colors.grey,
-                                                    child: Container(
-                                                      height: 60,
-                                                      width: 60,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(7)),
-                                                      child: Center(
-                                                          child: _dataForm
-                                                                      .registrationFormDocuments!
-                                                                      .length >
-                                                                  0
-                                                              ? const Image(
-                                                                  image: AssetImage(
-                                                                      'assets/images/pdf_icon.png'))
-                                                              : Text(
-                                                                  '+',
-                                                                  style: GoogleFonts
-                                                                      .roboto(
-                                                                          fontSize:
-                                                                              30,
-                                                                          textStyle:
-                                                                              const TextStyle(
-                                                                            color:
-                                                                                Colors.grey,
-                                                                          )),
-                                                                )),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              _dataForm.registrationFormDocuments!
-                                                          .length >
-                                                      0
-                                                  ? InkWell(
-                                                      onTap: () {
-                                                        deleteDoc(
-                                                            _dataForm
-                                                                .registrationFormDocuments![
-                                                                    0]
-                                                                .id!,
-                                                            0);
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                                color:
-                                                                    Colors.red),
-                                                        height: 30,
-                                                        width: 60,
-                                                        child: const Icon(
-                                                          Icons.delete,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          )
-                                        : Container()
-                                    : Container(),
-                              ),
-                              _dataForm.registrationFormDocuments!.length > 1
-                                  ? _dataForm.registrationFormDocuments![1] !=
-                                          null
-                                      ? Column(
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  _launchURL((link +
-                                                      _dataForm
-                                                          .registrationFormDocuments![
-                                                              1]
-                                                          .document!));
-                                                },
-                                                child: DottedBorder(
-                                                  color: Colors.grey,
-                                                  child: Container(
-                                                    height: 60,
-                                                    width: 60,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7)),
-                                                    child: Center(
-                                                        child: _dataForm
-                                                                    .registrationFormDocuments!
-                                                                    .length >
-                                                                1
-                                                            ? const Image(
-                                                                image: AssetImage(
-                                                                    'assets/images/pdf_icon.png'))
-                                                            : Text(
-                                                                '+',
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            30,
-                                                                        textStyle:
-                                                                            const TextStyle(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                        )),
-                                                              )),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            _dataForm.registrationFormDocuments!
-                                                        .length >
-                                                    1
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      deleteDoc(
-                                                          _dataForm
-                                                              .registrationFormDocuments![
-                                                                  1]
-                                                              .id!,
-                                                          1);
-                                                    },
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              color:
-                                                                  Colors.red),
-                                                      height: 30,
-                                                      width: 60,
-                                                      child: const Icon(
-                                                        Icons.delete,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        )
-                                      : Container()
-                                  : Container(),
-                              _dataForm.registrationFormDocuments!.length > 2
-                                  ? _dataForm.registrationFormDocuments![2] !=
-                                          null
-                                      ? Column(
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  _launchURL((link +
-                                                      _dataForm
-                                                          .registrationFormDocuments![
-                                                              2]
-                                                          .document!));
-                                                },
-                                                child: DottedBorder(
-                                                  color: Colors.grey,
-                                                  child: Container(
-                                                    height: 60,
-                                                    width: 60,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7)),
-                                                    child: Center(
-                                                        child: _dataForm
-                                                                    .registrationFormDocuments!
-                                                                    .length >
-                                                                2
-                                                            ? const Image(
-                                                                image: AssetImage(
-                                                                    'assets/images/pdf_icon.png'))
-                                                            : Text(
-                                                                '+',
-                                                                style: GoogleFonts
-                                                                    .roboto(
-                                                                        fontSize:
-                                                                            30,
-                                                                        textStyle:
-                                                                            const TextStyle(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                        )),
-                                                              )),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            _dataForm.registrationFormDocuments!
-                                                        .length >
-                                                    2
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      deleteDoc(
-                                                          _dataForm
-                                                              .registrationFormDocuments![
-                                                                  2]
-                                                              .id!,
-                                                          2);
-                                                    },
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              color:
-                                                                  Colors.red),
-                                                      height: 30,
-                                                      width: 60,
-                                                      child: const Icon(
-                                                        Icons.delete,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container()
-                                          ],
-                                        )
-                                      : Container()
-                                  : Container(),
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 15, top: 5),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'dalam format pdf',
-                      style: GoogleFonts.roboto(
-                          fontSize: 9,
-                          textStyle: const TextStyle(
-                              color: Colors.black54,
-                              fontStyle: FontStyle.italic)),
+                    fillColor: Colors.white,
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
               ),
               const SizedBox(
-                height: 60,
+                height: 24,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      update_formulir();
-                    });
-                  },
-                  child: Container(
-                    height: 70,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
-                        child: isLoading1 == true
-                            ? const CircularProgressIndicator(
+              const Text(
+                'Map',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Container(
+                height: 230,
+                width: double.infinity,
+                color: Colors.grey,
+                child: loc == false
+                    ? const Center(child: CircularProgressIndicator())
+                    : FlutterMap(
+                        options: MapOptions(
+                            center: point,
+                            zoom: 18.0,
+                            onTap: (p, y) {
+                              setState(() {
+                                point = y;
+                                print(point);
+                                lat = y.latitude;
+                                lang = y.longitude;
+                                _getPlace(lat, lang);
+                              });
+                            }),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            subdomains: const ['a', 'b', 'c'],
+                          ),
+                          MarkerLayer(
+                            markers: [
+                              Marker(
+                                width: 100,
+                                height: 100,
+                                point: point,
+                                builder: (ctx) => Container(
+                                  child: const Image(
+                                    image:
+                                        AssetImage('assets/images/Vector.png'),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Text(
+                'Upload File',
+                style: GoogleFonts.roboto(
+                  fontSize: 14,
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              InkWell(
+                onTap: () {
+                  _dokumenFromFiles();
+                  print("file length: ${_dokumenFileList!.length}");
+                },
+                child: DottedBorder(
+                  color: ColorPallete.mainColor,
+                  borderType: BorderType.RRect,
+                  strokeWidth: 1,
+                  radius: const Radius.circular(6),
+                  dashPattern: const [
+                    10,
+                    3,
+                  ],
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(6),
+                    ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: 65,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        // border: Border.all(color: ColorPallete.mainColor),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.upload,
+                            color: ColorPallete.mainColor,
+                            size: 15,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            'Browse',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: ColorPallete.mainColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  ..._dokumenFileListFromUrl!.map((file) {
+                    return Container(
+                      margin: const EdgeInsets.only(
+                        top: 12,
+                      ),
+                      padding: const EdgeInsets.only(
+                        top: 14,
+                        bottom: 14,
+                        left: 17,
+                        right: 17,
+                      ),
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 50,
+                                child: file.split('.').last != 'pdf'
+                                    ? Image.network(
+                                        'https://alirandras.inotive.id$file')
+                                    : Image.asset('assets/images/pdf_icon.png'),
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              SizedBox(
+                                width: 150,
+                                child: Text(
+                                  file.split('/').last,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _dokumenFileListFromUrl!.remove(file);
+                              });
+                            },
+                            child: const Icon(
+                              Icons.cancel_sharp,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  ..._dokumenFileList!.map((file) {
+                    return Container(
+                      margin: const EdgeInsets.only(
+                        top: 12,
+                      ),
+                      padding: const EdgeInsets.only(
+                        top: 14,
+                        bottom: 14,
+                        left: 17,
+                        right: 17,
+                      ),
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 50,
+                                child: file.path.split('.').last != 'pdf'
+                                    ? Image.file(File(file.path))
+                                    : Image.asset('assets/images/pdf_icon.png'),
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              SizedBox(
+                                width: 150,
+                                child: Text(
+                                  file.path.split('/').last,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _dokumenFileList!.remove(file);
+                              });
+                            },
+                            child: const Icon(
+                              Icons.cancel_sharp,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    update_formulir();
+                  });
+                },
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: ColorPallete.mainColor,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: Center(
+                    child: isLoading1 == true
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text(
+                            'Update',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
                                 color: Colors.white,
-                              )
-                            : Text(
-                                'Update',
-                                style: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    textStyle: const TextStyle(
-                                      color: Colors.white70,
-                                    )),
-                              )),
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -1906,37 +898,96 @@ class _EditFormState extends State<EditForm> {
               ),
             ],
           ),
-        ]),
+        ),
       ),
+    );
+  }
+
+  Widget _buildJenisPermohonanDropdown() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
+      child: jenis_permohonan == null
+          ? Container(
+              height: 45,
+              width: double.infinity,
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                'Pilih Permohonan',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                ),
+              ),
+            )
+          : DropdownButton<String>(
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
+              value: jenisPermohonan,
+              hint: Text(
+                'Pilih Permohonan',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                ),
+              ),
+              onChanged: (newValue) => setState(() {
+                jenisPermohonan = newValue!;
+              }),
+              items: jenis_permohonan.map((String value1) {
+                return DropdownMenuItem<String>(
+                  value: value1,
+                  child: Text(value1),
+                );
+              }).toList(),
+              borderRadius: BorderRadius.circular(6),
+              isExpanded: true,
+              underline: const SizedBox.shrink(),
+              icon: const Icon(Icons.keyboard_arrow_down),
+            ),
     );
   }
 
   Widget _buildKecamatanDropdown() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(5)),
-      padding: const EdgeInsets.only(left: 12, right: 24),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
       child: DropdownButton<GetKecamatan>(
-        style: const TextStyle(fontSize: 12, color: Colors.black54),
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+        ),
         onChanged: (value) => setState(() {
           _selectedKecamatan = value;
-          print(_selectedKecamatan!.id);
-          print(_selectedKecamatan!.name);
           getKelurahan(_selectedKecamatan?.id);
           //Future.microtask(() => context.requestFocus(FocusNode()));
         }),
         value: _selectedKecamatan,
         hint: const Text('Pilih Kecamatan'),
         items: _listKecamatan.map((GetKecamatan value) {
-          return new DropdownMenuItem<GetKecamatan>(
+          return DropdownMenuItem<GetKecamatan>(
             value: value,
-            child: new Text(value.name!),
+            child: Text(value.name!),
           );
         }).toList(),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(6),
         isExpanded: true,
         underline: const SizedBox.shrink(),
+        icon: const Icon(Icons.keyboard_arrow_down),
       ),
     );
   }
