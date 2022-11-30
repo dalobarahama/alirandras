@@ -25,6 +25,8 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   bool deleteCont = false;
   int? idDel = 0;
 
+  String diTerima = 'diterima';
+
   List<ApplicationLetter1>? _listPengajuan = <ApplicationLetter1>[];
   List<ApplicationLetter1>? _listPengajuanFiltered = <ApplicationLetter1>[];
 
@@ -138,6 +140,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                   ),
                   child: TextField(
                     controller: _cekStatusFilterController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       fillColor: Colors.grey[300],
                       filled: true,
@@ -314,17 +317,17 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                         .user!
                                                         .name!,
                                                     style: GoogleFonts.roboto(
-                                                        fontSize: 14,
-                                                        textStyle:
-                                                            const TextStyle(
-                                                          color: ColorPallete
-                                                              .mainColor,
-                                                        )),
+                                                      fontSize: 14,
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        color: ColorPallete
+                                                            .mainColor,
+                                                      ),
+                                                    ),
                                                   ),
                                                   _listPengajuanFiltered![index]
-                                                              .status!
-                                                              .toLowerCase !=
-                                                          'disetujui'
+                                                              .status! !=
+                                                          'diterima'
                                                       ? Text(
                                                           _listPengajuanFiltered![
                                                                   index]
@@ -378,8 +381,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                     ),
                                                     _listPengajuanFiltered![
                                                                     index]
-                                                                .status!
-                                                                .toLowerCase ==
+                                                                .status! ==
                                                             'ditolak'
                                                         ? Text(
                                                             'Alasan Ditolak',
@@ -406,45 +408,17 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
+                                                    cekSuratBalasan(
+                                                        _listPengajuanFiltered![
+                                                            index]),
                                                     _listPengajuanFiltered![
                                                                     index]
-                                                                .status!
-                                                                .toLowerCase !=
-                                                            'disetujui'
-                                                        ? Text(
-                                                            '-',
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              fontSize: 14,
-                                                              textStyle:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Text(
-                                                            '-',
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              fontSize: 14,
-                                                              textStyle:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                    _listPengajuanFiltered![
-                                                                    index]
-                                                                .status!
-                                                                .toLowerCase ==
+                                                                .status! ==
                                                             'ditolak'
                                                         ? Text(
                                                             _listPengajuanFiltered![
                                                                     index]
                                                                 .reasonRejection!,
-                                                            // "Kurang memenuhi kualifikasi",
                                                             style: GoogleFonts
                                                                 .roboto(
                                                               fontSize: 12,
@@ -459,53 +433,6 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                                   ],
                                                 ),
                                               ),
-                                              _listPengajuanFiltered![index]
-                                                          .mailRequest !=
-                                                      null
-                                                  ? _listPengajuanFiltered![
-                                                                  index]
-                                                              .mailRequest
-                                                              ?.body !=
-                                                          null
-                                                      ? Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                PersistentNavBarNavigator.pushNewScreen(
-                                                                    context,
-                                                                    screen: PreviewSuratBalasanScreenNew(
-                                                                        _listPengajuanFiltered![index]
-                                                                            .mailRequest!
-                                                                            .id!
-                                                                            .toString(),
-                                                                        'view',
-                                                                        _listPengajuanFiltered![index]
-                                                                            .id
-                                                                            .toString()),
-                                                                    withNavBar:
-                                                                        false);
-                                                              },
-                                                              child: Text(
-                                                                'Lihat Surat Balasan',
-                                                                style: GoogleFonts.roboto(
-                                                                    fontSize:
-                                                                        12,
-                                                                    textStyle: const TextStyle(
-                                                                        color: Colors
-                                                                            .blueAccent,
-                                                                        decoration:
-                                                                            TextDecoration.underline)),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : const Text('-')
-                                                  : Container(),
                                               const SizedBox(
                                                 height: 10,
                                               ),
@@ -799,6 +726,52 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
         ],
       ),
     );
+  }
+
+  Widget cekSuratBalasan(ApplicationLetter1 item) {
+    if (item.mailRequest != null && item.mailRequest?.body != null) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: InkWell(
+          onTap: () {
+            PersistentNavBarNavigator.pushNewScreen(context,
+                screen: PreviewSuratBalasanScreenNew(
+                    item.mailRequest!.id!.toString(),
+                    'view',
+                    item.id.toString()),
+                withNavBar: false);
+          },
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/images/pdf_icon.png',
+                height: 30,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Dokumen Surat',
+                style: GoogleFonts.roboto(
+                  fontSize: 12,
+                  textStyle: const TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Text(
+        '-',
+        style: GoogleFonts.roboto(
+          fontSize: 14,
+          textStyle: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      );
+    }
   }
 
   Widget customDialog() {

@@ -718,6 +718,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 InkWell(
                   onTap: () {
                     submit_formulir();
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (BuildContext context) =>
+                    //         customDialog(context));
                   },
                   child: Container(
                     height: 50,
@@ -996,6 +1000,78 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               underline: const SizedBox.shrink(),
               icon: const Icon(Icons.keyboard_arrow_down),
             ),
+    );
+  }
+
+  Widget customDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: SizedBox(
+        height: 230,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/submit_berhasil.png',
+                height: 72,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Submit Berhasil',
+                style: GoogleFonts.roboto(
+                  fontSize: 14,
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 10,
+                  left: 10,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: ColorPallete.mainColor,
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Ok',
+                        style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

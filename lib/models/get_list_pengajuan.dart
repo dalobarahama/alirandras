@@ -26,17 +26,17 @@ class ListPengajuan {
         status: json["status"] == null ? null : json["status"],
         statusCode: json["status_code"] == null ? null : json["status_code"],
         message: json["message"] == null ? null : json["message"],
-        applicationLetters1: json["application_letters"] == null
+        applicationLetters1: json["data"] == null
             ? null
-            : List<ApplicationLetter1>.from(json["application_letters"]
-                .map((x) => ApplicationLetter1.fromJson(x))),
+            : List<ApplicationLetter1>.from(
+                json["data"].map((x) => ApplicationLetter1.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status == null ? null : status,
         "status_code": statusCode == null ? null : statusCode,
         "message": message == null ? null : message,
-        "application_letters": applicationLetters1 == null
+        "data": applicationLetters1 == null
             ? null
             : List<dynamic>.from(applicationLetters1!.map((x) => x.toJson())),
       };
