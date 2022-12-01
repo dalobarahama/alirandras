@@ -29,8 +29,11 @@ class _Forgot_passwordState extends State<Forgot_password> {
           setState(() {
             isLoading = false;
           });
-          Navigator.push(context,
-              SlideToRightRoute(page: Otp_verifikasi(_emailController.text)));
+          Navigator.push(
+              context,
+              SlideToRightRoute(
+                  page:
+                      Otp_verifikasi(_emailController.text, 'resetPassword')));
         } else if (value == 'failed') {
           setState(() {
             isLoading = false;

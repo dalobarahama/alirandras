@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/screen/otp_verifikasi.dart';
 import '../utils/color_pallete.dart';
 import 'log_in.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
@@ -33,10 +34,11 @@ class _Sign_upState extends State<Sign_up> {
       setState(() {
         print(value);
         if (value == 'success') {
-          Fluttertoast.showToast(msg: 'Berhasil Registrasi');
           Timer(const Duration(seconds: 2), () {
             Navigator.pushReplacement(
-                context, SlideToLeftRoute(page: const Log_in()));
+                context,
+                SlideToLeftRoute(
+                    page: Otp_verifikasi(_emailController.text, 'signUp')));
           });
         } else if (value == 'failed') {
           Fluttertoast.showToast(msg: 'Terjadi kesalahan');

@@ -230,7 +230,7 @@ class _HomeState extends State<Home> {
                     height: 20,
                   ),
                   Container(
-                    height: 300,
+                    height: 450,
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -263,9 +263,6 @@ class _HomeState extends State<Home> {
                             fontSize: 18,
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
                         notificationData.notifications == null
                             ? const Center(
                                 child: CircularProgressIndicator(),
@@ -278,6 +275,7 @@ class _HomeState extends State<Home> {
                                 itemBuilder: (context, index) {
                                   if (index < 3) {
                                     return Container(
+                                      margin: const EdgeInsets.only(bottom: 10),
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                         color: Colors.grey[100],

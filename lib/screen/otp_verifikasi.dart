@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/screen/log_in.dart';
 import 'package:flutter_application_3/screen/reset_password.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,18 +13,20 @@ import '../utils/color_pallete.dart';
 
 class Otp_verifikasi extends StatefulWidget {
   String email = '';
-  Otp_verifikasi(this.email);
+  String flag = '';
+  Otp_verifikasi(this.email, this.flag);
 
   @override
-  _Otp_verifikasiState createState() => _Otp_verifikasiState(this.email);
+  _Otp_verifikasiState createState() =>
+      _Otp_verifikasiState(this.email, this.flag);
 }
 
 class _Otp_verifikasiState extends State<Otp_verifikasi> {
   String email = '';
-  _Otp_verifikasiState(this.email);
+  String flag = '';
+  _Otp_verifikasiState(this.email, this.flag);
   TextEditingController _otpController = TextEditingController();
   String currentText = "";
-  // StreamController<ErrorAnimationType> errorController = StreamController();
   bool isLoading = false;
 
   verifikasi_otp() async {
@@ -35,8 +38,12 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
         isLoading = false;
         print(value);
         if (value == 'success') {
-          Navigator.push(context,
-              SlideToRightRoute(page: Reset_password(_otpController.text)));
+          if (flag == 'resetPassword') {
+            Navigator.push(context,
+                SlideToRightRoute(page: Reset_password(_otpController.text)));
+          } else {
+            Navigator.push(context, SlideToRightRoute(page: const Log_in()));
+          }
         } else if (value == 'failed') {
           Fluttertoast.showToast(
               msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
@@ -102,7 +109,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reset Password'),
+        title: const Text('OTP Verification'),
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontSize: 18,
@@ -148,6 +155,7 @@ class _Otp_verifikasiState extends State<Otp_verifikasi> {
                 left: 30,
               ),
               child: Pinput(
+                length: 6,
                 controller: _otpController,
                 androidSmsAutofillMethod:
                     AndroidSmsAutofillMethod.smsUserConsentApi,
