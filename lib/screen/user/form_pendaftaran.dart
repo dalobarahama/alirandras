@@ -6,6 +6,7 @@ import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_kecamatan.dart';
 import 'package:flutter_application_3/models/get_kelurahan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
+import 'package:flutter_application_3/screen/user/home_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,6 +16,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../utils/color_pallete.dart';
 
@@ -231,17 +233,8 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
-    if (_imageFileList!.length < 1) {
-      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
-      return;
-    }
     if (_dokumenFileList!.length < 1) {
-      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran Dokumen');
-      return;
-    }
-    if (_peruntukanBangunanController.text.length < 1) {
-      Fluttertoast.showToast(
-          msg: 'Silahkan Peruntukan Bangunan terlebih dahulu');
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
       return;
     }
 
@@ -260,19 +253,24 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       _peruntukanBangunanController.text,
       lat.toString(),
       lang.toString(),
-      _imageFileList!,
+      // _imageFileList!,
       _dokumenFileList!,
     )
         .then((value) {
       setState(() {
         _dataFormulir = value;
         print(_dataFormulir.statusCode);
+        print("form_pendaftaran_respon: ${_dataFormulir.statusCode}");
         if (_dataFormulir != null) {
           if (_dataFormulir.statusCode == 200) {
             setState(() {
               isFinish[3] = true;
               isLoading1 = false;
               print('ini2' + isFinish[2].toString());
+
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => customDialog(context));
             });
           } else if (_dataFormulir.statusCode! >= 400 &&
               _dataFormulir.statusCode! <= 500) {
@@ -758,102 +756,102 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
             ),
           ),
         ),
-        isFinish[3] == true
-            ? Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: 300,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 40, right: 40),
-                                child: Container(
-                                  height: 200,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(7)),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      Text(
-                                        'Submit Berhasil!',
-                                        style: GoogleFonts.roboto(
-                                            fontSize: 14,
-                                            textStyle: const TextStyle(
-                                              color: Colors.black54,
-                                            )),
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 40, left: 40),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                              width: double.infinity,
-                                              height: 50,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green,
-                                                  borderRadius:
-                                                      BorderRadius.circular(7)),
-                                              child: Center(
-                                                child: Text(
-                                                  'Kembali',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 12,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.white,
-                                                      )),
-                                                ),
-                                              )),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 70,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: const Icon(Icons.check,
-                                  size: 50, color: Colors.white),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )
-            : Container()
+        // isFinish[3] == true
+        //     ? Container(
+        //         height: MediaQuery.of(context).size.height,
+        //         width: MediaQuery.of(context).size.width,
+        //         decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: [
+        //             Stack(
+        //               children: [
+        //                 Container(
+        //                   width: double.infinity,
+        //                   height: 300,
+        //                   child: Column(
+        //                     children: [
+        //                       const SizedBox(height: 20),
+        //                       Padding(
+        //                         padding:
+        //                             const EdgeInsets.only(left: 40, right: 40),
+        //                         child: Container(
+        //                           height: 200,
+        //                           width: double.infinity,
+        //                           decoration: BoxDecoration(
+        //                               color: Colors.white,
+        //                               borderRadius: BorderRadius.circular(7)),
+        //                           child: Column(
+        //                             mainAxisAlignment: MainAxisAlignment.center,
+        //                             children: [
+        //                               const SizedBox(
+        //                                 height: 30,
+        //                               ),
+        //                               Text(
+        //                                 'Submit Berhasil!',
+        //                                 style: GoogleFonts.roboto(
+        //                                     fontSize: 14,
+        //                                     textStyle: const TextStyle(
+        //                                       color: Colors.black54,
+        //                                     )),
+        //                               ),
+        //                               const SizedBox(
+        //                                 height: 30,
+        //                               ),
+        //                               Padding(
+        //                                 padding: const EdgeInsets.only(
+        //                                     right: 40, left: 40),
+        //                                 child: InkWell(
+        //                                   onTap: () {
+        //                                     Navigator.pop(context);
+        //                                   },
+        //                                   child: Container(
+        //                                       width: double.infinity,
+        //                                       height: 50,
+        //                                       decoration: BoxDecoration(
+        //                                           color: Colors.green,
+        //                                           borderRadius:
+        //                                               BorderRadius.circular(7)),
+        //                                       child: Center(
+        //                                         child: Text(
+        //                                           'Kembali',
+        //                                           style: GoogleFonts.roboto(
+        //                                               fontSize: 12,
+        //                                               textStyle:
+        //                                                   const TextStyle(
+        //                                                 color: Colors.white,
+        //                                               )),
+        //                                         ),
+        //                                       )),
+        //                                 ),
+        //                               )
+        //                             ],
+        //                           ),
+        //                         ),
+        //                       )
+        //                     ],
+        //                   ),
+        //                 ),
+        //                 Row(
+        //                   mainAxisAlignment: MainAxisAlignment.center,
+        //                   children: [
+        //                     Container(
+        //                       height: 70,
+        //                       width: 70,
+        //                       decoration: BoxDecoration(
+        //                           color: Colors.green,
+        //                           borderRadius: BorderRadius.circular(50)),
+        //                       child: const Icon(Icons.check,
+        //                           size: 50, color: Colors.white),
+        //                     ),
+        //                   ],
+        //                 )
+        //               ],
+        //             )
+        //           ],
+        //         ),
+        //       )
+        //     : Container()
       ]),
     );
   }
@@ -1050,7 +1048,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.of(context).pop(context);
                   },
                   child: Container(
                     width: double.infinity,

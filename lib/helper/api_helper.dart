@@ -39,25 +39,25 @@ class CallApi {
 
   Future<String> login(String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + LOGIN_URL);
-    LoginData _loginData = LoginData();
-    AdminPermission _dataPermission = AdminPermission();
+    LoginData loginData = LoginData();
+    AdminPermission dataPermission = AdminPermission();
     try {
       var post =
           http.post(fullUrl, body: {'email': email, 'password': password});
       var res = await post;
       var a = jsonDecode(res.body)['status_code'];
       print(a);
-      (_loginData.statusCode);
+      (loginData.statusCode);
 
       if (a == 200) {
-        _loginData = loginDataFromJson(res.body);
-        _dataPermission = adminPermissionFromJson(res.body);
+        loginData = loginDataFromJson(res.body);
+        dataPermission = adminPermissionFromJson(res.body);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        sharedPreferences.setString('token', _loginData.token!);
-        sharedPreferences.setString('user_data', user1ToJson(_loginData.user!));
+        sharedPreferences.setString('token', loginData.token!);
+        sharedPreferences.setString('user_data', user1ToJson(loginData.user!));
         sharedPreferences.setString(
-            'admin_permission', adminPermissionToJson(_dataPermission));
+            'admin_permission', adminPermissionToJson(dataPermission));
         return 'success';
       } else if (a >= 400 && a <= 500) {
         // print('zzzzzz');
@@ -74,7 +74,7 @@ class CallApi {
 
   Future<String> register(String nama, String email, String password) async {
     Uri fullUrl = Uri.parse(SERVER_URL + REGISTER_URL);
-    RegisterData _registerData = RegisterData();
+    RegisterData registerData = RegisterData();
     try {
       var post = http.post(fullUrl,
           body: {'name': nama, 'email': email, 'password': password});
@@ -173,7 +173,7 @@ class CallApi {
   }
 
   Future<List<GetKecamatan>> getKecamatan() async {
-    List<GetKecamatan> _dataKecamatan = <GetKecamatan>[];
+    List<GetKecamatan> dataKecamatan = <GetKecamatan>[];
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     Uri fullUrl = Uri.parse(SERVER_URL + GET_KECAMATAN);
@@ -189,31 +189,31 @@ class CallApi {
       //print(res.statusCode);
       // print(res.body);
       if (res.statusCode == 200) {
-        _dataKecamatan = getKecamatanFromJson(res.body);
+        dataKecamatan = getKecamatanFromJson(res.body);
 
         //print(_data[1].image);
 
-        return _dataKecamatan;
+        return dataKecamatan;
       } else if (res.statusCode == 401) {
         //tanya return kalau fail apa?
         //token salah belum di handle
         GetKecamatan temporary = GetKecamatan();
         temporary.name = '401';
-        _dataKecamatan.add(temporary);
-        return _dataKecamatan;
+        dataKecamatan.add(temporary);
+        return dataKecamatan;
       } else {
-        _dataKecamatan.clear();
-        return _dataKecamatan;
+        dataKecamatan.clear();
+        return dataKecamatan;
       }
     } catch (e) {
       print(e);
-      _dataKecamatan.clear();
-      return _dataKecamatan;
+      dataKecamatan.clear();
+      return dataKecamatan;
     }
   }
 
   Future<List<GetKelurahan>> getKelurahan(String id) async {
-    List<GetKelurahan> _dataKelurahan = <GetKelurahan>[];
+    List<GetKelurahan> dataKelurahan = <GetKelurahan>[];
     //id = '5130';
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
@@ -228,26 +228,26 @@ class CallApi {
       var res = await get;
 
       if (res.statusCode == 200) {
-        _dataKelurahan = getKelurahanFromJson(res.body);
+        dataKelurahan = getKelurahanFromJson(res.body);
 
         //print(_data[1].image);
 
-        return _dataKelurahan;
+        return dataKelurahan;
       } else if (res.statusCode == 401) {
         //tanya return kalau fail apa?
         //token salah belum di handle
         GetKelurahan temporary = GetKelurahan();
         temporary.name = '401';
-        _dataKelurahan.add(temporary);
-        return _dataKelurahan;
+        dataKelurahan.add(temporary);
+        return dataKelurahan;
       } else {
-        _dataKelurahan.clear();
-        return _dataKelurahan;
+        dataKelurahan.clear();
+        return dataKelurahan;
       }
     } catch (e) {
       print(e);
-      _dataKelurahan.clear();
-      return _dataKelurahan;
+      dataKelurahan.clear();
+      return dataKelurahan;
     }
   }
 
@@ -261,14 +261,14 @@ class CallApi {
       String peruntukanBangunan,
       String lat,
       String lng,
-      List<XFile> _imageFileList,
-      List<File> _dokumenFileList) async {
-    SubmitFormulir _dataFormulir = SubmitFormulir();
+      // List<XFile> imageFileList,
+      List<File> dokumenFileList) async {
+    SubmitFormulir dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
+
     var token = localStorage.getString('token');
-    //var token =
-    //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FORMULIR);
+
     print(fullUrl);
     try {
       var post = http.post(fullUrl, headers: {
@@ -285,43 +285,44 @@ class CallApi {
         'lat': lat,
         'lng': lng
       });
-      print(post);
+      print("post $post");
       var res = await post;
-      print(res.body);
-      //print(res.statusCode);
+
       int a = jsonDecode(res.body)['status_code'];
       print(a);
       if (a == 200) {
         print('masul200');
-        _dataFormulir = submitFormulirFromJson(res.body);
-        if (_imageFileList.length > 0) {
-          for (var i = 0; i < _imageFileList.length; i++) {
-            await CallApi().submit_gambar(
-                _dataFormulir.registrationForm!.id.toString(),
-                _imageFileList[i]);
+        print("api_helper res.body: ${res.body}");
+        dataFormulir = submitFormulirFromJson(res.body);
+        // if (imageFileList.isNotEmpty) {
+        //   for (var i = 0; i < imageFileList.length; i++) {
+        //     await CallApi().submit_gambar(
+        //         dataFormulir.registrationForm!.id.toString(), imageFileList[i]);
+        //   }
+        // }
+        if (dokumenFileList.isNotEmpty) {
+          for (var i = 0; i < dokumenFileList.length; i++) {
+            await CallApi().submitDokumen(
+                dataFormulir.registrationForm!.id, dokumenFileList[i], i);
           }
         }
-        if (_dokumenFileList.length > 0) {
-          for (var i = 0; i < _dokumenFileList.length; i++) {
-            await CallApi().submit_dokumen(
-                _dataFormulir.registrationForm!.id, _dokumenFileList[i]);
-          }
-        }
-        return _dataFormulir;
+        print("api_helper res.body: ${res.body}");
+        print("api_helper dataFormulir: $dataFormulir");
+        return dataFormulir;
       } else if (a >= 400 && a <= 500) {
         print('masul400');
-        _dataFormulir = submitFormulirFromJson(res.body);
+        dataFormulir = submitFormulirFromJson(res.body);
         var msg = jsonDecode(res.body)['message'];
-        return _dataFormulir;
+        return dataFormulir;
       } else {
         print('masulexep');
-        _dataFormulir.clear();
-        return _dataFormulir;
+        dataFormulir.clear();
+        return dataFormulir;
       }
     } catch (e) {
       print(e);
-      _dataFormulir.clear();
-      return _dataFormulir;
+      // dataFormulir.clear();
+      return dataFormulir;
     }
   }
 
@@ -335,7 +336,7 @@ class CallApi {
       // String token =
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       File? image1 = File(image!.path);
-      http.MultipartFile _file = http.MultipartFile(
+      http.MultipartFile file = http.MultipartFile(
           'file', image.readAsBytes().asStream(), image1.lengthSync(),
           filename: 'Gambar_bangunan_$id _${image.path.split(".").last}');
 
@@ -346,7 +347,7 @@ class CallApi {
       var request = http.MultipartRequest("POST", fullUrl)
         ..headers.addAll(headers);
       request.fields['registration_form_id'] = id.toString();
-      request.files.add(_file);
+      request.files.add(file);
 
       print('asdasd');
       print(request.fields);
@@ -370,7 +371,7 @@ class CallApi {
     }
   }
 
-  Future<bool> submit_dokumen(var id, File? dokumen) async {
+  Future<bool> submitDokumen(var id, File? dokumen, int index) async {
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_DOKUMEN);
     print('ini submit dokumen');
     print(fullUrl);
@@ -380,9 +381,12 @@ class CallApi {
       // String token =
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       File? dokumen1 = File(dokumen!.path);
-      http.MultipartFile _file = http.MultipartFile(
+      http.MultipartFile file = http.MultipartFile(
           'document', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
-          filename: 'Dokumen_bangunan_$id _${dokumen.path.split(".").last}');
+          filename:
+              'Dokumen_bangunan_${id}_$index.${dokumen.path.split(".").last}');
+      print(
+          "filename: Dokumen_bangunan_${id}_$index.${dokumen.path.split(".").last}");
 
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
@@ -391,7 +395,7 @@ class CallApi {
       var request = http.MultipartRequest("POST", fullUrl)
         ..headers.addAll(headers);
       request.fields['registration_form_id'] = id.toString();
-      request.files.add(_file);
+      request.files.add(file);
 
       print('asdasd');
       print(request.fields);
@@ -416,7 +420,7 @@ class CallApi {
 
   Future<List<ApplicationLetter1>?> getListPengajuan() async {
     bool isNull = false;
-    ListPengajuan _listPengajuan = ListPengajuan();
+    ListPengajuan listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     //var token =
@@ -434,22 +438,22 @@ class CallApi {
       int a = jsonDecode(res.body)['status_code'];
       print(res.body);
       if (a == 200) {
-        _listPengajuan = listPengajuanFromJson(res.body);
-        print(_listPengajuan.applicationLetters1![0].id);
-        return _listPengajuan.applicationLetters1;
+        listPengajuan = listPengajuanFromJson(res.body);
+        print(listPengajuan.applicationLetters1![0].id);
+        return listPengajuan.applicationLetters1;
       } else if (a == 401) {
         List<ApplicationLetter1> temporary = <ApplicationLetter1>[];
         temporary[0].status = '401';
-        _listPengajuan.applicationLetters1![0].add(temporary);
-        return _listPengajuan.applicationLetters1;
+        listPengajuan.applicationLetters1![0].add(temporary);
+        return listPengajuan.applicationLetters1;
       } else {
-        _listPengajuan.applicationLetters1!.clear();
-        return _listPengajuan.applicationLetters1;
+        listPengajuan.applicationLetters1!.clear();
+        return listPengajuan.applicationLetters1;
       }
     } catch (e) {
       print(e);
-      _listPengajuan.applicationLetters1!.clear();
-      return _listPengajuan.applicationLetters1;
+      listPengajuan.applicationLetters1!.clear();
+      return listPengajuan.applicationLetters1;
     }
   }
 
@@ -463,10 +467,10 @@ class CallApi {
       String buildingDesignation,
       String lat,
       String lng,
-      List<XFile>? _imageFileList,
+      List<XFile>? imageFileList,
       int? id,
-      List<File>? _dokumenFileList) async {
-    SubmitFormulir _dataFormulir = SubmitFormulir();
+      List<File>? dokumenFileList) async {
+    SubmitFormulir dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     //var token =
@@ -496,40 +500,39 @@ class CallApi {
       print(a);
       if (a == 200) {
         print('masul200');
-        _dataFormulir = submitFormulirFromJson(res.body);
+        dataFormulir = submitFormulirFromJson(res.body);
         print('abnis masul200');
-        if (_imageFileList!.length > 0) {
+        if (imageFileList!.length > 0) {
           print(';bieh dari0');
-          for (var i = 0; i < _imageFileList.length; i++) {
+          for (var i = 0; i < imageFileList.length; i++) {
             print('looping $i');
             await CallApi().submit_gambar(
-                _dataFormulir.registrationForm!.id.toString(),
-                _imageFileList[i]);
+                dataFormulir.registrationForm!.id.toString(), imageFileList[i]);
           }
         }
-        if (_dokumenFileList!.length > 0) {
-          for (var i = 0; i < _dokumenFileList.length; i++) {
-            await CallApi().submit_dokumen(
-                _dataFormulir.registrationForm!.id, _dokumenFileList[i]);
+        if (dokumenFileList!.isNotEmpty) {
+          for (var i = 0; i < dokumenFileList.length; i++) {
+            await CallApi().submitDokumen(
+                dataFormulir.registrationForm!.id, dokumenFileList[i], i);
           }
         }
-        return _dataFormulir;
+        return dataFormulir;
       } else if (a >= 400 && a <= 500) {
         print('masul400');
         // _dataFormulir.clear();
-        _dataFormulir = submitFormulirFromJson(res.body);
+        dataFormulir = submitFormulirFromJson(res.body);
         var msg = jsonDecode(res.body)['message'];
         print(msg);
-        return _dataFormulir;
+        return dataFormulir;
       } else {
         print('masulexep');
-        _dataFormulir.clear();
-        return _dataFormulir;
+        dataFormulir.clear();
+        return dataFormulir;
       }
     } catch (e) {
       print(e);
-      _dataFormulir.clear();
-      return _dataFormulir;
+      dataFormulir.clear();
+      return dataFormulir;
     }
   }
 
@@ -630,7 +633,7 @@ class CallApi {
   Future<String> updateProfile(String name, String email, String password,
       XFile? imageavatar, XFile? signature) async {
     Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_PROFILE);
-    UpdateProfileReturn _dataProfile = UpdateProfileReturn();
+    UpdateProfileReturn dataProfile = UpdateProfileReturn();
     print(fullUrl);
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -651,17 +654,17 @@ class CallApi {
 
       if (imageavatar != null) {
         File? image1 = File(imageavatar.path);
-        http.MultipartFile _file1 = http.MultipartFile(
+        http.MultipartFile file1 = http.MultipartFile(
             'avatar', imageavatar.readAsBytes().asStream(), image1.lengthSync(),
             filename: 'avatar_$name _${imageavatar.path.split(".").last}');
-        request.files.add(_file1);
+        request.files.add(file1);
       }
       if (signature != null) {
         File? image2 = File(signature.path);
-        http.MultipartFile _file2 = http.MultipartFile('signature',
+        http.MultipartFile file2 = http.MultipartFile('signature',
             signature.readAsBytes().asStream(), image2.lengthSync(),
             filename: 'signature_$name _${signature.path.split(".").last}');
-        request.files.add(_file2);
+        request.files.add(file2);
       }
 
       http.StreamedResponse response = await request.send();
@@ -670,12 +673,12 @@ class CallApi {
       int a = int.parse(jsonDecode(data.body)['status_code']);
       print(a);
       if (a == 200) {
-        _dataProfile = updateProfileReturnFromJson(data.body);
+        dataProfile = updateProfileReturnFromJson(data.body);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         //sharedPreferences.setString('user_data', user1ToJson(_dataProfile));
         sharedPreferences.setString(
-            'user_data', updateUserToJson(_dataProfile.user!));
+            'user_data', updateUserToJson(dataProfile.user!));
         return 'success';
       } else {
         return 'failed';

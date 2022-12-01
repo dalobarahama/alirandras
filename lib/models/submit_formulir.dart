@@ -69,8 +69,8 @@ class RegistrationForm {
   String? landArea;
   String? buildingLocation;
   String? buildingDesignation;
-  double? lat;
-  double? lng;
+  String? lat;
+  String? lng;
   String? status;
   DateTime? updatedAt;
   DateTime? createdAt;
