@@ -246,74 +246,11 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   ),
                 ),
                 Positioned(
-                  left: 30,
-                  bottom: -60,
-                  child: Container(
-                    height: 150,
-                    width: 140,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          offset: const Offset(0, -1),
-                          blurRadius: 8,
-                        )
-                      ],
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.document_scanner,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'Surat Masuk',
-                              style: GoogleFonts.roboto(
-                                textStyle: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Center(
-                            child: Text(
-                          '${_data.suratMasuk ?? '0'}',
-                          style: GoogleFonts.roboto(
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                            textStyle: const TextStyle(color: Colors.white),
-                          ),
-                        ))
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
                   right: 30,
                   bottom: -60,
                   child: Container(
                     height: 150,
-                    width: 140,
+                    width: 300,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       boxShadow: [
@@ -345,7 +282,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               width: 5,
                             ),
                             Text(
-                              'Surat Diproses',
+                              'Menunggu Verifikasi',
                               style: GoogleFonts.roboto(
                                 textStyle: const TextStyle(
                                   fontSize: 14,
@@ -585,36 +522,22 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                 height: 3,
                                               ),
                                               Text(
-                                                  _data
-                                                              .registrationForms?[
-                                                                  index]
-                                                              .mailRequest ==
-                                                          null
-                                                      ? '-'
-                                                      : _data
-                                                          .registrationForms![
-                                                              index]
-                                                          .mailRequest!
-                                                          .status!
-                                                          .toUpperCase(),
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      textStyle: TextStyle(
-                                                        color: _data
-                                                                    .registrationForms?[
-                                                                        index]
-                                                                    .status ==
-                                                                null
-                                                            ? Colors.grey
-                                                            : _data
-                                                                        .registrationForms![
-                                                                            index]
-                                                                        .mailRequest!
-                                                                        .status !=
-                                                                    'diterima'
-                                                                ? Colors.grey
-                                                                : Colors.green,
-                                                      ))),
+                                                _data.registrationForms![index]
+                                                    .status!
+                                                    .toUpperCase(),
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  textStyle: TextStyle(
+                                                    color: _data
+                                                                .registrationForms![
+                                                                    index]
+                                                                .status !=
+                                                            'diterima'
+                                                        ? Colors.grey
+                                                        : Colors.green,
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         )
