@@ -257,19 +257,16 @@ class CallAdminApi {
         'category': 'diterima'
       }, headers: {
         'Authorization': 'Bearer $token',
-        // 'Accept': 'application/json'
       });
-      print(fullUrl);
+
+      print("fullUrl: $fullUrl");
       var res = await post;
       int a = res.statusCode;
-      print(res.body);
-      print('del penga');
-      print(a);
+      print("response body: ${res.body}");
+
       if (a == 200) {
         return 'success';
       } else if (a >= 400 && a <= 500) {
-        // print('zzzzzz');
-
         return 'failed';
       } else {
         return 'failed';

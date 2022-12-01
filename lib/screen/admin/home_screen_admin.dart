@@ -12,6 +12,7 @@ import 'package:flutter_application_3/screen/admin/notification_list_screen.dart
 import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/utils/color_pallete.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -29,7 +30,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   User1 _userData = User1();
   bool isLoading = true;
   AdminHomeModel _data = AdminHomeModel();
-  // GetListPemohon _data = GetListPemohon();
+
+  TextEditingController _reason = TextEditingController();
+
   List<String> statusData = [
     'semua',
     'diterima',
@@ -75,13 +78,62 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         isLoading = false;
       });
     });
-    // await CallAdminApi().getListPemohonData().then((value) {
-    //   setState(() {
-    //     _data = value;
-    //     isLoading = false;
-    //     print("getlistPemohonData: $value");
-    //   });
-    // });
+  }
+
+  approve(String type, String id) async {
+    setState(() {
+      isLoading = true;
+    });
+    if (type == 'permohonan') {
+      await CallAdminApi().approvePermohonan(id).then((value) {
+        if (value == 'success') {
+          Fluttertoast.showToast(msg: 'Surat Permohonan Approved!');
+          Navigator.of(context, rootNavigator: true).pop();
+          setState(() {
+            isLoading = false;
+          });
+        } else {
+          Fluttertoast.showToast(msg: 'Gagal di Approved!');
+        }
+      });
+    } else {
+      await CallAdminApi().approvePengajuan(id).then((value) {
+        Fluttertoast.showToast(msg: 'Surat Pengajuan Approved!');
+        Navigator.of(context, rootNavigator: true).pop();
+        setState(() {
+          isLoading = false;
+        });
+      });
+    }
+  }
+
+  reject(String type, String id) async {
+    if (_reason.text.length > 0) {
+      setState(() {
+        isLoading = true;
+      });
+      if (type == 'permohonan') {
+        await CallAdminApi().rejectPermohonan(id, _reason.text).then((value) {
+          _reason.clear();
+          Fluttertoast.showToast(msg: 'Surat Permohonan Rejected!');
+          Navigator.of(context, rootNavigator: true).pop();
+          setState(() {
+            isLoading = false;
+          });
+        });
+      } else {
+        await CallAdminApi().rejectPengajuan(id, _reason.text).then((value) {
+          _reason.clear();
+          Fluttertoast.showToast(msg: 'Surat Pengajuan Rejected!');
+          Navigator.of(context, rootNavigator: true).pop();
+          setState(() {
+            isLoading = false;
+          });
+        });
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'Mohon isi kolom alasan terlebih dahulu..');
+    }
   }
 
   navigateToApproval(indexs) async {
@@ -102,385 +154,479 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorPallete.mainBackgroundColor,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  SizedBox(
-                    height: 250,
-                    child: Image.asset(
-                      'assets/images/header_new.png',
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+      backgroundColor: ColorPallete.mainBackgroundColor,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                SizedBox(
+                  height: 250,
+                  child: Image.asset(
+                    'assets/images/header_new.png',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
-                  Positioned(
-                    top: 100,
-                    left: 20,
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 25,
-                          width: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(45)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(45),
-                            child: isLoading == true
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : CachedNetworkImage(
-                                    imageUrl: _userData.avatar ?? '-',
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
+                ),
+                Positioned(
+                  top: 100,
+                  left: 20,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 25,
+                        width: 25,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(45)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(45),
+                          child: isLoading == true
+                              ? const Center(child: CircularProgressIndicator())
+                              : CachedNetworkImage(
+                                  imageUrl: _userData.avatar ?? '-',
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        Image.asset(
-                                            'assets/images/default_profile_pic.png'),
                                   ),
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                          'assets/images/default_profile_pic.png'),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Hello ',
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          textStyle: const TextStyle(
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Hello ',
-                          style: GoogleFonts.roboto(
+                      ),
+                      Text(
+                        "${_userData.name}",
+                        style: GoogleFonts.roboto(
                             fontSize: 18,
                             textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
                               color: Colors.white,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 90,
+                  right: 20,
+                  child: InkWell(
+                    onTap: () {
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: const NotificationListScreen(),
+                          withNavBar: false);
+                    },
+                    child: const IconButton(
+                        onPressed: null,
+                        icon: Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                          size: 30,
+                        )),
+                  ),
+                ),
+                Positioned(
+                  left: 30,
+                  bottom: -60,
+                  child: Container(
+                    height: 150,
+                    width: 140,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          offset: const Offset(0, -1),
+                          blurRadius: 8,
+                        )
+                      ],
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.document_scanner,
+                              color: Colors.white,
+                              size: 20,
                             ),
-                          ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Surat Masuk',
+                              style: GoogleFonts.roboto(
+                                textStyle: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "${_userData.name}",
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Center(
+                            child: Text(
+                          '${_data.suratMasuk ?? '0'}',
                           style: GoogleFonts.roboto(
-                              fontSize: 18,
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              )),
-                        ),
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            textStyle: const TextStyle(color: Colors.white),
+                          ),
+                        ))
                       ],
                     ),
                   ),
-                  Positioned(
-                    top: 90,
-                    right: 20,
-                    child: InkWell(
-                      onTap: () {
-                        PersistentNavBarNavigator.pushNewScreen(context,
-                            screen: const NotificationListScreen(),
-                            withNavBar: false);
-                      },
-                      child: const IconButton(
-                          onPressed: null,
-                          icon: Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                            size: 30,
-                          )),
+                ),
+                Positioned(
+                  right: 30,
+                  bottom: -60,
+                  child: Container(
+                    height: 150,
+                    width: 140,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          offset: const Offset(0, -1),
+                          blurRadius: 8,
+                        )
+                      ],
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                  ),
-                  Positioned(
-                    left: 30,
-                    bottom: -60,
-                    child: Container(
-                      height: 150,
-                      width: 140,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            offset: const Offset(0, -1),
-                            blurRadius: 8,
-                          )
-                        ],
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.document_scanner,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                'Surat Masuk',
-                                style: GoogleFonts.roboto(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.account_circle,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Surat Diproses',
+                              style: GoogleFonts.roboto(
+                                textStyle: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Center(
-                              child: Text(
-                            '${_data.suratMasuk ?? '0'}',
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Center(
+                          child: Text(
+                            '${_data.suratDiproses ?? '0'}',
                             style: GoogleFonts.roboto(
                               fontSize: 50,
                               fontWeight: FontWeight.bold,
                               textStyle: const TextStyle(color: Colors.white),
                             ),
-                          ))
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  Positioned(
-                    right: 30,
-                    bottom: -60,
-                    child: Container(
-                      height: 150,
-                      width: 140,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            offset: const Offset(0, -1),
-                            blurRadius: 8,
-                          )
-                        ],
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 8,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 42,
+                  width: 135,
+                  margin: const EdgeInsets.only(left: 25),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: DropdownButton<String>(
+                    items: statusData
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            value.toUpperCase(),
+                            style: GoogleFonts.roboto(fontSize: 12),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                      );
+                    }).toList(),
+                    value: selectedStatus,
+                    underline: Container(),
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    hint: const Center(child: Text('Choose')),
+                    onChanged: (e) {
+                      setState(() {
+                        String? tempTahun;
+                        String? temptStatus;
+                        selectedStatus = e!.toLowerCase();
+                        selectedTahun == null
+                            ? tempTahun = ''
+                            : tempTahun = selectedTahun;
+                        selectedStatus == 'semua'
+                            ? temptStatus = ''
+                            : temptStatus = selectedStatus;
+                        initData(tempTahun, temptStatus);
+                      });
+                    },
+                  ),
+                ),
+                Container(
+                  height: 42,
+                  width: 135,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(right: 25),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: DropdownButton<String>(
+                    items:
+                        tahunData.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            value.toUpperCase(),
+                            style: GoogleFonts.roboto(fontSize: 12),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    value: selectedTahun,
+                    underline: Container(),
+                    icon: const Icon(Icons.calendar_today),
+                    iconSize: 15,
+                    hint: Text(
+                      'Pilih Tahun',
+                      style: GoogleFonts.roboto(fontSize: 12),
+                    ),
+                    onChanged: (e) {
+                      setState(() {
+                        String? tempTahun;
+                        String? temptStatus;
+                        selectedTahun = e!.toLowerCase();
+                        selectedTahun == null
+                            ? tempTahun = ''
+                            : tempTahun = selectedTahun;
+                        selectedStatus == 'semua'
+                            ? temptStatus = ''
+                            : temptStatus = selectedStatus;
+                        initData(tempTahun, temptStatus);
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: isLoading == true
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: _data.registrationForms!.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 100),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          margin: const EdgeInsets.all(10),
+                          color: Colors.white,
+                          shadowColor: Colors.black,
+                          child: Column(
                             children: [
-                              const Icon(
-                                Icons.account_circle,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                'Surat Diproses',
-                                style: GoogleFonts.roboto(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Center(
-                            child: Text(
-                              '${_data.suratDiproses ?? '0'}',
-                              style: GoogleFonts.roboto(
-                                fontSize: 50,
-                                fontWeight: FontWeight.bold,
-                                textStyle: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 42,
-                    width: 135,
-                    margin: const EdgeInsets.only(left: 25),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6)),
-                    child: DropdownButton<String>(
-                      items: statusData
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              value.toUpperCase(),
-                              style: GoogleFonts.roboto(fontSize: 12),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      value: selectedStatus,
-                      underline: Container(),
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      hint: const Center(child: Text('Choose')),
-                      onChanged: (e) {
-                        setState(() {
-                          String? tempTahun;
-                          String? temptStatus;
-                          selectedStatus = e!.toLowerCase();
-                          selectedTahun == null
-                              ? tempTahun = ''
-                              : tempTahun = selectedTahun;
-                          selectedStatus == 'semua'
-                              ? temptStatus = ''
-                              : temptStatus = selectedStatus;
-                          initData(tempTahun, temptStatus);
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 42,
-                    width: 135,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(right: 25),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6)),
-                    child: DropdownButton<String>(
-                      items: tahunData
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              value.toUpperCase(),
-                              style: GoogleFonts.roboto(fontSize: 12),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      value: selectedTahun,
-                      underline: Container(),
-                      icon: const Icon(Icons.calendar_today),
-                      iconSize: 15,
-                      hint: Text(
-                        'Pilih Tahun',
-                        style: GoogleFonts.roboto(fontSize: 12),
-                      ),
-                      onChanged: (e) {
-                        setState(() {
-                          String? tempTahun;
-                          String? temptStatus;
-                          selectedTahun = e!.toLowerCase();
-                          selectedTahun == null
-                              ? tempTahun = ''
-                              : tempTahun = selectedTahun;
-                          selectedStatus == 'semua'
-                              ? temptStatus = ''
-                              : temptStatus = selectedStatus;
-                          initData(tempTahun, temptStatus);
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: isLoading == true
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        itemCount: _data.registrationForms!.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 100),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            margin: const EdgeInsets.all(10),
-                            color: Colors.white,
-                            shadowColor: Colors.black,
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 12),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            DateFormat('dd MMMM yyyy, HH.mm')
-                                                .format(_data
-                                                    .registrationForms![index]
-                                                    .createdAt!),
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 14,
-                                              textStyle: TextStyle(
-                                                color: Colors.grey[400],
-                                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 12),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          DateFormat('dd MMMM yyyy, HH.mm')
+                                              .format(_data
+                                                  .registrationForms![index]
+                                                  .createdAt!),
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 14,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey[400],
                                             ),
                                           ),
-                                          Text(
-                                            'ID: ${_data.registrationForms?[index].id ?? 0}',
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 14,
-                                              textStyle: TextStyle(
-                                                color: Colors.grey[400],
-                                              ),
+                                        ),
+                                        Text(
+                                          'ID: ${_data.registrationForms?[index].id ?? 0}',
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 14,
+                                            textStyle: TextStyle(
+                                              color: Colors.grey[400],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      const Divider(),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Divider(),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                'Nama Pengguna',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 14,
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black,
+                                                    )),
+                                              ),
+                                              const SizedBox(
+                                                height: 3,
+                                              ),
+                                              Text(
+                                                _data.registrationForms?[index]
+                                                        .user?.name ??
+                                                    '-',
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  textStyle: const TextStyle(
+                                                    color:
+                                                        ColorPallete.mainColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                'Status',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 14,
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black,
+                                                    )),
+                                              ),
+                                              const SizedBox(
+                                                height: 3,
+                                              ),
+                                              Text(
+                                                  _data
+                                                              .registrationForms?[
+                                                                  index]
+                                                              .mailRequest ==
+                                                          null
+                                                      ? '-'
+                                                      : _data
+                                                          .registrationForms![
+                                                              index]
+                                                          .mailRequest!
+                                                          .status!
+                                                          .toUpperCase(),
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 14,
+                                                      textStyle: TextStyle(
+                                                        color: _data
+                                                                    .registrationForms?[
+                                                                        index]
+                                                                    .status ==
+                                                                null
+                                                            ? Colors.grey
+                                                            : _data
+                                                                        .registrationForms![
+                                                                            index]
+                                                                        .mailRequest!
+                                                                        .status !=
+                                                                    'diterima'
+                                                                ? Colors.grey
+                                                                : Colors.green,
+                                                      ))),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -488,448 +634,344 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  'Nama Pengguna',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                      )),
-                                                ),
-                                                const SizedBox(
-                                                  height: 3,
-                                                ),
-                                                Text(
-                                                  _data
-                                                          .registrationForms?[
-                                                              index]
-                                                          .user
-                                                          ?.name ??
-                                                      '-',
+                                                  'Lampiran',
                                                   style: GoogleFonts.roboto(
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
                                                     textStyle: const TextStyle(
-                                                      color: ColorPallete
-                                                          .mainColor,
+                                                      color: Colors.black,
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
                                                 const SizedBox(
                                                   height: 5,
                                                 ),
-                                                Text(
-                                                  'Status',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                      )),
-                                                ),
-                                                const SizedBox(
-                                                  height: 3,
-                                                ),
-                                                Text(
-                                                    _data
-                                                                .registrationForms?[
-                                                                    index]
-                                                                .mailRequest ==
-                                                            null
-                                                        ? '-'
-                                                        : _data
+                                                _data
                                                             .registrationForms![
                                                                 index]
-                                                            .mailRequest!
-                                                            .status!
-                                                            .toUpperCase(),
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 14,
-                                                        textStyle: TextStyle(
-                                                          color: _data
-                                                                      .registrationForms?[
+                                                            .mailRequest
+                                                            ?.body !=
+                                                        null
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          PersistentNavBarNavigator.pushNewScreen(
+                                                              context,
+                                                              screen: PreviewSuratBalasanScreenNew(
+                                                                  _data
+                                                                      .registrationForms![
                                                                           index]
-                                                                      .status ==
-                                                                  null
-                                                              ? Colors.grey
-                                                              : _data
-                                                                          .registrationForms![
+                                                                      .mailRequest!
+                                                                      .id!
+                                                                      .toString(),
+                                                                  'view',
+                                                                  _data
+                                                                      .registrationForms![
+                                                                          index]
+                                                                      .id
+                                                                      .toString()),
+                                                              withNavBar:
+                                                                  false);
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Image.asset(
+                                                              'assets/images/pdf_icon.png',
+                                                              height: 30,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Text(
+                                                              'Dokumen Surat',
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                fontSize: 12,
+                                                                textStyle: const TextStyle(
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : const Text('-')
+                                              ]),
+                                        ),
+                                        Expanded(
+                                          child: _data.registrationForms?[index]
+                                                      .status ==
+                                                  null
+                                              ? Container()
+                                              : _data.registrationForms![index]
+                                                          .status !=
+                                                      'ditolak'
+                                                  ? Container()
+                                                  : Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          'Alasan ditolak:',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontSize: 14,
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                  )),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 3,
+                                                        ),
+                                                        Text(
+                                                          _data
+                                                                  .registrationForms?[
+                                                                      index]
+                                                                  .reasonRejection ??
+                                                              '-',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                            fontSize: 14,
+                                                            textStyle:
+                                                                TextStyle(
+                                                              color: _data
+                                                                          .registrationForms?[
                                                                               index]
-                                                                          .mailRequest!
-                                                                          .status !=
-                                                                      'diterima'
+                                                                          .status ==
+                                                                      null
                                                                   ? Colors.grey
-                                                                  : Colors
-                                                                      .green,
-                                                        ))),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    'Lampiran',
-                                                    style: GoogleFonts.roboto(
-                                                      fontSize: 14,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        color: Colors.black,
-                                                      ),
+                                                                  : _data.registrationForms![index].status !=
+                                                                          'diterima'
+                                                                      ? Colors
+                                                                          .grey
+                                                                      : Colors
+                                                                          .green,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  _data
-                                                              .registrationForms![
-                                                                  index]
-                                                              .mailRequest
-                                                              ?.body !=
-                                                          null
-                                                      ? InkWell(
-                                                          onTap: () {
-                                                            PersistentNavBarNavigator.pushNewScreen(
-                                                                context,
-                                                                screen: PreviewSuratBalasanScreenNew(
-                                                                    _data
-                                                                        .registrationForms![
-                                                                            index]
-                                                                        .mailRequest!
-                                                                        .id!
-                                                                        .toString(),
-                                                                    'view',
-                                                                    _data
-                                                                        .registrationForms![
-                                                                            index]
-                                                                        .id
-                                                                        .toString()),
-                                                                withNavBar:
-                                                                    false);
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              Image.asset(
-                                                                'assets/images/pdf_icon.png',
-                                                                height: 30,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                'Dokumen Surat',
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: _data.registrationForms?[index]
+                                                      .status ==
+                                                  null
+                                              ? Container()
+                                              : _data.registrationForms![index]
+                                                          .status !=
+                                                      'diproses'
+                                                  ? Container()
+                                                  : Row(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .remove_red_eye_outlined,
+                                                              color: Colors
+                                                                      .greenAccent[
+                                                                  700],
+                                                              size: 15,
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                              child: Text(
+                                                                'Detail',
                                                                 style:
                                                                     GoogleFonts
                                                                         .roboto(
                                                                   fontSize: 12,
-                                                                  textStyle: const TextStyle(
-                                                                      color: Colors
-                                                                          .black),
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                            .greenAccent[
+                                                                        700],
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : const Text('-')
-                                                ]),
-                                          ),
-                                          Expanded(
-                                            child: _data
-                                                        .registrationForms?[
-                                                            index]
-                                                        .status ==
-                                                    null
-                                                ? Container()
-                                                : _data
-                                                            .registrationForms![
-                                                                index]
-                                                            .status !=
-                                                        'ditolak'
-                                                    ? Container()
-                                                    : Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          const SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Text(
-                                                            'Alasan ditolak:',
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                                    fontSize:
-                                                                        14,
-                                                                    textStyle:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                    )),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 3,
-                                                          ),
-                                                          Text(
-                                                            _data
-                                                                    .registrationForms?[
-                                                                        index]
-                                                                    .reasonRejection ??
-                                                                '-',
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              fontSize: 14,
-                                                              textStyle:
-                                                                  TextStyle(
-                                                                color: _data
-                                                                            .registrationForms?[
-                                                                                index]
-                                                                            .status ==
-                                                                        null
-                                                                    ? Colors
-                                                                        .grey
-                                                                    : _data.registrationForms![index].status !=
-                                                                            'diterima'
-                                                                        ? Colors
-                                                                            .grey
-                                                                        : Colors
-                                                                            .green,
-                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 20),
+                                                          child: Container(
+                                                            child: Row(
+                                                              children: [
+                                                                const Icon(
+                                                                  Icons.delete,
+                                                                  color: Colors
+                                                                      .redAccent,
+                                                                  size: 15,
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                                  child: Text(
+                                                                    'Hapus',
+                                                                    style: GoogleFonts
+                                                                        .roboto(
+                                                                            fontSize:
+                                                                                12,
+                                                                            textStyle:
+                                                                                const TextStyle(
+                                                                              color: Colors.redAccent,
+                                                                            )),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: _data
+                                                        )
+                                                      ],
+                                                    ),
+                                        ),
+                                        _data.registrationForms?[index]
+                                                    .mailRequest ==
+                                                null
+                                            ? Container()
+                                            : _data
                                                         .registrationForms?[
                                                             index]
-                                                        .status ==
+                                                        .mailRequest!
+                                                        .checkMailPermission ==
                                                     null
                                                 ? Container()
                                                 : _data
                                                             .registrationForms![
                                                                 index]
+                                                            .mailRequest!
+                                                            .checkMailPermission!
                                                             .status !=
                                                         'diproses'
                                                     ? Container()
-                                                    : Row(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons
-                                                                    .remove_red_eye_outlined,
-                                                                color: Colors
-                                                                        .greenAccent[
-                                                                    700],
-                                                                size: 15,
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            5),
+                                                    : _data
+                                                                .registrationForms![
+                                                                    index]
+                                                                .mailRequest
+                                                                ?.body ==
+                                                            null
+                                                        ? Container()
+                                                        : InkWell(
+                                                            onTap: () {
+                                                              navigateToApproval(
+                                                                  index);
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              7)),
+                                                              child: Center(
                                                                 child: Text(
-                                                                  'Detail',
+                                                                  'Tindak Lanjuti',
                                                                   style:
                                                                       GoogleFonts
                                                                           .roboto(
                                                                     fontSize:
-                                                                        12,
+                                                                        11,
                                                                     textStyle:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       color: Colors
-                                                                              .greenAccent[
-                                                                          700],
+                                                                          .white,
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              )
-                                                            ],
+                                                              ),
+                                                            ),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 20),
-                                                            child: Container(
-                                                              child: Row(
-                                                                children: [
-                                                                  const Icon(
-                                                                    Icons
-                                                                        .delete,
-                                                                    color: Colors
-                                                                        .redAccent,
-                                                                    size: 15,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            5),
-                                                                    child: Text(
-                                                                      'Hapus',
-                                                                      style: GoogleFonts.roboto(
-                                                                          fontSize: 12,
-                                                                          textStyle: const TextStyle(
-                                                                            color:
-                                                                                Colors.redAccent,
-                                                                          )),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                          ),
-                                          _data.registrationForms?[index]
-                                                      .mailRequest ==
-                                                  null
-                                              ? Container()
-                                              : _data
-                                                          .registrationForms?[
-                                                              index]
-                                                          .mailRequest!
-                                                          .checkMailPermission ==
-                                                      null
-                                                  ? Container()
-                                                  : _data
-                                                              .registrationForms![
-                                                                  index]
-                                                              .mailRequest!
-                                                              .checkMailPermission!
-                                                              .status !=
-                                                          'diproses'
-                                                      ? Container()
-                                                      : _data
-                                                                  .registrationForms![
-                                                                      index]
-                                                                  .mailRequest
-                                                                  ?.body ==
-                                                              null
-                                                          ? Container()
-                                                          : InkWell(
-                                                              onTap: () {
-                                                                navigateToApproval(
-                                                                    index);
-                                                              },
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(10),
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors
-                                                                        .red,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            7)),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    'Tindak Lanjuti',
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize:
-                                                                          11,
-                                                                      textStyle:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 40,
-                                  width: double.infinity,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              PersistentNavBarNavigator.pushNewScreen(
-                                                  context,
-                                                  screen:
-                                                      StatusPengajuanScreenAdmin(
-                                                          _data.registrationForms![
-                                                              index]),
-                                                  withNavBar: false);
-                                            },
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[100],
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(6),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .remove_red_eye_outlined,
-                                                    color: Colors.grey,
-                                                    size: 15,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 6,
-                                                  ),
-                                                  Text(
-                                                    'Detail',
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ],
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: double.infinity,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: InkWell(
+                                          onTap: () {
+                                            PersistentNavBarNavigator.pushNewScreen(
+                                                context,
+                                                screen:
+                                                    StatusPengajuanScreenAdmin(
+                                                        _data.registrationForms![
+                                                            index]),
+                                                withNavBar: false);
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[100],
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                bottomLeft: Radius.circular(6),
                                               ),
                                             ),
-                                          )),
-                                      Expanded(
-                                        flex: 1,
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  color: Colors.grey,
+                                                  size: 15,
+                                                ),
+                                                SizedBox(
+                                                  width: 6,
+                                                ),
+                                                Text(
+                                                  'Detail',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )),
+                                    Expanded(
+                                      flex: 1,
+                                      child: InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                showVerificationDialog(
+                                              _data.registrationForms![index].id
+                                                  .toString(),
+                                            ),
+                                          );
+                                        },
                                         child: Container(
                                           decoration: const BoxDecoration(
                                             color: Colors.green,
@@ -947,17 +989,231 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget showVerificationDialog(String id) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: SizedBox(
+        height: 260,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      size: 24,
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              Image.asset(
+                'assets/images/verification_image.png',
+                height: 72,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 10,
+                  left: 10,
+                ),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        approve("permohonan", id);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: ColorPallete.mainColor,
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Verifikasi',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              showRejectionDialog(id),
+                        );
+                        // Navigator.of(context, rootNavigator: true).pop();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Tolak',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-        ));
+        ),
+      ),
+    );
+  }
+
+  Widget showRejectionDialog(String id) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: SizedBox(
+        height: 260,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Masukkan alasan ditolak',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black26,
+                  ),
+                  fillColor: Colors.grey[300],
+                  filled: true,
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                maxLines: 2,
+                controller: _reason,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 10,
+                  left: 10,
+                ),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        reject("permohonan", id);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: ColorPallete.mainColor,
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Submit',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Kembali',
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
