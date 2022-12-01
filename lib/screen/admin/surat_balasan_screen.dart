@@ -15,14 +15,14 @@ import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-class ListPemohonScreen extends StatefulWidget {
-  const ListPemohonScreen({Key? key}) : super(key: key);
+class SuratBalasanScreen extends StatefulWidget {
+  const SuratBalasanScreen({Key? key}) : super(key: key);
 
   @override
-  _ListPemohonScreenState createState() => _ListPemohonScreenState();
+  _SuratBalasanScreenState createState() => _SuratBalasanScreenState();
 }
 
-class _ListPemohonScreenState extends State<ListPemohonScreen> {
+class _SuratBalasanScreenState extends State<SuratBalasanScreen> {
   User1 _userData = User1();
   bool isLoading = true;
   GetListPemohon _data = GetListPemohon();

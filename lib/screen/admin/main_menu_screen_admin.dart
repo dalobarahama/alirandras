@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/aliran_dras_icon_icons.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
-import 'package:flutter_application_3/screen/admin/list_pemohon_screen.dart';
+import 'package:flutter_application_3/screen/admin/surat_balasan_screen.dart';
 import 'package:flutter_application_3/screen/profile.dart';
 import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
@@ -34,7 +34,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
   List<Widget> _screenList() {
     return [
       HomeScreenAdmin(logout),
-      const ListPemohonScreen(),
+      const SuratBalasanScreen(),
       Profile(logout),
     ];
   }
