@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
-import 'package:flutter_application_3/screen/admin/preview_surat_balasan_screen_new.dart';
 import 'package:flutter_application_3/screen/user/detail_card_statuspengajuan.dart';
 import 'package:flutter_application_3/screen/user/edit_form_pendaftaran.dart';
 import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+
+import '../admin/preview_surat_balasan_screen_new.dart';
 
 class Cek_status_pengajuan extends StatefulWidget {
   const Cek_status_pengajuan({Key? key}) : super(key: key);
@@ -26,6 +28,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   int? idDel = 0;
 
   String diTerima = 'diterima';
+  String token = '';
 
   List<ApplicationLetter1>? _listPengajuan = <ApplicationLetter1>[];
   List<ApplicationLetter1>? _listPengajuanFiltered = <ApplicationLetter1>[];
@@ -36,25 +39,18 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
     super.initState();
   }
 
-  initData() {
+  initData() async {
     CallApi().getListPengajuan().then((value) {
       setState(() {
         print('asu');
         isLoading = false;
         _listPengajuan = value;
         _listPengajuanFiltered = value;
-
-        // if (_listPengajuan == null) {
-        //   Fluttertoast.showToast(
-        //       msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
-        //   Navigator.pop(context);
-        // } else if (_listPengajuan![0].status == 401) {
-        //   Fluttertoast.showToast(
-        //       msg: 'Terjadi Kesalahan', timeInSecForIosWeb: 2);
-        //   Navigator.pop(context);
-        // }
       });
     });
+
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    token = localStorage.getString('token')!;
   }
 
   List<ApplicationLetter1>? _filteredCekStatus(
@@ -74,7 +70,9 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   }
 
   void _launchURL(String? url) async {
-    if (!await launch(url!)) throw 'Could not launch $url';
+    print("token: $token");
+    if (!await launch(url!, headers: {'Authorization': 'Bearer $token'}))
+      throw 'Could not launch $url';
   }
 
   void deletePengajuan(int? id) async {
@@ -740,6 +738,9 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                     'view',
                     item.id.toString()),
                 withNavBar: false);
+            // String link =
+            //     'https://alirandras.inotive.id/api/preview-pdf/${item.mailRequest!.id!.toString()}';
+            // _launchURL(link);
           },
           child: Row(
             children: [

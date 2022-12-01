@@ -50,6 +50,7 @@ class _PreviewSuratBalasanScreenNewState
     CallAdminApi().getListPreviewSuratBalasan(execURL).then((value) {
       setState(() {
         localPath = value;
+        // Fluttertoast.showToast(msg: 'File downloaded');
       });
     });
   }
@@ -59,7 +60,7 @@ class _PreviewSuratBalasanScreenNewState
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.red),
+          iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
         ),
         body: Stack(
