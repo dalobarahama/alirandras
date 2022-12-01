@@ -56,17 +56,11 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   @override
   void initState() {
     selectedTahun = null;
-    setState(() {
-      Timer(const Duration(seconds: 1), () {
-        CallStorage().getUserData().then((value) {
-          setState(() {
-            print(value.name);
-            _userData = value;
-            print(_userData.position);
-            initData('', '');
-          });
-        });
-      });
+    CallStorage().getUserData().then((value) {
+      print(value.name);
+      _userData = value;
+      print(_userData.position);
+      initData('', '');
     });
     super.initState();
   }
@@ -81,13 +75,13 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         isLoading = false;
       });
     });
-    await CallAdminApi().getListPemohonData().then((value) {
-      setState(() {
-        // _data = value;
-        isLoading = false;
-        print("getlistPemohonData: $value");
-      });
-    });
+    // await CallAdminApi().getListPemohonData().then((value) {
+    //   setState(() {
+    //     _data = value;
+    //     isLoading = false;
+    //     print("getlistPemohonData: $value");
+    //   });
+    // });
   }
 
   navigateToApproval(indexs) async {
@@ -171,7 +165,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ),
                         ),
                         Text(
-                          _userData.name!,
+                          "${_userData.name}",
                           style: GoogleFonts.roboto(
                               fontSize: 18,
                               textStyle: const TextStyle(
