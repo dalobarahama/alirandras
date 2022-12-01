@@ -741,35 +741,39 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                     ? Container()
                                                     : Row(
                                                         children: [
-                                                          Container(
-                                                            child: Row(
-                                                              children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .remove_red_eye_outlined,
-                                                                  color: Colors
-                                                                          .greenAccent[
-                                                                      700],
-                                                                  size: 15,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 5),
-                                                                  child: Text(
-                                                                    'Detail',
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                            fontSize:
-                                                                                12,
-                                                                            textStyle:
-                                                                                TextStyle(
-                                                                              color: Colors.greenAccent[700],
-                                                                            )),
+                                                          Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .remove_red_eye_outlined,
+                                                                color: Colors
+                                                                        .greenAccent[
+                                                                    700],
+                                                                size: 15,
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            5),
+                                                                child: Text(
+                                                                  'Detail',
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .roboto(
+                                                                    fontSize:
+                                                                        12,
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .greenAccent[
+                                                                          700],
+                                                                    ),
                                                                   ),
-                                                                )
-                                                              ],
-                                                            ),
+                                                                ),
+                                                              )
+                                                            ],
                                                           ),
                                                           Padding(
                                                             padding:
@@ -800,7 +804,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                                 Colors.redAccent,
                                                                           )),
                                                                     ),
-                                                                  )
+                                                                  ),
                                                                 ],
                                                               ),
                                                             ),

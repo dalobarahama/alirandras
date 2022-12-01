@@ -9,6 +9,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/color_pallete.dart';
+
 class StatusPengajuanScreenAdmin extends StatefulWidget {
   //const StatusPengajuanScreenAdmin({Key? key}) : super(key: key);
   RegistrationForm2 _dataPengajuan = RegistrationForm2();
@@ -24,8 +26,18 @@ class _StatusPengajuanScreenAdminState
   RegistrationForm2 _dataPengajuan = RegistrationForm2();
   _StatusPengajuanScreenAdminState(this._dataPengajuan);
   bool isMap = false;
+
+  List<String>? _dokumenFileList = <String>[];
+
   @override
   void initState() {
+    for (var item in _dataPengajuan.registrationFormAttachments!) {
+      _dokumenFileList!.add(item.file!);
+    }
+    for (var item in _dataPengajuan.registrationFormDocuments!) {
+      _dokumenFileList!.add(item.document!);
+    }
+
     double? lat = _dataPengajuan.lat;
     double? lng = _dataPengajuan.lng;
     point = LatLng(lat!, lng!);
@@ -43,476 +55,435 @@ class _StatusPengajuanScreenAdminState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: ColorPallete.mainBackgroundColor,
+        title: const Text(
+          "Detail Pengajuan",
+        ),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      backgroundColor: ColorPallete.mainBackgroundColor,
       body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 30,
+            right: 30,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 50,
-                ),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.red,
-                    ),
-                  ),
+              const SizedBox(
+                height: 30,
+              ),
+              const Text(
+                'Jenis Permohonan',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, top: 15),
-                child: Container(
-                  child: Text(
-                    'Detail',
-                    style: GoogleFonts.roboto(
-                        fontSize: 25,
-                        textStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[700],
-                        )),
-                  ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                _dataPengajuan.type.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
                 ),
               ),
-              const SizedBox(height: 15),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white70,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Container(
-                    child: Column(
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Status Pengajuan',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                _dataPengajuan.status.toString().toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              _dataPengajuan.mailRequest != null
+                  ? _dataPengajuan.mailRequest!.mailPermissions != null
+                      ? Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: ListView.separated(
+                              itemCount: _dataPengajuan
+                                  .mailRequest!.mailPermissions!.length,
+                              shrinkWrap: true,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
+                                thickness: 1,
+                              ),
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(0),
+                              itemBuilder: (BuildContext context, int index1) {
+                                return _dataPengajuan.mailRequest!
+                                            .mailPermissions![index1] !=
+                                        null
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            _dataPengajuan
+                                                        .mailRequest!
+                                                        .mailPermissions![
+                                                            index1]
+                                                        .status
+                                                        .toString()
+                                                        .toLowerCase() !=
+                                                    'menunggu'
+                                                ? const ImageIcon(
+                                                    AssetImage(
+                                                        'assets/icons/icon_user_permission.png'),
+                                                    color: Colors.green)
+                                                : const ImageIcon(
+                                                    AssetImage(
+                                                        'assets/icons/icon_user_permission.png'),
+                                                    color: Colors.grey),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  _dataPengajuan
+                                                              .mailRequest!
+                                                              .mailPermissions![
+                                                                  index1]
+                                                              .status!
+                                                              .toLowerCase() !=
+                                                          'menunggu'
+                                                      ? Text(
+                                                          DateFormat(
+                                                                  'EEEE, dd MMMM yy',
+                                                                  'id_ID')
+                                                              .format(_dataPengajuan
+                                                                  .mailRequest!
+                                                                  .mailPermissions![
+                                                                      index1]
+                                                                  .updatedAt!),
+                                                        )
+                                                      : Container(),
+                                                  Text(
+                                                    'Surat telah diverifikasi oleh ${_dataPengajuan.mailRequest!.mailPermissions![index1].user!.position}',
+                                                    style: const TextStyle(
+                                                        color: Colors.black54),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : Container();
+                              },
+                            ),
+                          ),
+                        )
+                      : Container()
+                  : Container(),
+              const SizedBox(
+                height: 24,
+              ),
+              _dataPengajuan.status!.toString() == 'ditolak'
+                  ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const Text(
+                          'Alasan Ditolak',
+                          style: TextStyle(
+                            color: ColorPallete.mainColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
                         Text(
-                          DateFormat('dd MMMM yy, HH:mm')
-                              .format(_dataPengajuan.createdAt!),
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
+                          _dataPengajuan.reasonRejection ?? '-',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        )
+                      ],
+                    )
+                  : Container(),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Kecamatan',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                _dataPengajuan.district.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Kelurahan',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                _dataPengajuan.subdistrict.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Luas Bangunan',
+                        style: TextStyle(
+                          color: ColorPallete.mainColor,
+                          fontSize: 14,
                         ),
-                        const SizedBox(
-                          height: 25,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        "${_dataPengajuan.buildingArea.toString()} m",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
                         ),
-                        Text(
-                          'Nama Pemohon',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 72,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Luas Lahan',
+                        style: TextStyle(
+                          color: ColorPallete.mainColor,
+                          fontSize: 14,
                         ),
-                        const SizedBox(
-                          height: 5,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        "${_dataPengajuan.landArea.toString()} m",
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
                         ),
-                        Text(
-                          _dataPengajuan.user!.name!,
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[700],
-                              )),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Lokasi Bangunan',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                _dataPengajuan.buildingLocation.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Map',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Container(
+                width: double.infinity,
+                height: 230,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8)),
+                child: isMap == false
+                    ? const Center(child: CircularProgressIndicator())
+                    : FlutterMap(
+                        options: MapOptions(
+                          center: point,
+                          zoom: 18.0,
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Status dan Proses Pengajuan',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          _dataPengajuan.status!.toUpperCase(),
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: _dataPengajuan.mailRequest == null
-                                  ? const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Center(
-                                          child: Text(
-                                        'Data Belum diverifikasi',
-                                        style: TextStyle(color: Colors.black54),
-                                      )),
-                                    )
-                                  : ListView.builder(
-                                      itemCount: _dataPengajuan
-                                          .mailRequest!.mailPermissions!.length,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: const EdgeInsets.all(0),
-                                      itemBuilder:
-                                          (BuildContext context, int index1) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                              child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              _dataPengajuan
-                                                          .mailRequest!
-                                                          .mailPermissions![
-                                                              index1]
-                                                          .status !=
-                                                      'menunggu'
-                                                  ? const Icon(Icons.person,
-                                                      color: Colors.green)
-                                                  : const Icon(Icons.person,
-                                                      color: Colors.grey),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    _dataPengajuan
-                                                                .mailRequest!
-                                                                .mailPermissions![
-                                                                    index1]
-                                                                .status!
-                                                                .toLowerCase() !=
-                                                            'menunggu'
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    bottom:
-                                                                        3.0),
-                                                            child: Text(
-                                                              DateFormat(
-                                                                      'EEEE, dd MMMM yyyy',
-                                                                      'id_ID')
-                                                                  .format(_dataPengajuan
-                                                                      .mailRequest!
-                                                                      .mailPermissions![
-                                                                          index1]
-                                                                      .updatedAt!),
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                    Text(
-                                                      'Surat telah ' +
-                                                          _dataPengajuan
-                                                              .mailRequest!
-                                                              .mailPermissions![
-                                                                  index1]
-                                                              .status
-                                                              .toString() +
-                                                          ' oleh ' +
-                                                          _dataPengajuan
-                                                              .mailRequest!
-                                                              .mailPermissions![
-                                                                  index1]
-                                                              .user!
-                                                              .position
-                                                              .toString(),
-                                                      style: const TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          )),
-                                        );
-                                      },
-                                    )),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Jenis Permohonan',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          _dataPengajuan.type.toString(),
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[700],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Luas Bangunan',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          _dataPengajuan.buildingArea.toString(),
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[700],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Luas Lahan',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          _dataPengajuan.landArea.toString(),
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[700],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Peruntukan Bangunan',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          _dataPengajuan.buildingDesignation.toString(),
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[700],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Lampiran',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        _dataPengajuan.mailRequest?.body != null
-                            ? InkWell(
-                                onTap: () {
-                                  PersistentNavBarNavigator.pushNewScreen(
-                                      context,
-                                      screen: PreviewSuratBalasanScreenNew(
-                                          _dataPengajuan.mailRequest!.id!
-                                              .toString(),
-                                          'view',
-                                          _dataPengajuan.id.toString()),
-                                      withNavBar: false);
-                                },
-                                child: const Text(
-                                  'Lihat Surat Balasan',
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      decoration: TextDecoration.underline),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            subdomains: const ['a', 'b', 'c'],
+                          ),
+                          MarkerLayer(
+                            markers: [
+                              Marker(
+                                width: 100,
+                                height: 100,
+                                point: point,
+                                builder: (ctx) => Container(
+                                  child: const Image(
+                                    image:
+                                        AssetImage('assets/images/Vector.png'),
+                                  ),
                                 ),
-                              )
-                            : const Text('-'),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Lampiran Dokumen',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'FIle terlampir',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              Column(
+                children: [
+                  ..._dokumenFileList!.map((file) {
+                    return Container(
+                      margin: const EdgeInsets.only(
+                        top: 6,
+                      ),
+                      padding: const EdgeInsets.only(
+                        top: 14,
+                        bottom: 14,
+                        left: 17,
+                        right: 17,
+                      ),
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          String link = 'https://alirandras.inotive.id$file';
+                          _launchURL(link);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _dataPengajuan.registrationFormDocuments!.length ==
-                                    0
-                                ? const Text('-')
-                                : Expanded(
-                                    child: ListView.builder(
-                                        itemCount: _dataPengajuan
-                                            .registrationFormDocuments!.length,
-                                        shrinkWrap: true,
-                                        physics: const ClampingScrollPhysics(),
-                                        padding: const EdgeInsets.all(0),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Container(
-                                            child: InkWell(
-                                                onTap: () {
-                                                  String _link =
-                                                      'https://alirandras.inotive.id' +
-                                                          _dataPengajuan
-                                                              .registrationFormDocuments![
-                                                                  index]
-                                                              .document
-                                                              .toString();
-                                                  _launchURL(_link);
-                                                },
-                                                child: Text(
-                                                  'Lampiran Dokumen ' +
-                                                      (index + 1).toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.blue,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                                )),
-                                          );
-                                        }),
-                                  )
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  child: file.split('.').last != 'pdf'
+                                      ? Image.network(
+                                          'https://alirandras.inotive.id$file')
+                                      : Image.asset(
+                                          'assets/images/pdf_icon.png'),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    file.split('/').last,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Alamat Lengkap',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          _dataPengajuan.buildingLocation.toString(),
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              textStyle: TextStyle(
-                                color: Colors.grey[700],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Peta Lokasi',
-                          style: GoogleFonts.roboto(
-                              fontSize: 12,
-                              textStyle: TextStyle(
-                                color: Colors.grey[500],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 230,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(8)),
-                          child: isMap == false
-                              ? const Center(child: CircularProgressIndicator())
-                              : FlutterMap(
-                                  options: MapOptions(
-                                    center: point,
-                                    zoom: 18.0,
-                                  ),
-                                  children: [
-                                    TileLayer(
-                                      urlTemplate:
-                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                      subdomains: const ['a', 'b', 'c'],
-                                    ),
-                                    MarkerLayer(
-                                      markers: [
-                                        Marker(
-                                          width: 100,
-                                          height: 100,
-                                          point: point,
-                                          builder: (ctx) => Container(
-                                            child: const Image(
-                                              image: AssetImage(
-                                                  'assets/images/Vector.png'),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
+              const SizedBox(
+                height: 24,
+              ),
             ],
           ),
         ),
