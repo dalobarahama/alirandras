@@ -165,23 +165,6 @@ class _ProfileState extends State<Profile> {
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-                _userData.app == 'admin'
-                    ? Padding(
-                        padding: const EdgeInsets.only(
-                          top: 50.0,
-                          left: 25,
-                        ),
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 30,
-                            )),
-                      )
-                    : Container(),
                 Positioned(
                   bottom: -50,
                   right: 135,
