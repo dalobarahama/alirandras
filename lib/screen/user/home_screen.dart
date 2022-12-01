@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
 import 'package:flutter_application_3/screen/user/form_pendaftaran.dart';
 import 'package:flutter_application_3/utils/color_pallete.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+import '../../helper/admin_api_helper.dart';
+import '../../models/notif_model.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,23 +25,31 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isLoading = true;
   User1 _userData = User1();
+
+  NotifModel notificationData = NotifModel();
+
   @override
   void initState() {
     initData();
-    // TODO: implement initState
     super.initState();
   }
 
-  initData() {
-    setState(() {
-      Timer(const Duration(seconds: 1), () {
-        CallStorage().getUserData().then((value) {
-          setState(() {
-            _userData = value;
-            isLoading = false;
-          });
-        });
+  initData() async {
+    await CallStorage().getUserData().then((value) {
+      setState(() {
+        _userData = value;
+        isLoading = false;
       });
+    });
+
+    await CallAdminApi().getNotificationList().then((value) {
+      setState(() {
+        notificationData = value;
+        isLoading = false;
+      });
+    }).onError((error, stackTrace) {
+      isLoading = false;
+      Fluttertoast.showToast(msg: 'Something wrong, try again later..');
     });
   }
 
@@ -98,10 +111,11 @@ class _HomeState extends State<Home> {
                             Text(
                               'Hello ',
                               style: GoogleFonts.roboto(
-                                  fontSize: 18,
-                                  textStyle: const TextStyle(
-                                    color: Colors.white,
-                                  )),
+                                fontSize: 18,
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                             Text(
                               _userData.name!,
@@ -215,9 +229,137 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 20,
                   ),
+                  Container(
+                    height: 300,
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              offset: const Offset(
+                                0,
+                                -1,
+                              ),
+                              blurRadius: 4)
+                        ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        const Text(
+                          'Recent Notification',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        notificationData.notifications == null
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    notificationData.notifications?.length,
+                                itemBuilder: (context, index) {
+                                  if (index < 3) {
+                                    return Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(6)),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            returnNotifDate(notificationData
+                                                .notifications![index]
+                                                .createdAt!),
+                                            style: TextStyle(
+                                              color: Colors.grey[500],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  notificationData
+                                                          .notifications?[index]
+                                                          .title ??
+                                                      '-',
+                                                  style: GoogleFonts.roboto(),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              notificationData
+                                                          .notifications?[index]
+                                                          .status ==
+                                                      'diterima'
+                                                  ? const ImageIcon(
+                                                      AssetImage(
+                                                          'assets/icons/icon_notification_accepted.png'),
+                                                      size: 20,
+                                                      color: Colors.green)
+                                                  : const ImageIcon(
+                                                      AssetImage(
+                                                          'assets/icons/icon_notification_decline.png'),
+                                                      size: 20,
+                                                      color: Colors.red),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
           );
+  }
+
+  String returnNotifDate(DateTime dateTime) {
+    DateTime today = DateTime.now();
+
+    if (returnFormatedDate(dateTime) == returnFormatedDate(today)) {
+      return "Today";
+    } else if (returnFormatedDate(today.subtract(const Duration(days: 1))) ==
+        returnFormatedDate(dateTime)) {
+      return "Yesterday";
+    } else {
+      return returnFormatedDate(dateTime);
+    }
+  }
+
+  String returnFormatedDate(DateTime dateTime) {
+    return DateFormat('dd MMM yyyy').format(dateTime);
   }
 }
