@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/aliran_dras_icon_icons.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/screen/admin/list_pemohon_screen.dart';
-import 'package:flutter_application_3/screen/admin/manajemen_pengguna_screen_admin.dart';
-import 'package:flutter_application_3/screen/admin/setting_surat_pengajuan_screen_admin.dart';
+import 'package:flutter_application_3/screen/profile.dart';
+import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:flutter_application_3/utils/transition_animation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_application_3/screen/admin/home_screen_admin.dart';
@@ -35,8 +35,7 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
     return [
       HomeScreenAdmin(logout),
       const ListPemohonScreen(),
-      const ManajemenPenggunaScreenAdmin(),
-      const SettingSuratPengajuanScreenAdmin(),
+      Profile(logout),
     ];
   }
 
@@ -45,39 +44,33 @@ class _MainMenuScreenAdminState extends State<MainMenuScreenAdmin> {
       PersistentBottomNavBarItem(
           icon: Icon(
             AliranDrasIcon.file,
-            color: _controller.index == 0 ? Colors.blueAccent : Colors.grey,
+            color:
+                _controller.index == 0 ? ColorPallete.mainColor : Colors.grey,
             size: 18,
           ),
-          activeColorPrimary: Colors.blueAccent,
+          activeColorPrimary: ColorPallete.mainColor,
+          inactiveColorPrimary: Colors.grey,
+          title: 'Surat Permohonan'),
+      PersistentBottomNavBarItem(
+          icon: Icon(
+            AliranDrasIcon.file,
+            color:
+                _controller.index == 1 ? ColorPallete.mainColor : Colors.grey,
+            size: 18,
+          ),
+          activeColorPrimary: ColorPallete.mainColor,
           inactiveColorPrimary: Colors.grey,
           title: 'Surat Balasan'),
       PersistentBottomNavBarItem(
           icon: Icon(
-            AliranDrasIcon.file,
-            color: _controller.index == 1 ? Colors.blueAccent : Colors.grey,
-            size: 18,
-          ),
-          activeColorPrimary: Colors.blueAccent,
-          inactiveColorPrimary: Colors.grey,
-          title: 'Pemohon'),
-      PersistentBottomNavBarItem(
-          icon: Icon(
             AliranDrasIcon.profile,
-            color: _controller.index == 2 ? Colors.blueAccent : Colors.grey,
+            color:
+                _controller.index == 2 ? ColorPallete.mainColor : Colors.grey,
             size: 18,
           ),
-          activeColorPrimary: Colors.blueAccent,
+          activeColorPrimary: ColorPallete.mainColor,
           inactiveColorPrimary: Colors.grey,
-          title: 'Pengguna'),
-      PersistentBottomNavBarItem(
-          icon: Icon(
-            AliranDrasIcon.profile,
-            color: _controller.index == 3 ? Colors.blueAccent : Colors.grey,
-            size: 18,
-          ),
-          activeColorPrimary: Colors.blueAccent,
-          inactiveColorPrimary: Colors.grey,
-          title: 'Setting'),
+          title: 'Profile'),
     ];
   }
 

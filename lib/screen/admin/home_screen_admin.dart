@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/admin_api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/admin_home_model.dart';
+import 'package:flutter_application_3/models/admin_pemohon_model.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:flutter_application_3/screen/admin/detail_status_pengajuan_screen_admin.dart';
 import 'package:flutter_application_3/screen/admin/notification_list_screen.dart';
@@ -28,6 +29,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   User1 _userData = User1();
   bool isLoading = true;
   AdminHomeModel _data = AdminHomeModel();
+  // GetListPemohon _data = GetListPemohon();
   List<String> statusData = [
     'semua',
     'diterima',
@@ -77,6 +79,13 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
       setState(() {
         _data = value;
         isLoading = false;
+      });
+    });
+    await CallAdminApi().getListPemohonData().then((value) {
+      setState(() {
+        // _data = value;
+        isLoading = false;
+        print("getlistPemohonData: $value");
       });
     });
   }
@@ -837,30 +846,34 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                                                     index);
                                                               },
                                                               child: Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          10),
-                                                                  decoration: BoxDecoration(
-                                                                      color: Colors
-                                                                          .red,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              7)),
-                                                                  child: Center(
-                                                                    child: Text(
-                                                                      'Tindak Lanjuti',
-                                                                      style: GoogleFonts.roboto(
-                                                                          fontSize: 11,
-                                                                          textStyle: const TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                          )),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(10),
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            7)),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    'Tindak Lanjuti',
+                                                                    style: GoogleFonts
+                                                                        .roboto(
+                                                                      fontSize:
+                                                                          11,
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
                                                                     ),
-                                                                  )),
-                                                            )
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
                                         ],
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
