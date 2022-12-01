@@ -669,16 +669,17 @@ class CallApi {
 
       http.StreamedResponse response = await request.send();
       var data = await http.Response.fromStream(response);
-      print(data.body);
       int a = int.parse(jsonDecode(data.body)['status_code']);
-      print(a);
+
       if (a == 200) {
         dataProfile = updateProfileReturnFromJson(data.body);
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        //sharedPreferences.setString('user_data', user1ToJson(_dataProfile));
-        sharedPreferences.setString(
+
+        localStorage.setString(
             'user_data', updateUserToJson(dataProfile.user!));
+        print("api_helper user_data: ${localStorage.getString('user_data')}");
+        print("response: ${data.body}");
         return 'success';
       } else {
         return 'failed';

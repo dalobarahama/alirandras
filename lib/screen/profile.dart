@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/helper/admin_api_helper.dart';
 import 'package:flutter_application_3/utils/color_pallete.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
@@ -29,6 +31,9 @@ class _ProfileState extends State<Profile> {
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
   XFile? _signatureFile;
+  String? signatureFromUrl;
+  bool isSignatureFromUrlNotNull = false;
+
   @override
   void initState() {
     initData();
@@ -40,10 +45,16 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _userData = value;
         isLoading = false;
-        print(_userData.avatar);
+        print("signature: ${_userData.signature!}");
         _namaController.text = _userData.name!;
         _emailController.text = _userData.email!;
+        // signatureFromUrl = _userData.signature;
         if (_userData.app == 'admin') {
+          if (_userData.signature != null) {
+            signatureFromUrl = _userData.signature!;
+            isSignatureFromUrlNotNull = true;
+            print(signatureFromUrl);
+          }
           if (_userData.position != null) {
             _jabatanController.text = _userData.position;
             print(_userData.position);
@@ -93,6 +104,10 @@ class _ProfileState extends State<Profile> {
       }
     }
 
+    setState(() {
+      isLoading = true;
+    });
+
     CallApi()
         .updateProfile(_namaController.text, _emailController.text,
             _passwordController.text, _imageFile, _signatureFile)
@@ -107,6 +122,7 @@ class _ProfileState extends State<Profile> {
       } else {
         Fluttertoast.showToast(msg: value, timeInSecForIosWeb: 2);
       }
+      isLoading = false;
     });
   }
   /* void updateData() async {
@@ -137,6 +153,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorPallete.mainBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -271,19 +288,19 @@ class _ProfileState extends State<Profile> {
                 style: const TextStyle(
                   height: 0.8,
                 ),
-                decoration: InputDecoration(
-                  suffixIcon: const Icon(
+                decoration: const InputDecoration(
+                  suffixIcon: Icon(
                     Icons.edit_outlined,
                     size: 20,
                   ),
                   hintText: 'Masukkan nama',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black26,
                   ),
-                  fillColor: Colors.grey[300],
+                  fillColor: Colors.white,
                   filled: true,
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -311,26 +328,29 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 33, right: 33, top: 20, bottom: 20),
+                            left: 30,
+                            right: 30,
+                            top: 12,
+                          ),
                           child: Container(
+                            alignment: Alignment.centerLeft,
                             width: double.infinity,
+                            height: 50,
                             decoration: BoxDecoration(
-                                color: Colors.black12,
-                                borderRadius: BorderRadius.circular(8)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                  maxLines: 2,
-                                  style: const TextStyle(color: Colors.black54),
-                                  controller: _jabatanController,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                  )),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                _jabatanController.text,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -359,19 +379,19 @@ class _ProfileState extends State<Profile> {
                 style: const TextStyle(
                   height: 0.8,
                 ),
-                decoration: InputDecoration(
-                  suffixIcon: const Icon(
+                decoration: const InputDecoration(
+                  suffixIcon: Icon(
                     Icons.edit_outlined,
                     size: 20,
                   ),
                   hintText: 'Masukkan email',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black26,
                   ),
-                  fillColor: Colors.grey[300],
+                  fillColor: Colors.white,
                   filled: true,
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -397,26 +417,25 @@ class _ProfileState extends State<Profile> {
                 left: 30,
                 right: 30,
                 top: 10,
-                bottom: 30,
               ),
               child: TextFormField(
                 style: const TextStyle(
                   height: 0.8,
                 ),
                 obscureText: true,
-                decoration: InputDecoration(
-                  suffixIcon: const Icon(
+                decoration: const InputDecoration(
+                  suffixIcon: Icon(
                     Icons.edit_outlined,
                     size: 20,
                   ),
                   hintText: '********',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black26,
                   ),
-                  fillColor: Colors.grey[300],
+                  fillColor: Colors.white,
                   filled: true,
-                  border: const OutlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -428,6 +447,7 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        margin: const EdgeInsets.only(top: 10),
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.only(left: 30),
                         child: const Text(
@@ -440,33 +460,131 @@ class _ProfileState extends State<Profile> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 33, right: 33, bottom: 50),
+                          left: 30,
+                          right: 30,
+                          top: 10,
+                        ),
                         child: InkWell(
                           onTap: () {
                             _signatureFromGallery();
                           },
-                          child: Container(
-                            height: 50,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(8)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Text(
-                                  'Upload File',
-                                  style: TextStyle(
-                                      color: Colors.black54, fontSize: 20),
+                          child: DottedBorder(
+                            color: ColorPallete.mainColor,
+                            borderType: BorderType.RRect,
+                            strokeWidth: 1,
+                            radius: const Radius.circular(6),
+                            dashPattern: const [
+                              10,
+                              3,
+                            ],
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(6),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                height: 65,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.upload,
+                                      color: ColorPallete.mainColor,
+                                      size: 15,
+                                    ),
+                                    SizedBox(
+                                      width: 12,
+                                    ),
+                                    Text(
+                                      'Upload',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: ColorPallete.mainColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
+                      _signatureFile != null
+                          ? Container(
+                              margin: const EdgeInsets.only(
+                                top: 12,
+                                left: 27,
+                                right: 27,
+                              ),
+                              padding: const EdgeInsets.only(
+                                top: 14,
+                                bottom: 14,
+                                left: 17,
+                                right: 17,
+                              ),
+                              height: 80,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 50,
+                                        child: _userData.signature != null
+                                            ? Image.file(
+                                                File(_signatureFile!.path))
+                                            : Image.network(
+                                                _userData.signature!),
+                                      ),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      SizedBox(
+                                        width: 150,
+                                        child: Text(
+                                          _signatureFile!.path.split('/').last,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _signatureFile = null;
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.cancel_sharp,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Container(),
                     ],
                   )
                 : Container(),
+            const SizedBox(
+              height: 30,
+            ),
             Container(
               margin: const EdgeInsets.only(
                 left: 30,
