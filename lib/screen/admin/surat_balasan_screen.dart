@@ -553,22 +553,15 @@ class _SuratBalasanScreenState extends State<SuratBalasanScreen> {
                             height: 3,
                           ),
                           Text(
-                            _data.registrationForms?[index].mailRequest == null
-                                ? '-'
-                                : _data.registrationForms![index].mailRequest!
-                                    .status!
-                                    .toUpperCase(),
+                            _data.registrationForms![index].status!
+                                .toUpperCase(),
                             style: GoogleFonts.roboto(
                               fontSize: 14,
                               textStyle: TextStyle(
-                                color: _data.registrationForms?[index].status ==
-                                        null
+                                color: _data.registrationForms![index].status !=
+                                        'diterima'
                                     ? Colors.grey
-                                    : _data.registrationForms![index]
-                                                .mailRequest!.status !=
-                                            'diterima'
-                                        ? Colors.grey
-                                        : Colors.green,
+                                    : Colors.green,
                               ),
                             ),
                           ),
