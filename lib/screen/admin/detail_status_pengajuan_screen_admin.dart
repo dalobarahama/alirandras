@@ -165,16 +165,28 @@ class _StatusPengajuanScreenAdminState
                                                             index1]
                                                         .status
                                                         .toString()
-                                                        .toLowerCase() !=
-                                                    'menunggu'
+                                                        .toLowerCase() ==
+                                                    'diterima'
                                                 ? const ImageIcon(
                                                     AssetImage(
                                                         'assets/icons/icon_user_permission.png'),
                                                     color: Colors.green)
-                                                : const ImageIcon(
-                                                    AssetImage(
-                                                        'assets/icons/icon_user_permission.png'),
-                                                    color: Colors.grey),
+                                                : _dataPengajuan
+                                                            .mailRequest!
+                                                            .mailPermissions![
+                                                                index1]
+                                                            .status
+                                                            .toString()
+                                                            .toLowerCase() ==
+                                                        'ditolak'
+                                                    ? const ImageIcon(
+                                                        AssetImage(
+                                                            'assets/icons/icon_user_permission.png'),
+                                                        color: Colors.red)
+                                                    : const ImageIcon(
+                                                        AssetImage(
+                                                            'assets/icons/icon_user_permission.png'),
+                                                        color: Colors.grey),
                                             const SizedBox(
                                               width: 20,
                                             ),
@@ -189,23 +201,49 @@ class _StatusPengajuanScreenAdminState
                                                                   index1]
                                                               .status!
                                                               .toLowerCase() !=
-                                                          'menunggu'
-                                                      ? Text(
-                                                          DateFormat(
-                                                                  'EEEE, dd MMMM yy',
-                                                                  'id_ID')
-                                                              .format(_dataPengajuan
+                                                          'diterima'
+                                                      ? Container()
+                                                      : _dataPengajuan
                                                                   .mailRequest!
                                                                   .mailPermissions![
                                                                       index1]
-                                                                  .updatedAt!),
-                                                        )
-                                                      : Container(),
+                                                                  .status!
+                                                                  .toLowerCase() !=
+                                                              'ditolak'
+                                                          ? Text(
+                                                              DateFormat(
+                                                                      'EEEE, dd MMMM yy',
+                                                                      'id_ID')
+                                                                  .format(_dataPengajuan
+                                                                      .mailRequest!
+                                                                      .mailPermissions![
+                                                                          index1]
+                                                                      .updatedAt!),
+                                                            )
+                                                          : Container(),
                                                   Text(
-                                                    'Surat telah diverifikasi oleh ${_dataPengajuan.mailRequest!.mailPermissions![index1].user!.position}',
+                                                    'Surat ${_dataPengajuan.mailRequest!.mailPermissions![index1].status!.toLowerCase()} ${_dataPengajuan.mailRequest!.mailPermissions![index1].user!.position}',
                                                     style: const TextStyle(
                                                         color: Colors.black54),
                                                   ),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  _dataPengajuan
+                                                              .mailRequest!
+                                                              .mailPermissions![
+                                                                  index1]
+                                                              .status!
+                                                              .toLowerCase() ==
+                                                          'ditolak'
+                                                      ? Text(
+                                                          'Alasan ditolak ${_dataPengajuan.mailRequest!.mailPermissions![index1].reasonRejection.toString()}',
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .black54),
+                                                        )
+                                                      : Container(),
                                                 ],
                                               ),
                                             )
