@@ -448,7 +448,7 @@ class CallApi {
       }
     } catch (e) {
       print(e);
-      listPengajuan.applicationLetters1!.clear();
+      // listPengajuan.applicationLetters1!.clear();
       return listPengajuan.applicationLetters1;
     }
   }

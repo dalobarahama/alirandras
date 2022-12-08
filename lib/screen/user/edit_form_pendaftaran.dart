@@ -119,7 +119,6 @@ class _EditFormState extends State<EditForm> {
       _luasLahanController.text = _dataForm.landArea!;
       _lokasiBangunanController.text = _dataForm.buildingLocation!;
       jenisPermohonan = _dataForm.type!;
-      _peruntukanBangunanController.text = _dataForm.buildingDesignation!;
       lat = _dataForm.lat!;
       lang = _dataForm.lng!;
       point = LatLng(lat, lang);
@@ -239,10 +238,10 @@ class _EditFormState extends State<EditForm> {
       Fluttertoast.showToast(msg: 'Silahkan pilih kecamatan terlebih dahulu.');
       return;
     }
-    // if (_selectedKelurahan == null) {
-    //   Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
-    //   return;
-    // }
+    if (_selectedKelurahan == null) {
+      Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
+      return;
+    }
     if (_luasBangunanController.text.length < 1) {
       Fluttertoast.showToast(
           msg: 'Silahkan masukkan luas bangunan terlebih dahulu.');
@@ -257,9 +256,6 @@ class _EditFormState extends State<EditForm> {
       Fluttertoast.showToast(
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
-    }
-    if (_peruntukanBangunanController.text.length < 2) {
-      Fluttertoast.showToast(msg: 'Silahkan Masukkan peruntukan bangunan');
     }
     /*if (_imageFileList!.length < 1) {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
@@ -482,7 +478,7 @@ class _EditFormState extends State<EditForm> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: _buildJenisPermohonanDropdown(),
+                child: _buildKelurahanDropdown(),
               ),
               const SizedBox(
                 height: 24,
@@ -995,34 +991,33 @@ class _EditFormState extends State<EditForm> {
   Widget _buildKelurahanDropdown() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(5)),
-      padding: const EdgeInsets.only(left: 12, right: 24),
-      child: _listKelurahan == null
-          ? Container(
-              height: 45,
-              width: double.infinity,
-              padding: const EdgeInsets.only(top: 8),
-              child: const Text('Pilih Kelurahan',
-                  style: TextStyle(fontSize: 12, color: Colors.black54)),
-            )
-          : DropdownButton<GetKelurahan>(
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
-              onChanged: (value) => setState(() {
-                _selectedKelurahan = value;
-              }),
-              value: _selectedKelurahan,
-              hint: const Text('Pilih Kelurahan'),
-              items: _listKelurahan.map((GetKelurahan value) {
-                return new DropdownMenuItem<GetKelurahan>(
-                  value: value,
-                  child: new Text(value.name!),
-                );
-              }).toList(),
-              borderRadius: BorderRadius.circular(7),
-              isExpanded: true,
-              underline: const SizedBox.shrink(),
-            ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+      ),
+      child: DropdownButton<GetKelurahan>(
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+        ),
+        onChanged: (value) => setState(() {
+          _selectedKelurahan = value;
+        }),
+        value: _selectedKelurahan,
+        hint: const Text('Pilih Kelurahan'),
+        items: _listKelurahan.map((GetKelurahan value) {
+          return DropdownMenuItem<GetKelurahan>(
+            value: value,
+            child: Text(value.name!),
+          );
+        }).toList(),
+        borderRadius: BorderRadius.circular(7),
+        isExpanded: true,
+        underline: const SizedBox.shrink(),
+      ),
     );
   }
 }

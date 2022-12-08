@@ -99,7 +99,8 @@ class _HomeState extends State<Home> {
                                       ? const Center(
                                           child: CircularProgressIndicator())
                                       : CachedNetworkImage(
-                                          imageUrl: _userData.avatar ?? '-',
+                                          imageUrl: _userData.avatar ??
+                                              "https://alirandras.inotive.id",
                                           imageBuilder:
                                               (context, imageProvider) =>
                                                   Container(
