@@ -600,6 +600,44 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   ),
                 ),
                 const SizedBox(
+                  height: 4,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 14,
+                    bottom: 14,
+                    left: 17,
+                    right: 17,
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'File yang diperlukan',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        'Site Plan, Peta Kontur, Tata Kelola Air',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
                   height: 12,
                 ),
                 InkWell(
