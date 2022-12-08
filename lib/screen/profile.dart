@@ -32,7 +32,6 @@ class _ProfileState extends State<Profile> {
   XFile? _imageFile;
   XFile? _signatureFile;
   String? signatureFromUrl;
-  bool isSignatureFromUrlNotNull = false;
 
   @override
   void initState() {
@@ -43,23 +42,23 @@ class _ProfileState extends State<Profile> {
   initData() async {
     isLoading = true;
     await CallStorage().getUserData().then((value) {
-      print("value: ${value.name}");
-      print("signature: ${value.signature}");
-      setState(() {
-        isLoading = false;
-      });
+      print("profile value: ${value.name}");
+      print("profile signature: ${value.signature}");
+      print("profile signatureFile: $_signatureFile");
       _userData = value;
       _namaController.text = value.name!;
       _emailController.text = value.email!;
       if (value.app == 'admin') {
         if (value.signature != null) {
           signatureFromUrl = _userData.signature!;
-          isSignatureFromUrlNotNull = true;
         }
         if (value.position != null) {
           _jabatanController.text = _userData.position;
         }
       }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -496,7 +495,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
-                      _signatureFile != null
+                      _userData.signature != null || _signatureFile != null
                           ? Container(
                               margin: const EdgeInsets.only(
                                 top: 12,
@@ -524,10 +523,10 @@ class _ProfileState extends State<Profile> {
                                       SizedBox(
                                         width: 50,
                                         child: _userData.signature != null
-                                            ? Image.file(
-                                                File(_signatureFile!.path))
-                                            : Image.network(
-                                                _userData.signature!),
+                                            ? Image.network(
+                                                _userData.signature!)
+                                            : Image.file(
+                                                File(_signatureFile!.path)),
                                       ),
                                       const SizedBox(
                                         width: 16,
@@ -535,7 +534,11 @@ class _ProfileState extends State<Profile> {
                                       SizedBox(
                                         width: 150,
                                         child: Text(
-                                          _signatureFile!.path.split('/').last,
+                                          _userData.signature != null
+                                              ? "Tanda tangan"
+                                              : _signatureFile!.path
+                                                  .split('/')
+                                                  .last,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             fontSize: 14,
@@ -549,6 +552,7 @@ class _ProfileState extends State<Profile> {
                                     onTap: () {
                                       setState(() {
                                         _signatureFile = null;
+                                        _userData.signature = null;
                                       });
                                     },
                                     child: const Icon(

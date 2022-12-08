@@ -43,7 +43,6 @@ class CallApi {
       var res = await post;
       var a = jsonDecode(res.body)['status_code'];
       print(a);
-      (loginData.statusCode);
 
       if (a == 200) {
         loginData = loginDataFromJson(res.body);
@@ -54,6 +53,7 @@ class CallApi {
         sharedPreferences.setString('user_data', user1ToJson(loginData.user!));
         sharedPreferences.setString(
             'admin_permission', adminPermissionToJson(dataPermission));
+        print("signature ${loginData.user!.signature}");
         return 'success';
       } else if (a >= 400 && a <= 500) {
         // print('zzzzzz');
