@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:flutter_application_3/models/login_data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -151,12 +152,13 @@ class _HomeState extends State<Home> {
                                   withNavBar: false);
                             },
                             child: const IconButton(
-                                onPressed: null,
-                                icon: Icon(
-                                  Icons.notifications,
-                                  color: Colors.white,
-                                  size: 30,
-                                )),
+                              onPressed: null,
+                              icon: Icon(
+                                Icons.notifications,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -315,11 +317,11 @@ class _HomeState extends State<Home> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    notificationData
-                                                            .notifications?[
+                                                    parseHtmlString(
+                                                        notificationData
+                                                            .notifications![
                                                                 index]
-                                                            .title ??
-                                                        '-',
+                                                            .title!),
                                                     style: GoogleFonts.roboto(),
                                                   ),
                                                 ),
@@ -376,5 +378,13 @@ class _HomeState extends State<Home> {
 
   String returnFormatedDate(DateTime dateTime) {
     return DateFormat('dd MMM yyyy').format(dateTime);
+  }
+
+  String parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString =
+        parse(document.body?.text).documentElement!.text;
+
+    return parsedString;
   }
 }

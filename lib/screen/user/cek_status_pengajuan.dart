@@ -42,6 +42,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
   }
 
   initData() async {
+    isLoading = true;
     CallApi().getListPengajuan().then((value) {
       setState(() {
         print('asu');

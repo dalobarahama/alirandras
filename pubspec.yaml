@@ -66,6 +66,7 @@ dependencies:
   flutter_cached_pdfview: ^0.4.1
   intl: ^0.17.0
   pinput: ^2.2.16
+  html: ^0.15.1
 
 flutter_icons:
   android: "launcher_icon"

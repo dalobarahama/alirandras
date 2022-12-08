@@ -41,26 +41,25 @@ class _ProfileState extends State<Profile> {
   }
 
   initData() async {
+    isLoading = true;
     await CallStorage().getUserData().then((value) {
+      print("value: ${value.name}");
+      print("signature: ${value.signature}");
       setState(() {
-        _userData = value;
         isLoading = false;
-        print("signature: ${_userData.signature!}");
-        _namaController.text = _userData.name!;
-        _emailController.text = _userData.email!;
-        // signatureFromUrl = _userData.signature;
-        if (_userData.app == 'admin') {
-          if (_userData.signature != null) {
-            signatureFromUrl = _userData.signature!;
-            isSignatureFromUrlNotNull = true;
-            print(signatureFromUrl);
-          }
-          if (_userData.position != null) {
-            _jabatanController.text = _userData.position;
-            print(_userData.position);
-          }
-        }
       });
+      _userData = value;
+      _namaController.text = value.name!;
+      _emailController.text = value.email!;
+      if (value.app == 'admin') {
+        if (value.signature != null) {
+          signatureFromUrl = _userData.signature!;
+          isSignatureFromUrlNotNull = true;
+        }
+        if (value.position != null) {
+          _jabatanController.text = _userData.position;
+        }
+      }
     });
   }
 

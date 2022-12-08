@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter_application_3/models/admin_permission_model.dart';
@@ -12,11 +11,8 @@ import 'package:flutter_application_3/models/get_kecamatan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
 import 'package:flutter_application_3/models/get_kelurahan.dart';
 import 'package:flutter_application_3/models/get_list_pengajuan.dart';
-import 'package:flutter_application_3/models/profile_data.dart';
-import 'package:flutter_application_3/helper/prefs_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart';
 
 class CallApi {
   final String SERVER_URL = 'https://alirandras.inotive.id';
