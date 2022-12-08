@@ -28,11 +28,14 @@ class Form_pendaftaran extends StatefulWidget {
 }
 
 class _Form_pendaftaranState extends State<Form_pendaftaran> {
-  @override
-  TextEditingController _luasBangunanController = TextEditingController();
-  TextEditingController _luasLahanController = TextEditingController();
-  TextEditingController _lokasiBangunanController = TextEditingController();
-  TextEditingController _peruntukanBangunanController = TextEditingController();
+  final TextEditingController _luasBangunanController = TextEditingController();
+  final TextEditingController _luasLahanController = TextEditingController();
+  final TextEditingController _lokasiBangunanController =
+      TextEditingController();
+  final TextEditingController _peruntukanBangunanController =
+      TextEditingController();
+  final TextEditingController _nomorYangDapatDihubungi =
+      TextEditingController();
   Timer? timer;
   LatLng point = LatLng(-1.240112, 116.873320);
 
@@ -214,10 +217,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       Fluttertoast.showToast(msg: 'Silahkan pilih kecamatan terlebih dahulu.');
       return;
     }
-    // if (_selectedKelurahan == null) {
-    //   Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
-    //   return;
-    // }
+    if (_selectedKelurahan == null) {
+      Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
+      return;
+    }
     if (_luasBangunanController.text.length < 1) {
       Fluttertoast.showToast(
           msg: 'Silahkan masukkan luas bangunan terlebih dahulu.');
@@ -235,6 +238,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     }
     if (_dokumenFileList!.length < 1) {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
+      return;
+    }
+    if (_nomorYangDapatDihubungi.text.length < 6) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan Nomor yang Dapat Dihubungi');
       return;
     }
 
@@ -365,6 +373,46 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   width: double.infinity,
                   height: 50,
                   child: _buildTypeDropdown(),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Text(
+                  'Nomor yang Dapat Dihubungi',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: TextField(
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                    controller: _nomorYangDapatDihubungi,
+                    decoration: InputDecoration(
+                      hintText: 'Nomor yang Dapat Dihubungi',
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[400],
+                      ),
+                      fillColor: Colors.white,
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
                 ),
                 const SizedBox(
                   height: 24,
