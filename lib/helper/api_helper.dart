@@ -632,8 +632,9 @@ class CallApi {
     UpdateProfileReturn dataProfile = UpdateProfileReturn();
     print(fullUrl);
     try {
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      var token = localStorage.getString('token');
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var token = sharedPreferences.getString('token');
       // String token =
       //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
       Map<String, String> headers = {
@@ -668,14 +669,14 @@ class CallApi {
       int a = int.parse(jsonDecode(data.body)['status_code']);
 
       if (a == 200) {
+        print("api_helper response 200");
         dataProfile = updateProfileReturnFromJson(data.body);
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
 
-        localStorage.setString(
-            'user_data', updateUserToJson(dataProfile.user!));
-        print("api_helper user_data: ${localStorage.getString('user_data')}");
-        print("response: ${data.body}");
+        sharedPreferences.setString(
+            'user_data', user1ToJson(dataProfile.user!));
+        print(
+            "api_helper user_data: ${sharedPreferences.getString('user_data')}");
+        print("api_helper response: ${data.body}");
         return 'success';
       } else {
         return 'failed';
