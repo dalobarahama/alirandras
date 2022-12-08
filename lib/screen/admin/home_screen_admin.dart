@@ -870,85 +870,93 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            onTap: () {
-                                              PersistentNavBarNavigator.pushNewScreen(
-                                                  context,
-                                                  screen:
-                                                      StatusPengajuanScreenAdmin(
-                                                          _data.registrationForms![
-                                                              index]),
-                                                  withNavBar: false);
-                                            },
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[100],
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(6),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  Icon(
-                                                    Icons
-                                                        .remove_red_eye_outlined,
-                                                    color: Colors.grey,
-                                                    size: 15,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 6,
-                                                  ),
-                                                  Text(
-                                                    'Detail',
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )),
-                                      Expanded(
                                         flex: 1,
                                         child: InkWell(
                                           onTap: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  showVerificationDialog(
-                                                _data.registrationForms![index]
-                                                    .id
-                                                    .toString(),
-                                              ),
-                                            );
+                                            PersistentNavBarNavigator.pushNewScreen(
+                                                context,
+                                                screen:
+                                                    StatusPengajuanScreenAdmin(
+                                                        _data.registrationForms![
+                                                            index]),
+                                                withNavBar: false);
                                           },
                                           child: Container(
-                                            decoration: const BoxDecoration(
-                                              color: Colors.green,
-                                              borderRadius: BorderRadius.only(
-                                                bottomRight: Radius.circular(6),
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[100],
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                bottomLeft: Radius.circular(6),
                                               ),
                                             ),
-                                            alignment: Alignment.center,
-                                            child: const Text(
-                                              'Verifikasi',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                              ),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: const [
+                                                Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  color: Colors.grey,
+                                                  size: 15,
+                                                ),
+                                                SizedBox(
+                                                  width: 6,
+                                                ),
+                                                Text(
+                                                  'Detail',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
+                                      _data.registrationForms![index].status ==
+                                              'diproses'
+                                          ? Expanded(
+                                              flex: 1,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        showVerificationDialog(
+                                                      _data
+                                                          .registrationForms![
+                                                              index]
+                                                          .id
+                                                          .toString(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.green,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomRight:
+                                                          Radius.circular(6),
+                                                    ),
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  child: const Text(
+                                                    'Verifikasi',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 )
