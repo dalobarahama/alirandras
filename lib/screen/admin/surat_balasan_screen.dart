@@ -33,6 +33,9 @@ class _SuratBalasanScreenState extends State<SuratBalasanScreen> {
   bool isLoading = true;
   // GetListPemohon _data = GetListPemohon();
   AdminHomeModel _data = AdminHomeModel();
+
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+
   @override
   void initState() {
     CallStorage().getUserData().then((value) {
@@ -71,6 +74,14 @@ class _SuratBalasanScreenState extends State<SuratBalasanScreen> {
         _data = value;
         isLoading = false;
       });
+    });
+  }
+
+  Future<void> refresh() async {
+    refreshKey.currentState?.show(atTop: false);
+    await Future.delayed(const Duration(milliseconds: 100));
+    setState(() {
+      initData('', '');
     });
   }
 
@@ -114,330 +125,334 @@ class _SuratBalasanScreenState extends State<SuratBalasanScreen> {
         elevation: 0,
       ),
       backgroundColor: ColorPallete.mainBackgroundColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 42,
-                    width: 135,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6)),
-                    child: DropdownButton<String>(
-                      items: statusData
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              value.toUpperCase(),
-                              style: GoogleFonts.roboto(fontSize: 12),
+      body: RefreshIndicator(
+        key: refreshKey,
+        onRefresh: () => refresh(),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 42,
+                      width: 135,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButton<String>(
+                        items: statusData
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                value.toUpperCase(),
+                                style: GoogleFonts.roboto(fontSize: 12),
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                      value: selectedStatus,
-                      underline: Container(),
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      hint: const Text('Choose'),
-                      onChanged: (e) {
-                        setState(() {
-                          String? tempTahun;
-                          String? temptStatus;
-                          selectedStatus = e!.toLowerCase();
-                          selectedTahun == null
-                              ? tempTahun = ''
-                              : tempTahun = selectedTahun;
-                          selectedStatus == 'semua'
-                              ? temptStatus = ''
-                              : temptStatus = selectedStatus;
-                          initData(tempTahun, temptStatus);
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 42,
-                    width: 135,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6)),
-                    child: DropdownButton<String>(
-                      items: tahunData
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              value.toUpperCase(),
-                              style: GoogleFonts.roboto(fontSize: 12),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      value: selectedTahun,
-                      underline: Container(),
-                      icon: const Icon(Icons.calendar_today),
-                      iconSize: 15,
-                      hint: Text(
-                        'Pilih Tahun',
-                        style: GoogleFonts.roboto(fontSize: 12),
+                          );
+                        }).toList(),
+                        value: selectedStatus,
+                        underline: Container(),
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        hint: const Text('Choose'),
+                        onChanged: (e) {
+                          setState(() {
+                            String? tempTahun;
+                            String? temptStatus;
+                            selectedStatus = e!.toLowerCase();
+                            selectedTahun == null
+                                ? tempTahun = ''
+                                : tempTahun = selectedTahun;
+                            selectedStatus == 'semua'
+                                ? temptStatus = ''
+                                : temptStatus = selectedStatus;
+                            initData(tempTahun, temptStatus);
+                          });
+                        },
                       ),
-                      onChanged: (e) {
-                        setState(() {
-                          String? tempTahun;
-                          String? temptStatus;
-                          selectedTahun = e!.toLowerCase();
-                          selectedTahun == null
-                              ? tempTahun = ''
-                              : tempTahun = selectedTahun;
-                          selectedStatus == 'semua'
-                              ? temptStatus = ''
-                              : temptStatus = selectedStatus;
-                          initData(tempTahun, temptStatus);
-                        });
-                      },
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              isLoading == true
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      itemCount: _data.registrationForms?.length,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(bottom: 20),
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return newCard(index);
-                        // return Card(
-                        //   shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(10)),
-                        //   margin: const EdgeInsets.all(10),
-                        //   color: Colors.grey[100],
-                        //   shadowColor: Colors.black,
-                        //   child: InkWell(
-                        //     onTap: () {
-                        //       Navigator.push(
-                        //           context,
-                        //           SlideToLeftRoute(
-                        //               page: StatusPemohonScreenAdmin(_data
-                        //                   .applicationLetters![index])));
-                        //     },
-                        //     child: Container(
-                        //       padding: const EdgeInsets.all(20),
-                        //       child: Column(
-                        //         children: [
-                        //           Row(
-                        //             mainAxisAlignment:
-                        //                 MainAxisAlignment.spaceBetween,
-                        //             children: [
-                        //               Text(
-                        //                 'ID: ' +
-                        //                     _data
-                        //                         .applicationLetters![
-                        //                             index]
-                        //                         .id!
-                        //                         .toString(),
-                        //                 style: GoogleFonts.roboto(
-                        //                     fontSize: 10,
-                        //                     textStyle: TextStyle(
-                        //                       color: Colors.grey[500],
-                        //                     )),
-                        //               ),
-                        //               Text(
-                        //                 DateFormat('dd MMMM yy, HH:mm')
-                        //                     .format(_data
-                        //                         .applicationLetters![
-                        //                             index]
-                        //                         .createdAt!),
-                        //                 style: GoogleFonts.roboto(
-                        //                     fontSize: 10,
-                        //                     textStyle: TextStyle(
-                        //                       color: Colors.grey[500],
-                        //                     )),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //           const SizedBox(
-                        //             height: 20,
-                        //           ),
-                        //           Row(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             mainAxisAlignment:
-                        //                 MainAxisAlignment.spaceBetween,
-                        //             children: [
-                        //               Expanded(
-                        //                 child: Column(
-                        //                   crossAxisAlignment:
-                        //                       CrossAxisAlignment.start,
-                        //                   children: [
-                        //                     Text(
-                        //                       'Nama Pemohon',
-                        //                       style: GoogleFonts.roboto(
-                        //                           fontSize: 12,
-                        //                           textStyle: TextStyle(
-                        //                             color:
-                        //                                 Colors.grey[500],
-                        //                           )),
-                        //                     ),
-                        //                     Text(
-                        //                       _data
-                        //                           .applicationLetters![
-                        //                               index]
-                        //                           .user!
-                        //                           .name!,
-                        //                       style: GoogleFonts.roboto(
-                        //                           fontSize: 14,
-                        //                           fontWeight:
-                        //                               FontWeight.bold,
-                        //                           textStyle:
-                        //                               const TextStyle(
-                        //                             color: Colors.black54,
-                        //                           )),
-                        //                     ),
-                        //                   ],
-                        //                 ),
-                        //               ),
-                        //               const SizedBox(
-                        //                 width: 10,
-                        //               ),
-                        //               Expanded(
-                        //                 child: Column(
-                        //                   crossAxisAlignment:
-                        //                       CrossAxisAlignment.start,
-                        //                   children: [
-                        //                     Text(
-                        //                       'Status',
-                        //                       style: GoogleFonts.roboto(
-                        //                           fontSize: 12,
-                        //                           textStyle: TextStyle(
-                        //                             color:
-                        //                                 Colors.grey[500],
-                        //                           )),
-                        //                     ),
-                        //                     Text(
-                        //                       _data
-                        //                               .applicationLetters![
-                        //                                   index]
-                        //                               .status ??
-                        //                           '-',
-                        //                       style: GoogleFonts.roboto(
-                        //                           fontSize: 14,
-                        //                           fontWeight:
-                        //                               FontWeight.bold,
-                        //                           textStyle:
-                        //                               const TextStyle(
-                        //                             color: Colors.black54,
-                        //                           )),
-                        //                     ),
-                        //                   ],
-                        //                 ),
-                        //               ),
-                        //               const SizedBox(
-                        //                 width: 10,
-                        //               ),
-                        //               Expanded(
-                        //                   child: _data
-                        //                                   .applicationLetters![
-                        //                                       index]
-                        //                                   .status ==
-                        //                               'menunggu' ||
-                        //                           _data
-                        //                                   .applicationLetters![
-                        //                                       index]
-                        //                                   .status ==
-                        //                               "selesai direvisi"
-                        //                       ? InkWell(
-                        //                           onTap: () {
-                        //                             navigateToApprovalScreen(
-                        //                                 _data
-                        //                                     .applicationLetters![
-                        //                                         index]
-                        //                                     .id!
-                        //                                     .toString());
-                        //                           },
-                        //                           child: Container(
-                        //                             padding:
-                        //                                 const EdgeInsets
-                        //                                         .symmetric(
-                        //                                     vertical: 8,
-                        //                                     horizontal:
-                        //                                         10),
-                        //                             decoration: BoxDecoration(
-                        //                                 color: Colors.red,
-                        //                                 borderRadius:
-                        //                                     BorderRadius
-                        //                                         .circular(
-                        //                                             7)),
-                        //                             child: Row(
-                        //                               children: [
-                        //                                 const Padding(
-                        //                                   padding: EdgeInsets
-                        //                                       .only(
-                        //                                           left:
-                        //                                               5),
-                        //                                   child: Icon(
-                        //                                     Icons
-                        //                                         .check_circle,
-                        //                                     color: Colors
-                        //                                         .white,
-                        //                                     size: 15,
-                        //                                   ),
-                        //                                 ),
-                        //                                 const SizedBox(
-                        //                                   width: 5,
-                        //                                 ),
-                        //                                 Padding(
-                        //                                   padding:
-                        //                                       const EdgeInsets
-                        //                                               .only(
-                        //                                           left:
-                        //                                               3),
-                        //                                   child: Text(
-                        //                                     'Verifikasi',
-                        //                                     style: GoogleFonts
-                        //                                         .roboto(
-                        //                                             fontSize:
-                        //                                                 11,
-                        //                                             textStyle:
-                        //                                                 const TextStyle(
-                        //                                               color:
-                        //                                                   Colors.white,
-                        //                                             )),
-                        //                                   ),
-                        //                                 ),
-                        //                               ],
-                        //                             ),
-                        //                           ),
-                        //                         )
-                        //                       : Container()),
-                        //             ],
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
-                      },
-                    )
-            ],
+                    Container(
+                      height: 42,
+                      width: 135,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6)),
+                      child: DropdownButton<String>(
+                        items: tahunData
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                value.toUpperCase(),
+                                style: GoogleFonts.roboto(fontSize: 12),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        value: selectedTahun,
+                        underline: Container(),
+                        icon: const Icon(Icons.calendar_today),
+                        iconSize: 15,
+                        hint: Text(
+                          'Pilih Tahun',
+                          style: GoogleFonts.roboto(fontSize: 12),
+                        ),
+                        onChanged: (e) {
+                          setState(() {
+                            String? tempTahun;
+                            String? temptStatus;
+                            selectedTahun = e!.toLowerCase();
+                            selectedTahun == null
+                                ? tempTahun = ''
+                                : tempTahun = selectedTahun;
+                            selectedStatus == 'semua'
+                                ? temptStatus = ''
+                                : temptStatus = selectedStatus;
+                            initData(tempTahun, temptStatus);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                isLoading == true
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: _data.registrationForms?.length,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(bottom: 20),
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return newCard(index);
+                          // return Card(
+                          //   shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(10)),
+                          //   margin: const EdgeInsets.all(10),
+                          //   color: Colors.grey[100],
+                          //   shadowColor: Colors.black,
+                          //   child: InkWell(
+                          //     onTap: () {
+                          //       Navigator.push(
+                          //           context,
+                          //           SlideToLeftRoute(
+                          //               page: StatusPemohonScreenAdmin(_data
+                          //                   .applicationLetters![index])));
+                          //     },
+                          //     child: Container(
+                          //       padding: const EdgeInsets.all(20),
+                          //       child: Column(
+                          //         children: [
+                          //           Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //               Text(
+                          //                 'ID: ' +
+                          //                     _data
+                          //                         .applicationLetters![
+                          //                             index]
+                          //                         .id!
+                          //                         .toString(),
+                          //                 style: GoogleFonts.roboto(
+                          //                     fontSize: 10,
+                          //                     textStyle: TextStyle(
+                          //                       color: Colors.grey[500],
+                          //                     )),
+                          //               ),
+                          //               Text(
+                          //                 DateFormat('dd MMMM yy, HH:mm')
+                          //                     .format(_data
+                          //                         .applicationLetters![
+                          //                             index]
+                          //                         .createdAt!),
+                          //                 style: GoogleFonts.roboto(
+                          //                     fontSize: 10,
+                          //                     textStyle: TextStyle(
+                          //                       color: Colors.grey[500],
+                          //                     )),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           const SizedBox(
+                          //             height: 20,
+                          //           ),
+                          //           Row(
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.start,
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //               Expanded(
+                          //                 child: Column(
+                          //                   crossAxisAlignment:
+                          //                       CrossAxisAlignment.start,
+                          //                   children: [
+                          //                     Text(
+                          //                       'Nama Pemohon',
+                          //                       style: GoogleFonts.roboto(
+                          //                           fontSize: 12,
+                          //                           textStyle: TextStyle(
+                          //                             color:
+                          //                                 Colors.grey[500],
+                          //                           )),
+                          //                     ),
+                          //                     Text(
+                          //                       _data
+                          //                           .applicationLetters![
+                          //                               index]
+                          //                           .user!
+                          //                           .name!,
+                          //                       style: GoogleFonts.roboto(
+                          //                           fontSize: 14,
+                          //                           fontWeight:
+                          //                               FontWeight.bold,
+                          //                           textStyle:
+                          //                               const TextStyle(
+                          //                             color: Colors.black54,
+                          //                           )),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ),
+                          //               const SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Expanded(
+                          //                 child: Column(
+                          //                   crossAxisAlignment:
+                          //                       CrossAxisAlignment.start,
+                          //                   children: [
+                          //                     Text(
+                          //                       'Status',
+                          //                       style: GoogleFonts.roboto(
+                          //                           fontSize: 12,
+                          //                           textStyle: TextStyle(
+                          //                             color:
+                          //                                 Colors.grey[500],
+                          //                           )),
+                          //                     ),
+                          //                     Text(
+                          //                       _data
+                          //                               .applicationLetters![
+                          //                                   index]
+                          //                               .status ??
+                          //                           '-',
+                          //                       style: GoogleFonts.roboto(
+                          //                           fontSize: 14,
+                          //                           fontWeight:
+                          //                               FontWeight.bold,
+                          //                           textStyle:
+                          //                               const TextStyle(
+                          //                             color: Colors.black54,
+                          //                           )),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ),
+                          //               const SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Expanded(
+                          //                   child: _data
+                          //                                   .applicationLetters![
+                          //                                       index]
+                          //                                   .status ==
+                          //                               'menunggu' ||
+                          //                           _data
+                          //                                   .applicationLetters![
+                          //                                       index]
+                          //                                   .status ==
+                          //                               "selesai direvisi"
+                          //                       ? InkWell(
+                          //                           onTap: () {
+                          //                             navigateToApprovalScreen(
+                          //                                 _data
+                          //                                     .applicationLetters![
+                          //                                         index]
+                          //                                     .id!
+                          //                                     .toString());
+                          //                           },
+                          //                           child: Container(
+                          //                             padding:
+                          //                                 const EdgeInsets
+                          //                                         .symmetric(
+                          //                                     vertical: 8,
+                          //                                     horizontal:
+                          //                                         10),
+                          //                             decoration: BoxDecoration(
+                          //                                 color: Colors.red,
+                          //                                 borderRadius:
+                          //                                     BorderRadius
+                          //                                         .circular(
+                          //                                             7)),
+                          //                             child: Row(
+                          //                               children: [
+                          //                                 const Padding(
+                          //                                   padding: EdgeInsets
+                          //                                       .only(
+                          //                                           left:
+                          //                                               5),
+                          //                                   child: Icon(
+                          //                                     Icons
+                          //                                         .check_circle,
+                          //                                     color: Colors
+                          //                                         .white,
+                          //                                     size: 15,
+                          //                                   ),
+                          //                                 ),
+                          //                                 const SizedBox(
+                          //                                   width: 5,
+                          //                                 ),
+                          //                                 Padding(
+                          //                                   padding:
+                          //                                       const EdgeInsets
+                          //                                               .only(
+                          //                                           left:
+                          //                                               3),
+                          //                                   child: Text(
+                          //                                     'Verifikasi',
+                          //                                     style: GoogleFonts
+                          //                                         .roboto(
+                          //                                             fontSize:
+                          //                                                 11,
+                          //                                             textStyle:
+                          //                                                 const TextStyle(
+                          //                                               color:
+                          //                                                   Colors.white,
+                          //                                             )),
+                          //                                   ),
+                          //                                 ),
+                          //                               ],
+                          //                             ),
+                          //                           ),
+                          //                         )
+                          //                       : Container()),
+                          //             ],
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // );
+                        },
+                      )
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
 import 'package:flutter_application_3/helper/prefs_helper.dart';
@@ -42,8 +43,13 @@ class _Log_inState extends State<Log_in> {
                 _userData = value;
                 if (_userData.app == 'mobile user') {
                   //go to user home screen
-                  Navigator.pushReplacement(
-                      context, SlideToLeftRoute(page: const MainMenuScreen()));
+                  if (Platform.isAndroid) {
+                    Navigator.pushReplacement(context,
+                        SlideToLeftRoute(page: const MainMenuScreen()));
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Hanya dapat login sebagai admin');
+                  }
                 } else {
                   //go to admin home screen
                   Navigator.pushReplacement(context,
