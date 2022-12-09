@@ -54,6 +54,7 @@ class _StatusPengajuanScreenAdminState
 
   @override
   Widget build(BuildContext context) {
+    print("detail pengajuan noPhone: ${_dataPengajuan.noPhone}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorPallete.mainBackgroundColor,
@@ -100,6 +101,26 @@ class _StatusPengajuanScreenAdminState
               ),
               Text(
                 _dataPengajuan.type.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Nomor yang Dapat Dihubungi',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                _dataPengajuan.noPhone.toString(),
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,

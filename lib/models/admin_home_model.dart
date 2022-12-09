@@ -45,6 +45,7 @@ class RegistrationForm2 {
     this.id,
     this.userId,
     this.type,
+    this.noPhone,
     this.district,
     this.subdistrict,
     this.buildingArea,
@@ -67,6 +68,7 @@ class RegistrationForm2 {
   int? id;
   int? userId;
   String? type;
+  String? noPhone;
   String? district;
   String? subdistrict;
   String? buildingArea;
@@ -90,6 +92,7 @@ class RegistrationForm2 {
         id: json["id"] == null ? null : json["id"],
         userId: json["user_id"] == null ? null : json["user_id"],
         type: json["type"] == null ? null : json["type"],
+        noPhone: json["no_phone"] == null ? null : json["no_phone"],
         district: json["district"] == null ? null : json["district"],
         subdistrict: json["subdistrict"] == null ? null : json["subdistrict"],
         buildingArea:
@@ -174,7 +177,9 @@ class MailRequest {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        checkMailPermission: json["check_mail_permission"] == null ? null : CheckMailPermission.fromJson(json["check_mail_permission"]),
+        checkMailPermission: json["check_mail_permission"] == null
+            ? null
+            : CheckMailPermission.fromJson(json["check_mail_permission"]),
         mailPermissions: json["mail_permissions"] == null
             ? null
             : List<MailPermission>.from(json["mail_permissions"]
@@ -286,38 +291,44 @@ class RegistrationFormDocuments {
 }
 
 class CheckMailPermission {
-    CheckMailPermission({
-        this.id,
-        this.userId,
-        this.mailRequestId,
-        this.level,
-        this.reasonRejection,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-    });
+  CheckMailPermission({
+    this.id,
+    this.userId,
+    this.mailRequestId,
+    this.level,
+    this.reasonRejection,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-    int? id;
-    int? userId;
-    int? mailRequestId;
-    int? level;
-    dynamic reasonRejection;
-    String? status;
-    DateTime? createdAt;
-    DateTime? updatedAt;
+  int? id;
+  int? userId;
+  int? mailRequestId;
+  int? level;
+  dynamic reasonRejection;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-    factory CheckMailPermission.fromJson(Map<String, dynamic> json) => CheckMailPermission(
+  factory CheckMailPermission.fromJson(Map<String, dynamic> json) =>
+      CheckMailPermission(
         id: json["id"] == null ? null : json["id"],
         userId: json["user_id"] == null ? null : json["user_id"],
-        mailRequestId: json["mail_request_id"] == null ? null : json["mail_request_id"],
+        mailRequestId:
+            json["mail_request_id"] == null ? null : json["mail_request_id"],
         level: json["level"] == null ? null : json["level"],
         reasonRejection: json["reason_rejection"],
         status: json["status"] == null ? null : json["status"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    );
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "user_id": userId == null ? null : userId,
         "mail_request_id": mailRequestId == null ? null : mailRequestId,
@@ -326,5 +337,5 @@ class CheckMailPermission {
         "status": status == null ? null : status,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),
-    };
+      };
 }
