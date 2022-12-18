@@ -174,7 +174,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   }
 
   _dokumenFromFiles() async {
-    print(_dokumenFileList!.length);
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -188,7 +187,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     String basename = file.path.split('/').last;
     print("file name: $basename");
     setState(() {
-      _dokumenFileList!.add(file);
+      _dokumenFileList.add(file);
     });
   }
 
@@ -233,7 +232,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
-    if (_dokumenFileList!.length < 1) {
+    if (_dokumenFileList.length < 1) {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
       return;
     }
@@ -259,7 +258,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       lat.toString(),
       lang.toString(),
       _nomorYangDapatDihubungi.text,
-      _dokumenFileList!,
+      _dokumenFileList,
     )
         .then((value) {
       setState(() {
@@ -1023,7 +1022,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
         ),
         Column(
           children: [
-            ..._dokumenFileList!.map((file) {
+            ..._dokumenFileList.map((file) {
               return Container(
                 margin: const EdgeInsets.only(
                   top: 12,
@@ -1070,7 +1069,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          _dokumenFileList!.remove(file);
+                          _dokumenFileList.remove(file);
                         });
                       },
                       child: const Icon(
