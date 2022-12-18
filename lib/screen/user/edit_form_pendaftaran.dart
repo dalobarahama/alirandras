@@ -669,194 +669,23 @@ class _EditFormState extends State<EditForm> {
               const SizedBox(
                 height: 24,
               ),
-              Text(
-                'Upload File',
-                style: GoogleFonts.roboto(
-                  fontSize: 14,
-                  textStyle: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
+              uploadFile('Upload File Layout'),
               const SizedBox(
-                height: 12,
+                height: 20,
               ),
-              InkWell(
-                onTap: () {
-                  _dokumenFromFiles();
-                  print("file length: ${_dokumenFileList!.length}");
-                },
-                child: DottedBorder(
-                  color: ColorPallete.mainColor,
-                  borderType: BorderType.RRect,
-                  strokeWidth: 1,
-                  radius: const Radius.circular(6),
-                  dashPattern: const [
-                    10,
-                    3,
-                  ],
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: 65,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        // border: Border.all(color: ColorPallete.mainColor),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.upload,
-                            color: ColorPallete.mainColor,
-                            size: 15,
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            'Browse',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: ColorPallete.mainColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+              uploadFile('Upload File Kontur Rencana'),
+              const SizedBox(
+                height: 20,
               ),
-              Column(
-                children: [
-                  ..._dokumenFileListFromUrl!.map((file) {
-                    return Container(
-                      margin: const EdgeInsets.only(
-                        top: 12,
-                      ),
-                      padding: const EdgeInsets.only(
-                        top: 14,
-                        bottom: 14,
-                        left: 17,
-                        right: 17,
-                      ),
-                      height: 80,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                child: file.split('.').last != 'pdf'
-                                    ? Image.network(
-                                        'https://alirandras.inotive.id$file')
-                                    : Image.asset('assets/images/pdf_icon.png'),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              SizedBox(
-                                width: 150,
-                                child: Text(
-                                  file.split('/').last,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _dokumenFileListFromUrl!.remove(file);
-                              });
-                            },
-                            child: const Icon(
-                              Icons.cancel_sharp,
-                              color: Colors.grey,
-                              size: 20,
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  ..._dokumenFileList!.map((file) {
-                    return Container(
-                      margin: const EdgeInsets.only(
-                        top: 12,
-                      ),
-                      padding: const EdgeInsets.only(
-                        top: 14,
-                        bottom: 14,
-                        left: 17,
-                        right: 17,
-                      ),
-                      height: 80,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                child: file.path.split('.').last != 'pdf'
-                                    ? Image.file(File(file.path))
-                                    : Image.asset('assets/images/pdf_icon.png'),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              SizedBox(
-                                width: 150,
-                                child: Text(
-                                  file.path.split('/').last,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _dokumenFileList!.remove(file);
-                              });
-                            },
-                            child: const Icon(
-                              Icons.cancel_sharp,
-                              color: Colors.grey,
-                              size: 20,
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ],
+              uploadFile('Upload File Layout Sistem Drainase'),
+              const SizedBox(
+                height: 20,
               ),
+              uploadFile('Upload File Detail Bendali & Drainase'),
+              const SizedBox(
+                height: 20,
+              ),
+              uploadFile('Upload File File Pendukung Lainnya'),
               const SizedBox(
                 height: 20,
               ),
@@ -1018,6 +847,239 @@ class _EditFormState extends State<EditForm> {
         isExpanded: true,
         underline: const SizedBox.shrink(),
       ),
+    );
+  }
+
+  Widget uploadFile(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.roboto(
+            fontSize: 14,
+            textStyle: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Container(
+          padding: const EdgeInsets.only(
+            top: 14,
+            bottom: 14,
+            left: 17,
+            right: 17,
+          ),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'File yang diperlukan',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(
+                'Site Plan, Peta Kontur, Tata Kelola Air',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        InkWell(
+          onTap: () {
+            _dokumenFromFiles();
+          },
+          child: DottedBorder(
+            color: ColorPallete.mainColor,
+            borderType: BorderType.RRect,
+            strokeWidth: 1,
+            radius: const Radius.circular(6),
+            dashPattern: const [
+              10,
+              3,
+            ],
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(6),
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 65,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // border: Border.all(color: ColorPallete.mainColor),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.upload,
+                      color: ColorPallete.mainColor,
+                      size: 15,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      'Browse',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ColorPallete.mainColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            ..._dokumenFileListFromUrl!.map((file) {
+              return Container(
+                margin: const EdgeInsets.only(
+                  top: 12,
+                ),
+                padding: const EdgeInsets.only(
+                  top: 14,
+                  bottom: 14,
+                  left: 17,
+                  right: 17,
+                ),
+                height: 80,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          child: file.split('.').last != 'pdf'
+                              ? Image.network(
+                                  'https://alirandras.inotive.id$file')
+                              : Image.asset('assets/images/pdf_icon.png'),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: Text(
+                            file.split('/').last,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _dokumenFileListFromUrl!.remove(file);
+                        });
+                      },
+                      child: const Icon(
+                        Icons.cancel_sharp,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+            ..._dokumenFileList!.map((file) {
+              return Container(
+                margin: const EdgeInsets.only(
+                  top: 12,
+                ),
+                padding: const EdgeInsets.only(
+                  top: 14,
+                  bottom: 14,
+                  left: 17,
+                  right: 17,
+                ),
+                height: 80,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          child: file.path.split('.').last != 'pdf'
+                              ? Image.file(File(file.path))
+                              : Image.asset('assets/images/pdf_icon.png'),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: Text(
+                            file.path.split('/').last,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _dokumenFileList!.remove(file);
+                        });
+                      },
+                      child: const Icon(
+                        Icons.cancel_sharp,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      ],
     );
   }
 }
