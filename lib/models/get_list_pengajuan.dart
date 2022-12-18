@@ -64,6 +64,7 @@ class ApplicationLetter1 {
     this.registrationFormAttachments,
     this.registrationFormDocuments,
     this.mailRequest,
+    this.noPhone,
   });
 
   int? id;
@@ -86,6 +87,7 @@ class ApplicationLetter1 {
   List<RegistrationFormAttachment>? registrationFormAttachments;
   List<RegistrationFormDocument>? registrationFormDocuments;
   MailRequest? mailRequest;
+  String? noPhone;
 
   factory ApplicationLetter1.fromJson(Map<String, dynamic> json) =>
       ApplicationLetter1(
@@ -131,6 +133,7 @@ class ApplicationLetter1 {
         mailRequest: json["mail_request"] == null
             ? null
             : MailRequest.fromJson(json["mail_request"]),
+        noPhone: json["no_phone"] == null ? null : json["no_phone"],
       );
 
   Map<String, dynamic> toJson() => {

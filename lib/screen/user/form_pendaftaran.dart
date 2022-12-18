@@ -258,7 +258,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       _peruntukanBangunanController.text,
       lat.toString(),
       lang.toString(),
-      // _imageFileList!,
+      _nomorYangDapatDihubungi.text,
       _dokumenFileList!,
     )
         .then((value) {

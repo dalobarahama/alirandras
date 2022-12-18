@@ -124,11 +124,29 @@ class _Detail_card_statuspengajuanState
                 ),
               ),
               const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Nomor yang Dapat Dihubungi',
+                style: TextStyle(
+                  color: ColorPallete.mainColor,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
                 height: 12,
+              ),
+              Text(
+                _dataStatusPengajuan.noPhone.toString().toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
               ),
               _dataStatusPengajuan.mailRequest != null
                   ? _dataStatusPengajuan.mailRequest!.mailPermissions != null
                       ? Container(
+                          margin: const EdgeInsets.only(top: 24),
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -217,29 +235,29 @@ class _Detail_card_statuspengajuanState
                         )
                       : Container()
                   : Container(),
-              const SizedBox(
-                height: 24,
-              ),
               _dataStatusPengajuan.status!.toString() == 'ditolak'
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Alasan Ditolak',
-                          style: TextStyle(
-                            color: ColorPallete.mainColor,
-                            fontSize: 14,
+                  ? Container(
+                      margin: const EdgeInsets.only(top: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Alasan Ditolak',
+                            style: TextStyle(
+                              color: ColorPallete.mainColor,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          _dataStatusPengajuan.reasonRejection ?? '-',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        )
-                      ],
+                          const SizedBox(height: 12),
+                          Text(
+                            _dataStatusPengajuan.reasonRejection ?? '-',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   : Container(),
               const SizedBox(

@@ -59,6 +59,7 @@ class RegistrationForm {
     this.updatedAt,
     this.createdAt,
     this.id,
+    this.noPhone,
   });
 
   int? userId;
@@ -75,6 +76,7 @@ class RegistrationForm {
   DateTime? updatedAt;
   DateTime? createdAt;
   int? id;
+  String? noPhone;
 
   factory RegistrationForm.fromJson(Map<String, dynamic> json) =>
       RegistrationForm(
@@ -92,6 +94,7 @@ class RegistrationForm {
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),
         id: json["id"],
+        noPhone: json["no_phone"],
       );
 
   Map<String, dynamic> toJson() => {

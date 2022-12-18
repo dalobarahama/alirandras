@@ -257,6 +257,7 @@ class CallApi {
       String peruntukanBangunan,
       String lat,
       String lng,
+      String phoneNumber,
       // List<XFile> imageFileList,
       List<File> dokumenFileList) async {
     SubmitFormulir dataFormulir = SubmitFormulir();
@@ -279,7 +280,8 @@ class CallApi {
         'building_location': buildingLocation,
         'building_designation': peruntukanBangunan,
         'lat': lat,
-        'lng': lng
+        'lng': lng,
+        'no_phone': phoneNumber
       });
       print("post $post");
       var res = await post;
