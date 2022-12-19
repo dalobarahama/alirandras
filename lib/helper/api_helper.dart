@@ -292,34 +292,26 @@ class CallApi {
         print('masul200');
         print("api_helper res.body: ${res.body}");
         dataFormulir = submitFormulirFromJson(res.body);
-        // if (imageFileList.isNotEmpty) {
-        //   for (var i = 0; i < imageFileList.length; i++) {
-        //     await CallApi().submit_gambar(
-        //         dataFormulir.registrationForm!.id.toString(), imageFileList[i]);
-        //   }
-        // }
+
         if (dokumenFileList.isNotEmpty) {
           for (var i = 0; i < dokumenFileList.length; i++) {
             await CallApi().submitDokumen(
                 dataFormulir.registrationForm!.id, dokumenFileList[i], i);
           }
         }
-        print("api_helper res.body: ${res.body}");
-        print("api_helper dataFormulir: $dataFormulir");
+
         return dataFormulir;
       } else if (a >= 400 && a <= 500) {
-        print('masul400');
         dataFormulir = submitFormulirFromJson(res.body);
         var msg = jsonDecode(res.body)['message'];
+
         return dataFormulir;
       } else {
-        print('masulexep');
         dataFormulir.clear();
+
         return dataFormulir;
       }
     } catch (e) {
-      print(e);
-      // dataFormulir.clear();
       return dataFormulir;
     }
   }
@@ -371,20 +363,16 @@ class CallApi {
 
   Future<bool> submitDokumen(var id, File? dokumen, int index) async {
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_DOKUMEN);
-    print('ini submit dokumen');
-    print(fullUrl);
+
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
-      // String token =
-      //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
+
       File? dokumen1 = File(dokumen!.path);
       http.MultipartFile file = http.MultipartFile(
           'document', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
           filename:
               'Dokumen_bangunan_${id}_$index.${dokumen.path.split(".").last}');
-      print(
-          "filename: Dokumen_bangunan_${id}_$index.${dokumen.path.split(".").last}");
 
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
@@ -395,23 +383,17 @@ class CallApi {
       request.fields['registration_form_id'] = id.toString();
       request.files.add(file);
 
-      print('asdasd');
-      print(request.fields);
-      print(request.files);
-      // var response = await request.send();
-      //var data = await http.Response.fromStream(response);
       http.StreamedResponse response = await request.send();
       var data = await http.Response.fromStream(response);
-      print(data.body);
+
       int a = jsonDecode(data.body)['status_code'];
-      print(a);
+
       if (a == 200) {
         return true;
       } else {
         return false;
       }
     } catch (e) {
-      print(e);
       return false;
     }
   }
