@@ -25,7 +25,13 @@ class CallApi {
   final String GET_KELURAHAN = '/api/location/villages?id=';
   final String SUBMIT_FORMULIR = '/api/formulir';
   final String SUBMIT_GAMBAR = '/api/tambah-file-formulir';
-  final String SUBMIT_DOKUMEN = '/api/tambah-file-pendukung-formulir';
+  final String SUBMIT_FILE_LAYOUT = '/api/add-layout-file';
+  final String SUBMIT_FILE_KONTUR_RENCANA = '/api/add-kontur-rencana-file';
+  final String SUBMIT_FILE_LAYOUT_SISTEM_DRAINASE =
+      '/api/add-layout-sistem-drainase-file';
+  final String SUBMIT_FILE_DETAIL_BENDALI_DRAINASE =
+      '/api/add-detail-bendali-file';
+  final String SUBMIT_FILE_PENDUKUNG = '/api/tambah-file-pendukung-formulir';
   final String GET_LIST_PENGAJUAN = '/api/surat-permohonan';
   final String UPDATE_FORMULIR = '/api/edit-formulir/';
   final String DELETE_FORMULIR = '/api/hapus-formulir/';
@@ -258,15 +264,17 @@ class CallApi {
       String lat,
       String lng,
       String phoneNumber,
-      // List<XFile> imageFileList,
-      List<File> dokumenFileList) async {
+      List<File> layoutFileList,
+      List<File> konturRencanaFileList,
+      List<File> layoutSistemDrainaseFileList,
+      List<File> detailBendaliDrainaseFileList,
+      List<File> filePendukungFileList) async {
     SubmitFormulir dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
     var token = localStorage.getString('token');
     Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FORMULIR);
 
-    print(fullUrl);
     try {
       var post = http.post(fullUrl, headers: {
         'Authorization': 'Bearer $token',
@@ -283,25 +291,50 @@ class CallApi {
         'lng': lng,
         'no_phone': phoneNumber
       });
-      print("post $post");
       var res = await post;
 
-      int a = jsonDecode(res.body)['status_code'];
-      print(a);
-      if (a == 200) {
-        print('masul200');
-        print("api_helper res.body: ${res.body}");
+      int statusCode = jsonDecode(res.body)['status_code'];
+
+      if (statusCode == 200) {
         dataFormulir = submitFormulirFromJson(res.body);
 
-        if (dokumenFileList.isNotEmpty) {
-          for (var i = 0; i < dokumenFileList.length; i++) {
-            await CallApi().submitDokumen(
-                dataFormulir.registrationForm!.id, dokumenFileList[i], i);
+        if (layoutFileList.isNotEmpty) {
+          for (var i = 0; i < layoutFileList.length; i++) {
+            await CallApi().submitFileLayout(
+                dataFormulir.registrationForm!.id, layoutFileList[i], i);
+          }
+        }
+        if (konturRencanaFileList.isNotEmpty) {
+          for (var i = 0; i < konturRencanaFileList.length; i++) {
+            await CallApi().submitFileKonturRencana(
+                dataFormulir.registrationForm!.id, konturRencanaFileList[i], i);
+          }
+        }
+        if (layoutSistemDrainaseFileList.isNotEmpty) {
+          for (var i = 0; i < layoutSistemDrainaseFileList.length; i++) {
+            await CallApi().submitFileLayoutSistemDrainase(
+                dataFormulir.registrationForm!.id,
+                layoutSistemDrainaseFileList[i],
+                i);
+          }
+        }
+        if (detailBendaliDrainaseFileList.isNotEmpty) {
+          for (var i = 0; i < detailBendaliDrainaseFileList.length; i++) {
+            await CallApi().submitFileDetailBendaliDrainase(
+                dataFormulir.registrationForm!.id,
+                detailBendaliDrainaseFileList[i],
+                i);
+          }
+        }
+        if (filePendukungFileList.isNotEmpty) {
+          for (var i = 0; i < filePendukungFileList.length; i++) {
+            await CallApi().submitFilePendukung(
+                dataFormulir.registrationForm!.id, filePendukungFileList[i], i);
           }
         }
 
         return dataFormulir;
-      } else if (a >= 400 && a <= 500) {
+      } else if (statusCode >= 400 && statusCode <= 500) {
         dataFormulir = submitFormulirFromJson(res.body);
         var msg = jsonDecode(res.body)['message'];
 
@@ -361,8 +394,157 @@ class CallApi {
     }
   }
 
-  Future<bool> submitDokumen(var id, File? dokumen, int index) async {
-    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_DOKUMEN);
+  Future<bool> submitFileLayout(var id, File? dokumen, int index) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FILE_LAYOUT);
+
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+
+      File? dokumen1 = File(dokumen!.path);
+      http.MultipartFile file = http.MultipartFile(
+          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          filename: 'Layout_${id}_$index.${dokumen.path.split(".").last}');
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['registration_form_id'] = id.toString();
+      request.files.add(file);
+
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+
+      int a = jsonDecode(data.body)['status_code'];
+
+      if (a == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> submitFileKonturRencana(var id, File? dokumen, int index) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FILE_KONTUR_RENCANA);
+
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+
+      File? dokumen1 = File(dokumen!.path);
+      http.MultipartFile file = http.MultipartFile(
+          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          filename:
+              'Kontur_Rencana_${id}_$index.${dokumen.path.split(".").last}');
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['registration_form_id'] = id.toString();
+      request.files.add(file);
+
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+
+      int a = jsonDecode(data.body)['status_code'];
+
+      if (a == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> submitFileLayoutSistemDrainase(
+      var id, File? dokumen, int index) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FILE_LAYOUT_SISTEM_DRAINASE);
+
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+
+      File? dokumen1 = File(dokumen!.path);
+      http.MultipartFile file = http.MultipartFile(
+          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          filename:
+              'Layout_Sistem_Drainase_${id}_$index.${dokumen.path.split(".").last}');
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['registration_form_id'] = id.toString();
+      request.files.add(file);
+
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+
+      int a = jsonDecode(data.body)['status_code'];
+
+      if (a == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> submitFileDetailBendaliDrainase(
+      var id, File? dokumen, int index) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FILE_DETAIL_BENDALI_DRAINASE);
+
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+
+      File? dokumen1 = File(dokumen!.path);
+      http.MultipartFile file = http.MultipartFile(
+          'file', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
+          filename:
+              'Detail_Bendali_&_Drainase_${id}_$index.${dokumen.path.split(".").last}');
+
+      Map<String, String> headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer $token'
+      };
+      var request = http.MultipartRequest("POST", fullUrl)
+        ..headers.addAll(headers);
+      request.fields['registration_form_id'] = id.toString();
+      request.files.add(file);
+
+      http.StreamedResponse response = await request.send();
+      var data = await http.Response.fromStream(response);
+
+      int a = jsonDecode(data.body)['status_code'];
+
+      if (a == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> submitFilePendukung(var id, File? dokumen, int index) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + SUBMIT_FILE_PENDUKUNG);
 
     try {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -372,7 +554,7 @@ class CallApi {
       http.MultipartFile file = http.MultipartFile(
           'document', dokumen.readAsBytes().asStream(), dokumen1.lengthSync(),
           filename:
-              'Dokumen_bangunan_${id}_$index.${dokumen.path.split(".").last}');
+              'File_Pendukung_${id}_$index.${dokumen.path.split(".").last}');
 
       Map<String, String> headers = {
         'Content-Type': 'multipart/form-data',
@@ -403,10 +585,8 @@ class CallApi {
     ListPengajuan listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    //var token =
-    //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkyNDQ1ODgsIm5iZiI6MTYzOTI0NDU4OCwianRpIjoiVmdzTlhqMUtqRXBPazl6aCIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ojNMq1sf3oAKkgQ_-wsSc0nHu8xUC_vVEoogJ4CVp_g';
     Uri fullUrl = Uri.parse(SERVER_URL + GET_LIST_PENGAJUAN);
-    print(fullUrl);
+
     try {
       var get = http.get(fullUrl, headers: {
         'Authorization': 'Bearer $token',
@@ -472,18 +652,13 @@ class CallApi {
         'lat': lat,
         'lng': lng
       });
-      print(post);
+
       var res = await post;
-      print(res.body);
-      //print(res.statusCode);
       int a = jsonDecode(res.body)['status_code'];
-      print(a);
+
       if (a == 200) {
-        print('masul200');
         dataFormulir = submitFormulirFromJson(res.body);
-        print('abnis masul200');
-        if (imageFileList!.length > 0) {
-          print(';bieh dari0');
+        if (imageFileList!.isNotEmpty) {
           for (var i = 0; i < imageFileList.length; i++) {
             print('looping $i');
             await CallApi().submit_gambar(
@@ -492,7 +667,7 @@ class CallApi {
         }
         if (dokumenFileList!.isNotEmpty) {
           for (var i = 0; i < dokumenFileList.length; i++) {
-            await CallApi().submitDokumen(
+            await CallApi().submitFileLayout(
                 dataFormulir.registrationForm!.id, dokumenFileList[i], i);
           }
         }

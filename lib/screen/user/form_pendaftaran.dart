@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
+import 'package:flutter_application_3/helper/const.dart';
 import 'package:flutter_application_3/models/get_kecamatan.dart';
 import 'package:flutter_application_3/models/get_kelurahan.dart';
 import 'package:flutter_application_3/models/submit_formulir.dart';
@@ -68,7 +69,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     _imageFileList = value == null ? null : [value];
   }
 
-  final List<File> _dokumenFileList = <File>[];
+  final List<File> _layoutFileList = <File>[];
+  final List<File> _konturRencanaFileList = <File>[];
+  final List<File> _layoutSistemRencanaDrainaseFileList = <File>[];
+  final List<File> _detailBendaliDrainaseFileList = <File>[];
+  final List<File> _filePendukungList = <File>[];
 
   List<bool> isFinish = [
     false,
@@ -156,24 +161,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     });
   }
 
-  _imgFromGallery(int index) async {
-    print(_imageFileList!.length);
-    if (_imageFileList!.length < 3) {
-      XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
-      setState(() {
-        _imageFileList!.add(image!);
-      });
-    } else {
-      XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
-      setState(() {
-        _imageFileList![index] = image!;
-      });
-    }
-  }
-
-  _dokumenFromFiles() async {
+  _dokumenFromFile(String fileType) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -183,25 +171,31 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
         'png',
       ],
     );
+
     File? file = File(result!.files.single.path.toString());
     String basename = file.path.split('/').last;
-    print("file name: $basename");
-    setState(() {
-      _dokumenFileList.add(file);
-    });
-  }
-
-  /* pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null) {
+    if (fileType == UploadFileType.fileLayout) {
       setState(() {
-        uploadFiles.addAll(result.paths.map((path) => File(path!)).toList());
+        _layoutFileList.add(file);
+      });
+    } else if (fileType == UploadFileType.konturRencana) {
+      setState(() {
+        _konturRencanaFileList.add(file);
+      });
+    } else if (fileType == UploadFileType.layoutSistemRencanaDrainase) {
+      setState(() {
+        _layoutSistemRencanaDrainaseFileList.add(file);
+      });
+    } else if (fileType == UploadFileType.detailBendaliDrainase) {
+      setState(() {
+        _detailBendaliDrainaseFileList.add(file);
       });
     } else {
-      // User canceled the picker
+      setState(() {
+        _filePendukungList.add(file);
+      });
     }
-  }*/
+  }
 
   void submit_formulir() async {
     if (_selectedPermohonan!.length < 2) {
@@ -232,11 +226,27 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
-    if (_dokumenFileList.length < 1) {
+    if (_layoutFileList.isEmpty) {
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
+      return;
+    }
+    if (_konturRencanaFileList.isEmpty) {
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
+      return;
+    }
+    if (_layoutSistemRencanaDrainaseFileList.isEmpty) {
+      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
+      return;
+    }
+    if (_detailBendaliDrainaseFileList.isEmpty) {
       Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran File');
       return;
     }
     if (_nomorYangDapatDihubungi.text.length < 6) {
+      Fluttertoast.showToast(msg: 'Nomor yang Dapat Dihubungi belum lengkap');
+      return;
+    }
+    if (_nomorYangDapatDihubungi.text.isEmpty) {
       Fluttertoast.showToast(
           msg: 'Silahkan masukkan Nomor yang Dapat Dihubungi');
       return;
@@ -248,29 +258,30 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
 
     await CallApi()
         .submit_formulir(
-      _selectedPermohonan!,
-      _selectedKecamatan!.name,
-      _selectedKelurahan!.name,
-      _luasBangunanController.text,
-      _luasLahanController.text,
-      _lokasiBangunanController.text,
-      _peruntukanBangunanController.text,
-      lat.toString(),
-      lang.toString(),
-      _nomorYangDapatDihubungi.text,
-      _dokumenFileList,
-    )
+            _selectedPermohonan!,
+            _selectedKecamatan!.name,
+            _selectedKelurahan!.name,
+            _luasBangunanController.text,
+            _luasLahanController.text,
+            _lokasiBangunanController.text,
+            _peruntukanBangunanController.text,
+            lat.toString(),
+            lang.toString(),
+            _nomorYangDapatDihubungi.text,
+            _layoutFileList,
+            _konturRencanaFileList,
+            _layoutSistemRencanaDrainaseFileList,
+            _detailBendaliDrainaseFileList,
+            _filePendukungList)
         .then((value) {
       setState(() {
         _dataFormulir = value;
-        print(_dataFormulir.statusCode);
-        print("form_pendaftaran_respon: ${_dataFormulir.statusCode}");
+
         if (_dataFormulir != null) {
           if (_dataFormulir.statusCode == 200) {
             setState(() {
               isFinish[3] = true;
               isLoading1 = false;
-              print('ini2' + isFinish[2].toString());
 
               showDialog(
                   context: context,
@@ -288,7 +299,6 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
               Fluttertoast.showToast(msg: _dataFormulir.message!);
             });
           }
-          //  isFinish[3] == true ? showDialog() : Container();
         } else {
           setState(() {
             isLoading1 = false;
@@ -634,25 +644,72 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                 const SizedBox(
                   height: 24,
                 ),
-                uploadFile('Upload File Layout'),
-                const SizedBox(
-                  height: 20,
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 14,
+                    bottom: 14,
+                    left: 17,
+                    right: 17,
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'File yang diperlukan',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        'Layout, Kontur Rencana, Tata Kelola Air, Layout Sistem Drainase, Detail Bendali & Drainase, File Pendukung Lainnya',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                uploadFile('Upload File Kontur Rencana'),
                 const SizedBox(
-                  height: 20,
+                  height: 4,
                 ),
-                uploadFile('Upload File Layout Sistem Drainase'),
+                uploadFile('Upload File Layout', _layoutFileList,
+                    UploadFileType.fileLayout),
                 const SizedBox(
-                  height: 20,
+                  height: 40,
                 ),
-                uploadFile('Upload File Detail Bendali & Drainase'),
+                uploadFile('Upload File Kontur Rencana', _konturRencanaFileList,
+                    UploadFileType.konturRencana),
                 const SizedBox(
-                  height: 20,
+                  height: 40,
                 ),
-                uploadFile('Upload File File Pendukung Lainnya'),
+                uploadFile(
+                    'Upload File Layout Sistem Drainase',
+                    _layoutSistemRencanaDrainaseFileList,
+                    UploadFileType.layoutSistemRencanaDrainase),
                 const SizedBox(
-                  height: 20,
+                  height: 40,
+                ),
+                uploadFile(
+                    'Upload File Detail Bendali & Drainase',
+                    _detailBendaliDrainaseFileList,
+                    UploadFileType.detailBendaliDrainase),
+                const SizedBox(
+                  height: 40,
+                ),
+                uploadFile('Upload File Pendukung Lainnya (Optional)',
+                    _filePendukungList, UploadFileType.filePendukung),
+                const SizedBox(
+                  height: 40,
                 ),
                 InkWell(
                   onTap: () {
@@ -916,7 +973,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     );
   }
 
-  Widget uploadFile(String title) {
+  Widget uploadFile(String title, List<File> listFile, String fileType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -930,49 +987,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
           ),
         ),
         const SizedBox(
-          height: 4,
-        ),
-        Container(
-          padding: const EdgeInsets.only(
-            top: 14,
-            bottom: 14,
-            left: 17,
-            right: 17,
-          ),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'File yang diperlukan',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                'Site Plan, Peta Kontur, Tata Kelola Air',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(
           height: 12,
         ),
         InkWell(
           onTap: () {
-            _dokumenFromFiles();
+            _dokumenFromFile(fileType);
           },
           child: DottedBorder(
             color: ColorPallete.mainColor,
@@ -1022,7 +1041,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
         ),
         Column(
           children: [
-            ..._dokumenFileList.map((file) {
+            ...listFile.map((file) {
               return Container(
                 margin: const EdgeInsets.only(
                   top: 12,
@@ -1069,7 +1088,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          _dokumenFileList.remove(file);
+                          _layoutFileList.remove(file);
                         });
                       },
                       child: const Icon(
