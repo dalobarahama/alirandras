@@ -57,17 +57,12 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       speedAccuracy: 0);
   double lat = 0;
   double lang = 0;
-  final ImagePicker _picker = ImagePicker();
 
   List<GetKecamatan> _listKecamatan = <GetKecamatan>[];
   GetKecamatan? _selectedKecamatan;
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
   GetKelurahan? _selectedKelurahan;
   SubmitFormulir _dataFormulir = SubmitFormulir();
-  List<XFile>? _imageFileList = <XFile>[];
-  set _imageFile(XFile? value) {
-    _imageFileList = value == null ? null : [value];
-  }
 
   final List<File> _layoutFileList = <File>[];
   final List<File> _konturRencanaFileList = <File>[];
@@ -110,13 +105,11 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   }
 
   getUserLocation() async {
-    print('abc');
     currentLocation = await locateUser();
     setState(() {
       loc = true;
       point = LatLng(currentLocation.latitude, currentLocation.longitude);
     });
-    print('center $point');
   }
 
   Future<Position> locateUser() async {
@@ -150,13 +143,10 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
   }
 
   getKelurahan(id) async {
-    print(id);
-    print('xxx');
     await CallApi().getKelurahan(id).then((value) {
       setState(() {
         isFinish[1] = true;
         _listKelurahan = value;
-        print(_listKelurahan[2].name);
       });
     });
   }
@@ -173,20 +163,19 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
     );
 
     File? file = File(result!.files.single.path.toString());
-    String basename = file.path.split('/').last;
-    if (fileType == UploadFileType.fileLayout) {
+    if (fileType == CategoryFile.fileLayout) {
       setState(() {
         _layoutFileList.add(file);
       });
-    } else if (fileType == UploadFileType.konturRencana) {
+    } else if (fileType == CategoryFile.konturRencana) {
       setState(() {
         _konturRencanaFileList.add(file);
       });
-    } else if (fileType == UploadFileType.layoutSistemRencanaDrainase) {
+    } else if (fileType == CategoryFile.layoutSistemRencanaDrainase) {
       setState(() {
         _layoutSistemRencanaDrainaseFileList.add(file);
       });
-    } else if (fileType == UploadFileType.detailBendaliDrainase) {
+    } else if (fileType == CategoryFile.detailBendaliDrainase) {
       setState(() {
         _detailBendaliDrainaseFileList.add(file);
       });
@@ -683,31 +672,31 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
                   height: 4,
                 ),
                 uploadFile('Upload File Layout', _layoutFileList,
-                    UploadFileType.fileLayout),
+                    CategoryFile.fileLayout),
                 const SizedBox(
                   height: 40,
                 ),
                 uploadFile('Upload File Kontur Rencana', _konturRencanaFileList,
-                    UploadFileType.konturRencana),
+                    CategoryFile.konturRencana),
                 const SizedBox(
                   height: 40,
                 ),
                 uploadFile(
                     'Upload File Layout Sistem Drainase',
                     _layoutSistemRencanaDrainaseFileList,
-                    UploadFileType.layoutSistemRencanaDrainase),
+                    CategoryFile.layoutSistemRencanaDrainase),
                 const SizedBox(
                   height: 40,
                 ),
                 uploadFile(
                     'Upload File Detail Bendali & Drainase',
                     _detailBendaliDrainaseFileList,
-                    UploadFileType.detailBendaliDrainase),
+                    CategoryFile.detailBendaliDrainase),
                 const SizedBox(
                   height: 40,
                 ),
                 uploadFile('Upload File Pendukung Lainnya (Optional)',
-                    _filePendukungList, UploadFileType.filePendukung),
+                    _filePendukungList, CategoryFile.filePendukung),
                 const SizedBox(
                   height: 40,
                 ),

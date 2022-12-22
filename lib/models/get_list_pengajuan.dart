@@ -288,6 +288,7 @@ class RegistrationFormAttachment {
   RegistrationFormAttachment({
     this.id,
     this.registrationFormId,
+    this.category,
     this.file,
     this.createdAt,
     this.updatedAt,
@@ -295,6 +296,7 @@ class RegistrationFormAttachment {
 
   int? id;
   int? registrationFormId;
+  String? category;
   String? file;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -305,6 +307,7 @@ class RegistrationFormAttachment {
         registrationFormId: json["registration_form_id"] == null
             ? null
             : json["registration_form_id"],
+        category: json["category"] == null ? null : json["category"],
         file: json["file"] == null ? null : json["file"],
         createdAt: json["created_at"] == null
             ? null
@@ -318,6 +321,7 @@ class RegistrationFormAttachment {
         "id": id == null ? null : id,
         "registration_form_id":
             registrationFormId == null ? null : registrationFormId,
+        "category": category == null ? null : category,
         "file": file == null ? null : file,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt!.toIso8601String(),

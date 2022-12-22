@@ -522,7 +522,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                             ),
                                             _listPengajuanFiltered![index]
                                                         .status!
-                                                        .toLowerCase() ==
+                                                        .toLowerCase() !=
                                                     'ditolak'
                                                 ? InkWell(
                                                     onTap: () {

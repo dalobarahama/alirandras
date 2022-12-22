@@ -1,7 +1,7 @@
-class UploadFileType {
-  static const fileLayout = 'fileLayout';
-  static const konturRencana = 'konturRencana';
-  static const layoutSistemRencanaDrainase = 'layoutSistemRencanaDrainase';
-  static const detailBendaliDrainase = 'detailBendaliDrainase';
-  static const filePendukung = 'filePendukung';
+class CategoryFile {
+  static const fileLayout = 'Layout';
+  static const konturRencana = 'Kontur Rencana';
+  static const layoutSistemRencanaDrainase = 'Layout Sistem Drainase';
+  static const detailBendaliDrainase = 'Bendali & Drainase';
+  static const filePendukung = 'File Pendukung';
 }

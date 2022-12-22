@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/helper/api_helper.dart';
@@ -20,8 +18,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import '../../helper/const.dart';
 import '../../utils/color_pallete.dart';
 
 class EditForm extends StatefulWidget {
@@ -48,7 +46,7 @@ class _EditFormState extends State<EditForm> {
   bool isLoading = true;
   bool isLoading1 = false;
   bool loc = false;
-  int countImg = 0;
+  int countAttachments = 0;
   int countDoc = 0;
   Position currentLocation = Position(
       longitude: 0,
@@ -67,17 +65,24 @@ class _EditFormState extends State<EditForm> {
   List<GetKelurahan> _listKelurahan = <GetKelurahan>[];
   GetKelurahan? _selectedKelurahan = GetKelurahan();
   SubmitFormulir _dataFormulir = SubmitFormulir();
-  List<XFile>? _imageFileList = <XFile>[];
-  set _imageFile(XFile? value) {
-    _imageFileList = value == null ? null : [value];
-  }
 
-  List<File>? _dokumenFileList = <File>[];
-  set _dokumenFile(File? value) {
-    _dokumenFileList = value == null ? null : [value];
-  }
+  final List<XFile> _imageFileList = <XFile>[];
 
-  List<String>? _dokumenFileListFromUrl = <String>[];
+  final List<File> _dokumenFileList = <File>[];
+
+  final List<String> _dokumenFileListFromUrl = <String>[];
+
+  final List<File> _layoutFileList = <File>[];
+  final List<File> _konturRencanaFileList = <File>[];
+  final List<File> _layoutSistemRencanaDrainaseFileList = <File>[];
+  final List<File> _detailBendaliDrainaseFileList = <File>[];
+  final List<File> _filePendukungList = <File>[];
+
+  final List<String> _layoutFileListFromUrl = <String>[];
+  final List<String> _konturRencanaFileListFromUrl = <String>[];
+  final List<String> _layoutSistemRencanaDrainaseFileListFromUrl = <String>[];
+  final List<String> _detailBendaliDrainaseFileListFromUrl = <String>[];
+  final List<String> _filePendukungListFromUrl = <String>[];
 
   List<bool> isFinish = [
     false,
@@ -89,6 +94,8 @@ class _EditFormState extends State<EditForm> {
     'Surat Informasi',
     'Surat Rekomendasi',
   ];
+
+  @override
   void initState() {
     initData();
     super.initState();
@@ -97,24 +104,36 @@ class _EditFormState extends State<EditForm> {
   initData() {
     _selectedKecamatan = null;
     _selectedKelurahan = null;
-    countImg = _dataForm.registrationFormAttachments!.length;
+
+    countAttachments = _dataForm.registrationFormAttachments!.length;
     countDoc = _dataForm.registrationFormDocuments!.length;
-    print(point);
+
     getKecamatan();
+
     setState(() {
       if (_dataForm.registrationFormAttachments != null) {
         for (var item in _dataForm.registrationFormAttachments!) {
-          countImg += 1;
-          _dokumenFileListFromUrl!.add(item.file!);
+          if (item.category == CategoryFile.fileLayout) {
+            _layoutFileListFromUrl.add(item.file!);
+          } else if (item.category == CategoryFile.konturRencana) {
+            _konturRencanaFileListFromUrl.add(item.file!);
+          } else if (item.category ==
+              CategoryFile.layoutSistemRencanaDrainase) {
+            _layoutSistemRencanaDrainaseFileListFromUrl.add(item.file!);
+          } else if (item.category == CategoryFile.detailBendaliDrainase) {
+            _detailBendaliDrainaseFileListFromUrl.add(item.file!);
+          }
+          countAttachments += 1;
         }
       }
+
       if (_dataForm.registrationFormDocuments != null) {
         for (var item in _dataForm.registrationFormDocuments!) {
           countDoc += 1;
-          _dokumenFileListFromUrl!.add(item.document!);
+          _filePendukungListFromUrl.add(item.document!);
         }
       }
-      print('count image $countImg');
+
       _luasBangunanController.text = _dataForm.buildingArea!;
       _luasLahanController.text = _dataForm.landArea!;
       _lokasiBangunanController.text = _dataForm.buildingLocation!;
@@ -122,30 +141,11 @@ class _EditFormState extends State<EditForm> {
       lat = _dataForm.lat!;
       lang = _dataForm.lng!;
       point = LatLng(lat, lang);
-      print(point);
       loc = true;
     });
   }
 
-  void _launchURL(String? url) async {
-    print(url);
-    if (!await launch(url!)) throw 'Could not launch $url';
-  }
-
-  _imgFromGallery(int index) async {
-    print(_imageFileList!.length);
-    if (_imageFileList!.length < 3) {
-      XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery, imageQuality: 50);
-      setState(() {
-        _imageFileList!.add(image!);
-        countImg += 1;
-        print('count image gasle$countImg');
-      });
-    }
-  }
-
-  _dokumenFromFiles() async {
+  _dokumenFromFiles(String fileType) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -155,10 +155,29 @@ class _EditFormState extends State<EditForm> {
         'png',
       ],
     );
+
     File? file = File(result!.files.single.path.toString());
-    setState(() {
-      _dokumenFileList!.add(file);
-    });
+    if (fileType == CategoryFile.fileLayout) {
+      setState(() {
+        _layoutFileList.add(file);
+      });
+    } else if (fileType == CategoryFile.konturRencana) {
+      setState(() {
+        _konturRencanaFileList.add(file);
+      });
+    } else if (fileType == CategoryFile.layoutSistemRencanaDrainase) {
+      setState(() {
+        _layoutSistemRencanaDrainaseFileList.add(file);
+      });
+    } else if (fileType == CategoryFile.detailBendaliDrainase) {
+      setState(() {
+        _detailBendaliDrainaseFileList.add(file);
+      });
+    } else {
+      setState(() {
+        _filePendukungList.add(file);
+      });
+    }
   }
 
   getKecamatan() async {
@@ -182,8 +201,6 @@ class _EditFormState extends State<EditForm> {
   }
 
   getKelurahan(id) async {
-    print(id);
-    print('xxx');
     await CallApi().getKelurahan(id).then((value) {
       setState(() {
         isFinish[1] = true;
@@ -201,8 +218,6 @@ class _EditFormState extends State<EditForm> {
 
   void _getPlace(double lat, double long) async {
     List<Placemark> place = await placemarkFromCoordinates(lat, long);
-    print('11aa11aa');
-    print(place.first.name);
 
     setState(() {
       _lokasiBangunanController.text = place.first.street.toString();
@@ -213,7 +228,7 @@ class _EditFormState extends State<EditForm> {
     await CallApi().deleteImage(id).then((value) {
       setState(() {
         _dataForm.registrationFormAttachments!.removeAt(index);
-        countImg -= 1;
+        countAttachments -= 1;
         initData();
       });
     });
@@ -223,7 +238,7 @@ class _EditFormState extends State<EditForm> {
     await CallApi().deleteDocument(id).then((value) {
       setState(() {
         _dataForm.registrationFormAttachments!.removeAt(index);
-        countImg -= 1;
+        countAttachments -= 1;
       });
     });
   }
@@ -242,7 +257,7 @@ class _EditFormState extends State<EditForm> {
       Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
       return;
     }
-    if (_luasBangunanController.text.length < 1) {
+    if (_luasBangunanController.text.isEmpty) {
       Fluttertoast.showToast(
           msg: 'Silahkan masukkan luas bangunan terlebih dahulu.');
       return;
@@ -257,10 +272,6 @@ class _EditFormState extends State<EditForm> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
-    /*if (_imageFileList!.length < 1) {
-      Fluttertoast.showToast(msg: 'Silahkan masukkan Lampiran gambar');
-      return;
-    }*/
 
     setState(() {
       isLoading1 = true;
@@ -283,37 +294,29 @@ class _EditFormState extends State<EditForm> {
         .then((value) {
       setState(() {
         _dataFormulir = value;
-        print(_dataFormulir.statusCode);
-        if (_dataFormulir != null) {
-          if (_dataFormulir.statusCode == 200) {
-            setState(() {
-              isFinish[3] = true;
-              isLoading1 = false;
-              print('ini2' + isFinish[2].toString());
-              Fluttertoast.showToast(msg: 'data berhasil di submit');
-              Timer(const Duration(seconds: 3), () {
-                Navigator.pop(context);
-              });
+
+        if (_dataFormulir.statusCode == 200) {
+          setState(() {
+            isFinish[3] = true;
+            isLoading1 = false;
+            Fluttertoast.showToast(msg: 'Data berhasil di submit');
+            Timer(const Duration(seconds: 3), () {
+              Navigator.pop(context);
             });
-          } else if (_dataFormulir.statusCode! >= 400 &&
-              _dataFormulir.statusCode! <= 500) {
-            setState(() {
-              isLoading1 = false;
-              Fluttertoast.showToast(msg: _dataFormulir.message!);
-            });
-          } else {
-            setState(() {
-              isLoading1 = false;
-              Fluttertoast.showToast(msg: _dataFormulir.message!);
-            });
-          }
-          isFinish[3] == true ? _popUpDialog(context) : Container();
+          });
+        } else if (_dataFormulir.statusCode! >= 400 &&
+            _dataFormulir.statusCode! <= 500) {
+          setState(() {
+            isLoading1 = false;
+            Fluttertoast.showToast(msg: _dataFormulir.message!);
+          });
         } else {
           setState(() {
             isLoading1 = false;
-            Fluttertoast.showToast(msg: 'Terjadi Kesalahan');
+            Fluttertoast.showToast(msg: _dataFormulir.message!);
           });
         }
+        isFinish[3] == true ? _popUpDialog(context) : Container();
       });
     });
   }
@@ -669,23 +672,40 @@ class _EditFormState extends State<EditForm> {
               const SizedBox(
                 height: 24,
               ),
-              uploadFile('Upload File Layout'),
+              uploadFile('Upload File Layout', _layoutFileListFromUrl,
+                  _layoutFileList, CategoryFile.fileLayout),
               const SizedBox(
                 height: 20,
               ),
-              uploadFile('Upload File Kontur Rencana'),
+              uploadFile(
+                  'Upload File Kontur Rencana',
+                  _konturRencanaFileListFromUrl,
+                  _konturRencanaFileList,
+                  CategoryFile.konturRencana),
               const SizedBox(
                 height: 20,
               ),
-              uploadFile('Upload File Layout Sistem Drainase'),
+              uploadFile(
+                  'Upload File Layout Sistem Drainase',
+                  _layoutSistemRencanaDrainaseFileListFromUrl,
+                  _layoutSistemRencanaDrainaseFileList,
+                  CategoryFile.layoutSistemRencanaDrainase),
               const SizedBox(
                 height: 20,
               ),
-              uploadFile('Upload File Detail Bendali & Drainase'),
+              uploadFile(
+                  'Upload File Detail Bendali & Drainase',
+                  _detailBendaliDrainaseFileListFromUrl,
+                  _detailBendaliDrainaseFileList,
+                  CategoryFile.detailBendaliDrainase),
               const SizedBox(
                 height: 20,
               ),
-              uploadFile('Upload File File Pendukung Lainnya'),
+              uploadFile(
+                  'Upload File File Pendukung Lainnya',
+                  _filePendukungListFromUrl,
+                  _filePendukungList,
+                  CategoryFile.filePendukung),
               const SizedBox(
                 height: 20,
               ),
@@ -799,7 +819,6 @@ class _EditFormState extends State<EditForm> {
         onChanged: (value) => setState(() {
           _selectedKecamatan = value;
           getKelurahan(_selectedKecamatan?.id);
-          //Future.microtask(() => context.requestFocus(FocusNode()));
         }),
         value: _selectedKecamatan,
         hint: const Text('Pilih Kecamatan'),
@@ -850,7 +869,8 @@ class _EditFormState extends State<EditForm> {
     );
   }
 
-  Widget uploadFile(String title) {
+  Widget uploadFile(String title, List<String> listStringUrl,
+      List<File> listFile, String fileType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -906,7 +926,7 @@ class _EditFormState extends State<EditForm> {
         ),
         InkWell(
           onTap: () {
-            _dokumenFromFiles();
+            _dokumenFromFiles(fileType);
           },
           child: DottedBorder(
             color: ColorPallete.mainColor,
@@ -927,7 +947,6 @@ class _EditFormState extends State<EditForm> {
                 height: 65,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  // border: Border.all(color: ColorPallete.mainColor),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
@@ -956,7 +975,7 @@ class _EditFormState extends State<EditForm> {
         ),
         Column(
           children: [
-            ..._dokumenFileListFromUrl!.map((file) {
+            ...listStringUrl.map((file) {
               return Container(
                 margin: const EdgeInsets.only(
                   top: 12,
@@ -1004,7 +1023,7 @@ class _EditFormState extends State<EditForm> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          _dokumenFileListFromUrl!.remove(file);
+                          listStringUrl.remove(file);
                         });
                       },
                       child: const Icon(
@@ -1017,7 +1036,7 @@ class _EditFormState extends State<EditForm> {
                 ),
               );
             }).toList(),
-            ..._dokumenFileList!.map((file) {
+            ...listFile.map((file) {
               return Container(
                 margin: const EdgeInsets.only(
                   top: 12,
@@ -1064,7 +1083,7 @@ class _EditFormState extends State<EditForm> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          _dokumenFileList!.remove(file);
+                          listFile.remove(file);
                         });
                       },
                       child: const Icon(

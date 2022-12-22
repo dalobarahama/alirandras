@@ -581,7 +581,6 @@ class CallApi {
   }
 
   Future<List<ApplicationLetter1>?> getListPengajuan() async {
-    bool isNull = false;
     ListPengajuan listPengajuan = ListPengajuan();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
@@ -594,25 +593,23 @@ class CallApi {
       });
 
       var res = await get;
-      //print(res.body);
       int a = jsonDecode(res.body)['status_code'];
-      print(res.body);
+
       if (a == 200) {
         listPengajuan = listPengajuanFromJson(res.body);
-        print(listPengajuan.applicationLetters1![0].id);
+
         return listPengajuan.applicationLetters1;
       } else if (a == 401) {
         List<ApplicationLetter1> temporary = <ApplicationLetter1>[];
         temporary[0].status = '401';
         listPengajuan.applicationLetters1![0].add(temporary);
+
         return listPengajuan.applicationLetters1;
       } else {
         listPengajuan.applicationLetters1!.clear();
         return listPengajuan.applicationLetters1;
       }
     } catch (e) {
-      print(e);
-      // listPengajuan.applicationLetters1!.clear();
       return listPengajuan.applicationLetters1;
     }
   }
