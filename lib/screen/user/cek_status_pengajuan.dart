@@ -45,7 +45,6 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
     isLoading = true;
     CallApi().getListPengajuan().then((value) {
       setState(() {
-        print('asu');
         isLoading = false;
         _listPengajuan = value;
         _listPengajuanFiltered = value;
@@ -522,7 +521,7 @@ class _Cek_status_pengajuanState extends State<Cek_status_pengajuan> {
                                             ),
                                             _listPengajuanFiltered![index]
                                                         .status!
-                                                        .toLowerCase() !=
+                                                        .toLowerCase() ==
                                                     'ditolak'
                                                 ? InkWell(
                                                     onTap: () {

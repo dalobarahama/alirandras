@@ -34,10 +34,14 @@ class _EditFormState extends State<EditForm> {
   ApplicationLetter1 _dataForm = ApplicationLetter1();
   _EditFormState(this._dataForm);
 
-  TextEditingController _luasBangunanController = TextEditingController();
-  TextEditingController _luasLahanController = TextEditingController();
-  TextEditingController _lokasiBangunanController = TextEditingController();
-  TextEditingController _peruntukanBangunanController = TextEditingController();
+  final TextEditingController _luasBangunanController = TextEditingController();
+  final TextEditingController _luasLahanController = TextEditingController();
+  final TextEditingController _lokasiBangunanController =
+      TextEditingController();
+  final TextEditingController _peruntukanBangunanController =
+      TextEditingController();
+  final TextEditingController _nomorYangDapatDihubungi =
+      TextEditingController();
   String link = 'http://alirandras.inotive.id';
   LatLng point = LatLng(-1.240112, 116.873320);
   String jenisPermohonan = '';
@@ -78,11 +82,17 @@ class _EditFormState extends State<EditForm> {
   final List<File> _detailBendaliDrainaseFileList = <File>[];
   final List<File> _filePendukungList = <File>[];
 
-  final List<String> _layoutFileListFromUrl = <String>[];
-  final List<String> _konturRencanaFileListFromUrl = <String>[];
-  final List<String> _layoutSistemRencanaDrainaseFileListFromUrl = <String>[];
-  final List<String> _detailBendaliDrainaseFileListFromUrl = <String>[];
-  final List<String> _filePendukungListFromUrl = <String>[];
+  final List<RegistrationFormAttachment> _layoutFileListFromUrl =
+      <RegistrationFormAttachment>[];
+  final List<RegistrationFormAttachment> _konturRencanaFileListFromUrl =
+      <RegistrationFormAttachment>[];
+  final List<RegistrationFormAttachment>
+      _layoutSistemRencanaDrainaseFileListFromUrl =
+      <RegistrationFormAttachment>[];
+  final List<RegistrationFormAttachment> _detailBendaliDrainaseFileListFromUrl =
+      <RegistrationFormAttachment>[];
+  final List<RegistrationFormDocument> _filePendukungListFromUrl =
+      <RegistrationFormDocument>[];
 
   List<bool> isFinish = [
     false,
@@ -114,14 +124,14 @@ class _EditFormState extends State<EditForm> {
       if (_dataForm.registrationFormAttachments != null) {
         for (var item in _dataForm.registrationFormAttachments!) {
           if (item.category == CategoryFile.fileLayout) {
-            _layoutFileListFromUrl.add(item.file!);
+            _layoutFileListFromUrl.add(item);
           } else if (item.category == CategoryFile.konturRencana) {
-            _konturRencanaFileListFromUrl.add(item.file!);
+            _konturRencanaFileListFromUrl.add(item);
           } else if (item.category ==
               CategoryFile.layoutSistemRencanaDrainase) {
-            _layoutSistemRencanaDrainaseFileListFromUrl.add(item.file!);
+            _layoutSistemRencanaDrainaseFileListFromUrl.add(item);
           } else if (item.category == CategoryFile.detailBendaliDrainase) {
-            _detailBendaliDrainaseFileListFromUrl.add(item.file!);
+            _detailBendaliDrainaseFileListFromUrl.add(item);
           }
           countAttachments += 1;
         }
@@ -130,13 +140,14 @@ class _EditFormState extends State<EditForm> {
       if (_dataForm.registrationFormDocuments != null) {
         for (var item in _dataForm.registrationFormDocuments!) {
           countDoc += 1;
-          _filePendukungListFromUrl.add(item.document!);
+          _filePendukungListFromUrl.add(item);
         }
       }
 
       _luasBangunanController.text = _dataForm.buildingArea!;
       _luasLahanController.text = _dataForm.landArea!;
       _lokasiBangunanController.text = _dataForm.buildingLocation!;
+      _nomorYangDapatDihubungi.text = _dataForm.noPhone!;
       jenisPermohonan = _dataForm.type!;
       lat = _dataForm.lat!;
       lang = _dataForm.lng!;
@@ -234,11 +245,37 @@ class _EditFormState extends State<EditForm> {
     });
   }
 
-  void deleteDoc(int id, int index) async {
+  void deleteFileAttachment(int id, RegistrationFormAttachment item) async {
+    String category = item.category!;
+    await CallApi().deleteFileLayout(id).then((value) {
+      if (value == true) {
+        if (category == CategoryFile.fileLayout) {
+          setState(() {
+            _layoutFileListFromUrl.remove(item);
+          });
+        } else if (category == CategoryFile.konturRencana) {
+          setState(() {
+            _konturRencanaFileListFromUrl.remove(item);
+          });
+        } else if (category == CategoryFile.layoutSistemRencanaDrainase) {
+          setState(() {
+            _layoutSistemRencanaDrainaseFileListFromUrl.remove(item);
+          });
+        } else if (category == CategoryFile.detailBendaliDrainase) {
+          setState(() {
+            _detailBendaliDrainaseFileListFromUrl.remove(item);
+          });
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Error");
+      }
+    });
+  }
+
+  void deleteDoccument(int id, RegistrationFormDocument item) async {
     await CallApi().deleteDocument(id).then((value) {
       setState(() {
-        _dataForm.registrationFormAttachments!.removeAt(index);
-        countAttachments -= 1;
+        _filePendukungListFromUrl.remove(item);
       });
     });
   }
@@ -272,6 +309,15 @@ class _EditFormState extends State<EditForm> {
           msg: 'Silahkan masukkan lokasi bangunan terlebih dahulu.');
       return;
     }
+    if (_nomorYangDapatDihubungi.text.length < 6) {
+      Fluttertoast.showToast(msg: 'Nomor yang Dapat Dihubungi belum lengkap');
+      return;
+    }
+    if (_nomorYangDapatDihubungi.text.isEmpty) {
+      Fluttertoast.showToast(
+          msg: 'Silahkan masukkan Nomor yang Dapat Dihubungi');
+      return;
+    }
 
     setState(() {
       isLoading1 = true;
@@ -288,9 +334,13 @@ class _EditFormState extends State<EditForm> {
             _peruntukanBangunanController.text,
             lat.toString(),
             lang.toString(),
-            _imageFileList,
+            _nomorYangDapatDihubungi.text,
             _dataForm.id,
-            _dokumenFileList)
+            _layoutFileList,
+            _konturRencanaFileList,
+            _layoutSistemRencanaDrainaseFileList,
+            _detailBendaliDrainaseFileList,
+            _filePendukungList)
         .then((value) {
       setState(() {
         _dataFormulir = value;
@@ -446,6 +496,46 @@ class _EditFormState extends State<EditForm> {
                 width: double.infinity,
                 height: 50,
                 child: _buildJenisPermohonanDropdown(),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Nomor yang Dapat Dihubungi',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: TextField(
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                  controller: _nomorYangDapatDihubungi,
+                  decoration: InputDecoration(
+                    hintText: 'Nomor yang Dapat Dihubungi',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[400],
+                    ),
+                    fillColor: Colors.white,
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
               ),
               const SizedBox(
                 height: 24,
@@ -672,10 +762,48 @@ class _EditFormState extends State<EditForm> {
               const SizedBox(
                 height: 24,
               ),
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 14,
+                  bottom: 14,
+                  left: 17,
+                  right: 17,
+                ),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'File yang diperlukan',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      'Layout, Kontur Rencana, Tata Kelola Air, Layout Sistem Drainase, Detail Bendali & Drainase, File Pendukung Lainnya',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
               uploadFile('Upload File Layout', _layoutFileListFromUrl,
                   _layoutFileList, CategoryFile.fileLayout),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               uploadFile(
                   'Upload File Kontur Rencana',
@@ -683,7 +811,7 @@ class _EditFormState extends State<EditForm> {
                   _konturRencanaFileList,
                   CategoryFile.konturRencana),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               uploadFile(
                   'Upload File Layout Sistem Drainase',
@@ -691,7 +819,7 @@ class _EditFormState extends State<EditForm> {
                   _layoutSistemRencanaDrainaseFileList,
                   CategoryFile.layoutSistemRencanaDrainase),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               uploadFile(
                   'Upload File Detail Bendali & Drainase',
@@ -699,15 +827,15 @@ class _EditFormState extends State<EditForm> {
                   _detailBendaliDrainaseFileList,
                   CategoryFile.detailBendaliDrainase),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
-              uploadFile(
+              uploadFileDocument(
                   'Upload File File Pendukung Lainnya',
                   _filePendukungListFromUrl,
                   _filePendukungList,
                   CategoryFile.filePendukung),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               InkWell(
                 onTap: () {
@@ -869,8 +997,11 @@ class _EditFormState extends State<EditForm> {
     );
   }
 
-  Widget uploadFile(String title, List<String> listStringUrl,
-      List<File> listFile, String fileType) {
+  Widget uploadFile(
+      String title,
+      List<RegistrationFormAttachment> listStringUrl,
+      List<File> listFile,
+      String fileType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -881,44 +1012,6 @@ class _EditFormState extends State<EditForm> {
             textStyle: const TextStyle(
               color: Colors.black,
             ),
-          ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        Container(
-          padding: const EdgeInsets.only(
-            top: 14,
-            bottom: 14,
-            left: 17,
-            right: 17,
-          ),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'File yang diperlukan',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                'Site Plan, Peta Kontur, Tata Kelola Air',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ],
           ),
         ),
         const SizedBox(
@@ -999,9 +1092,9 @@ class _EditFormState extends State<EditForm> {
                       children: [
                         SizedBox(
                           width: 50,
-                          child: file.split('.').last != 'pdf'
+                          child: file.file!.split('.').last != 'pdf'
                               ? Image.network(
-                                  'https://alirandras.inotive.id$file')
+                                  'https://alirandras.inotive.id${file.file}')
                               : Image.asset('assets/images/pdf_icon.png'),
                         ),
                         const SizedBox(
@@ -1010,7 +1103,65 @@ class _EditFormState extends State<EditForm> {
                         SizedBox(
                           width: 150,
                           child: Text(
-                            file.split('/').last,
+                            file.file!.split('/').last,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        deleteFileAttachment(file.id!, file);
+                      },
+                      child: const Icon(
+                        Icons.cancel_sharp,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+            ...listFile.map((file) {
+              return Container(
+                margin: const EdgeInsets.only(
+                  top: 12,
+                ),
+                padding: const EdgeInsets.only(
+                  top: 14,
+                  bottom: 14,
+                  left: 17,
+                  right: 17,
+                ),
+                height: 80,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          child: file.path.split('.').last != 'pdf'
+                              ? Image.file(File(file.path))
+                              : Image.asset('assets/images/pdf_icon.png'),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: Text(
+                            file.path.split('/').last,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 14,
@@ -1023,8 +1174,144 @@ class _EditFormState extends State<EditForm> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          listStringUrl.remove(file);
+                          listFile.remove(file);
                         });
+                      },
+                      child: const Icon(
+                        Icons.cancel_sharp,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget uploadFileDocument(
+      String title,
+      List<RegistrationFormDocument> listStringUrl,
+      List<File> listFile,
+      String fileType) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.roboto(
+            fontSize: 14,
+            textStyle: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        InkWell(
+          onTap: () {
+            _dokumenFromFiles(fileType);
+          },
+          child: DottedBorder(
+            color: ColorPallete.mainColor,
+            borderType: BorderType.RRect,
+            strokeWidth: 1,
+            radius: const Radius.circular(6),
+            dashPattern: const [
+              10,
+              3,
+            ],
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(6),
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 65,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.upload,
+                      color: ColorPallete.mainColor,
+                      size: 15,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      'Browse',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ColorPallete.mainColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            ...listStringUrl.map((file) {
+              return Container(
+                margin: const EdgeInsets.only(
+                  top: 12,
+                ),
+                padding: const EdgeInsets.only(
+                  top: 14,
+                  bottom: 14,
+                  left: 17,
+                  right: 17,
+                ),
+                height: 80,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          child: file.document!.split('.').last != 'pdf'
+                              ? Image.network(
+                                  'https://alirandras.inotive.id${file.document}')
+                              : Image.asset('assets/images/pdf_icon.png'),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: Text(
+                            file.document!.split('/').last,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        deleteDoccument(file.id!, file);
                       },
                       child: const Icon(
                         Icons.cancel_sharp,

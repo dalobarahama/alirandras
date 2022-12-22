@@ -37,6 +37,13 @@ class CallApi {
   final String DELETE_FORMULIR = '/api/hapus-formulir/';
   final String DELETE_IMAGE = '/api/hapus-file-formulir/';
   final String DELETE_DOCUMENT = '/api/hapus-file-pendukung-formulir/';
+  final String DELETE_FILE_LAYOUT = '/api/delete-layout-file/';
+  final String DELETE_KONTUR_RENCANA = '/api/delete-kontur-rencana-file/';
+  final String DELETE_LAYOUT_SISTEM_DRAINASE =
+      '/api/delete-layout-sistem-drainase-file/';
+  final String DELETE_DETAIL_BENDALI_DRAINASE =
+      '/api/delete-detail-bendali-file/';
+  final String DELETE_FILE_PENDUKUNG = '/api/hapus-file-pendukung-formulir/';
   final String UPDATE_PROFILE = '/api/auth/edit-profile';
 
   Future<String> login(String email, String password) async {
@@ -624,20 +631,21 @@ class CallApi {
       String buildingDesignation,
       String lat,
       String lng,
-      List<XFile>? imageFileList,
+      String phoneNumber,
       int? id,
-      List<File>? dokumenFileList) async {
+      List<File> layoutFileList,
+      List<File> konturRencanaFileList,
+      List<File> layoutSistemDrainaseFileList,
+      List<File> detailBendaliDrainaseFileList,
+      List<File> filePendukungFileList) async {
     SubmitFormulir dataFormulir = SubmitFormulir();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    //var token =
-    //    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hbGlyYW5kcmFzLmlub3RpdmUuaWRcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MzkzMDEwMzEsIm5iZiI6MTYzOTMwMTAzMSwianRpIjoiM2V4VlV5YjNQUmZNZU1HRyIsInN1YiI6NSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.zsqcqCdOPuIQa5FawcY_8KzBSpYUVCDK6JI0OWFpZFE';
     Uri fullUrl = Uri.parse(SERVER_URL + UPDATE_FORMULIR + id.toString());
-    print(fullUrl);
+
     try {
       var post = http.post(fullUrl, headers: {
         'Authorization': 'Bearer $token',
-        // 'Accept': 'application/json'
       }, body: {
         'type': type,
         'district': district,
@@ -645,45 +653,69 @@ class CallApi {
         'building_area': buildingArea,
         'land_area': landArea,
         'building_location': buildingLocation,
-        'building_designation': buildingDesignation,
+        // 'building_designation': buildingDesignation,
         'lat': lat,
-        'lng': lng
+        'lng': lng,
+        'no_phone': phoneNumber
       });
 
       var res = await post;
       int a = jsonDecode(res.body)['status_code'];
 
+      print(res);
+      print("apiHelper statusCode:$a");
+
       if (a == 200) {
         dataFormulir = submitFormulirFromJson(res.body);
-        if (imageFileList!.isNotEmpty) {
-          for (var i = 0; i < imageFileList.length; i++) {
-            print('looping $i');
-            await CallApi().submit_gambar(
-                dataFormulir.registrationForm!.id.toString(), imageFileList[i]);
-          }
-        }
-        if (dokumenFileList!.isNotEmpty) {
-          for (var i = 0; i < dokumenFileList.length; i++) {
+
+        if (layoutFileList.isNotEmpty) {
+          for (var i = 0; i < layoutFileList.length; i++) {
             await CallApi().submitFileLayout(
-                dataFormulir.registrationForm!.id, dokumenFileList[i], i);
+                dataFormulir.registrationForm!.id, layoutFileList[i], i);
           }
         }
+        if (konturRencanaFileList.isNotEmpty) {
+          for (var i = 0; i < konturRencanaFileList.length; i++) {
+            await CallApi().submitFileKonturRencana(
+                dataFormulir.registrationForm!.id, konturRencanaFileList[i], i);
+          }
+        }
+        if (layoutSistemDrainaseFileList.isNotEmpty) {
+          for (var i = 0; i < layoutSistemDrainaseFileList.length; i++) {
+            await CallApi().submitFileLayoutSistemDrainase(
+                dataFormulir.registrationForm!.id,
+                layoutSistemDrainaseFileList[i],
+                i);
+          }
+        }
+        if (detailBendaliDrainaseFileList.isNotEmpty) {
+          for (var i = 0; i < detailBendaliDrainaseFileList.length; i++) {
+            await CallApi().submitFileDetailBendaliDrainase(
+                dataFormulir.registrationForm!.id,
+                detailBendaliDrainaseFileList[i],
+                i);
+          }
+        }
+        if (filePendukungFileList.isNotEmpty) {
+          for (var i = 0; i < filePendukungFileList.length; i++) {
+            await CallApi().submitFilePendukung(
+                dataFormulir.registrationForm!.id, filePendukungFileList[i], i);
+          }
+        }
+
         return dataFormulir;
       } else if (a >= 400 && a <= 500) {
-        print('masul400');
-        // _dataFormulir.clear();
         dataFormulir = submitFormulirFromJson(res.body);
-        var msg = jsonDecode(res.body)['message'];
-        print(msg);
+
         return dataFormulir;
       } else {
-        print('masulexep');
         dataFormulir.clear();
+
         return dataFormulir;
       }
     } catch (e) {
-      print(e);
       dataFormulir.clear();
+
       return dataFormulir;
     }
   }
@@ -760,24 +792,45 @@ class CallApi {
         'Authorization': 'Bearer $token',
         // 'Accept': 'application/json'
       });
-      print(fullUrl);
       var res = await post;
-      print(res.body);
-      print('del dok');
 
-      var a = int.parse(jsonDecode(res.body)['status_code']);
-      print(res.body);
-      print(a);
+      var a = jsonDecode(res.body)['status_code'];
       if (a == 200) {
         return true;
       } else if (a >= 400 && a <= 500) {
-        // print('zzzzzz');
         return false;
       } else {
         return false;
       }
     } catch (e) {
-      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteFileLayout(int? id) async {
+    Uri fullUrl = Uri.parse(SERVER_URL + DELETE_FILE_LAYOUT + id.toString());
+    try {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var token = localStorage.getString('token');
+      var post = http.post(fullUrl, headers: {
+        'Authorization': 'Bearer $token',
+      });
+      var res = await post;
+
+      print(fullUrl);
+
+      var a = jsonDecode(res.body)['status_code'];
+
+      print(a.toString());
+      if (a == 200) {
+        return true;
+      } else if (a >= 400 && a <= 500) {
+        return false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("apiHelper: deleteLayout: ${e.toString()}");
       return false;
     }
   }
