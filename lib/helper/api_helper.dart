@@ -653,7 +653,7 @@ class CallApi {
         'building_area': buildingArea,
         'land_area': landArea,
         'building_location': buildingLocation,
-        // 'building_designation': buildingDesignation,
+        'building_designation': buildingDesignation,
         'lat': lat,
         'lng': lng,
         'no_phone': phoneNumber
@@ -661,9 +661,6 @@ class CallApi {
 
       var res = await post;
       int a = jsonDecode(res.body)['status_code'];
-
-      print(res);
-      print("apiHelper statusCode:$a");
 
       if (a == 200) {
         dataFormulir = submitFormulirFromJson(res.body);

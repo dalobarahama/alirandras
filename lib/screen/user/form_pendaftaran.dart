@@ -200,7 +200,7 @@ class _Form_pendaftaranState extends State<Form_pendaftaran> {
       Fluttertoast.showToast(msg: 'Silahkan pilih kelurahan terlebih dahulu.');
       return;
     }
-    if (_luasBangunanController.text.length < 1) {
+    if (_luasBangunanController.text.isEmpty) {
       Fluttertoast.showToast(
           msg: 'Silahkan masukkan luas bangunan terlebih dahulu.');
       return;
